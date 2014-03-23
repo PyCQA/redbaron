@@ -30,6 +30,8 @@ class NodeList(UserList):
             to_return += i.find_all(identifier, recursive=recursive, **kwargs)
         return to_return
 
+    findAll = find_all
+
     def fst(self):
         return [x.fst() for x in self.data]
 
@@ -134,6 +136,8 @@ class Node(object):
                 to_return += i.find_all(identifier, recursive, **kwargs)
 
         return to_return
+
+    findAll = find_all
 
     def _generate_identifiers(self):
         return map(lambda x: x.lower(), [self.type, self.__class__.__name__, self.__class__.__name__.replace("Node", ""), self.type + "_"])
