@@ -1,4 +1,5 @@
 import sys
+import baron
 from types import ModuleType
 
 
@@ -41,6 +42,9 @@ class Node(object):
             else:
                 to_return[key] = {}
         return to_return
+
+    def __repr__(self):
+        return baron.dumps([self.__fst__()])
 
 
 class IntNode(Node):

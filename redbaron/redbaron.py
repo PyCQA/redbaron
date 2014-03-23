@@ -10,3 +10,6 @@ class RedBaron(UserList):
 
     def __fst__(self):
         return [x.__fst__() for x in self.data]
+
+    def __repr__(self):
+        return "%s" % [x.__repr__() for x in self.data]
