@@ -21,6 +21,9 @@ class NodeList(UserList):
             if candidate is not None:
                 return candidate
 
+    def __getattr__(self, key):
+        return self.find(key)
+
     def fst(self):
         return [x.fst() for x in self.data]
 
@@ -89,6 +92,10 @@ class Node(object):
                     found = i.find(identifier, recursive, **kwargs)
                     if found:
                         return found
+
+    def __getattr__(self, key):
+        return self.find(key)
+
 
     def _generate_identifiers(self):
         return map(lambda x: x.lower(), [self.type, self.__class__.__name__, self.__class__.__name__.replace("Node", "")])
