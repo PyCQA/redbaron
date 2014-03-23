@@ -36,6 +36,9 @@ class NodeList(UserList):
     def fst(self):
         return [x.fst() for x in self.data]
 
+    def dumps(self):
+        return baron.dumps(self.fst())
+
     def __repr__(self):
         to_return = ""
         for number, value in enumerate(self.data):
@@ -156,6 +159,9 @@ class Node(object):
             else:
                 to_return[key] = {}
         return to_return
+
+    def dumps(self):
+        return baron.dumps(self.fst())
 
     def help(self, with_formatting=False):
         print self.__help__(with_formatting)
