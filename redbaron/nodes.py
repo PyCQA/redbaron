@@ -49,7 +49,7 @@ class Node(object):
                     setattr(self, key, None)
                 self._dict_keys.append(key)
             elif isinstance(value, list):
-                setattr(self, key, UserList(map(to_node, value)))
+                setattr(self, key, NodeList(map(to_node, value)))
                 self._list_keys.append(key)
             else:
                 setattr(self, key, value)
