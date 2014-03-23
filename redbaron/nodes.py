@@ -60,7 +60,7 @@ class Node(object):
                 setattr(self, key, value)
                 self._str_keys.append(key)
 
-    def find(self, identifier, **kwargs):
+    def find(self, identifier, recursive=True, **kwargs):
         all_my_keys = self._str_keys + self._list_keys + self._dict_keys
         if identifier.lower() in self._generate_identifiers():
             for key in kwargs:
@@ -73,6 +73,22 @@ class Node(object):
             else:  # else it match so the else clause will be used
                    # (for once that this else stuff is usefull)
                 return self
+
+        if recursive:
+            for i in self._dict_keys:
+                i = getattr(self, i)
+                if not i:
+                    continue
+
+                found = i.find(identifier, recursive, **kwargs)
+                if found:
+                    return found
+
+            for key in self._list_keys:
+                for i in getattr(self, key):
+                    found = i.find(identifier, recursive, **kwargs)
+                    if found:
+                        return found
 
     def _generate_identifiers(self):
         return map(lambda x: x.lower(), [self.type, self.__class__.__name__, self.__class__.__name__.replace("Node", "")])
