@@ -100,7 +100,12 @@ class Node(object):
 class IntNode(Node):
     def __init__(self, node):
         super(IntNode, self).__init__(node)
-        self.value = int(self.value)
+        #self.value = int(self.value)
+
+
+class EndlNode(Node):
+    def __repr__(self):
+        return repr(baron.dumps([self.fst()]))
 
 
 # enter the black magic realm, beware of what you might find
