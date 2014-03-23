@@ -28,7 +28,9 @@ class NodeList(UserList):
         return "%s" % [x.__repr__() for x in self.data]
 
     def help(self):
-        print [x.__help__() for x in self.data]
+        for num, i in enumerate(self.data):
+            print num, "-----------------------------------------------------"
+            print i.__help__()
 
     def __help__(self):
         return [x.__help__() for x in self.data]
