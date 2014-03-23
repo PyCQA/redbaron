@@ -15,6 +15,12 @@ def to_node(node):
 
 
 class NodeList(UserList):
+    def find(self, identifier, **kwargs):
+        for i in self.data:
+            candidate = i.find(identifier, **kwargs)
+            if candidate is not None:
+                return candidate
+
     def fst(self):
         return [x.fst() for x in self.data]
 
@@ -53,6 +59,23 @@ class Node(object):
             else:
                 setattr(self, key, value)
                 self._str_keys.append(key)
+
+    def find(self, identifier, **kwargs):
+        all_my_keys = self._str_keys + self._list_keys + self._dict_keys
+        if identifier.lower() in self._generate_identifiers():
+            for key in kwargs:
+                if key not in all_my_keys:
+                    break
+
+                if getattr(self, key) != kwargs[key]:
+                    break
+
+            else:  # else it match so the else clause will be used
+                   # (for once that this else stuff is usefull)
+                return self
+
+    def _generate_identifiers(self):
+        return map(lambda x: x.lower(), [self.type, self.__class__.__name__, self.__class__.__name__.replace("Node", "")])
 
     def fst(self):
         to_return = {}
