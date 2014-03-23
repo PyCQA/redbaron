@@ -15,9 +15,9 @@ def to_node(node):
 
 
 class NodeList(UserList):
-    def find(self, identifier, **kwargs):
+    def find(self, identifier, recursive=True, **kwargs):
         for i in self.data:
-            candidate = i.find(identifier, **kwargs)
+            candidate = i.find(identifier, recursive=recursive, **kwargs)
             if candidate is not None:
                 return candidate
 
