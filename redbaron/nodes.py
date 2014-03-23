@@ -12,13 +12,22 @@ def to_node(node):
 
 class Node(object):
     def __init__(self, node):
+        self._str_keys = []
+        self._list_keys = []
+        self._dict_keys = []
         for key, value in node.items():
             if isinstance(value, dict):
-                setattr(self, key, to_node(value))
+                if value:
+                    setattr(self, key, to_node(value))
+                else:
+                    setattr(self, key, None)
+                self._dict_keys.append(key)
             elif isinstance(value, list):
                 setattr(self, key, map(to_node, value))
+                self._list_keys.append(key)
             else:
                 setattr(self, key, value)
+                self._str_keys.append(key)
 
 
 class IntNode(Node):
