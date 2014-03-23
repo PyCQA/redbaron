@@ -1,6 +1,7 @@
 import sys
 import baron
 from types import ModuleType
+from UserList import UserList
 
 
 def to_node(node):
@@ -43,7 +44,7 @@ class Node(object):
                     setattr(self, key, None)
                 self._dict_keys.append(key)
             elif isinstance(value, list):
-                setattr(self, key, map(to_node, value))
+                setattr(self, key, UserList(map(to_node, value)))
                 self._list_keys.append(key)
             else:
                 setattr(self, key, value)
