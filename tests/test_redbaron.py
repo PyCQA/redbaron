@@ -3,7 +3,8 @@
 
 
 from redbaron import RedBaron
-from redbaron.nodes import NameNode, EndlNode, IntNode, AssignmentNode
+from redbaron.nodes import (NameNode, EndlNode, IntNode, AssignmentNode,
+                            PassNode)
 
 
 def test_empty():
@@ -51,6 +52,11 @@ def test_binary_operator():
     assert red[0].first.value == "z"
     assert isinstance(red[0].second, IntNode)
     assert red[0].second.value == 42
+
+
+def test_pass():
+    red = RedBaron("pass")
+    assert isinstance(red[0], PassNode)
 
 
 #def test_while():

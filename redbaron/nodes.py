@@ -32,3 +32,7 @@ class AssignmentNode(Node):
 
 class BinaryOperatorNode(Node):
     pass
+
+
+class PassNode(Node):
+    pass
