@@ -24,6 +24,12 @@ class NodeList(UserList):
     def __getattr__(self, key):
         return self.find(key)
 
+    def find_all(self, identifier, recursive=True, **kwargs):
+        to_return = NodeList([])
+        for i in self.data:
+            to_return += i.find_all(identifier, recursive=recursive, **kwargs)
+        return to_return
+
     def fst(self):
         return [x.fst() for x in self.data]
 
@@ -97,6 +103,37 @@ class Node(object):
 
     def __getattr__(self, key):
         return self.find(key)
+
+    def find_all(self, identifier, recursive=True, **kwargs):
+        to_return = NodeList([])
+        all_my_keys = self._str_keys + self._list_keys + self._dict_keys
+        if identifier.lower() in self._generate_identifiers():
+            for key in kwargs:
+                if key not in all_my_keys:
+                    break
+
+                if getattr(self, key) != kwargs[key]:
+                    break
+
+            else:  # else it match so the else clause will be used
+                   # (for once that this else stuff is usefull)
+                to_return.append(self)
+
+        if not recursive:
+            return to_return
+
+        for i in self._dict_keys:
+            i = getattr(self, i)
+            if not i:
+                continue
+
+            to_return += i.find_all(identifier, recursive, **kwargs)
+
+        for key in self._list_keys:
+            for i in getattr(self, key):
+                to_return += i.find_all(identifier, recursive, **kwargs)
+
+        return to_return
 
     def _generate_identifiers(self):
         return map(lambda x: x.lower(), [self.type, self.__class__.__name__, self.__class__.__name__.replace("Node", ""), self.type + "_"])
