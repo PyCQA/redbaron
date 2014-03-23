@@ -96,9 +96,8 @@ class Node(object):
     def __getattr__(self, key):
         return self.find(key)
 
-
     def _generate_identifiers(self):
-        return map(lambda x: x.lower(), [self.type, self.__class__.__name__, self.__class__.__name__.replace("Node", "")])
+        return map(lambda x: x.lower(), [self.type, self.__class__.__name__, self.__class__.__name__.replace("Node", ""), self.type + "_"])
 
     def fst(self):
         to_return = {}
