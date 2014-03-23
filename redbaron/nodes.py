@@ -1,3 +1,7 @@
+def to_node(node):
+    return globals()[node["type"].capitalize() + "Node"](node)
+
+
 class Node(object):
     def __init__(self, node):
         self.value = node["value"]
