@@ -1,7 +1,10 @@
 import sys
 import baron
 from types import ModuleType
+from operator import add
 from UserList import UserList
+
+from .utils import indent
 
 
 def to_node(node):
@@ -69,30 +72,28 @@ class Node(object):
     def __help__(self, with_formatting=False):
         to_join = ["%s()" % self.__class__.__name__]
         to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
-        to_join += ["%s=%s" % (key, getattr(self, key).help() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
+        to_join += ["%s ->\n  %s" % (key, indent(getattr(self, key).__help__(), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
 
         # need to do this otherwise I end up with stacked quoted list
         # example: value=[\'DottedAsNameNode(target=\\\'None\\\', as=\\\'False\\\', value=DottedNameNode(value=["NameNode(value=\\\'pouet\\\')"])]
         for key in filter(lambda x: "formatting" not in x, self._list_keys):
-            r = ", ".join([x.help() for x in getattr(self, key)])
-            r = "[" + r + "]"
-            to_join.append("%s=%s" % (key, r))
+            to_join.append(("%s ->" % key))
+            for i in getattr(self, key):
+                to_join.append("  * " + indent(i.__help__(), "      ").lstrip())
 
         if with_formatting:
             to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" in key]
-            to_join += ["%s=%s" % (key, getattr(self, key).help() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" in key]
+            to_join += ["%s=%s" % (key, getattr(self, key).__help__() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" in key]
 
             for key in filter(lambda x: "formatting" in x, self._list_keys):
-                r = ", ".join([x.help() for x in getattr(self, key)])
-                r = "[" + r + "]"
-                to_join.append("%s=%s" % (key, r))
+                to_join.append(("%s ->" % key))
+                for i in getattr(self, key):
+                    to_join.append("  * " + indent(i.__help__(), "  ").lstrip())
 
-        to_return += ", ".join(to_join)
-        to_return += ")"
-        return to_return
+        return "\n  ".join(to_join)
 
     def __repr__(self):
-        return baron.dumps([self.__fst__()])
+        return baron.dumps([self.fst()])
 
 
 class IntNode(Node):
