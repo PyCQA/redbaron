@@ -3,7 +3,7 @@
 
 
 from redbaron import RedBaron
-from redbaron.nodes import NameNode, EndlNode, IntNode
+from redbaron.nodes import NameNode, EndlNode, IntNode, AssignmentNode
 
 
 def test_empty():
@@ -28,8 +28,13 @@ def test_int():
     assert red[0].value == 1
 
 
-#def test_assign():
-    #check_dumps("a = 2")
+def test_assign():
+    red = RedBaron("a = 2")
+    assert isinstance(red[0], AssignmentNode)
+    assert isinstance(red[0].value, IntNode)
+    assert red[0].value.value == 2
+    assert isinstance(red[0].target, NameNode)
+    assert red[0].target.value == "a"
 
 
 #def test_binary_operator():
