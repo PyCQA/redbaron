@@ -12,4 +12,6 @@ class EndlNode(Node):
 
 
 class IntNode(Node):
-    pass
+    def __init__(self, node):
+        super(IntNode, self).__init__(node)
+        self.value = int(self.value)

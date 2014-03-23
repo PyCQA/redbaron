@@ -25,6 +25,7 @@ def test_name():
 def test_int():
     red = RedBaron("1\n")
     assert isinstance(red[0], IntNode)
+    assert red[0].value == 1
 
 
 #def test_assign():
