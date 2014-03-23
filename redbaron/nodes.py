@@ -29,6 +29,19 @@ class Node(object):
                 setattr(self, key, value)
                 self._str_keys.append(key)
 
+    def __fst__(self):
+        to_return = {}
+        for key in self._str_keys:
+            to_return[key] = getattr(self, key)
+        for key in self._list_keys:
+            to_return[key] = [node.__fst__() for node in getattr(self, key)]
+        for key in self._dict_keys:
+            if getattr(self, key):
+                to_return[key] = getattr(self, key).__fst__()
+            else:
+                to_return[key] = {}
+        return to_return
+
 
 class IntNode(Node):
     def __init__(self, node):
