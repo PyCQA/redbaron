@@ -196,7 +196,14 @@ class Node(object):
 class IntNode(Node):
     def __init__(self, node):
         super(IntNode, self).__init__(node)
-        #self.value = int(self.value)
+        self.value = int(self.value)
+
+    def fst(self):
+        return {
+            "type": "int",
+            "value": str(self.value),
+            "section": "number",
+        }
 
 
 class EndlNode(Node):
