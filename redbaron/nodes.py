@@ -31,6 +31,7 @@ class NodeList(UserList):
         return to_return
 
     findAll = find_all
+    __call__ = find_all
 
     def fst(self):
         return [x.fst() for x in self.data]
@@ -138,6 +139,7 @@ class Node(object):
         return to_return
 
     findAll = find_all
+    __call__ = find_all
 
     def _generate_identifiers(self):
         return map(lambda x: x.lower(), [self.type, self.__class__.__name__, self.__class__.__name__.replace("Node", ""), self.type + "_"])
