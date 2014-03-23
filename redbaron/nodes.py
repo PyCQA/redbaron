@@ -1,7 +1,6 @@
 import sys
 import baron
 from types import ModuleType
-from operator import add
 from UserList import UserList
 
 from .utils import indent
