@@ -13,3 +13,6 @@ class RedBaron(UserList):
 
     def __repr__(self):
         return "%s" % [x.__repr__() for x in self.data]
+
+    def help(self):
+        print [x.help() for x in self.data]
