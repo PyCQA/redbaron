@@ -1,5 +1,5 @@
 def to_node(node):
-    return globals()[node["type"].capitalize() + "Node"](node)
+    return globals()["".join(map(lambda x: x.capitalize(), node["type"].split("_"))) + "Node"](node)
 
 
 class Node(object):
@@ -27,4 +27,8 @@ class IntNode(Node):
 
 
 class AssignmentNode(Node):
+    pass
+
+
+class BinaryOperatorNode(Node):
     pass
