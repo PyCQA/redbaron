@@ -77,21 +77,23 @@ class Node(object):
                    # (for once that this else stuff is usefull)
                 return self
 
-        if recursive:
-            for i in self._dict_keys:
-                i = getattr(self, i)
-                if not i:
-                    continue
+        if not recursive:
+            return None
 
+        for i in self._dict_keys:
+            i = getattr(self, i)
+            if not i:
+                continue
+
+            found = i.find(identifier, recursive, **kwargs)
+            if found:
+                return found
+
+        for key in self._list_keys:
+            for i in getattr(self, key):
                 found = i.find(identifier, recursive, **kwargs)
                 if found:
                     return found
-
-            for key in self._list_keys:
-                for i in getattr(self, key):
-                    found = i.find(identifier, recursive, **kwargs)
-                    if found:
-                        return found
 
     def __getattr__(self, key):
         return self.find(key)
