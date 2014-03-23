@@ -2,8 +2,7 @@
 # -*- coding:Utf-8 -*-
 
 
-from redbaron import RedBaron
-from redbaron.nodes import (NameNode, EndlNode, IntNode, AssignmentNode,
+from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                             PassNode)
 
 

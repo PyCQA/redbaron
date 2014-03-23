@@ -1,9 +1,12 @@
 import sys
-import baron
 from types import ModuleType
 from UserList import UserList
 
-from .utils import indent
+import baron
+
+
+def indent(line, indentation):
+    return "\n".join(map(lambda x: indentation + x, line.split("\n")))
 
 
 def to_node(node):
@@ -209,6 +212,11 @@ class IntNode(Node):
 class EndlNode(Node):
     def __repr__(self):
         return repr(baron.dumps([self.fst()]))
+
+
+class RedBaron(NodeList):
+    def __init__(self, source_code):
+        self.data = map(to_node, baron.parse(source_code))
 
 
 # enter the black magic realm, beware of what you might find
