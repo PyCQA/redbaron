@@ -11,6 +11,25 @@ def to_node(node):
         return type(class_name, (Node,), {})(node)
 
 
+class NodeList(UserList):
+    def fst(self):
+        return [x.fst() for x in self.data]
+
+    def __repr__(self):
+        to_return = ""
+        for number, value in enumerate(self.data):
+            to_return += ("%-3s " % number) + "\n    ".join(value.__repr__().split("\n"))
+            to_return += "\n"
+        return to_return
+        return "%s" % [x.__repr__() for x in self.data]
+
+    def help(self):
+        print [x.__help__() for x in self.data]
+
+    def __help__(self):
+        return [x.__help__() for x in self.data]
+
+
 class Node(object):
     def __init__(self, node):
         self._str_keys = []
