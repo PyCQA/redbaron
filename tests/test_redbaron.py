@@ -3,7 +3,7 @@
 
 
 from redbaron import RedBaron
-from redbaron.nodes import NameNode, EndlNode
+from redbaron.nodes import NameNode, EndlNode, IntNode
 
 
 def test_empty():
@@ -20,3 +20,8 @@ def test_name():
     assert isinstance(red[0], NameNode)
     assert isinstance(red[1], EndlNode)
     assert red[0].value == "a"
+
+
+def test_int():
+    red = RedBaron("1\n")
+    assert isinstance(red[0], IntNode)

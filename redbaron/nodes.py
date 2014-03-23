@@ -9,3 +9,7 @@ class NameNode(Node):
 
 class EndlNode(Node):
     pass
+
+
+class IntNode(Node):
+    pass
