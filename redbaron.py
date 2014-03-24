@@ -65,6 +65,7 @@ class NodeList(UserList):
 
 class Node(object):
     def __init__(self, node):
+        self.init = True
         self._str_keys = []
         self._list_keys = []
         self._dict_keys = []
@@ -81,6 +82,8 @@ class Node(object):
             else:
                 setattr(self, key, value)
                 self._str_keys.append(key)
+
+        self.init = False
 
     def find(self, identifier, recursive=True, **kwargs):
         all_my_keys = self._str_keys + self._list_keys + self._dict_keys
@@ -202,6 +205,47 @@ class Node(object):
     def copy(self):
         # XXX not very optimised but at least very simple
         return RedBaron(self.dumps())[0]
+
+    def __setattr__(self, name, value):
+        if name == "init" or self.init:
+            return super(Node, self).__setattr__(name, value)
+
+        if name in self._str_keys and not isinstance(value, (basestring, int)):
+            value = str(value)
+
+        elif name in self._dict_keys:
+            if isinstance(value, basestring):
+                value = RedBaron(value)[0]
+
+            if isinstance(value, dict):  # assuming that we got some fst
+                value = to_node(value)
+
+            # TODO check attribution to raise error/warning?
+
+        elif name in self._list_keys:
+            if isinstance(value, basestring):
+                value = RedBaron(value)
+
+            elif isinstance(value, dict):  # assuming that we got some fst
+                                         # also assuming the user do strange things
+                value = [to_node(value)]
+
+            elif isinstance(value, list) and not isinstance(value, NodeList):
+                # assume the user can pass a list of random stuff
+                new_value = []
+                for i in value:
+                    if isinstance(i, basestring):
+                        new_value.append(RedBaron(i)[0])
+
+                    elif isinstance(i, dict):  # assuming that we got some fst
+                        new_value.append(to_node(i))
+
+                    else:
+                        new_value.append(i)
+
+                value = new_value
+
+        return super(Node, self).__setattr__(name, value)
 
 
 class IntNode(Node):
