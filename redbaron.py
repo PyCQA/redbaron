@@ -58,6 +58,10 @@ class NodeList(UserList):
     def __help__(self):
         return [x.__help__() for x in self.data]
 
+    def copy(self):
+        # XXX not very optimised but at least very simple
+        return RedBaron(self.dumps())
+
 
 class Node(object):
     def __init__(self, node):
@@ -194,6 +198,10 @@ class Node(object):
 
     def __repr__(self):
         return baron.dumps([self.fst()])
+
+    def copy(self):
+        # XXX not very optimised but at least very simple
+        return RedBaron(self.dumps())[0]
 
 
 class IntNode(Node):
