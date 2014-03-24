@@ -41,8 +41,8 @@ Basic usage
 
     red.dumps()  # gives you the modified source code
 
-TOC
----
+Table of content
+----------------
 
 .. toctree::
    :maxdepth: 2
