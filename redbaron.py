@@ -266,6 +266,14 @@ class EndlNode(Node):
         return repr(baron.dumps([self.fst()]))
 
 
+class ImportNode(Node):
+    def modules(self):
+        return [x.value.dumps()for x in self('dotted_as_name')]
+
+    def names(self):
+        return [x.target if x.target else x.value.dumps() for x in self('dotted_as_name')]
+
+
 class RedBaron(NodeList):
     def __init__(self, source_code):
         self.data = map(to_node, baron.parse(source_code))
