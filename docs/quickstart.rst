@@ -3,7 +3,7 @@ Tutorial
 
 Before starting, just a remind of what RedBaron is and is not:
 
-* Baron produces a FST in form of a big JSON out of a valid python source file. Working directly with a JSON of that size would be boring.
+* Baron produces a FST in the form of a big JSON out of a valid python source file. Working directly with a JSON of that size would be boring.
 * RedBaron is a tool built to interact with this JSON in a more easy way by providing an interface heavily inspired by BeautifulSoup, allowing to query and modify it.
 * **It is not a refactoring library**. But it allows you to write one way more easier that anything else I'm aware off.
 
@@ -50,5 +50,5 @@ the list of the nodes of the right, so as expected:
     In [6]: red[2]
     Out[6]: print hello
 
-You get the print Node that was located at 2. As you can see, here we are on a
+You get the `print` Node that was located at 2. As you can see, here we are on a
 standalone Node, so we don't get the list of indexes of the left.
