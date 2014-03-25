@@ -4,7 +4,7 @@ Welcome to RedBaron's documentation!
 Introduction
 ------------
 
-RedBaron is an abstraction on top of Baron to make it easy to use. It is
+RedBaron is an abstraction on top of `Baron <https://github.com/Psycojoker/baron>`_ to make it easy to use. It is
 heavily inspired by BeautifulSoup.
 
 Baron is a FST for Python, a Full Syntax Tree. By opposition to an AST which
@@ -24,14 +24,14 @@ Not released on pypi yet.
 Basic usage
 -----------
 
-::
+.. code-block:: python
 
     from redbaron import RedBaron
 
     red = RedBaron("print 'hello world!'")
     red[0].value[0].value = "'hello from Baron!'"
 
-    # alternativly, BeautifulSoup-style
+    # alternatively, BeautifulSoup-style
     red.string.value = "'hello from Baron!'"
 
     red.dumps()  # gives you the modified source code
