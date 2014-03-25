@@ -48,6 +48,7 @@ Table of content
    :maxdepth: 2
 
    why
+   quickstart
 
 
 Indices and tables
