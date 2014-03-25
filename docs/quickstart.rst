@@ -5,7 +5,7 @@ Before starting, just a remind of what RedBaron is and is not:
 
 * Baron is producing a FST in form of a big JSON out of a valid python source file and JSON of that size is boring to work with
 * RedBaron is a tool build to make working with this JSON way easier by providing an interface heavily inspired by BeautifulSoup, allowing to query and modify it.
-* **It is not a refactoring library**. But it allows you to write one way more easily that anything else I'm aware off.
+* **It is not a refactoring library**. But it allows you to write one way more easily that anything else I'm aware of.
 * Remember that despite all my efforts to make this a more realistic task, refactoring is still a **hard** problem.
 
 This tutorial will teach you first the basics, then how to query the Baron FST using RedBaron and then how to modify it.
