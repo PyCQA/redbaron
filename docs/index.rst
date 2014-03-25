@@ -4,7 +4,7 @@ Welcome to RedBaron's documentation!
 Introduction
 ------------
 
-RedBaron is an abstraction on top of [Baron](https://github.com/Psycojoker/baron) to make it easy to use. It is
+RedBaron is an abstraction on top of `Baron <https://github.com/Psycojoker/baron>`_ to make it easy to use. It is
 heavily inspired by BeautifulSoup.
 
 Baron is a FST for Python, a Full Syntax Tree. By opposition to an AST which
