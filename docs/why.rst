@@ -16,7 +16,7 @@ series of problems to illustrate it. Let's say that you want to write a program 
 It is very likely that you will end up with the awkward feeling of writing
 clumpsy weak code that is very likely to break because you didn't though about
 all the annoying special cases and the formatting keeps bothering you. You may
-end up playing with [ast.py](http://docs.python.org/2/library/ast.html) until
+end up playing with `ast.py <http://docs.python.org/2/library/ast.html>`_ until
 you realize that it removes too much information to be suitable for those
 situations. You will probably ditch this task as simple too complicated and
 really not worth the effort. You are missing a good abstraction that will take
@@ -38,5 +38,5 @@ Other usages
 
 Having a FST (or at least a good abstraction build on it) also makes it easier
 to do code generation and code analysis while those two operations are already
-quite feasible (using [ast.py](http://docs.python.org/2/library/ast.html) for
+quite feasible (using `ast.py <http://docs.python.org/2/library/ast.html>`_ for
 example and a templating engine).
