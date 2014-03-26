@@ -7,7 +7,7 @@ Introduction
 RedBaron is an abstraction on top of `Baron <https://github.com/Psycojoker/baron>`_ to make it easy to use. It is
 heavily inspired by BeautifulSoup.
 
-Baron is a FST for Python, a Full Syntax Tree. By opposition to an AST which
+Baron is a Full Syntax Tree (FST) for Python. By opposition to an AST which
 drops some syntax information in the process of its creation (like empty lines,
 comments, formatting), a FST keeps everything and guarantees the operation
 **ast_to_code(code_to_ast(source_code)) == source_code**.
