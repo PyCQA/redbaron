@@ -180,3 +180,18 @@ attributes):
     IntNode()
       section='number'
       value=1
+
+.dumps(), transform the tree into source code
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To transform a RedBaron tree back into source code, just use the :file:`.dumps()` method. This will transform the **current selection** back into code.
+
+.. code-block:: python
+
+    In [26]: red = RedBaron("a = 1")
+
+    In [27]: red.dumps()
+    Out[27]: 'a = 1'
+
+    In [28]: red[0].target.dumps()
+    Out[28]: 'a'
