@@ -383,3 +383,134 @@ Example:
     In [58]: red
     Out[58]:
     0   a = stuff
+
+Taking advantage of __setattr__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+While paying the price of magic, RedBaron exploit the power of overloading
+__setattr__ to allow you to write things like:
+
+.. code-block:: python
+
+    In [64]: from redbaron import RedBaron
+
+    In [65]: red = RedBaron("a = 1")
+
+    In [66]: red[0].value = "(1 + 3) * 4"
+
+    In [67]: red[0]
+    Out[67]: a = (1 + 3) * 4
+
+Yep, if you pass assign a string to a node attribute, RedBaron will automatically parse it with RedBaron then assign the result at the place of the previous node.
+
+Here is an IPython session illustrating all the possibilities (be sure to have read the "node structures" in basics to understand what is happening):
+
+.. code-block:: python
+
+    In [70]: from redbaron import RedBaron
+
+    In [71]: red = RedBaron("a = b")
+
+On a data attribute, don't parse, simply put the new data:
+
+.. code-block:: python
+
+    In [72]: red.name.help()
+    NameNode()
+      value='a'
+
+    In [73]: red.name.value = "something_else"
+
+    In [74]: red
+    Out[74]:
+    0   something_else = b
+
+On a node attribute, if a string is passed, parse it with RedBaron and use this new subtree:
+
+.. code-block:: python
+
+    In [75]: red[0].help()
+    AssignmentNode()
+      target ->
+      NameNode()
+          value='something_else'
+      value ->
+      NameNode()
+          value='b'
+
+    In [76]: red[0].value = "42 * pouet"
+
+    In [77]: red
+    Out[77]:
+    0   something_else = 42 * pouet
+
+On a node attribute, if some FST data is passed, transform it into RedBaron instance and use it:
+
+.. code-block:: python
+
+    In [79]: red[0].value = {"type": "name", "value": "pouet"}
+
+    In [80]: red
+    Out[80]:
+    0   something_else = pouet
+
+On a node list attribute, if a string is passed, parse it with RedBaron and use this new subtree:
+
+.. code-block:: python
+
+    In [81]: red = RedBaron("[1, 2, 3]")
+
+    In [82]: red[0].help()
+    ListNode()
+      value ->
+        * IntNode()
+            section='number'
+            value=1
+        * CommaNode()
+        * IntNode()
+            section='number'
+            value=2
+        * CommaNode()
+        * IntNode()
+            section='number'
+            value=3
+
+    In [83]: red[0].value = "caramba"
+
+    In [84]: red
+    Out[84]:
+    0   [caramba]
+
+
+    In [85]: red[0].value = "4, 5, 6"
+
+    In [86]: red
+    Out[86]:
+    0   [4, 5, 6]
+
+On a node list attribute, if some FST data is passed, transform it into RedBaron instance and use it. RedBaron will understand if it receive a list or a single item:
+
+.. code-block:: python
+
+    In [87]: red[0].value = {"type": "name", "value": "pouet"}
+
+    In [88]: red
+    Out[88]:
+    0   [pouet]
+
+
+    In [89]: red[0].value = [{"type": "name", "value": "pouet"}]
+
+    In [90]: red
+    Out[90]:
+    0   [pouet]
+
+On a node list attribute, RedBaron will also understand if you pass him a list of mixed content (but this is obviously not recommended):
+
+.. code-block:: python
+
+    In [103]: red[0].value = [{"type": "name", "value": "pouet"}, {"type": "comma", "first_formatting": [], "second_formatting": []}, "pouet ,", NameNode({"type": "name", "value": "plop"})]
+
+    In [104]: red
+    Out[104]:
+    0   [pouet,pouet ,plop]
