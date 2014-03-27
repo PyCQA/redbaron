@@ -348,3 +348,38 @@ you try to *call* the node this way :file:`node(some_arguments)` this will call
     0   b
 
 :file:`.find_all()` also supports the option :file:`recursive=False`.
+
+
+Modifying
+---------
+
+This is obviously one of the main usage of what you'll want to do with
+RedBaron. Thankfully, RedBaron provides ways to help you do that.
+
+Obvious boring and annoying way to do that
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is the way of doing things that you'll probably never want to have to do.
+You can construct by hand new RedBaron nodes and attach them to existing node's
+attributes. This is very boring to do since you need to construct everything by
+hand and that RedBaron node except Baron FST as first argument, but knowing how
+to do this might proves itself useful in some situation to bypass RedBaron
+limitations. Warning: it's very easy to break things doing this, absolutely no
+protection mechanisms are in place.
+
+Example:
+
+.. code-block:: python
+
+    In [54]: from redbaron import RedBaron, NameNode
+
+    In [55]: red = RedBaron("a = 1")
+
+    In [56]: red[0].value
+    Out[56]: 1
+
+    In [57]: red[0].value = NameNode({"type": "name", "value": "stuff"})
+
+    In [58]: red
+    Out[58]:
+    0   a = stuff
