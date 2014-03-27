@@ -1,3 +1,4 @@
+========
 Tutorial
 ========
 
@@ -12,7 +13,7 @@ This tutorial will teach you first the basics, then how to query the Baron FST
 using RedBaron and finally how to modify it.
 
 Basics
-------
+======
 
 RedBaron is very simple to use, you just need to import it and feed him with a string:
 
@@ -57,7 +58,7 @@ You get the `print` Node that was located at 2. As you can see, here we are on a
 standalone Node, so we don't get the list of indexes of the left.
 
 .help()
-~~~~~~~
+-------
 
 Another useful function is :file:`.help()`. It displays the RedBaron nodes tree
 helping you understand how is it composed and how you can use it:
@@ -116,7 +117,7 @@ when called on a :file:`NodeList`:
             value='hello'
 
 nodes structure
-~~~~~~~~~~~~~~~
+---------------
 
 Nodes can have 3 kind of attributes (which can be accessed like normal object
 attributes):
@@ -182,7 +183,7 @@ attributes):
       value=1
 
 .dumps(), transform the tree into source code
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------------
 
 To transform a RedBaron tree back into source code, just use the
 :file:`.dumps()` method. This will transform the **current selection** back
@@ -199,7 +200,7 @@ into code.
     Out[28]: 'a'
 
 .fst(), transform the redbaron tree into baron FST
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------------------------
 
 To transform a RedBaron tree into Baron Full Syntax Tree, just use the
 :file:`.fst()` method. This will transform the **current selection** into FST.
@@ -223,7 +224,7 @@ While I don't see a lot of occasions where you might need this, this will
 allows you to better understand how Baron and RedBaron are working.
 
 .copy()
-~~~~~~~
+-------
 
 If you want to copy a RedBaron node you can use the :file:`.copy()` method this
 way:
@@ -237,7 +238,7 @@ way:
 
 
 Querying
---------
+========
 
 As you have seen in the previous section, you can navigate into RedBaron tree
 only using attribute access and index access on list of nodes with the use of
@@ -245,7 +246,7 @@ the :file:`.help()` method to know what you can do. However, RedBaron offers
 way more powerful and convenient tools to do that.
 
 .find()
-~~~~~~~
+-------
 
 To retrieve a single node, you can use the :file:`.find()` method by passing it
 the name of node you want to get, this way:
@@ -308,7 +309,7 @@ when :file:`stuff` is a reserver keyword of the python language (examples:
     Out[42]: a
 
 .find_all()
-~~~~~~~~~~~
+-----------
 
 :file:`.find_all()` is extremely similar to :file:`.find()` except it return a
 node list contains all the matching queries instead on a single one. Like in
@@ -351,13 +352,13 @@ you try to *call* the node this way :file:`node(some_arguments)` this will call
 
 
 Modifying
----------
+=========
 
 This is obviously one of the main usage of what you'll want to do with
 RedBaron. Thankfully, RedBaron provides ways to help you do that.
 
 Obvious boring and annoying way to do that
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------------
 
 This is the way of doing things that you'll probably never want to have to do.
 You can construct by hand new RedBaron nodes and attach them to existing node's
@@ -385,7 +386,7 @@ Example:
     0   a = stuff
 
 Taking advantage of __setattr__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 While paying the price of magic, RedBaron exploit the power of overloading
 __setattr__ to allow you to write things like:
@@ -414,7 +415,8 @@ read the "node structures" in basics to understand what is happening):
 
     In [71]: red = RedBaron("a = b")
 
-On a data attribute, don't parse, simply put the new data:
+Data attribute, no parsing
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -428,8 +430,8 @@ On a data attribute, don't parse, simply put the new data:
     Out[74]:
     0   something_else = b
 
-On a node attribute, if a string is passed, parse it with RedBaron and use this
-new subtree:
+Node attribute with a string: parsing with RedBaron
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -448,8 +450,8 @@ new subtree:
     Out[77]:
     0   something_else = 42 * pouet
 
-On a node attribute, if some FST data is passed, transform it into RedBaron
-instance and use it:
+Node attribute with FST data: transformation into RedBaron objects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -459,8 +461,8 @@ instance and use it:
     Out[80]:
     0   something_else = pouet
 
-On a node list attribute, if a string is passed, parse it with RedBaron and use
-this new subtree:
+List attribute with a string: parsing with RedBaron
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -494,9 +496,8 @@ this new subtree:
     Out[86]:
     0   [4, 5, 6]
 
-On a node list attribute, if some FST data is passed, transform it into
-RedBaron instance and use it. RedBaron will understand if it receive a list or
-a single item:
+List node attribute with FST: transformation into RedBaron objects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -513,8 +514,8 @@ a single item:
     Out[90]:
     0   [pouet]
 
-On a node list attribute, RedBaron will also understand if you pass him a list
-of mixed content (but this is obviously not recommended):
+List node attribute with mixed content: parsing/transformation depending of the context
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -525,7 +526,7 @@ of mixed content (but this is obviously not recommended):
     0   [pouet,pouet ,plop]
 
 Limitations
-~~~~~~~~~~~
+-----------
 
 As of today, this magical parsing on string has a **big** limitation: it is
 expecting something parsable by Baron which only parse a **valid python
