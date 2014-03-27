@@ -540,5 +540,7 @@ this in the previous example:
         ^
     SyntaxError: invalid syntax
 
+As you can guess :file:`","` is not a valid python program.
+
 This will be fixed in the future but this require quite a lot of work to be
 done correctly and other things are more urgent.
