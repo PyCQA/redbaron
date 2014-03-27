@@ -29,7 +29,7 @@ for it, like BeautifulSoup.
 
 .. code-block:: python
 
-    In [1]: from redbaron import SemicolonNode
+    In [1]: from redbaron import RedBaron
 
     In [2]: red = RedBaron("hello = 'Hello World!'\nprint hello")
 
