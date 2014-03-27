@@ -62,7 +62,7 @@ standalone Node, so we don't get the list of indexes of the left.
 Another useful function is :file:`.help()`. It displays the RedBaron nodes tree
 helping you understand how is it composed and how you can use it:
 
-::
+.. code-block:: python
 
     In [5]: red[0]
     Out[5]: hello = 'Hello World!'
