@@ -89,3 +89,28 @@ obvious one, for example, in a function definition it's the body of the
 function). The **only exceptions** are nodes where it doesn't make any sense,
 for example a :file:`PassNode` (representing the keyword :file:`pass`) simply
 doesn't contains anything.
+
+Like the :file:`repr`, :file:`.help()` have also a display showing index number
+when called on a :file:`NodeList`:
+
+.. code-block:: python
+
+    In [14]: red.help()
+    0 -----------------------------------------------------
+    AssignmentNode()
+      target ->
+        NameNode()
+          value='hello'
+      value ->
+        StringNode()
+          value="'Hello World!'"
+    1 -----------------------------------------------------
+    EndlNode()
+      indent=''
+      value='\n'
+    2 -----------------------------------------------------
+    PrintNode()
+      destination=None
+      value ->
+        * NameNode()
+            value='hello'
