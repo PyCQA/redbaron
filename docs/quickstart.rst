@@ -184,7 +184,9 @@ attributes):
 .dumps(), transform the tree into source code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To transform a RedBaron tree back into source code, just use the :file:`.dumps()` method. This will transform the **current selection** back into code.
+To transform a RedBaron tree back into source code, just use the
+:file:`.dumps()` method. This will transform the **current selection** back
+into code.
 
 .. code-block:: python
 
@@ -199,7 +201,8 @@ To transform a RedBaron tree back into source code, just use the :file:`.dumps()
 .fst(), transform the redbaron tree into baron FST
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To transform a RedBaron tree into Baron Full Syntax Tree, just use the :file:`.fst()` method. This will transform the **current selection** into FST.
+To transform a RedBaron tree into Baron Full Syntax Tree, just use the
+:file:`.fst()` method. This will transform the **current selection** into FST.
 
 .. code-block:: python
 
@@ -216,4 +219,5 @@ To transform a RedBaron tree into Baron Full Syntax Tree, just use the :file:`.f
     In [30]: red[0].target.fst()
     Out[30]: {'type': 'name', 'value': 'a'}
 
-While I don't see a lot of occasions where you might need this, this will allows you to better understand how Baron and RedBaron are working.
+While I don't see a lot of occasions where you might need this, this will
+allows you to better understand how Baron and RedBaron are working.
