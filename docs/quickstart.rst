@@ -222,6 +222,20 @@ To transform a RedBaron tree into Baron Full Syntax Tree, just use the
 While I don't see a lot of occasions where you might need this, this will
 allows you to better understand how Baron and RedBaron are working.
 
+.copy()
+~~~~~~~
+
+If you want to copy a RedBaron node you can use the :file:`.copy()` method this
+way:
+
+.. code-block:: python
+
+    In [45]: red = RedBaron("a = b")
+
+    In [52]: red[0].target.copy()
+    Out[52]: a
+
+
 Querying
 --------
 
