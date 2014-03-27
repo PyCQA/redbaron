@@ -529,8 +529,10 @@ Limitations
 
 As of today, this magical parsing on string has a **big** limitation: it is
 expecting something parsable by Baron which only parse a **valid python
-program**. This mean that you wouldn't have been able to write something like
-this in the previous example:
+program**. That means that string passed in a __setattr__ case have to be an
+entire valid python program that the command :file:`python` can execute. This
+mean that you wouldn't have been able to write something like this in the
+previous example:
 
 .. code-block:: python
 
