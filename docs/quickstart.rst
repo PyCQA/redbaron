@@ -114,3 +114,69 @@ when called on a :file:`NodeList`:
       value ->
         * NameNode()
             value='hello'
+
+nodes structure
+~~~~~~~~~~~~~~~
+
+Nodes can have 3 kind of attributes (which can be accessed like normal object
+attributes):
+
+* data attributes which are nearly always strings, they are shown with a :file:`=` in
+  :file:`.help()`. :file:`.value` here for example.
+
+.. code-block:: python
+
+    In [1]: red = RedBaron("variable")
+
+    In [2]: red[0].help()
+    NameNode()
+      value='variable'
+
+    In [3]: red[0].value
+    Out[3]: 'variable'
+
+* node attributes which are other nodes, they are shown with a :file:`->` followed by the name of the other node at the next line in :file:`.help()`. :file:`.target` and :file:`.value` here for example.
+
+.. code-block:: python
+
+    In [19]: red = RedBaron("a = 1")
+
+    In [20]: red[0].help()
+    AssignmentNode()
+      target ->
+        NameNode()
+          value='a'
+      value ->
+        IntNode()
+          section='number'
+          value=1
+
+    In [21]: red[0].target.help()
+    NameNode()
+      value='a'
+
+* nodelist attributes which are a list of other nodes, they are shown with a :file:`->` followed by a series of names of the other nodes starting with a \* for every item of the list. :file:`.value` here for example:
+
+.. code-block:: python
+
+    In [17]: red = RedBaron("[1, 2, 3]")
+
+    In [18]: red[0].help()
+    ListNode()
+      value ->
+        * IntNode()
+            section='number'
+            value=1
+        * CommaNode()
+        * IntNode()
+            section='number'
+            value=2
+        * CommaNode()
+        * IntNode()
+            section='number'
+            value=3
+
+    In [19]: red[0].value[0].help()
+    IntNode()
+      section='number'
+      value=1
