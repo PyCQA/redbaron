@@ -523,3 +523,22 @@ of mixed content (but this is obviously not recommended):
     In [104]: red
     Out[104]:
     0   [pouet,pouet ,plop]
+
+Limitations
+~~~~~~~~~~~
+
+As of today, this magical parsing on string has a **big** limitation: it is
+expecting something parsable by Baron which only parse a **valid python
+program**. This mean that you wouldn't have been able to write something like
+this in the previous example:
+
+.. code-block:: python
+
+    In [105]: red[0].value = ["a", ", ", "b"]
+      File "<unknown>", line 1
+        ,
+        ^
+    SyntaxError: invalid syntax
+
+This will be fixed in the future but this require quite a lot of work to be
+done correctly and other things are more urgent.
