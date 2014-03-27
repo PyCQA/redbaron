@@ -292,3 +292,45 @@ when :file:`stuff` is a reserver keyword of the python language (examples:
 
     In [42]: red.name_
     Out[42]: a
+
+.find_all()
+~~~~~~~~~~~
+
+:file:`.find_all()` is extremely similar to :file:`.find()` except it return a
+node list contains all the matching queries instead on a single one. Like in
+BeautifulSoup, :file:`__call__` is aliased to :file:`find_all` (meaning that if
+you try to *call* the node this way :file:`node(some_arguments)` this will call
+:file:`.find_all()` with the arguments).
+
+.. code-block:: python
+
+    In [45]: red = RedBaron("a = b")
+
+    In [46]: red.find_all("NameNode")
+    Out[46]:
+    0   a
+    1   b
+
+
+    In [47]: red.find_all("name")
+    Out[47]:
+    0   a
+    1   b
+
+
+    In [48]: red.findAll("name")
+    Out[48]:
+    0   a
+    1   b
+
+
+    In [49]: red.findAll("name", value="b")
+    Out[49]:
+    0   b
+
+
+    In [50]: red("name", value="b")
+    Out[50]:
+    0   b
+
+:file:`.find_all()` also supports the option :file:`recursive=False`.
