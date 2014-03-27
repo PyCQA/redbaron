@@ -221,3 +221,74 @@ To transform a RedBaron tree into Baron Full Syntax Tree, just use the
 
 While I don't see a lot of occasions where you might need this, this will
 allows you to better understand how Baron and RedBaron are working.
+
+Querying
+--------
+
+As you have seen in the previous section, you can navigate into RedBaron tree
+only using attribute access and index access on list of nodes with the use of
+the :file:`.help()` method to know what you can do. However, RedBaron offers
+way more powerful and convenient tools to do that.
+
+.find()
+~~~~~~~
+
+To retrieve a single node, you can use the :file:`.find()` method by passing it
+the name of node you want to get, this way:
+
+.. code-block:: python
+
+    In [31]: red = RedBaron("a = 1")
+
+    In [35]: red.find('NameNode').help()
+    NameNode()
+      value='a'
+
+This will recursively travel the tree and return the first node of that type.
+
+You can also specify attributes of the node that you want to match:
+
+.. code-block:: python
+
+    In [36]: red = RedBaron("a = b")
+
+    In [37]: red.find('NameNode').help()
+    NameNode()
+      value='a'
+
+    In [38]: red.find('NameNode', value='b').help()
+    NameNode()
+      value='b'
+
+If you don't want a recursive approach but only on the first level on the current node or node list, you can pass :file:`recursive=False` to :file:`.find()`.
+
+Like BeautifulSoup, RedBaron provides a shorthand to :file:`.find()`, you can
+write the name of the target as an attribute of the node and this will do a :file:`.find()` in the same fashion:
+
+.. code-block:: python
+
+    In [39]: red = RedBaron("a = b")
+
+    In [40]: red.find('NameNode')
+    Out[40]: a
+
+    In [41]: red.NameNode
+    Out[41]: a
+
+Writing :file:`StuffNode` every time is a bit boring, so you can alternatively
+use :file:`stuff` (or 'Stuff', it's not case sensitive) or :file:`stuff_` for
+when :file:`stuff` is a reserver keyword of the python language (examples:
+:file:`if`, :file:`with`, :file:`while`...).
+
+.. code-block:: python
+
+    In [39]: red = RedBaron("a = b")
+
+    In [40]: red.NameNode
+    Out[40]: a
+
+    In [41]: red.name
+    Out[41]: a
+
+    In [42]: red.name_
+    Out[42]: a
