@@ -185,7 +185,7 @@ way more powerful and convenient tools to do that.
 To retrieve a single node, you can use the :file:`.find()` method by passing it
 one of the identifers listed in :file:`.help()` of node you want to get, this way:
 
-.. ipython::
+.. ipython:: python
 
     red = RedBaron("a = 1")
 
