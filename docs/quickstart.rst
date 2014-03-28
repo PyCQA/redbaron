@@ -2,7 +2,7 @@
 Tutorial
 ========
 
-Before starting, just a remind of what RedBaron is and is not:
+Before starting, just a reminder of what RedBaron is and is not:
 
 * Baron produces a FST in the form of a big JSON out of a valid python source file. Working directly with a JSON of that size would be boring.
 * RedBaron is a tool built to interact with this JSON in a more easy way by providing an interface heavily inspired by BeautifulSoup, allowing to query and modify it.
