@@ -183,13 +183,17 @@ way more powerful and convenient tools to do that.
 -------
 
 To retrieve a single node, you can use the :file:`.find()` method by passing it
-the name of node you want to get, this way:
+one of the identifers listed in :file:`.help()` of node you want to get, this way:
 
 .. ipython::
 
-    In [31]: red = RedBaron("a = 1")
+    red = RedBaron("a = 1")
 
-    In [35]: red.find('NameNode').help()
+    red.help()
+
+    red.find('NameNode').help()
+    red.find('namenode').help()  # identifers are not case sensitive
+    red.find('name')
 
 This will recursively travel the tree and return the first node of that type.
 
@@ -199,9 +203,9 @@ You can also specify attributes of the node that you want to match:
 
     In [36]: red = RedBaron("a = b")
 
-    In [37]: red.find('NameNode').help()
+    In [37]: red.find('name').help()
 
-    In [38]: red.find('NameNode', value='b').help()
+    In [38]: red.find('name', value='b').help()
 
 If you don't want a recursive approach but only on the first level on the current node or node list, you can pass :file:`recursive=False` to :file:`.find()`.
 
@@ -212,24 +216,13 @@ write the name of the target as an attribute of the node and this will do a :fil
 
     In [39]: red = RedBaron("a = b")
 
-    In [40]: red.find('NameNode')
-
-    In [41]: red.NameNode
-
-Writing :file:`StuffNode` every time is a bit boring, so you can alternatively
-use :file:`stuff` (or 'Stuff', it's not case sensitive) or :file:`stuff_` for
-when :file:`stuff` is a reserver keyword of the python language (examples:
-:file:`if`, :file:`with`, :file:`while`...).
-
-.. ipython::
-
-    In [39]: red = RedBaron("a = b")
-
-    In [40]: red.NameNode
+    In [40]: red.find('name')
 
     In [41]: red.name
 
-    In [42]: red.name_
+You might have noticed that some identifers ends with a :file:`_`, those are
+for the case where the identifier might be a python reserved keyword like
+:file:`if`, or :file:`while` for example.
 
 .find_all()
 -----------
