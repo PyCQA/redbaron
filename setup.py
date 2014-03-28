@@ -10,7 +10,7 @@ setup(name='redbaron',
       #long_description='',
       author_email='cortex@worlddomination.be',
       url='https://github.com/Psycojoker/redbaron',
-      install_requires=['baron>=0.1.2'],
+      #install_requires=['baron>=0.1.2'],
       license= 'lgplv3+',
       keywords='baron fst ast refactoring',
      )
