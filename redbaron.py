@@ -155,7 +155,12 @@ class Node(object):
     __call__ = find_all
 
     def _generate_identifiers(self):
-        return map(lambda x: x.lower(), [self.type, self.__class__.__name__, self.__class__.__name__.replace("Node", ""), self.type + "_"])
+        return sorted(set(map(lambda x: x.lower(), [
+            self.type,
+            self.__class__.__name__,
+            self.__class__.__name__.replace("Node", ""),
+            self.type + "_"
+        ])))
 
     def fst(self):
         to_return = {}
