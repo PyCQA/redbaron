@@ -32,6 +32,7 @@ for it, like BeautifulSoup.
 
     import sys
     print sys.path
+    sys.path.append("..")
 
     from redbaron import RedBaron
     red = RedBaron("hello = 'Hello World!'\nprint hello")
