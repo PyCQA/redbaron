@@ -25,6 +25,13 @@ Basic usage
 -----------
 
 .. ipython:: python
+    :suppress:
+
+    import sys
+    sys.path.append("..")
+
+
+.. ipython:: python
 
     from redbaron import RedBaron
 
