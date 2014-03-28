@@ -50,13 +50,13 @@ class NodeList(UserList):
         return to_return
         return "%s" % [x.__repr__() for x in self.data]
 
-    def help(self):
+    def help(self, with_formatting=False):
         for num, i in enumerate(self.data):
             print num, "-----------------------------------------------------"
-            print i.__help__()
+            print i.__help__(with_formatting=with_formatting)
 
-    def __help__(self):
-        return [x.__help__() for x in self.data]
+    def __help__(self, with_formatting=False):
+        return [x.__help__(with_formatting=with_formatting) for x in self.data]
 
     def copy(self):
         # XXX not very optimised but at least very simple
@@ -186,23 +186,23 @@ class Node(object):
     def __help__(self, with_formatting=False):
         to_join = ["%s()\n  # identifiers: %s" % (self.__class__.__name__, ", ".join(self._generate_identifiers()))]
         to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
-        to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
+        to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(with_formatting=with_formatting), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
 
         # need to do this otherwise I end up with stacked quoted list
         # example: value=[\'DottedAsNameNode(target=\\\'None\\\', as=\\\'False\\\', value=DottedNameNode(value=["NameNode(value=\\\'pouet\\\')"])]
         for key in filter(lambda x: "formatting" not in x, self._list_keys):
             to_join.append(("%s ->" % key))
             for i in getattr(self, key):
-                to_join.append("  * " + indent(i.__help__(), "      ").lstrip())
+                to_join.append("  * " + indent(i.__help__(with_formatting=with_formatting), "      ").lstrip())
 
         if with_formatting:
             to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" in key]
-            to_join += ["%s=%s" % (key, getattr(self, key).__help__() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" in key]
+            to_join += ["%s=%s" % (key, getattr(self, key).__help__(with_formatting=with_formatting) if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" in key]
 
             for key in filter(lambda x: "formatting" in x, self._list_keys):
                 to_join.append(("%s ->" % key))
                 for i in getattr(self, key):
-                    to_join.append("  * " + indent(i.__help__(), "  ").lstrip())
+                    to_join.append("  * " + indent(i.__help__(with_formatting=with_formatting), "  ").lstrip())
 
         return "\n  ".join(to_join)
 
