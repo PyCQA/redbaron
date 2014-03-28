@@ -24,15 +24,14 @@ Not released on pypi yet.
 Basic usage
 -----------
 
-.. code-block:: python
+.. ipython:: python
 
     from redbaron import RedBaron
 
     red = RedBaron("print 'hello world!'")
     red[0].value[0].value = "'hello from Baron!'"
 
-    # alternatively, BeautifulSoup-style
-    red.string.value = "'hello from Baron!'"
+    red.string.value = "'hello from Baron!'"  # alternatively, BeautifulSoup-style
 
     red.dumps()  # gives you the modified source code
 
