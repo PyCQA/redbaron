@@ -179,7 +179,7 @@ class Node(object):
     def __help__(self, with_formatting=False):
         to_join = ["%s()" % self.__class__.__name__]
         to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
-        to_join += ["%s ->\n  %s" % (key, indent(getattr(self, key).__help__(), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
+        to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
 
         # need to do this otherwise I end up with stacked quoted list
         # example: value=[\'DottedAsNameNode(target=\\\'None\\\', as=\\\'False\\\', value=DottedNameNode(value=["NameNode(value=\\\'pouet\\\')"])]
