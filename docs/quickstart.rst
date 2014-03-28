@@ -29,10 +29,12 @@ recommend `IPython <http://ipython.org/>`_ but
 for it, like BeautifulSoup.
 
 .. ipython:: python
+    :suppress:
 
     import sys
-    print sys.path
     sys.path.append("..")
+
+.. ipython:: python
 
     from redbaron import RedBaron
     red = RedBaron("hello = 'Hello World!'\nprint hello")
