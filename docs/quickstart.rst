@@ -4,7 +4,7 @@ Tutorial
 
 Before starting, just a reminder of what RedBaron is and is not:
 
-* Baron produces a FST in the form of a big JSON out of a valid python source file. Working directly with a JSON of that size would be boring.
+* Baron produces a Full Syntax Tree in the form of a big JSON out of a valid python source file. Working directly with a JSON of that size would be boring.
 * RedBaron is a tool built to interact with this JSON in a more easy way by providing an interface heavily inspired by BeautifulSoup, allowing to query and modify it.
 * **It is not a refactoring library**. But it allows you to write one way more easily that anything else I'm aware of.
 * Remember that despite all my efforts to make this a more realistic task, refactoring is still a **hard** problem.
