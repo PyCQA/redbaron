@@ -64,6 +64,8 @@ class NodeList(UserList):
 
 
 class Node(object):
+    _other_identifiers = []
+
     def __init__(self, node):
         self.init = True
         self._str_keys = []
@@ -160,7 +162,7 @@ class Node(object):
             self.__class__.__name__,
             self.__class__.__name__.replace("Node", ""),
             self.type + "_"
-        ])))
+        ] + self._other_identifiers)))
 
     def fst(self):
         to_return = {}
@@ -277,6 +279,10 @@ class ImportNode(Node):
 
     def names(self):
         return [x.target if x.target else x.value.dumps() for x in self('dotted_as_name')]
+
+
+class FuncdefNode(Node):
+    _other_identifiers = ["def", "def_"]
 
 
 class RedBaron(NodeList):
