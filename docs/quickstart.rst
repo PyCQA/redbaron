@@ -30,6 +30,9 @@ for it, like BeautifulSoup.
 
 .. ipython:: python
 
+    import sys
+    print sys.path
+
     from redbaron import RedBaron
     red = RedBaron("hello = 'Hello World!'\nprint hello")
     red
