@@ -177,7 +177,7 @@ class Node(object):
         print self.__help__(with_formatting)
 
     def __help__(self, with_formatting=False):
-        to_join = ["%s()" % self.__class__.__name__]
+        to_join = ["%s()\n  # indentifiers: %s" % (self.__class__.__name__, ", ".join(self._generate_identifiers()))]
         to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
         to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
 
