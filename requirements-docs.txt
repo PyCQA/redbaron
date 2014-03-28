@@ -1,0 +1,3 @@
+git+https://github.com/Psycojoker/baron.git
+ipython
+matplotlib
