@@ -202,7 +202,7 @@ class Node(object):
             for key in filter(lambda x: "formatting" in x, self._list_keys):
                 to_join.append(("%s ->" % key))
                 for i in getattr(self, key):
-                    to_join.append("  * " + indent(i.__help__(with_formatting=with_formatting), "  ").lstrip())
+                    to_join.append("  * " + indent(i.__help__(with_formatting=with_formatting), "      ").lstrip())
 
         return "\n  ".join(to_join)
 
