@@ -1,4 +1,5 @@
 import sys
+import inspect
 from types import ModuleType
 from UserList import UserList
 
@@ -164,6 +165,10 @@ class Node(object):
             self.type + "_"
         ] + self._other_identifiers)))
 
+    def _get_helpers(self):
+        not_helpers = {'copy', 'dumps', 'find', 'findAll', 'find_all', 'fst', 'help'}
+        return filter(lambda x: not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x)), dir(self))
+
     def fst(self):
         to_return = {}
         for key in self._str_keys:
@@ -190,6 +195,8 @@ class Node(object):
 
         if deep:
             to_join.append("  # identifiers: %s" % ", ".join(self._generate_identifiers()))
+            if self._get_helpers():
+                to_join.append("  # helpers: %s" % ", ".join(self._get_helpers()))
             to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
             to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(deep=new_deep, with_formatting=with_formatting), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
             # need to do this otherwise I end up with stacked quoted list
