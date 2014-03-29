@@ -89,6 +89,21 @@ when called on a :file:`NodeList`:
 
     In [14]: red.help()
 
+deep
+~~~~
+
+:file:`.help()` accept a deep argument on how far in the tree it should show
+the :file:`.help()` of subnode. By default its value is :file:`2`. You can pass
+the value :file:`True` if you want to display the whole tree.
+
+.. ipython:: python
+
+    red = RedBaron("a = b if c else d")
+    red.help()
+    red.help(0)
+    red.help(1)
+    red.help(True)
+
 with_formatting
 ~~~~~~~~~~~~~~~
 
