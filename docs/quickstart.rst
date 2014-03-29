@@ -80,9 +80,9 @@ value (in case of a node with multiple data, :file:`value` points to the most
 obvious one, for example, in a function definition it's the body of the
 function). The **only exceptions** are nodes where it doesn't make any sense,
 for example a :file:`PassNode` (representing the keyword :file:`pass`) simply
-doesn't contains anything.
+doesn't contain anything.
 
-Like the :file:`repr`, :file:`.help()` have also a display showing index number
+Like the :file:`repr`, :file:`.help()` has also a display showing index number
 when called on a :file:`NodeList`:
 
 .. ipython::
@@ -141,7 +141,7 @@ into code.
 
     In [28]: red[0].target.dumps()
 
-.fst(), transform the redbaron tree into baron FST
+.fst(), transform the redbaron tree into Baron FST
 --------------------------------------------------
 
 To transform a RedBaron tree into Baron Full Syntax Tree, just use the
@@ -156,7 +156,7 @@ To transform a RedBaron tree into Baron Full Syntax Tree, just use the
     In [30]: red[0].target.fst()
 
 While I don't see a lot of occasions where you might need this, this will
-allows you to better understand how Baron and RedBaron are working.
+allow you to better understand how Baron and RedBaron are working.
 
 .copy()
 -------
@@ -183,7 +183,7 @@ way more powerful and convenient tools to do that.
 -------
 
 To retrieve a single node, you can use the :file:`.find()` method by passing it
-one of the identifers listed in :file:`.help()` of node you want to get, this way:
+one of the identifiers listed in :file:`.help()` of node you want to get, this way:
 
 .. ipython:: python
 
@@ -192,7 +192,7 @@ one of the identifers listed in :file:`.help()` of node you want to get, this wa
     red.help()
 
     red.find('NameNode').help()
-    red.find('namenode').help()  # identifers are not case sensitive
+    red.find('namenode').help()  # identifiers are not case sensitive
     red.find('name')
 
 This will recursively travel the tree and return the first node of that type.
@@ -220,15 +220,15 @@ write the name of the target as an attribute of the node and this will do a :fil
 
     In [41]: red.name
 
-You might have noticed that some identifers ends with a :file:`_`, those are
-for the case where the identifier might be a python reserved keyword like
+You might have noticed that some identifiers end with a :file:`_`, those are
+for the case where the identifier might be a Python reserved keyword like
 :file:`if`, or :file:`while` for example.
 
 .find_all()
 -----------
 
-:file:`.find_all()` is extremely similar to :file:`.find()` except it return a
-node list contains all the matching queries instead on a single one. Like in
+:file:`.find_all()` is extremely similar to :file:`.find()` except it returns a
+node list containing all the matching queries instead of a single one. Like in
 BeautifulSoup, :file:`__call__` is aliased to :file:`find_all` (meaning that if
 you try to *call* the node this way :file:`node(some_arguments)` this will call
 :file:`.find_all()` with the arguments).
@@ -284,7 +284,7 @@ Example:
 Taking advantage of __setattr__
 -------------------------------
 
-While paying the price of magic, RedBaron exploit the power of overloading
+While paying the price of magic, RedBaron exploits the power of overloading
 __setattr__ to allow you to write things like:
 
 .. ipython::
@@ -297,8 +297,8 @@ __setattr__ to allow you to write things like:
 
     In [67]: red[0]
 
-Yep, if you pass assign a string to a node attribute, RedBaron will
-automatically parse it with RedBaron then assign the result at the place of the
+Yep, if you assigns a string to a node attribute, RedBaron will
+automatically parse it with RedBaron and put the result in the
 previous node.
 
 Here is an IPython session illustrating all the possibilities (be sure to have
@@ -386,7 +386,7 @@ Limitations
 
 As of today, this magical parsing on string has a **big** limitation: it is
 expecting something parsable by Baron which only parse a **valid python
-program**. That means that string passed in a __setattr__ case have to be an
+program**. That means that a string passed in a __setattr__ case has to be an
 entire valid python program that the command :file:`python` can execute. This
 mean that you wouldn't have been able to write something like this in the
 previous example:
@@ -397,5 +397,5 @@ previous example:
 
 As you can guess :file:`","` is not a valid python program.
 
-This will be fixed in the future but this require quite a lot of work to be
+This will be fixed in the future but it will require quite a lot of work to be
 done correctly and other things are more urgent.
