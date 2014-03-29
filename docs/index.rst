@@ -19,6 +19,7 @@ Not released on pypi yet.
 
 ::
 
+    pip install git+https://github.com/Psycojoker/baron.git
     pip install git+https://github.com/Psycojoker/redbaron.git
 
 Basic usage
