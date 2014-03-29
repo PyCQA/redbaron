@@ -50,13 +50,13 @@ class NodeList(UserList):
         return to_return
         return "%s" % [x.__repr__() for x in self.data]
 
-    def help(self, with_formatting=False):
+    def help(self, deep=2, with_formatting=False):
         for num, i in enumerate(self.data):
             print num, "-----------------------------------------------------"
-            print i.__help__(with_formatting=with_formatting)
+            print i.__help__(deep=deep, with_formatting=with_formatting)
 
-    def __help__(self, with_formatting=False):
-        return [x.__help__(with_formatting=with_formatting) for x in self.data]
+    def __help__(self, deep=2, with_formatting=False):
+        return [x.__help__(deep=deep, with_formatting=with_formatting) for x in self.data]
 
     def copy(self):
         # XXX not very optimised but at least very simple
@@ -180,29 +180,35 @@ class Node(object):
     def dumps(self):
         return baron.dumps(self.fst())
 
-    def help(self, with_formatting=False):
-        print self.__help__(with_formatting)
+    def help(self, deep=2, with_formatting=False):
+        print self.__help__(deep=deep, with_formatting=with_formatting)
 
-    def __help__(self, with_formatting=False):
-        to_join = ["%s()\n  # identifiers: %s" % (self.__class__.__name__, ", ".join(self._generate_identifiers()))]
-        to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
-        to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(with_formatting=with_formatting), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
+    def __help__(self, deep=2, with_formatting=False):
+        new_deep = deep - 1 if not isinstance(deep, bool) else deep
 
-        # need to do this otherwise I end up with stacked quoted list
-        # example: value=[\'DottedAsNameNode(target=\\\'None\\\', as=\\\'False\\\', value=DottedNameNode(value=["NameNode(value=\\\'pouet\\\')"])]
-        for key in filter(lambda x: "formatting" not in x, self._list_keys):
-            to_join.append(("%s ->" % key))
-            for i in getattr(self, key):
-                to_join.append("  * " + indent(i.__help__(with_formatting=with_formatting), "      ").lstrip())
+        to_join = ["%s()" % self.__class__.__name__]
 
-        if with_formatting:
+        if deep:
+            to_join.append("  # identifiers: %s" % ", ".join(self._generate_identifiers()))
+            to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
+            to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(deep=new_deep, with_formatting=with_formatting), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
+            # need to do this otherwise I end up with stacked quoted list
+            # example: value=[\'DottedAsNameNode(target=\\\'None\\\', as=\\\'False\\\', value=DottedNameNode(value=["NameNode(value=\\\'pouet\\\')"])]
+            for key in filter(lambda x: "formatting" not in x, self._list_keys):
+                to_join.append(("%s ->" % key))
+                for i in getattr(self, key):
+                    to_join.append("  * " + indent(i.__help__(deep=new_deep, with_formatting=with_formatting), "      ").lstrip())
+        else:
+            to_join[-1] += " ..."
+
+        if deep and with_formatting:
             to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" in key]
-            to_join += ["%s=%s" % (key, getattr(self, key).__help__(with_formatting=with_formatting) if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" in key]
+            to_join += ["%s=%s" % (key, getattr(self, key).__help__(deep=new_deep, with_formatting=with_formatting) if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" in key]
 
             for key in filter(lambda x: "formatting" in x, self._list_keys):
                 to_join.append(("%s ->" % key))
                 for i in getattr(self, key):
-                    to_join.append("  * " + indent(i.__help__(with_formatting=with_formatting), "      ").lstrip())
+                    to_join.append("  * " + indent(i.__help__(deep=new_deep, with_formatting=with_formatting), "      ").lstrip())
 
         return "\n  ".join(to_join)
 
