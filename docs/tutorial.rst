@@ -89,6 +89,27 @@ when called on a :file:`NodeList`:
 
     In [14]: red.help()
 
+helpers
+~~~~~~~
+
+Some nodes comme with helpers method, :file:`.help()` display them when they
+are present:
+
+.. ipython:: python
+
+    red = RedBaron("import a, b, c as d")
+    red.help(1)
+
+You can read their documentation using the :file:`?` magic of ipython:
+
+.. ipython:: python
+
+    red.names?
+    red.names()
+
+    red.modules?
+    red.modules()
+
 deep
 ~~~~
 
