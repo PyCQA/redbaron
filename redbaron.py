@@ -61,7 +61,7 @@ class NodeList(UserList):
 
     def copy(self):
         # XXX not very optimised but at least very simple
-        return RedBaron(self.dumps())
+        return NodeList(map(to_node, self.fst()))
 
 
 class Node(object):
@@ -224,7 +224,7 @@ class Node(object):
 
     def copy(self):
         # XXX not very optimised but at least very simple
-        return RedBaron(self.dumps())[0]
+        return Node(self.fst())
 
     def __setattr__(self, name, value):
         if name == "init" or self.init:
@@ -244,7 +244,7 @@ class Node(object):
 
         elif name in self._list_keys:
             if isinstance(value, basestring):
-                value = RedBaron(value)
+                value = NodeList(map(to_node, baron.parse(value)))
 
             elif isinstance(value, dict):  # assuming that we got some fst
                                          # also assuming the user do strange things
