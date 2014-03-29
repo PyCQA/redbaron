@@ -288,9 +288,11 @@ class EndlNode(Node):
 
 class ImportNode(Node):
     def modules(self):
+        "return a list of string of modules imported"
         return [x.value.dumps()for x in self('dotted_as_name')]
 
     def names(self):
+        "return a list of string of new names inserted in the python context"
         return [x.target if x.target else x.value.dumps() for x in self('dotted_as_name')]
 
 
