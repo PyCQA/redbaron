@@ -49,7 +49,7 @@ Table of content
    :maxdepth: 3
 
    why
-   quickstart
+   tutorial
 
 
 Indices and tables
