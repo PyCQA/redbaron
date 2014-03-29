@@ -89,6 +89,24 @@ when called on a :file:`NodeList`:
 
     In [14]: red.help()
 
+with_formatting
+~~~~~~~~~~~~~~~
+
+:file:`.help()` accept the option :file:`with_formatting` that is set a
+:file:`False` by default. With set at :file:`True` it will also display the
+attributes responsible for holding the formatting of the node (they are always
+node list):
+
+.. ipython::
+
+    In [12]: red.help(with_formatting=True)
+
+Those attributes are always surrounding syntax element of python like
+:file:`[](),.{}` or keywords. You should, normally, won't have a lot of reasons
+to play with them. For the moment, the nodes aren't documented, so the best way
+to have an idea on where a formatting nodes takes action, appart from modifying
+it, is to look at `the code of baron.dumps<https://github.com/Psycojoker/baron/blob/master/baron/dumper.py>`_.
+
 nodes structure
 ---------------
 
