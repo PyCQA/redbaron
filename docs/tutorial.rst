@@ -110,6 +110,9 @@ You can read their documentation using the :file:`?` magic of ipython:
     red.modules?
     red.modules()
 
+If you come with cool helpers, don't hesitate to propose them in a `pull
+request <https://github.com/Psycojoker/redbaron>`_!
+
 deep
 ~~~~
 
