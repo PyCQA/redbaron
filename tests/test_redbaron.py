@@ -78,6 +78,13 @@ def test_fst():
     assert baron.parse(some_code) == red.fst()
 
 
+def test_get_helpers():
+    red = RedBaron("a")
+    assert red[0]._get_helpers() == []
+    red = RedBaron("import a")
+    assert red[0]._get_helpers() == ['modules', 'names']
+
+
 def test_help_is_not_crashing():
     some_code = "ax + (z * 4)"
     red = RedBaron(some_code)
