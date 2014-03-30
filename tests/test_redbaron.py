@@ -114,3 +114,36 @@ def test_assign_on_object_value_fst():
     binop.first = {"type": "name", "value": "pouet"}
     assert binop.first.value == "pouet"
     assert binop.first.type == "name"
+
+
+def test_assign_node_list():
+    red = RedBaron("[1, 2, 3]")
+    l = red[0]
+    l.value = "pouet"
+    assert l.value[0].value == "pouet"
+    assert l.value[0].type == "name"
+    l.value = ["pouet"]
+    assert l.value[0].value == "pouet"
+    assert l.value[0].type == "name"
+
+
+def test_assign_node_list_fst():
+    red = RedBaron("[1, 2, 3]")
+    l = red[0]
+    l.value = {"type": "name", "value": "pouet"}
+    assert l.value[0].value == "pouet"
+    assert l.value[0].type == "name"
+    l.value = [{"type": "name", "value": "pouet"}]
+    assert l.value[0].value == "pouet"
+    assert l.value[0].type == "name"
+
+
+def test_assign_node_list_mixed():
+    red = RedBaron("[1, 2, 3]")
+    l = red[0]
+    l.value = ["plop", {"type": "comma", "first_formatting": [], "second_formatting": []}, {"type": "name", "value": "pouet"}]
+    assert l.value[0].value == "plop"
+    assert l.value[0].type == "name"
+    assert l.value[1].type == "comma"
+    assert l.value[2].value == "pouet"
+    assert l.value[2].type == "name"
