@@ -460,6 +460,16 @@ List node attribute with mixed content: parsing/transformation depending of the 
 
     In [104]: red
 
+Auto assignment of .parent
+--------------------------
+
+When you modify an attribute of a node or a node list, RedBaron will take care
+of setting the :file:`.parent` value of the new attribute to the corresponding
+node.
+
+This will be done if you set the attribute value using either a :file:`string`,
+a :file:`fst node` or an instance of a node or a node list.
+
 Limitations
 -----------
 
