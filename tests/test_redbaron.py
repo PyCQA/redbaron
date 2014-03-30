@@ -63,3 +63,9 @@ def test_copy():
     name = red[0]
     assert name.value == name.copy().value
     assert name is not name.copy()
+
+
+def test_dumps():
+    some_code = "ax + (z * 4)"
+    red = RedBaron(some_code)
+    assert some_code == red.dumps()
