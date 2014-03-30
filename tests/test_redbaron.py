@@ -76,3 +76,10 @@ def test_fst():
     some_code = "ax + (z * 4)"
     red = RedBaron(some_code)
     assert baron.parse(some_code) == red.fst()
+
+
+def test_help_is_not_crashing():
+    some_code = "ax + (z * 4)"
+    red = RedBaron(some_code)
+    red.help()
+    red[0].help()
