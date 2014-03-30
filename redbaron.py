@@ -10,18 +10,19 @@ def indent(line, indentation):
     return "\n".join(map(lambda x: indentation + x, line.split("\n")))
 
 
-def to_node(node, parent=None):
+def to_node(node, parent=None, on_attribute=None):
     class_name = "".join(map(lambda x: x.capitalize(), node["type"].split("_"))) + "Node"
     if class_name in globals():
-        return globals()[class_name](node, parent=parent)
+        return globals()[class_name](node, parent=parent, on_attribute=on_attribute)
     else:
-        return type(class_name, (Node,), {})(node, parent=parent)
+        return type(class_name, (Node,), {})(node, parent=parent, on_attribute=on_attribute)
 
 
 class NodeList(UserList):
-    def __init__(self, initlist=None, parent=None):
+    def __init__(self, initlist=None, parent=None, on_attribute=None):
         super(NodeList, self).__init__(initlist)
         self.parent = parent
+        self.on_attribute = on_attribute
 
     def find(self, identifier, recursive=True, **kwargs):
         for i in self.data:
@@ -71,21 +72,22 @@ class NodeList(UserList):
 class Node(object):
     _other_identifiers = []
 
-    def __init__(self, node, parent=None):
+    def __init__(self, node, parent=None, on_attribute=None):
         self.init = True
         self.parent = parent
+        self.on_attribute = on_attribute
         self._str_keys = []
         self._list_keys = []
         self._dict_keys = []
         for key, value in node.items():
             if isinstance(value, dict):
                 if value:
-                    setattr(self, key, to_node(value, parent=self))
+                    setattr(self, key, to_node(value, parent=self, on_attribute=key))
                 else:
                     setattr(self, key, None)
                 self._dict_keys.append(key)
             elif isinstance(value, list):
-                setattr(self, key, NodeList(map(lambda x: to_node(x, self), value), parent=self))
+                setattr(self, key, NodeList(map(lambda x: to_node(x, parent=self, on_attribute=key), value), parent=self))
                 self._list_keys.append(key)
             else:
                 setattr(self, key, value)
@@ -240,26 +242,28 @@ class Node(object):
 
         elif name in self._dict_keys:
             if isinstance(value, basestring):
-                value = to_node(baron.parse(value)[0], parent=self)
+                value = to_node(baron.parse(value)[0], parent=self, on_attribute=name)
 
             if isinstance(value, dict):  # assuming that we got some fst
-                value = to_node(value, parent=self)
+                value = to_node(value, parent=self, on_attribute=name)
 
             if isinstance(value, Node):
                 value.parent = self
+                value.on_attribute = name
 
             # TODO check attribution to raise error/warning?
 
         elif name in self._list_keys:
             if isinstance(value, basestring):
-                value = NodeList(map(lambda x: to_node(x, parent=self), baron.parse(value)))
+                value = NodeList(map(lambda x: to_node(x, parent=self, on_attribute=name), baron.parse(value)))
 
             elif isinstance(value, dict):  # assuming that we got some fst
                                          # also assuming the user do strange things
-                value = [to_node(value, parent=self)]
+                value = [to_node(value, parent=self, on_attribute=name)]
 
             elif isinstance(value, Node):
                 value.parent = self
+                value.on_attribute = name
                 value = [value]
 
             elif isinstance(value, list) and not isinstance(value, NodeList):
@@ -267,13 +271,14 @@ class Node(object):
                 new_value = []
                 for i in value:
                     if isinstance(i, basestring):
-                        new_value.append(to_node(baron.parse(i)[0], parent=self))
+                        new_value.append(to_node(baron.parse(i)[0], parent=self, on_attribute=name))
 
                     elif isinstance(i, dict):  # assuming that we got some fst
-                        new_value.append(to_node(i, parent=self))
+                        new_value.append(to_node(i, parent=self, on_attribute=name))
 
                     elif isinstance(i, Node):
                         i.parent = self
+                        i.on_attribute = name
                         new_value.append(i)
 
                     else:
@@ -318,7 +323,7 @@ class FuncdefNode(Node):
 
 class RedBaron(NodeList):
     def __init__(self, source_code):
-        self.data = map(lambda x: to_node(x, parent=self), baron.parse(source_code))
+        self.data = map(lambda x: to_node(x, parent=self, on_attribute="root"), baron.parse(source_code))
 
 
 # enter the black magic realm, beware of what you might find

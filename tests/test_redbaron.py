@@ -153,15 +153,21 @@ def test_parent():
     red = RedBaron("a = 1 + caramba")
     assert red.parent is None
     assert red[0].parent is red
+    assert red[0].on_attribute == "root"
     assert red[0].target.parent is red[0]
+    assert red[0].target.on_attribute == "target"
     assert red[0].value.parent is red[0]
+    assert red[0].value.on_attribute == "value"
     assert red[0].value.first.parent is red[0].value
+    assert red[0].value.first.on_attribute == "first"
     assert red[0].value.second.parent is red[0].value
+    assert red[0].value.second.on_attribute == "second"
 
     red = RedBaron("[1, 2, 3]")
     assert red.parent is None
     assert red[0].parent is red
     assert map(lambda x: x.parent, red[0].value) == [red[0]]*5
+    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]*5
 
 
 def test_parent_copy():
@@ -174,22 +180,32 @@ def test_parent_assign():
     assert red[0].target.parent is red[0]
     red[0].target = "plop"
     assert red[0].target.parent is red[0]
+    assert red[0].target.on_attribute == "target"
     red[0].target = {"type": "name", "value": "pouet"}
     assert red[0].target.parent is red[0]
+    assert red[0].target.on_attribute == "target"
     red[0].target = NameNode({"type": "name", "value": "pouet"})
     assert red[0].target.parent is red[0]
+    assert red[0].target.on_attribute == "target"
 
     red = RedBaron("[1, 2, 3]")
     assert map(lambda x: x.parent, red[0].value) == [red[0]]*5
+    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]*5
     red[0].value = "pouet"
     assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
     red[0].value = ["pouet"]
     assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
     red[0].value = {"type": "name", "value": "plop"}
     assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
     red[0].value = [{"type": "name", "value": "plop"}]
     assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
     red[0].value = NameNode({"type": "name", "value": "pouet"})
     assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
     red[0].value = [NameNode({"type": "name", "value": "pouet"})]
     assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
