@@ -239,16 +239,25 @@ the node list returned when constructing a new instance using the
 new node or node list created using :file:`.copy()` always have its
 :file:`parent` attribute set at :file:`None`.
 
+The attribute on which the node is assigned on the parent node is store in the
+:file:`on_attribute` attribute. :file:`on_attribute` is set at :file:`"root"`
+if the parent is a RedBaron instance.
+
 
 .. ipython:: python
 
     red = RedBaron("a = 1 + caramba")
     red.help()
     red.parent
+    red.on_attribute
     red[0].parent
+    red[0].on_attribute
     red[0].target.parent
+    red[0].target.on_attribute
     red[0].value.parent
+    red[0].value.on_attribute
     red[0].value.first.parent
+    red[0].value.first.on_attribute
 
 Querying
 ========
@@ -460,8 +469,8 @@ List node attribute with mixed content: parsing/transformation depending of the 
 
     In [104]: red
 
-Auto assignment of .parent
---------------------------
+Auto assignment of .parent and .on_attribute
+--------------------------------------------
 
 When you modify an attribute of a node or a node list, RedBaron will take care
 of setting the :file:`.parent` value of the new attribute to the corresponding
@@ -469,6 +478,8 @@ node.
 
 This will be done if you set the attribute value using either a :file:`string`,
 a :file:`fst node` or an instance of a node or a node list.
+
+The same is done for :file:`.on_attribute`.
 
 Limitations
 -----------
