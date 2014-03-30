@@ -74,11 +74,24 @@ class NodeList(UserList):
         # a NodeList will never have a next item
         return None
 
+    def next_generator(self):
+        # similary, NodeList will never have next items
+        # trick to return an empty generator
+        # I wonder if I should not raise instead :/
+        return
+        yield
 
     @property
     def previous(self):
         # a NodeList will never have a previous item
         return None
+
+    def previous_generator(self):
+        # similary, NodeList will never have next items
+        # trick to return an empty generator
+        # I wonder if I should not raise instead :/
+        return
+        yield
 
 
 class Node(object):
@@ -117,6 +130,16 @@ class Node(object):
         next_node = list(itertools.dropwhile(lambda x: x is not self, in_list))[1:]
         return next_node[0] if next_node else None
 
+    def next_generator(self):
+        in_list = self._get_list_attribute_is_member_off()
+
+        if in_list is None:
+            return None
+
+        generator = itertools.dropwhile(lambda x: x is not self, in_list)
+        generator.next()
+        return generator
+
     @property
     def previous(self):
         in_list = self._get_list_attribute_is_member_off()
@@ -126,6 +149,16 @@ class Node(object):
 
         next_node = list(itertools.dropwhile(lambda x: x is not self, reversed(in_list)))[1:]
         return next_node[0] if next_node else None
+
+    def previous_generator(self):
+        in_list = self._get_list_attribute_is_member_off()
+
+        if in_list is None:
+            return None
+
+        generator = itertools.dropwhile(lambda x: x is not self, reversed(in_list))
+        generator.next()
+        return generator
 
     def _get_list_attribute_is_member_off(self):
         """
@@ -226,7 +259,7 @@ class Node(object):
         ] + self._other_identifiers)))
 
     def _get_helpers(self):
-        not_helpers = {'copy', 'dumps', 'find', 'findAll', 'find_all', 'fst', 'help'}
+        not_helpers = {'copy', 'dumps', 'find', 'findAll', 'find_all', 'fst', 'help', 'next_generator', 'previous_generator'}
         return filter(lambda x: not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x)), dir(self))
 
     def fst(self):

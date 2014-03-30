@@ -240,3 +240,13 @@ def test_node_previous():
     assert inner[2].previous == inner[1]
     assert inner[1].previous == inner[0]
     assert inner[0].previous is None
+
+
+def test_node_next_generator():
+    red = RedBaron("[1, 2, 3]")
+    assert list(red[0].value[2].next_generator()) == list(red[0].value[3:])
+
+
+def test_node_previous_generator():
+    red = RedBaron("[1, 2, 3]")
+    assert list(red[0].value[2].previous_generator()) == list(reversed(red[0].value[:2]))
