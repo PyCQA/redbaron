@@ -228,3 +228,15 @@ def test_node_next():
     assert inner[2].next == inner[3]
     assert inner[3].next == inner[4]
     assert inner[4].next is None
+
+
+def test_node_previous():
+    red = RedBaron("[1, 2, 3]")
+    assert red.previous is None
+    assert red[0].previous is None
+    inner = red[0].value
+    assert inner[4].previous == inner[3]
+    assert inner[3].previous == inner[2]
+    assert inner[2].previous == inner[1]
+    assert inner[1].previous == inner[0]
+    assert inner[0].previous is None

@@ -75,6 +75,12 @@ class NodeList(UserList):
         return None
 
 
+    @property
+    def previous(self):
+        # a NodeList will never have a previous item
+        return None
+
+
 class Node(object):
     _other_identifiers = []
 
@@ -115,6 +121,22 @@ class Node(object):
             return None
 
         next_node = list(itertools.dropwhile(lambda x: x is not self, in_list))[1:]
+        return next_node[0] if next_node else None
+
+    @property
+    def previous(self):
+        if self.parent is None:
+            return None
+
+        if self.on_attribute is "root":
+            in_list = self.parent
+        else:
+            in_list = getattr(self.parent, self.on_attribute)
+
+        if not isinstance(in_list, NodeList):
+            return None
+
+        next_node = list(itertools.dropwhile(lambda x: x is not self, reversed(in_list)))[1:]
         return next_node[0] if next_node else None
 
     def find(self, identifier, recursive=True, **kwargs):
