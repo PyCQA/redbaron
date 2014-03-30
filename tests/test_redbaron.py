@@ -2,6 +2,7 @@
 # -*- coding:Utf-8 -*-
 
 
+import baron
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                             PassNode)
 
@@ -69,3 +70,9 @@ def test_dumps():
     some_code = "ax + (z * 4)"
     red = RedBaron(some_code)
     assert some_code == red.dumps()
+
+
+def test_fst():
+    some_code = "ax + (z * 4)"
+    red = RedBaron(some_code)
+    assert baron.parse(some_code) == red.fst()
