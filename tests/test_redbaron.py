@@ -147,3 +147,23 @@ def test_assign_node_list_mixed():
     assert l.value[1].type == "comma"
     assert l.value[2].value == "pouet"
     assert l.value[2].type == "name"
+
+
+def test_parent():
+    red = RedBaron("a = 1 + caramba")
+    assert red.parent is None
+    assert red[0].parent is red
+    assert red[0].target.parent is red[0]
+    assert red[0].value.parent is red[0]
+    assert red[0].value.first.parent is red[0].value
+    assert red[0].value.second.parent is red[0].value
+
+    red = RedBaron("[1, 2, 3]")
+    assert red.parent is None
+    assert red[0].parent is red
+    assert map(lambda x: x.parent, red[0].value) == [red[0]]*5
+
+
+def test_parent_copy():
+    red = RedBaron("a = 1 + caramba")
+    assert red[0].value.copy().parent is None

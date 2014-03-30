@@ -10,15 +10,19 @@ def indent(line, indentation):
     return "\n".join(map(lambda x: indentation + x, line.split("\n")))
 
 
-def to_node(node):
+def to_node(node, parent=None):
     class_name = "".join(map(lambda x: x.capitalize(), node["type"].split("_"))) + "Node"
     if class_name in globals():
-        return globals()[class_name](node)
+        return globals()[class_name](node, parent=parent)
     else:
-        return type(class_name, (Node,), {})(node)
+        return type(class_name, (Node,), {})(node, parent=parent)
 
 
 class NodeList(UserList):
+    def __init__(self, initlist=None, parent=None):
+        super(NodeList, self).__init__(initlist)
+        self.parent = parent
+
     def find(self, identifier, recursive=True, **kwargs):
         for i in self.data:
             candidate = i.find(identifier, recursive=recursive, **kwargs)
@@ -67,20 +71,21 @@ class NodeList(UserList):
 class Node(object):
     _other_identifiers = []
 
-    def __init__(self, node):
+    def __init__(self, node, parent=None):
         self.init = True
+        self.parent = parent
         self._str_keys = []
         self._list_keys = []
         self._dict_keys = []
         for key, value in node.items():
             if isinstance(value, dict):
                 if value:
-                    setattr(self, key, to_node(value))
+                    setattr(self, key, to_node(value, parent=self))
                 else:
                     setattr(self, key, None)
                 self._dict_keys.append(key)
             elif isinstance(value, list):
-                setattr(self, key, NodeList(map(to_node, value)))
+                setattr(self, key, NodeList(map(lambda x: to_node(x, self), value), parent=self))
                 self._list_keys.append(key)
             else:
                 setattr(self, key, value)
@@ -238,17 +243,17 @@ class Node(object):
                 value = RedBaron(value)[0]
 
             if isinstance(value, dict):  # assuming that we got some fst
-                value = to_node(value)
+                value = to_node(value, parent=self)
 
             # TODO check attribution to raise error/warning?
 
         elif name in self._list_keys:
             if isinstance(value, basestring):
-                value = NodeList(map(to_node, baron.parse(value)))
+                value = NodeList(map(lambda x: to_node(x, parent=self), baron.parse(value)))
 
             elif isinstance(value, dict):  # assuming that we got some fst
                                          # also assuming the user do strange things
-                value = [to_node(value)]
+                value = [to_node(value, parent=self)]
 
             elif isinstance(value, list) and not isinstance(value, NodeList):
                 # assume the user can pass a list of random stuff
@@ -258,7 +263,7 @@ class Node(object):
                         new_value.append(RedBaron(i)[0])
 
                     elif isinstance(i, dict):  # assuming that we got some fst
-                        new_value.append(to_node(i))
+                        new_value.append(to_node(i, parent=self))
 
                     else:
                         new_value.append(i)
@@ -269,8 +274,8 @@ class Node(object):
 
 
 class IntNode(Node):
-    def __init__(self, node):
-        super(IntNode, self).__init__(node)
+    def __init__(self, node, *args, **kwargs):
+        super(IntNode, self).__init__(node, *args, **kwargs)
         self.value = int(self.value)
 
     def fst(self):
@@ -302,7 +307,7 @@ class FuncdefNode(Node):
 
 class RedBaron(NodeList):
     def __init__(self, source_code):
-        self.data = map(to_node, baron.parse(source_code))
+        self.data = map(lambda x: to_node(x, parent=self), baron.parse(source_code))
 
 
 # enter the black magic realm, beware of what you might find
