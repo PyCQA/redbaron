@@ -1,5 +1,6 @@
 import sys
 import inspect
+import itertools
 from types import ModuleType
 from UserList import UserList
 
@@ -68,6 +69,11 @@ class NodeList(UserList):
         # XXX not very optimised but at least very simple
         return NodeList(map(to_node, self.fst()))
 
+    @property
+    def next(self):
+        # a NodeList will never have a next item
+        return None
+
 
 class Node(object):
     _other_identifiers = []
@@ -94,6 +100,22 @@ class Node(object):
                 self._str_keys.append(key)
 
         self.init = False
+
+    @property
+    def next(self):
+        if self.parent is None:
+            return None
+
+        if self.on_attribute is "root":
+            in_list = self.parent
+        else:
+            in_list = getattr(self.parent, self.on_attribute)
+
+        if not isinstance(in_list, NodeList):
+            return None
+
+        next_node = list(itertools.dropwhile(lambda x: x is not self, in_list))[1:]
+        return next_node[0] if next_node else None
 
     def find(self, identifier, recursive=True, **kwargs):
         all_my_keys = self._str_keys + self._list_keys + self._dict_keys

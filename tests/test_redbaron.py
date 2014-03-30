@@ -216,3 +216,15 @@ def test_parent_assign():
     red[0].value = [NameNode({"type": "name", "value": "pouet"})]
     assert map(lambda x: x.parent, red[0].value) == [red[0]]
     assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
+
+
+def test_node_next():
+    red = RedBaron("[1, 2, 3]")
+    assert red.next is None
+    assert red[0].next is None
+    inner = red[0].value
+    assert inner[0].next == inner[1]
+    assert inner[1].next == inner[2]
+    assert inner[2].next == inner[3]
+    assert inner[3].next == inner[4]
+    assert inner[4].next is None
