@@ -83,3 +83,34 @@ def test_help_is_not_crashing():
     red = RedBaron(some_code)
     red.help()
     red[0].help()
+
+
+def test_assign_on_string_value():
+    some_code = "ax + (z * 4)"
+    red = RedBaron(some_code)
+    binop = red[0]
+    assert binop.first.value == "ax"
+    binop.first.value = "pouet"
+    assert binop.first.value == "pouet"
+
+
+def test_assign_on_object_value():
+    some_code = "ax + (z * 4)"
+    red = RedBaron(some_code)
+    binop = red[0]
+    assert binop.first.value == "ax"
+    binop.first = "pouet"  # will be parsed as a name
+    assert binop.first.value == "pouet"
+    assert binop.first.type == "name"
+    binop.first = "42"  # will be parsed as a int
+    assert binop.first.value == 42
+    assert binop.first.type == "int"
+
+
+def test_assign_on_object_value_fst():
+    some_code = "ax + (z * 4)"
+    red = RedBaron(some_code)
+    binop = red[0]
+    binop.first = {"type": "name", "value": "pouet"}
+    assert binop.first.value == "pouet"
+    assert binop.first.type == "name"
