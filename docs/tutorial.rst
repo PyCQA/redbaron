@@ -229,6 +229,26 @@ way:
 
     In [52]: red[0].target.copy()
 
+.parent
+-------
+
+Every node and node list have a :file:`.parent` attribute that points to the
+parent node or node list. If the node doesn't have a parent node (for example
+the node list returned when constructing a new instance using the
+:file:`RedBaron` class), the :file:`parent` attribute is set at :file:`None`. A
+new node or node list created using :file:`.copy()` always have its
+:file:`parent` attribute set at :file:`None`.
+
+
+.. ipython:: python
+
+    red = RedBaron("a = 1 + caramba")
+    red.help()
+    red.parent
+    red[0].parent
+    red[0].target.parent
+    red[0].value.parent
+    red[0].value.first.parent
 
 Querying
 ========
