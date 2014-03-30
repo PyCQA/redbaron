@@ -167,3 +167,29 @@ def test_parent():
 def test_parent_copy():
     red = RedBaron("a = 1 + caramba")
     assert red[0].value.copy().parent is None
+
+
+def test_parent_assign():
+    red = RedBaron("a = 1 + caramba")
+    assert red[0].target.parent is red[0]
+    red[0].target = "plop"
+    assert red[0].target.parent is red[0]
+    red[0].target = {"type": "name", "value": "pouet"}
+    assert red[0].target.parent is red[0]
+    red[0].target = NameNode({"type": "name", "value": "pouet"})
+    assert red[0].target.parent is red[0]
+
+    red = RedBaron("[1, 2, 3]")
+    assert map(lambda x: x.parent, red[0].value) == [red[0]]*5
+    red[0].value = "pouet"
+    assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    red[0].value = ["pouet"]
+    assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    red[0].value = {"type": "name", "value": "plop"}
+    assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    red[0].value = [{"type": "name", "value": "plop"}]
+    assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    red[0].value = NameNode({"type": "name", "value": "pouet"})
+    assert map(lambda x: x.parent, red[0].value) == [red[0]]
+    red[0].value = [NameNode({"type": "name", "value": "pouet"})]
+    assert map(lambda x: x.parent, red[0].value) == [red[0]]

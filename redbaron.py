@@ -240,10 +240,13 @@ class Node(object):
 
         elif name in self._dict_keys:
             if isinstance(value, basestring):
-                value = RedBaron(value)[0]
+                value = to_node(baron.parse(value)[0], parent=self)
 
             if isinstance(value, dict):  # assuming that we got some fst
                 value = to_node(value, parent=self)
+
+            if isinstance(value, Node):
+                value.parent = self
 
             # TODO check attribution to raise error/warning?
 
@@ -255,15 +258,23 @@ class Node(object):
                                          # also assuming the user do strange things
                 value = [to_node(value, parent=self)]
 
+            elif isinstance(value, Node):
+                value.parent = self
+                value = [value]
+
             elif isinstance(value, list) and not isinstance(value, NodeList):
                 # assume the user can pass a list of random stuff
                 new_value = []
                 for i in value:
                     if isinstance(i, basestring):
-                        new_value.append(RedBaron(i)[0])
+                        new_value.append(to_node(baron.parse(i)[0], parent=self))
 
                     elif isinstance(i, dict):  # assuming that we got some fst
                         new_value.append(to_node(i, parent=self))
+
+                    elif isinstance(i, Node):
+                        i.parent = self
+                        new_value.append(i)
 
                     else:
                         new_value.append(i)
