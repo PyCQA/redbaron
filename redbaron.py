@@ -109,15 +109,9 @@ class Node(object):
 
     @property
     def next(self):
-        if self.parent is None:
-            return None
+        in_list = self._get_list_attribute_is_member_off()
 
-        if self.on_attribute is "root":
-            in_list = self.parent
-        else:
-            in_list = getattr(self.parent, self.on_attribute)
-
-        if not isinstance(in_list, NodeList):
+        if in_list is None:
             return None
 
         next_node = list(itertools.dropwhile(lambda x: x is not self, in_list))[1:]
@@ -125,6 +119,21 @@ class Node(object):
 
     @property
     def previous(self):
+        in_list = self._get_list_attribute_is_member_off()
+
+        if in_list is None:
+            return None
+
+        next_node = list(itertools.dropwhile(lambda x: x is not self, reversed(in_list)))[1:]
+        return next_node[0] if next_node else None
+
+    def _get_list_attribute_is_member_off(self):
+        """
+        Return the list attribute of the parent from which this node is a
+        member.
+
+        If this node isn't in a list attribute, return None.
+        """
         if self.parent is None:
             return None
 
@@ -136,8 +145,8 @@ class Node(object):
         if not isinstance(in_list, NodeList):
             return None
 
-        next_node = list(itertools.dropwhile(lambda x: x is not self, reversed(in_list)))[1:]
-        return next_node[0] if next_node else None
+        return in_list
+
 
     def find(self, identifier, recursive=True, **kwargs):
         all_my_keys = self._str_keys + self._list_keys + self._dict_keys
