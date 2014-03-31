@@ -4,7 +4,7 @@
 
 import baron
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
-                            PassNode)
+                      PassNode, NodeList)
 
 
 def test_empty():
@@ -250,3 +250,8 @@ def test_node_next_generator():
 def test_node_previous_generator():
     red = RedBaron("[1, 2, 3]")
     assert list(red[0].value[2].previous_generator()) == list(reversed(red[0].value[:2]))
+
+
+def test_map():
+    red = RedBaron("[1, 2, 3]")
+    assert red('int').map(lambda x: x.value) == NodeList([1, 2, 3])

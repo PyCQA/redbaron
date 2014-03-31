@@ -86,6 +86,9 @@ class NodeList(UserList):
         return
         yield
 
+    def map(self, function):
+        return NodeList([function(x) for x in self.data])
+
 
 class Node(object):
     _other_identifiers = []
