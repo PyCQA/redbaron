@@ -255,3 +255,9 @@ def test_node_previous_generator():
 def test_map():
     red = RedBaron("[1, 2, 3]")
     assert red('int').map(lambda x: x.value) == NodeList([1, 2, 3])
+
+
+def test_filter():
+    red = RedBaron("[1, 2, 3]")
+    assert red[0].value.filter(lambda x: x.type != "comma") == red('int')
+    assert isinstance(red[0].value.filter(lambda x: x.type != "comma"), NodeList)

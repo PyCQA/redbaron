@@ -89,6 +89,9 @@ class NodeList(UserList):
     def map(self, function):
         return NodeList([function(x) for x in self.data])
 
+    def filter(self, function):
+        return NodeList([x for x in self.data if function(x)])
+
 
 class Node(object):
     _other_identifiers = []
