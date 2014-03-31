@@ -20,6 +20,9 @@ def to_node(node, parent=None, on_attribute=None):
 
 
 class NodeList(UserList):
+    next = None
+    previous = None
+
     def __init__(self, initlist=None, parent=None, on_attribute=None):
         super(NodeList, self).__init__(initlist)
         self.parent = parent
@@ -69,22 +72,12 @@ class NodeList(UserList):
         # XXX not very optimised but at least very simple
         return NodeList(map(to_node, self.fst()))
 
-    @property
-    def next(self):
-        # a NodeList will never have a next item
-        return None
-
     def next_generator(self):
         # similary, NodeList will never have next items
         # trick to return an empty generator
         # I wonder if I should not raise instead :/
         return
         yield
-
-    @property
-    def previous(self):
-        # a NodeList will never have a previous item
-        return None
 
     def previous_generator(self):
         # similary, NodeList will never have next items
