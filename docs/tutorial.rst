@@ -259,6 +259,51 @@ if the parent is a RedBaron instance.
     red[0].value.first.parent
     red[0].value.first.on_attribute
 
+.next .previous .next_generator() .previous_generator()
+-------------------------------------------------------
+
+In a similar fashion, node have a :file:`.next` and :file:`.previous`
+attributes that point to the next or previous node if the node is located in a
+node list. They are set at :file:`None` if their is not adjacent node or if the
+node is not in a node list. A node list will never have a :file:`.next` or
+:file:`.previous` node, so those attributes will always be set at :file:`None`.
+
+Nodes also have a :file:`.next_generator()` and :file:`.previous_generator()`
+if you want to iterate on the neighbours of the node.
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3];a = 1")
+    red.help()
+
+    list = red[0]
+
+    print list.next
+    print list.previous
+
+    list.help()
+    print list.value[0]
+    print list.value[0].next
+    print list.value[0].previous
+    print list.value[2]
+    print list.value[2].next
+    print list.value[2].previous
+
+    assign = red[2]
+
+    assign.help()
+    print assign.target.next
+    print assign.target.previous
+
+    list.value[2].help(deep=1)
+    print [x for x list.value[2].next_generator()]
+    print [x for x list.value[2].previous_generator()]
+    list.value.help(deep=0)
+    print [x for x list.value.next_generator()]
+    print [x for x list.value.previous_generator()]
+    print [x for x assign.target.next_generator()]
+    print [x for x assign.target.previous_generator()]
+
 Querying
 ========
 
