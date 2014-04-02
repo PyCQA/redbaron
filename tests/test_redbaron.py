@@ -129,9 +129,11 @@ def test_assign_node_list():
     l.value = "pouet"
     assert l.value[0].value == "pouet"
     assert l.value[0].type == "name"
+    assert isinstance(l.value, NodeList)
     l.value = ["pouet"]
     assert l.value[0].value == "pouet"
     assert l.value[0].type == "name"
+    assert isinstance(l.value, NodeList)
 
 
 def test_assign_node_list_fst():
@@ -140,9 +142,11 @@ def test_assign_node_list_fst():
     l.value = {"type": "name", "value": "pouet"}
     assert l.value[0].value == "pouet"
     assert l.value[0].type == "name"
+    assert isinstance(l.value, NodeList)
     l.value = [{"type": "name", "value": "pouet"}]
     assert l.value[0].value == "pouet"
     assert l.value[0].type == "name"
+    assert isinstance(l.value, NodeList)
 
 
 def test_assign_node_list_mixed():
@@ -154,6 +158,7 @@ def test_assign_node_list_mixed():
     assert l.value[1].type == "comma"
     assert l.value[2].value == "pouet"
     assert l.value[2].type == "name"
+    assert isinstance(l.value, NodeList)
 
 
 def test_parent():

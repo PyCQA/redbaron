@@ -352,7 +352,7 @@ class Node(object):
 
             elif isinstance(value, dict):  # assuming that we got some fst
                                          # also assuming the user do strange things
-                value = [to_node(value, parent=self, on_attribute=name)]
+                value = NodeList([to_node(value, parent=self, on_attribute=name)])
 
             elif isinstance(value, Node):
                 value.parent = self
@@ -361,7 +361,7 @@ class Node(object):
 
             elif isinstance(value, list) and not isinstance(value, NodeList):
                 # assume the user can pass a list of random stuff
-                new_value = []
+                new_value = NodeList()
                 for i in value:
                     if isinstance(i, basestring):
                         new_value.append(to_node(baron.parse(i)[0], parent=self, on_attribute=name))
