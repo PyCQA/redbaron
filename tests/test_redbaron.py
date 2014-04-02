@@ -344,3 +344,29 @@ def test_append_item_comma_set():
     # assert r.value[-1].on_attribute == "value"
     # assert r.value[-2].parent is r
     # assert r.value[-2].on_attribute == "value"
+
+
+def test_append_item_comma_tuple():
+    red = RedBaron("()")
+    r = red[0]
+    r.append_value("4")
+    # should add a comma for a single item tuple
+    assert r.value.dumps() == "4,"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+    red = RedBaron("(1,)")
+    r = red[0]
+    r.append_value("4")
+    assert r.value.dumps() == "1, 4"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+    assert r.value[-2].parent is r
+    assert r.value[-2].on_attribute == "value"
+    red = RedBaron("(1, 2)")
+    r = red[0]
+    r.append_value("4")
+    assert r.value.dumps() == "1, 2, 4"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+    assert r.value[-2].parent is r
+    assert r.value[-2].on_attribute == "value"

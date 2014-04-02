@@ -437,6 +437,15 @@ class SetNode(Node):
     append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
 
+class TupleNode(Node):
+    def append_value(self, value, trailing=False):
+        if len(self.value) == 0:
+            # a tuple of one item must have a trailing comma
+            self.value.append_comma(value, parent=self, on_attribute="value", trailing=True)
+            return
+        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+
 class RedBaron(NodeList):
     def __init__(self, source_code):
         self.data = map(lambda x: to_node(x, parent=self, on_attribute="root"), baron.parse(source_code))
