@@ -118,7 +118,6 @@ class NodeList(UserList):
         self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
 
 
-
 class Node(object):
     _other_identifiers = []
 
