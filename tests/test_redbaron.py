@@ -272,3 +272,12 @@ def test_append_item_comma_list():
     assert r.value[-1].on_attribute == "value"
     assert r.value[-2].parent is r.value
     assert r.value[-2].on_attribute == "value"
+
+
+def test_append_item_comma_list_empty():
+    red = RedBaron("[]")
+    r = red[0]
+    r.append_value("4")
+    assert r.value.dumps() == "4"
+    assert r.value[-1].parent is r.value
+    assert r.value[-1].on_attribute == "value"

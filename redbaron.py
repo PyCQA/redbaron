@@ -93,10 +93,11 @@ class NodeList(UserList):
         return NodeList([x for x in self.data if function(x)])
 
     def append_comma(self, value, on_attribute):
-        comma = self.comma.copy()
-        comma.parent = self
-        comma.on_attribute = on_attribute
-        self.data.append(comma)
+        if len(self.data):
+            comma = self.comma.copy()
+            comma.parent = self
+            comma.on_attribute = on_attribute
+            self.data.append(comma)
         self.data.append(to_node(baron.parse(value)[0], parent=self, on_attribute=on_attribute))
 
 
