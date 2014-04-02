@@ -389,3 +389,26 @@ def test_append_item_comma_tuple_without_parenthesis():
     assert r.value[-1].on_attribute == "value"
     assert r.value[-2].parent is r
     assert r.value[-2].on_attribute == "value"
+
+
+def test_append_item_comma_dict_empty():
+    red = RedBaron("{}")
+    r = red[0]
+    r.append_value(key="a", value="b")
+    assert r.value.dumps() == "a: b"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+    red = RedBaron("{1: 2}")
+    r = red[0]
+    r.append_value(key="a", value="b")
+    assert r.value.dumps() == "1: 2, a: b"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+    red = RedBaron("{1: 2,}")
+    r = red[0]
+    r.append_value(key="a", value="b")
+    assert r.value.dumps() == "1: 2, a: b"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+    assert r.value[-2].parent is r
+    assert r.value[-2].on_attribute == "value"

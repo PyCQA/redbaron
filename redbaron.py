@@ -105,7 +105,12 @@ class NodeList(UserList):
         elif len(self.data) != 0:
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=parent, on_attribute=on_attribute))
 
-        self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
+        if isinstance(value, basestring):
+            self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
+        elif isinstance(value, dict):
+            self.data.append(to_node(value, parent=parent, on_attribute=on_attribute))
+        else:
+            raise NotImplemented
 
         if trailing:
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": []}, parent=parent, on_attribute=on_attribute))
@@ -443,6 +448,12 @@ class TupleNode(Node):
             # a tuple of one item must have a trailing comma
             self.value.append_comma(value, parent=self, on_attribute="value", trailing=True)
             return
+        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+
+class DictNode(Node):
+    def append_value(self, key, value, trailing=False):
+        value = baron.parse("{%s: %s}" % (key, value))[0]["value"][0]
         self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
 
