@@ -261,3 +261,14 @@ def test_filter():
     red = RedBaron("[1, 2, 3]")
     assert red[0].value.filter(lambda x: x.type != "comma") == red('int')
     assert isinstance(red[0].value.filter(lambda x: x.type != "comma"), NodeList)
+
+
+def test_append_item_comma_list():
+    red = RedBaron("[1, 2, 3]")
+    r = red[0]
+    r.append_value("4")
+    assert r.value.dumps() == "1, 2, 3, 4"
+    assert r.value[-1].parent is r.value
+    assert r.value[-1].on_attribute == "value"
+    assert r.value[-2].parent is r.value
+    assert r.value[-2].on_attribute == "value"

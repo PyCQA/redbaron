@@ -92,6 +92,13 @@ class NodeList(UserList):
     def filter(self, function):
         return NodeList([x for x in self.data if function(x)])
 
+    def append_comma(self, value, on_attribute):
+        comma = self.comma.copy()
+        comma.parent = self
+        comma.on_attribute = on_attribute
+        self.data.append(comma)
+        self.data.append(to_node(baron.parse(value)[0], parent=self, on_attribute=on_attribute))
+
 
 class Node(object):
     _other_identifiers = []
@@ -404,6 +411,10 @@ class ImportNode(Node):
 
 class FuncdefNode(Node):
     _other_identifiers = ["def", "def_"]
+
+
+class ListNode(Node):
+    append_value = lambda self, value: self.value.append_comma(value, on_attribute="value")
 
 
 class RedBaron(NodeList):
