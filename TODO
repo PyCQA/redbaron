@@ -1,0 +1,4 @@
+- DotList, CommaList, IndentList (.append_item, .extend, +=)
+- .indent, .indent_node, .indent_is_direct
+- .apply, .assign, .map_concat
+- __setitem__ on NodeList
