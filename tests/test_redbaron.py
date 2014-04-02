@@ -294,3 +294,21 @@ def test_append_item_comma_list_one_comma():
     assert r.value[-1].on_attribute == "value"
     assert r.value[-2].parent is r
     assert r.value[-2].on_attribute == "value"
+
+
+def test_append_item_comma_set():
+    red = RedBaron("{1}")
+    r = red[0]
+    r.append_value("4")
+    assert r.value.dumps() == "1, 4"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+    # FIXME: bug in baron, can't parse next stuff
+    # red = RedBaron("{1,}")
+    # r = red[0]
+    # r.append_value("4")
+    # assert r.value.dumps() == "1, 4"
+    # assert r.value[-1].parent is r
+    # assert r.value[-1].on_attribute == "value"
+    # assert r.value[-2].parent is r
+    # assert r.value[-2].on_attribute == "value"
