@@ -412,3 +412,12 @@ def test_append_item_comma_dict_empty():
     assert r.value[-1].on_attribute == "value"
     assert r.value[-2].parent is r
     assert r.value[-2].on_attribute == "value"
+
+
+def test_append_item_comma_list_node():
+    red = RedBaron("[]")
+    r = red[0]
+    r.append_value(IntNode({"value": "4", "type": "int"}))
+    assert r.value.dumps() == "4"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"

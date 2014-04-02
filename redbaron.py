@@ -109,6 +109,10 @@ class NodeList(UserList):
             self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
         elif isinstance(value, dict):
             self.data.append(to_node(value, parent=parent, on_attribute=on_attribute))
+        elif isinstance(value, Node):
+            value.parent = parent
+            value.on_attribute = on_attribute
+            self.data.append(value)
         else:
             raise NotImplemented
 
