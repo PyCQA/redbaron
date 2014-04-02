@@ -313,6 +313,8 @@ def test_append_item_comma_list_one_trailing():
     assert r.value.dumps() == "1, 4,"
     assert r.value[-1].parent is r
     assert r.value[-1].on_attribute == "value"
+    assert r.value[-2].parent is r
+    assert r.value[-2].on_attribute == "value"
 
 
 def test_append_item_comma_list_one_comma_trailing():

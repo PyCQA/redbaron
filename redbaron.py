@@ -95,7 +95,7 @@ class NodeList(UserList):
     def append_comma(self, value, parent, on_attribute, trailing):
         if self.find("comma", recursive=False) and self.data[-1].type != "comma":
             comma = self.comma.copy()
-            comma.parent = self
+            comma.parent = parent
             comma.on_attribute = on_attribute
             self.data.append(comma)
 
