@@ -6,4 +6,5 @@ install:
 python:
   - "2.7"
 script:
+  - env
   - py.test tests
