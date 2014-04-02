@@ -92,13 +92,31 @@ class NodeList(UserList):
     def filter(self, function):
         return NodeList([x for x in self.data if function(x)])
 
-    def append_comma(self, value, on_attribute):
-        if len(self.data):
+    def append_comma(self, value, parent, on_attribute):
+        if len(self.data) == 0:
+            self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
+            return
+
+        if self.find("comma", recursive=False) and self.data[-1].type != "comma":
             comma = self.comma.copy()
             comma.parent = self
             comma.on_attribute = on_attribute
             self.data.append(comma)
-        self.data.append(to_node(baron.parse(value)[0], parent=self, on_attribute=on_attribute))
+            self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
+            return
+
+        if self.find("comma", recursive=False) and self.data[-1].type == "comma":
+            print [self.data[-1].second_formatting]
+            self.data[-1].second_formatting = {"type": "space", "value": " "}
+            print [self.data[-1].second_formatting]
+            self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
+            print self.data
+            return
+
+        comma = to_node({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=parent, on_attribute=on_attribute)
+        self.data.append(comma)
+        self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
+
 
 
 class Node(object):
@@ -420,7 +438,7 @@ class FuncdefNode(Node):
 
 
 class ListNode(Node):
-    append_value = lambda self, value: self.value.append_comma(value, on_attribute="value")
+    append_value = lambda self, value: self.value.append_comma(value, parent=self, on_attribute="value")
 
 
 class RedBaron(NodeList):
