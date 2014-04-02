@@ -370,3 +370,22 @@ def test_append_item_comma_tuple():
     assert r.value[-1].on_attribute == "value"
     assert r.value[-2].parent is r
     assert r.value[-2].on_attribute == "value"
+
+
+def test_append_item_comma_tuple_without_parenthesis():
+    red = RedBaron("1,")
+    r = red[0]
+    r.append_value("4")
+    assert r.value.dumps() == "1, 4"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+    assert r.value[-2].parent is r
+    assert r.value[-2].on_attribute == "value"
+    red = RedBaron("1, 2")
+    r = red[0]
+    r.append_value("4")
+    assert r.value.dumps() == "1, 2, 4"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+    assert r.value[-2].parent is r
+    assert r.value[-2].on_attribute == "value"
