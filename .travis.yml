@@ -1,0 +1,8 @@
+language: python
+install:
+  - pip install git+https://github.com/Psycojoker/baron.git
+  - pip install pytest
+python:
+  - "2.7"
+script:
+  - py.test tests
