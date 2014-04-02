@@ -285,6 +285,7 @@ def test_append_item_comma_list_one():
     assert r.value[-1].parent is r
     assert r.value[-1].on_attribute == "value"
 
+
 def test_append_item_comma_list_one_comma():
     red = RedBaron("[1,]")
     r = red[0]
