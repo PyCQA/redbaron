@@ -1,4 +1,37 @@
-- DotList, CommaList, IndentList (.append_item, .extend, +=)
+- DotList, CommaList, EndlList (.append_item, .extend, +=)
+
+CommaList:
+- import
+- from import
+- call
+- arguments
+- dict
+- tuple (et sans les ())
+- fpllist
+- print
+- global
+- exec
+- with
+- subscript list ?
+- for a, b, c in ... (comprehension aussi)
+- repr machin
+
+DotList:
+- atomtrailers
+- import
+- from ... import
+- trailer (trailer: '(' [arglist] ')' | '[' subscriptlist ']' | '.' NAME)
+
+EndlList
+- root
+- if, elif, else
+- while
+- for
+- try, except, else, finally
+- with
+- classdef
+- funcdef
+
 - .indent, .indent_node, .indent_is_direct
 - .apply, .assign, .map_concat
 - __setitem__ on NodeList
