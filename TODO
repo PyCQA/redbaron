@@ -6,7 +6,6 @@ CommaList:
 - call
 - arguments
 - dict
-- tuple (et sans les ())
 - fpllist
 - print
 - global
