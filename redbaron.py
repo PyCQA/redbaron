@@ -400,6 +400,11 @@ class EndlNode(Node):
         return repr(baron.dumps([self.fst()]))
 
 
+class SpaceNode(Node):
+    def __repr__(self):
+        return repr(baron.dumps([self.fst()]))
+
+
 class ImportNode(Node):
     def modules(self):
         "return a list of string of modules imported"
