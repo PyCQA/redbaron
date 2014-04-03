@@ -446,6 +446,10 @@ class SetNode(Node):
     append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
 
+class ReprNode(Node):
+    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+
 class TupleNode(Node):
     def append_value(self, value, trailing=False):
         if len(self.value) == 0:
