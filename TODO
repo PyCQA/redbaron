@@ -12,7 +12,6 @@ CommaList:
 - with
 - subscript list ?
 - for a, b, c in ... (comprehension aussi)
-- repr machin
 
 DotList:
 - atomtrailers
