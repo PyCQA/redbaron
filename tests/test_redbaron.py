@@ -436,4 +436,9 @@ def test_indent_root():
     red = RedBaron("pouet")
     assert red[0].indentation == ""
     red = RedBaron("pouet\nplop\npop")
-    assert map(lambda x: x.indentation, red) == ["", "", ""]
+    assert map(lambda x: x.indentation, red) == ["", "", "", "", ""]
+
+
+def test_in_while():
+    red = RedBaron("while a:\n    pass\n")
+    assert red[0].value[-2].indentation == "    "

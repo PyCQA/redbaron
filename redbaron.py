@@ -188,7 +188,9 @@ class Node(object):
 
     @property
     def indentation(self):
-        return ""
+        if self.on_attribute == "root":
+            return ""
+        return self.previous.indent
 
     def _get_list_attribute_is_member_off(self):
         """
