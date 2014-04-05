@@ -186,6 +186,10 @@ class Node(object):
         generator.next()
         return generator
 
+    @property
+    def indentation(self):
+        return ""
+
     def _get_list_attribute_is_member_off(self):
         """
         Return the list attribute of the parent from which this node is a

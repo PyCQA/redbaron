@@ -430,3 +430,10 @@ def test_append_item_comma_repr():
     assert r.value.dumps() == "1, 4"
     assert r.value[-1].parent is r
     assert r.value[-1].on_attribute == "value"
+
+
+def test_indent_root():
+    red = RedBaron("pouet")
+    assert red[0].indentation == ""
+    red = RedBaron("pouet\nplop\npop")
+    assert map(lambda x: x.indentation, red) == ["", "", ""]
