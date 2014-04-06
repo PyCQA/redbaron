@@ -4,7 +4,7 @@
 
 import baron
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
-                      PassNode, NodeList)
+                      PassNode, NodeList, CommaNode)
 
 
 def test_empty():
@@ -443,3 +443,10 @@ def test_in_while():
     red = RedBaron("while a:\n    pass\n")
     assert red[0].value[-2].indentation == "    "
     assert red[0].value[-1].indentation == ""
+
+
+def test_filtered():
+    red = RedBaron("while a:\n    pass\n")
+    assert red[0].value.filtered() == (red[0].value[-2],)
+    red = RedBaron("[1, 2, 3]")
+    assert red[0].value.filtered() == tuple(red[0].value.filter(lambda x: not isinstance(x, CommaNode)))

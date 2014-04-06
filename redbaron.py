@@ -92,6 +92,9 @@ class NodeList(UserList):
     def filter(self, function):
         return NodeList([x for x in self.data if function(x)])
 
+    def filtered(self):
+        return tuple([x for x in self.data if not isinstance(x, (EndlNode, CommaNode))])
+
     def append_comma(self, value, parent, on_attribute, trailing):
         if self.find("comma", recursive=False) and self.data[-1].type != "comma":
             comma = self.comma.copy()
@@ -473,6 +476,10 @@ class DictNode(Node):
     def append_value(self, key, value, trailing=False):
         value = baron.parse("{%s: %s}" % (key, value))[0]["value"][0]
         self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+
+class CommaNode(Node):
+    pass
 
 
 class RedBaron(NodeList):
