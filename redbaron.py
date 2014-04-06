@@ -424,6 +424,10 @@ class EndlNode(Node):
     def __repr__(self):
         return repr(baron.dumps([self.fst()]))
 
+    @property
+    def indentation(self):
+        # By convention, EndlNode will always have an indentation == ""
+        return ""
 
 class SpaceNode(Node):
     def __repr__(self):

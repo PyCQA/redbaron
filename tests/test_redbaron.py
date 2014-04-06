@@ -442,3 +442,4 @@ def test_indent_root():
 def test_in_while():
     red = RedBaron("while a:\n    pass\n")
     assert red[0].value[-2].indentation == "    "
+    assert red[0].value[-1].indentation == ""
