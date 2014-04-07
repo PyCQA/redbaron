@@ -445,10 +445,16 @@ def test_in_while():
     assert red[0].value[-1].indentation == ""
 
 
-def test_filtered():
+def test_filtered_endl():
     red = RedBaron("while a:\n    pass\n")
     assert red[0].value.filtered() == (red[0].value[-2],)
+
+
+def test_filtered_comma():
     red = RedBaron("[1, 2, 3]")
     assert red[0].value.filtered() == tuple(red[0].value.filter(lambda x: not isinstance(x, CommaNode)))
+
+
+def test_filtered_dot():
     red = RedBaron("a.b.c(d)")
     assert red[0].value.filtered() == tuple(red[0].value.filter(lambda x: not isinstance(x, DotNode)))
