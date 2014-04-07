@@ -93,7 +93,7 @@ class NodeList(UserList):
         return NodeList([x for x in self.data if function(x)])
 
     def filtered(self):
-        return tuple([x for x in self.data if not isinstance(x, (EndlNode, CommaNode))])
+        return tuple([x for x in self.data if not isinstance(x, (EndlNode, CommaNode, DotNode))])
 
     def append_comma(self, value, parent, on_attribute, trailing):
         if self.find("comma", recursive=False) and self.data[-1].type != "comma":
@@ -479,6 +479,10 @@ class DictNode(Node):
 
 
 class CommaNode(Node):
+    pass
+
+
+class DotNode(Node):
     pass
 
 

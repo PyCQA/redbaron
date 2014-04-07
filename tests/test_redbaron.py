@@ -4,7 +4,7 @@
 
 import baron
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
-                      PassNode, NodeList, CommaNode)
+                      PassNode, NodeList, CommaNode, DotNode)
 
 
 def test_empty():
@@ -450,3 +450,5 @@ def test_filtered():
     assert red[0].value.filtered() == (red[0].value[-2],)
     red = RedBaron("[1, 2, 3]")
     assert red[0].value.filtered() == tuple(red[0].value.filter(lambda x: not isinstance(x, CommaNode)))
+    red = RedBaron("a.b.c(d)")
+    assert red[0].value.filtered() == tuple(red[0].value.filter(lambda x: not isinstance(x, DotNode)))
