@@ -229,81 +229,6 @@ way:
 
     In [52]: red[0].target.copy()
 
-.parent
--------
-
-Every node and node list have a :file:`.parent` attribute that points to the
-parent node or node list. If the node doesn't have a parent node (for example
-the node list returned when constructing a new instance using the
-:file:`RedBaron` class), the :file:`parent` attribute is set at :file:`None`. A
-new node or node list created using :file:`.copy()` always have its
-:file:`parent` attribute set at :file:`None`.
-
-The attribute on which the node is assigned on the parent node is store in the
-:file:`on_attribute` attribute. :file:`on_attribute` is set at :file:`"root"`
-if the parent is a RedBaron instance.
-
-
-.. ipython:: python
-
-    red = RedBaron("a = 1 + caramba")
-    red.help()
-    red.parent
-    red.on_attribute
-    red[0].parent
-    red[0].on_attribute
-    red[0].target.parent
-    red[0].target.on_attribute
-    red[0].value.parent
-    red[0].value.on_attribute
-    red[0].value.first.parent
-    red[0].value.first.on_attribute
-
-.next .previous .next_generator() .previous_generator()
--------------------------------------------------------
-
-In a similar fashion, node have a :file:`.next` and :file:`.previous`
-attributes that point to the next or previous node if the node is located in a
-node list. They are set at :file:`None` if their is not adjacent node or if the
-node is not in a node list. A node list will never have a :file:`.next` or
-:file:`.previous` node, so those attributes will always be set at :file:`None`.
-
-Nodes also have a :file:`.next_generator()` and :file:`.previous_generator()`
-if you want to iterate on the neighbours of the node.
-
-.. ipython:: python
-
-    red = RedBaron("[1, 2, 3];a = 1")
-    red.help()
-
-    list = red[0]
-
-    print list.next
-    print list.previous
-
-    list.help()
-    print list.value[0]
-    print list.value[0].next
-    print list.value[0].previous
-    print list.value[2]
-    print list.value[2].next
-    print list.value[2].previous
-
-    assign = red[2]
-
-    assign.help()
-    print assign.target.next
-    print assign.target.previous
-
-    list.value[2].help(deep=1)
-    print [x for x list.value[2].next_generator()]
-    print [x for x list.value[2].previous_generator()]
-    list.value.help(deep=0)
-    print [x for x list.value.next_generator()]
-    print [x for x list.value.previous_generator()]
-    print [x for x assign.target.next_generator()]
-    print [x for x assign.target.previous_generator()]
-
 Querying
 ========
 
@@ -544,3 +469,83 @@ As you can guess :file:`","` is not a valid python program.
 
 This will be fixed in the future but it will require quite a lot of work to be
 done correctly and other things are more urgent.
+
+Other
+=====
+
+List of other features of RedBaron.
+
+.parent
+-------
+
+Every node and node list have a :file:`.parent` attribute that points to the
+parent node or node list. If the node doesn't have a parent node (for example
+the node list returned when constructing a new instance using the
+:file:`RedBaron` class), the :file:`parent` attribute is set at :file:`None`. A
+new node or node list created using :file:`.copy()` always have its
+:file:`parent` attribute set at :file:`None`.
+
+The attribute on which the node is assigned on the parent node is store in the
+:file:`on_attribute` attribute. :file:`on_attribute` is set at :file:`"root"`
+if the parent is a RedBaron instance.
+
+
+.. ipython:: python
+
+    red = RedBaron("a = 1 + caramba")
+    red.help()
+    red.parent
+    red.on_attribute
+    red[0].parent
+    red[0].on_attribute
+    red[0].target.parent
+    red[0].target.on_attribute
+    red[0].value.parent
+    red[0].value.on_attribute
+    red[0].value.first.parent
+    red[0].value.first.on_attribute
+
+.next .previous .next_generator() .previous_generator()
+-------------------------------------------------------
+
+In a similar fashion, node have a :file:`.next` and :file:`.previous`
+attributes that point to the next or previous node if the node is located in a
+node list. They are set at :file:`None` if their is not adjacent node or if the
+node is not in a node list. A node list will never have a :file:`.next` or
+:file:`.previous` node, so those attributes will always be set at :file:`None`.
+
+Nodes also have a :file:`.next_generator()` and :file:`.previous_generator()`
+if you want to iterate on the neighbours of the node.
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3];a = 1")
+    red.help()
+
+    list = red[0]
+
+    print list.next
+    print list.previous
+
+    list.help()
+    print list.value[0]
+    print list.value[0].next
+    print list.value[0].previous
+    print list.value[2]
+    print list.value[2].next
+    print list.value[2].previous
+
+    assign = red[2]
+
+    assign.help()
+    print assign.target.next
+    print assign.target.previous
+
+    list.value[2].help(deep=1)
+    print [x for x list.value[2].next_generator()]
+    print [x for x list.value[2].previous_generator()]
+    list.value.help(deep=0)
+    print [x for x list.value.next_generator()]
+    print [x for x list.value.previous_generator()]
+    print [x for x assign.target.next_generator()]
+    print [x for x assign.target.previous_generator()]
