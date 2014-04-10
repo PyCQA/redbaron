@@ -549,3 +549,20 @@ if you want to iterate on the neighbours of the node.
     print [x for x list.value.previous_generator()]
     print [x for x assign.target.next_generator()]
     print [x for x assign.target.previous_generator()]
+
+.filtered()
+-----------
+
+Node list comes with a small helper function: :file:`.filtered()` that returns
+a **tuple** containing the "signifiant" node (nodes that aren't comma node, dot
+node, space node or endl node).
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+    red[0].value
+    red[0].value.filtered()
+
+Note: the fact that it's a tuple that is returned will probably evolve in the
+futur into a node list proxy or something like that, I just don't have the time
+to do something better right now.
