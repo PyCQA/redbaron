@@ -13,12 +13,6 @@ CommaList:
 - subscript list ?
 - for a, b, c in ... (comprehension aussi)
 
-DotList:
-- atomtrailers
-- import
-- from ... import
-- trailer (trailer: '(' [arglist] ')' | '[' subscriptlist ']' | '.' NAME)
-
 EndlList
 - root
 - if, elif, else
