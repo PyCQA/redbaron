@@ -12,6 +12,11 @@ which drops some syntax information in the process of its creation (like empty
 lines, comments, formatting), a FST keeps everything and guarantees the
 operation **ast_to_code(code_to_ast(source_code)) == source_code**.
 
+Code
+----
+
+https://github.com/Psycojoker/redbaron
+
 Installation
 ------------
 
