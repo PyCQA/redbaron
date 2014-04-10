@@ -517,38 +517,38 @@ node is not in a node list. A node list will never have a :file:`.next` or
 Nodes also have a :file:`.next_generator()` and :file:`.previous_generator()`
 if you want to iterate on the neighbours of the node.
 
-.. ipython:: python
+.. ipython::
 
-    red = RedBaron("[1, 2, 3];a = 1")
-    red.help()
+    In [42]: red = RedBaron("[1, 2, 3];a = 1")
+    In [42]: red.help()
 
-    list = red[0]
+    In [42]: list = red[0]
 
-    print list.next
-    print list.previous
+    In [42]: print list.next
+    In [42]: print list.previous
 
-    list.help()
-    print list.value[0]
-    print list.value[0].next
-    print list.value[0].previous
-    print list.value[2]
-    print list.value[2].next
-    print list.value[2].previous
+    In [42]: list.help()
+    In [42]: print list.value[0]
+    In [42]: print list.value[0].next
+    In [42]: print list.value[0].previous
+    In [42]: print list.value[2]
+    In [42]: print list.value[2].next
+    In [42]: print list.value[2].previous
 
-    assign = red[2]
+    In [42]: assign = red[2]
 
-    assign.help()
-    print assign.target.next
-    print assign.target.previous
+    In [42]: assign.help()
+    In [42]: print assign.target.next
+    In [42]: print assign.target.previous
 
-    list.value[2].help(deep=1)
-    print [x for x list.value[2].next_generator()]
-    print [x for x list.value[2].previous_generator()]
-    list.value.help(deep=0)
-    print [x for x list.value.next_generator()]
-    print [x for x list.value.previous_generator()]
-    print [x for x assign.target.next_generator()]
-    print [x for x assign.target.previous_generator()]
+    In [42]: list.value[2].help(deep=1)
+    In [42]: print [x for x list.value[2].next_generator()]
+    In [42]: print [x for x list.value[2].previous_generator()]
+    In [42]: list.value.help(deep=0)
+    In [42]: print [x for x list.value.next_generator()]
+    In [42]: print [x for x list.value.previous_generator()]
+    In [42]: print [x for x assign.target.next_generator()]
+    In [42]: print [x for x assign.target.previous_generator()]
 
 .filtered()
 -----------
