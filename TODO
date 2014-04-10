@@ -30,5 +30,4 @@ EndlList
 doc:
 - .map .filter and reorganise tutorial by adding an "Other" part with map/filter + parent/next/previous
 - le .append_value sur une ListNode
-- .filtered()
 - .indent
