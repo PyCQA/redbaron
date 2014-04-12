@@ -450,6 +450,11 @@ def test_one_line_while():
     assert red[0].value[0].indentation == "    "
 
 
+def test_inner_node():
+    red = RedBaron("while a: pass\n")
+    assert red[0].test.indentation == ""
+
+
 def test_filtered_endl():
     red = RedBaron("while a:\n    pass\n")
     assert red[0].value.filtered() == (red[0].value[-2],)

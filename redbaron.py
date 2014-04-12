@@ -194,6 +194,9 @@ class Node(object):
         if self.on_attribute == "root":
             return ""
 
+        if isinstance(getattr(self.parent, self.on_attribute), Node):
+            return self.parent.indentation
+
         # I'm 'pass' in this kind of situation:
         # (so I don't have a previous 'endl')
         # if a: pass
