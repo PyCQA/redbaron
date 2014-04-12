@@ -193,6 +193,13 @@ class Node(object):
     def indentation(self):
         if self.on_attribute == "root":
             return ""
+
+        # I'm 'pass' in this kind of situation:
+        # (so I don't have a previous 'endl')
+        # if a: pass
+        if self.previous is None:
+            return self.parent.indentation + "    "
+
         return self.previous.indent
 
     def _get_list_attribute_is_member_off(self):
