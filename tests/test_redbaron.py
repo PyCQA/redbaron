@@ -447,7 +447,7 @@ def test_in_while():
 
 def test_one_line_while():
     red = RedBaron("while a: pass\n")
-    assert red[0].value[0].indentation == "    "
+    assert red[0].value[0].indentation == ""
 
 
 def test_inner_node():

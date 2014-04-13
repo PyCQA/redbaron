@@ -201,7 +201,7 @@ class Node(object):
         # (so I don't have a previous 'endl')
         # if a: pass
         if self.previous is None:
-            return self.parent.indentation + "    "
+            return self.parent.indentation
 
         return self.previous.indent
 
