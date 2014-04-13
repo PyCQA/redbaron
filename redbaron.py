@@ -207,7 +207,10 @@ class Node(object):
         if self.previous is None:
             return self.parent.indentation
 
-        return self.previous.indent
+        if self.previous.type == "endl":
+            return self.previous.indent
+
+        return self.previous.indentation
 
     def _get_list_attribute_is_member_off(self):
         """
