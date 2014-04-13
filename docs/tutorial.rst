@@ -566,3 +566,19 @@ node, space node or endl node).
 Note: the fact that it's a tuple that is returned will probably evolve in the
 futur into a node list proxy or something like that, I just don't have the time
 to do something better right now.
+
+.indentation
+------------
+
+Every node have the property :file:`.indentation` that will return the
+indentation level of the node:
+
+.. ipython:: python
+
+    red = RedBaron("while a:\n    pass")
+    red[0].indentation
+    red[0].test.indentation
+    red.pass_.indentation
+
+    red = RedBaron("while a: pass")
+    red.pass_.indentation
