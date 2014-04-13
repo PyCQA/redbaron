@@ -198,8 +198,8 @@ class Node(object):
             return self.parent.indentation
 
         # I'm 'pass' in this kind of situation:
-        # (so I don't have a previous 'endl')
         # if a: pass
+        # (so I don't have a previous 'endl')
         if self.previous is None:
             return self.parent.indentation
 
