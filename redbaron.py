@@ -212,6 +212,9 @@ class Node(object):
 
         return self.previous.indentation
 
+    def get_indentation_node(self):
+        return self.previous
+
     def _get_list_attribute_is_member_off(self):
         """
         Return the list attribute of the parent from which this node is a
@@ -311,7 +314,7 @@ class Node(object):
         ] + self._other_identifiers)))
 
     def _get_helpers(self):
-        not_helpers = {'copy', 'dumps', 'find', 'findAll', 'find_all', 'fst', 'help', 'next_generator', 'previous_generator'}
+        not_helpers = {'copy', 'dumps', 'find', 'findAll', 'find_all', 'fst', 'help', 'next_generator', 'previous_generator', 'get_indentation_node'}
         return filter(lambda x: not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x)), dir(self))
 
     def fst(self):

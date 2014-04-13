@@ -473,3 +473,8 @@ def test_filtered_comma():
 def test_filtered_dot():
     red = RedBaron("a.b.c(d)")
     assert red[0].value.filtered() == tuple(red[0].value.filter(lambda x: not isinstance(x, DotNode)))
+
+
+def test_get_indentation_node():
+    red = RedBaron("while a:\n    pass\n")
+    assert red[0].value[-1].get_indentation_node() is red[0].value[-2]
