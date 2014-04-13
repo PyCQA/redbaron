@@ -23,11 +23,10 @@ EndlList
 - classdef
 - funcdef
 
-- .indent, .indent_node, .indent_is_direct
+- .indent_node, .indent_is_direct
 - .apply, .assign, .map_concat
 - __setitem__ on NodeList
 
 doc:
-- .map .filter and reorganise tutorial by adding an "Other" part with map/filter + parent/next/previous
+- .map .filter
 - le .append_value sur une ListNode
-- .indentation
