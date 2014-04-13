@@ -194,6 +194,10 @@ class Node(object):
         if self.on_attribute == "root":
             return ""
 
+        if self.type == "endl":
+            # by convention, an endl node will always have this indentation
+            return ""
+
         if isinstance(getattr(self.parent, self.on_attribute), Node):
             return self.parent.indentation
 
@@ -436,11 +440,6 @@ class IntNode(Node):
 class EndlNode(Node):
     def __repr__(self):
         return repr(baron.dumps([self.fst()]))
-
-    @property
-    def indentation(self):
-        # By convention, EndlNode will always have an indentation == ""
-        return ""
 
 class SpaceNode(Node):
     def __repr__(self):
