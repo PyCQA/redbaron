@@ -189,31 +189,32 @@ class Node(object):
         generator.next()
         return generator
 
-    @property
-    def indentation(self):
+    def get_indentation_node(self):
         if self.on_attribute == "root":
-            return ""
+            return None
 
         if self.type == "endl":
             # by convention, an endl node will always have this indentation
-            return ""
+            return None
 
         if isinstance(getattr(self.parent, self.on_attribute), Node):
-            return self.parent.indentation
+            return self.parent.get_indentation_node()
 
         # I'm 'pass' in this kind of situation:
         # if a: pass
         # (so I don't have a previous 'endl')
         if self.previous is None:
-            return self.parent.indentation
+            return self.parent.get_indentation_node()
 
         if self.previous.type == "endl":
-            return self.previous.indent
+            return self.previous
 
-        return self.previous.indentation
+        return self.previous.get_indentation_node()
 
-    def get_indentation_node(self):
-        return self.previous
+    @property
+    def indentation(self):
+        endl_node = self.get_indentation_node()
+        return endl_node.indent if endl_node is not None else ""
 
     def _get_list_attribute_is_member_off(self):
         """
