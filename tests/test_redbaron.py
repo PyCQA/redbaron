@@ -486,6 +486,11 @@ def test_filtered_dot():
     assert red[0].value.filtered() == tuple(red[0].value.filter(lambda x: not isinstance(x, DotNode)))
 
 
-def test_get_indentation_node():
+def test_endl_list_append_value():
     red = RedBaron("while a:\n    pass\n")
-    assert red[0].value[-1].get_indentation_node() is red[0].value[-2]
+    red[0].append_value("pouet")
+    assert red.dumps() == "while a:\n    pass\n    pouet\n"
+    assert red[0].value[-2].parent is red[0]
+    assert red[0].value[-3].parent is red[0]
+    assert red[0].value[-2].on_attribute == "value"
+    assert red[0].value[-3].on_attribute == "value"

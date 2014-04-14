@@ -122,6 +122,13 @@ class NodeList(UserList):
         if trailing:
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": []}, parent=parent, on_attribute=on_attribute))
 
+    def append_endl(self, value, parent, on_attribute):
+        new_endl_node = self.filtered()[-1].get_indentation_node().copy()
+        new_endl_node.parent = parent
+        new_endl_node.on_attribute = on_attribute
+        self.data.insert(-1, new_endl_node)
+        self.data.insert(-1, to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
+
 
 class Node(object):
     _other_identifiers = []
@@ -498,6 +505,11 @@ class DictNode(Node):
     def append_value(self, key, value, trailing=False):
         value = baron.parse("{%s: %s}" % (key, value))[0]["value"][0]
         self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+
+class WhileNode(Node):
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
 
 
 class CommaNode(Node):
