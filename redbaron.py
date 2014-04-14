@@ -123,10 +123,11 @@ class NodeList(UserList):
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": []}, parent=parent, on_attribute=on_attribute))
 
     def append_endl(self, value, parent, on_attribute):
-        new_endl_node = self.filtered()[-1].get_indentation_node().copy()
-        new_endl_node.parent = parent
-        new_endl_node.on_attribute = on_attribute
-        self.data.insert(-1, new_endl_node)
+        if not (self.data[-2].type == "endl" and self.data[-2].indent == self.filtered()[-1].get_indentation_node().indent):
+            new_endl_node = self.filtered()[-1].get_indentation_node().copy()
+            new_endl_node.parent = parent
+            new_endl_node.on_attribute = on_attribute
+            self.data.insert(-1, new_endl_node)
         self.data.insert(-1, to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
 
 

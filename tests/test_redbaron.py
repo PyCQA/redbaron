@@ -494,3 +494,13 @@ def test_endl_list_append_value():
     assert red[0].value[-3].parent is red[0]
     assert red[0].value[-2].on_attribute == "value"
     assert red[0].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_value_trailing():
+    red = RedBaron("while a:\n    p\n    \n")
+    red[0].append_value("pouet")
+    assert red.dumps() == "while a:\n    p\n    pouet\n"
+    assert red[0].value[-2].parent is red[0]
+    assert red[0].value[-3].parent is red[0]
+    assert red[0].value[-2].on_attribute == "value"
+    assert red[0].value[-3].on_attribute == "value"
