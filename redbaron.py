@@ -123,6 +123,15 @@ class NodeList(UserList):
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": []}, parent=parent, on_attribute=on_attribute))
 
     def append_endl(self, value, parent, on_attribute):
+        if self.filtered()[-1].indentation_node_is_direct() is False:
+            # we are in this kind of case: while a: pass
+            self.data.insert(0, to_node({
+                "indent": self.filtered()[-1].indentation + "    ",
+                "formatting": [],
+                "type": "endl",
+                "value": "\n",
+            }, parent=parent, on_attribute=on_attribute))
+
         if not (self.data[-2].type == "endl" and self.data[-2].indent == self.filtered()[-1].get_indentation_node().indent):
             new_endl_node = self.filtered()[-1].get_indentation_node().copy()
             new_endl_node.parent = parent
@@ -511,6 +520,8 @@ class DictNode(Node):
 class WhileNode(Node):
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
+            self.third_formatting = []
 
 
 class CommaNode(Node):
