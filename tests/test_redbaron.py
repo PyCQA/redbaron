@@ -514,3 +514,5 @@ def test_endl_list_append_one_line_while():
     assert red[0].value[-3].parent is red[0]
     assert red[0].value[-2].on_attribute == "value"
     assert red[0].value[-3].on_attribute == "value"
+
+# TODO ifnode, elifnode, elsenode, fornode, withnode, classNode, funcdefnode, trynode, exceptnode, finallynode
