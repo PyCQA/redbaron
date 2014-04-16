@@ -605,4 +605,34 @@ def test_endl_list_append_one_line_def():
     assert red[0].value[-2].on_attribute == "value"
     assert red[0].value[-3].on_attribute == "value"
 
-# TODO ifnode, elifnode, elsenode, fornode, withnode, classNode, funcdefnode, trynode, exceptnode, finallynode
+
+def test_endl_list_append_value_for():
+    red = RedBaron("for a in a:\n    pass\n")
+    red[0].append_value("pouet")
+    assert red.dumps() == "for a in a:\n    pass\n    pouet\n"
+    assert red[0].value[-2].parent is red[0]
+    assert red[0].value[-3].parent is red[0]
+    assert red[0].value[-2].on_attribute == "value"
+    assert red[0].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_value_trailing_for():
+    red = RedBaron("for a in a:\n    p\n    \n")
+    red[0].append_value("pouet")
+    assert red.dumps() == "for a in a:\n    p\n    pouet\n"
+    assert red[0].value[-2].parent is red[0]
+    assert red[0].value[-3].parent is red[0]
+    assert red[0].value[-2].on_attribute == "value"
+    assert red[0].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_one_line_for():
+    red = RedBaron("for a in a: pass\n")
+    red[0].append_value("pouet")
+    assert red.dumps() == "for a in a:\n    pass\n    pouet\n"
+    assert red[0].value[-2].parent is red[0]
+    assert red[0].value[-3].parent is red[0]
+    assert red[0].value[-2].on_attribute == "value"
+    assert red[0].value[-3].on_attribute == "value"
+
+# TODO ifnode, elifnode, elsenode, trynode, exceptnode, finallynode

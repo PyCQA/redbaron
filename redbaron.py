@@ -524,6 +524,13 @@ class FuncdefNode(Node):
             self.sixth_formatting = []
 
 
+class ForNode(Node):
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.fifth_formatting) == 1 and self.fifth_formatting[0].type == "space":
+            self.fifth_formatting = []
+
+
 class WhileNode(Node):
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
