@@ -524,6 +524,13 @@ class WhileNode(Node):
             self.third_formatting = []
 
 
+class WithNode(Node):
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
+            self.third_formatting = []
+
+
 class CommaNode(Node):
     pass
 
