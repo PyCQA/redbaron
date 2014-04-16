@@ -573,6 +573,28 @@ class ElseNode(Node):
             self.second_formatting = []
 
 
+class TryNode(Node):
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
+            self.second_formatting = []
+
+
+class FinallyNode(Node):
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
+            self.second_formatting = []
+
+
+class ExceptNode(Node):
+    def append_value(self, value):
+        self.help(with_formatting=True)
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.fifth_formatting) == 1 and self.fifth_formatting[0].type == "space":
+            self.fifth_formatting = []
+
+
 class CommaNode(Node):
     pass
 
