@@ -635,4 +635,94 @@ def test_endl_list_append_one_line_for():
     assert red[0].value[-2].on_attribute == "value"
     assert red[0].value[-3].on_attribute == "value"
 
-# TODO ifnode, elifnode, elsenode, trynode, exceptnode, finallynode
+
+def test_endl_list_append_value_if():
+    red = RedBaron("if a:\n    pass\n")
+    red[0].value[0].append_value("pouet")
+    assert red.dumps() == "if a:\n    pass\n    pouet\n"
+    assert red[0].value[0].value[-2].parent is red[0].value[0]
+    assert red[0].value[0].value[-3].parent is red[0].value[0]
+    assert red[0].value[0].value[-2].on_attribute == "value"
+    assert red[0].value[0].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_value_elif():
+    red = RedBaron("if a:\n    pass\nelif b:\n    pass\n")
+    red[0].value[1].append_value("pouet")
+    assert red.dumps() == "if a:\n    pass\nelif b:\n    pass\n    pouet\n"
+    assert red[0].value[1].value[-2].parent is red[0].value[1]
+    assert red[0].value[1].value[-3].parent is red[0].value[1]
+    assert red[0].value[1].value[-2].on_attribute == "value"
+    assert red[0].value[1].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_value_else():
+    red = RedBaron("if a:\n    pass\nelse:\n    pass\n")
+    red[0].value[1].append_value("pouet")
+    assert red.dumps() == "if a:\n    pass\nelse:\n    pass\n    pouet\n"
+    assert red[0].value[1].value[-2].parent is red[0].value[1]
+    assert red[0].value[1].value[-3].parent is red[0].value[1]
+    assert red[0].value[1].value[-2].on_attribute == "value"
+    assert red[0].value[1].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_value_trailing_if():
+    red = RedBaron("if a:\n    p\n    \n")
+    red[0].value[0].append_value("pouet")
+    assert red.dumps() == "if a:\n    p\n    pouet\n"
+    assert red[0].value[0].value[-2].parent is red[0].value[0]
+    assert red[0].value[0].value[-3].parent is red[0].value[0]
+    assert red[0].value[0].value[-2].on_attribute == "value"
+    assert red[0].value[0].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_value_trailing_elif():
+    red = RedBaron("if a:\n    p\n    \nelif b:\n    p\n    \n")
+    red[0].value[1].append_value("pouet")
+    assert red.dumps() == "if a:\n    p\n    \nelif b:\n    p\n    pouet\n"
+    assert red[0].value[1].value[-2].parent is red[0].value[1]
+    assert red[0].value[1].value[-3].parent is red[0].value[1]
+    assert red[0].value[1].value[-2].on_attribute == "value"
+    assert red[0].value[1].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_value_trailing_else():
+    red = RedBaron("if a:\n    p\n    \nelse:\n    p\n    \n")
+    red[0].value[1].append_value("pouet")
+    assert red.dumps() == "if a:\n    p\n    \nelse:\n    p\n    pouet\n"
+    assert red[0].value[1].value[-2].parent is red[0].value[1]
+    assert red[0].value[1].value[-3].parent is red[0].value[1]
+    assert red[0].value[1].value[-2].on_attribute == "value"
+    assert red[0].value[1].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_one_line_if():
+    red = RedBaron("if a: pass\n")
+    red[0].value[0].append_value("pouet")
+    assert red.dumps() == "if a:\n    pass\n    pouet\n"
+    assert red[0].value[0].value[-2].parent is red[0].value[0]
+    assert red[0].value[0].value[-3].parent is red[0].value[0]
+    assert red[0].value[0].value[-2].on_attribute == "value"
+    assert red[0].value[0].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_one_line_elif():
+    red = RedBaron("if a: pass\nelif b: pass\n")
+    red[0].value[1].append_value("pouet")
+    assert red.dumps() == "if a: pass\nelif b:\n    pass\n    pouet\n"
+    assert red[0].value[1].value[-2].parent is red[0].value[1]
+    assert red[0].value[1].value[-3].parent is red[0].value[1]
+    assert red[0].value[1].value[-2].on_attribute == "value"
+    assert red[0].value[1].value[-3].on_attribute == "value"
+
+
+def test_endl_list_append_one_line_else():
+    red = RedBaron("if a: pass\nelse: pass\n")
+    red[0].value[1].append_value("pouet")
+    assert red.dumps() == "if a: pass\nelse:\n    pass\n    pouet\n"
+    assert red[0].value[1].value[-2].parent is red[0].value[1]
+    assert red[0].value[1].value[-3].parent is red[0].value[1]
+    assert red[0].value[1].value[-2].on_attribute == "value"
+    assert red[0].value[1].value[-3].on_attribute == "value"
+
+# TODO trynode, exceptnode, finallynode
