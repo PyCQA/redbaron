@@ -20,7 +20,7 @@ modifying a string to modifying a meaningful tree. For a longer explanation
 [read this](https://redbaron.readthedocs.org/en/latest/why.html).
 
 **For now, RedBaron is in its early stages of developpement, it is quite stable
-but it is probably not the most shiny experience yet.**
+but it is probably not the most shiny experience yet.** Feedback is very welcome.
 
 Installation
 ============
