@@ -19,6 +19,9 @@ means that the task of modifying source code just shift from parsing then
 modifying a string to modifying a meaningful tree. For a longer explanation
 [read this](https://redbaron.readthedocs.org/en/latest/why.html).
 
+**For now, RedBaron is in its early stages of developpement, it is quite stable
+but it is probably not the most shiny experience yet.**
+
 Installation
 ============
 
