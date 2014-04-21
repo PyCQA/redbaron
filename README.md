@@ -32,3 +32,4 @@ Links
 
 * [Documentation](https://redbaron.readthedocs.org)
 * [Baron](https://github.com/Psycojoker/baron)
+* IRC chat: [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron)
