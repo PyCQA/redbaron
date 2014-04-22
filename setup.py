@@ -12,5 +12,6 @@ setup(name='redbaron',
       url='https://github.com/Psycojoker/redbaron',
       install_requires=['baron>=0.1.2'],
       license= 'lgplv3+',
+      py_modules=["redbaron"],
       keywords='baron fst ast refactoring',
      )
