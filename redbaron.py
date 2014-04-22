@@ -603,6 +603,10 @@ class DotNode(Node):
     pass
 
 
+class CallNode(Node):
+    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+
 class RedBaron(NodeList):
     def __init__(self, source_code):
         self.data = map(lambda x: to_node(x, parent=self, on_attribute="root"), baron.parse(source_code))
