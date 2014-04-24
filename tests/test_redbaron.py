@@ -843,3 +843,12 @@ def test_append_item_comma_call_one_comma():
     assert r.value[-1].on_attribute == "value"
     assert r.value[-2].parent is r
     assert r.value[-2].on_attribute == "value"
+
+
+def test_append_item_call_node_star_arg():
+    red = RedBaron("a()")
+    r = red[0].value[1]
+    r.append_value("*a")
+    assert r.value.dumps() == "*a"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"

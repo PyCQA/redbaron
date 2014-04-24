@@ -604,7 +604,10 @@ class DotNode(Node):
 
 
 class CallNode(Node):
-    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+    def append_value(self, value, trailing=False):
+        if isinstance(value, basestring):
+            value = baron.parse("a(%s)" % value)[0]["value"][1]["value"][0]
+        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
 
 class RedBaron(NodeList):
