@@ -814,3 +814,32 @@ def test_endl_list_append_value_one_line_finally():
     assert red[0].finally_.value[-3].parent is red[0].finally_
     assert red[0].finally_.value[-2].on_attribute == "value"
     assert red[0].finally_.value[-3].on_attribute == "value"
+
+
+def test_append_item_comma_call_empty():
+    red = RedBaron("a()")
+    r = red[0].value[1]
+    r.append_value("4")
+    assert r.value.dumps() == "4"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+
+
+def test_append_item_comma_call_one():
+    red = RedBaron("a(1)")
+    r = red[0].value[1]
+    r.append_value("4")
+    assert r.value.dumps() == "1, 4"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+
+
+def test_append_item_comma_call_one_comma():
+    red = RedBaron("a(1,)")
+    r = red[0].value[1]
+    r.append_value("4")
+    assert r.value.dumps() == "1, 4"
+    assert r.value[-1].parent is r
+    assert r.value[-1].on_attribute == "value"
+    assert r.value[-2].parent is r
+    assert r.value[-2].on_attribute == "value"
