@@ -880,3 +880,10 @@ def test_parent_find_two_levels():
     red = RedBaron(some_data_for_test)
     r = red.assignment.target
     assert r.parent_find('funcdef') is red.find('funcdef', name='a')
+
+
+def test_parent_find_two_levels_options():
+    red = RedBaron(some_data_for_test)
+    r = red.assignment.target
+    assert r.parent_find('def', name='plop') is red.def_
+    assert r.parent_find('def', name='dont_exist') is None

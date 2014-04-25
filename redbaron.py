@@ -329,11 +329,26 @@ class Node(object):
     findAll = find_all
     __call__ = find_all
 
-    def parent_find(self, identifier):
+    def parent_find(self, identifier, **kwargs):
         current = self
-        while current.parent:
-            if current.parent.type == identifier:
+        while current.parent and current.on_attribute != 'root':
+            if identifier not in current.parent._generate_identifiers():
+                current = current.parent
+                continue
+
+            all_my_keys = current.parent._str_keys + current.parent._list_keys + current.parent._dict_keys
+
+            for key in kwargs:
+                if key not in all_my_keys:
+                    break
+
+                if getattr(current.parent, key) != kwargs[key]:
+                    break
+
+            else:  # else it match so the else clause will be used
+                   # (for once that this else stuff is usefull)
                 return current.parent
+
             current = current.parent
         return None
 
