@@ -854,11 +854,24 @@ def test_append_item_call_node_star_arg():
     assert r.value[-1].on_attribute == "value"
 
 some_data_for_test = """\
-def a():
-    with b as c:
-        d = e
+def plop():
+    def a():
+        with b as c:
+            d = e
 """
 
 def test_parent_find_empty():
     red = RedBaron("a")
     assert red[0].parent_find('a') is None
+
+
+def test_parent_find_direct():
+    red = RedBaron(some_data_for_test)
+    r = red.assignment.target
+    assert r.parent_find('with') is red.with_
+
+
+def test_parent_find_two_levels():
+    red = RedBaron(some_data_for_test)
+    r = red.assignment.target
+    assert r.parent_find('funcdef') is red.find('funcdef', name='a')

@@ -330,6 +330,11 @@ class Node(object):
     __call__ = find_all
 
     def parent_find(self, identifier):
+        current = self
+        while current.parent:
+            if current.parent.type == identifier:
+                return current.parent
+            current = current.parent
         return None
 
     def _generate_identifiers(self):
