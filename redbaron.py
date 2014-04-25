@@ -494,10 +494,6 @@ class ImportNode(Node):
         return [x.target if x.target else x.value.dumps() for x in self('dotted_as_name')]
 
 
-class FuncdefNode(Node):
-    _other_identifiers = ["def", "def_"]
-
-
 class ListNode(Node):
     append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
@@ -526,6 +522,7 @@ class DictNode(Node):
 
 
 class FuncdefNode(Node):
+    _other_identifiers = ["def", "def_"]
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
