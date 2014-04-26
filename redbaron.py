@@ -261,18 +261,8 @@ class Node(object):
 
 
     def find(self, identifier, recursive=True, **kwargs):
-        all_my_keys = self._str_keys + self._list_keys + self._dict_keys
-        if identifier.lower() in self._generate_identifiers():
-            for key in kwargs:
-                if key not in all_my_keys:
-                    break
-
-                if getattr(self, key) != kwargs[key]:
-                    break
-
-            else:  # else it match so the else clause will be used
-                   # (for once that this else stuff is usefull)
-                return self
+        if self._node_match_query(self, identifier, **kwargs):
+            return self
 
         if not recursive:
             return None
@@ -297,18 +287,8 @@ class Node(object):
 
     def find_all(self, identifier, recursive=True, **kwargs):
         to_return = NodeList([])
-        all_my_keys = self._str_keys + self._list_keys + self._dict_keys
-        if identifier.lower() in self._generate_identifiers():
-            for key in kwargs:
-                if key not in all_my_keys:
-                    break
-
-                if getattr(self, key) != kwargs[key]:
-                    break
-
-            else:  # else it match so the else clause will be used
-                   # (for once that this else stuff is usefull)
-                to_return.append(self)
+        if self._node_match_query(self, identifier, **kwargs):
+            to_return.append(self)
 
         if not recursive:
             return to_return
@@ -332,25 +312,27 @@ class Node(object):
     def parent_find(self, identifier, **kwargs):
         current = self
         while current.parent and current.on_attribute != 'root':
-            if identifier not in current.parent._generate_identifiers():
-                current = current.parent
-                continue
-
-            all_my_keys = current.parent._str_keys + current.parent._list_keys + current.parent._dict_keys
-
-            for key in kwargs:
-                if key not in all_my_keys:
-                    break
-
-                if getattr(current.parent, key) != kwargs[key]:
-                    break
-
-            else:  # else it match so the else clause will be used
-                   # (for once that this else stuff is usefull)
+            if self._node_match_query(current.parent, identifier, **kwargs):
                 return current.parent
 
             current = current.parent
         return None
+
+    def _node_match_query(self, node, identifier, **kwargs):
+        if identifier not in node._generate_identifiers():
+            return False
+
+        all_my_keys = node._str_keys + node._list_keys + node._dict_keys
+
+        for key in kwargs:
+            if key not in all_my_keys:
+                return False
+
+            if getattr(node, key) != kwargs[key]:
+                return False
+
+        return True
+
 
     def _generate_identifiers(self):
         return sorted(set(map(lambda x: x.lower(), [
