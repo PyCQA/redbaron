@@ -505,6 +505,26 @@ if the parent is a RedBaron instance.
     red[0].value.first.parent
     red[0].value.first.on_attribute
 
+.parent_find()
+--------------
+
+A helper method that allow you to do the equivalent of the :file:`.find()`
+method but in the chain of the parents of the node. This is the equivalent of
+doing: :file:`while node has a parent: if node.parent match query: return
+node.parent, else: node = node.parent`. It returns :file:`None` if not parent
+match the query.
+
+.. ipython:: python
+
+    red = RedBaron("def a():\n    with b:\n        def c():\n            pass")
+    red.help()
+    r = red.pass_
+    r
+    r.parent
+    r.find_parent('def')
+    r.find_parent('def', name='a')
+    r.find_parent('def', name='dont_exist')
+
 .next .previous .next_generator() .previous_generator()
 -------------------------------------------------------
 
