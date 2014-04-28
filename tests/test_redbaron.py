@@ -887,3 +887,25 @@ def test_parent_find_two_levels_options():
     r = red.assignment.target
     assert r.parent_find('def', name='plop') is red.def_
     assert r.parent_find('def', name='dont_exist') is None
+
+
+def test_find_empty():
+    red = RedBaron("")
+    assert red.find("stuff") is None
+    assert red.find("something_else") is None
+    assert red.find("something_else", useless="pouet") is None
+    assert red.something_else is None
+
+
+def test_find():
+    red = RedBaron("def a(): b = c")
+    assert red.find("name") is red[0].value[0].target
+    assert red.find("name", value="c") is red[0].value[0].value
+    assert red.name is red[0].value[0].target
+
+
+def test_find_other_properties():
+    red = RedBaron("def a(): b = c")
+    assert red.funcdef == red[0]
+    assert red.funcdef_ == red[0]
+    assert red.def_ == red[0]
