@@ -621,7 +621,7 @@ class RedBaron(NodeList):
 # (in fact that's pretty simple appart from the strange stuff needed)
 # this basically allows to write code like:
 # from redbaron.nodes import WatheverNode
-# and a new class with Node has the parent will be created on the fly
+# and a new class with Node as the parent will be created on the fly
 # if this class doesn't already exist (like IntNode for example)
 # while this is horribly black magic, this allows quite some cool stuff
 class MissingNodesBuilder(dict):
