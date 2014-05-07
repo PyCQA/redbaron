@@ -470,6 +470,13 @@ As you can guess :file:`","` is not a valid python program.
 This will be fixed in the future but it will require quite a lot of work to be
 done correctly and other things are more urgent.
 
+Modifying helpers
+=================
+
+In an attempt to overcome some of the limitations describe at the end of the
+previous section and in an attempt to make RedBaron mor please to use, a series
+of helpers method are provided.
+
 Other
 =====
 
