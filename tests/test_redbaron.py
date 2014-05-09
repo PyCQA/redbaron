@@ -909,3 +909,10 @@ def test_find_other_properties():
     assert red.funcdef == red[0]
     assert red.funcdef_ == red[0]
     assert red.def_ == red[0]
+
+
+def test_find_case_insensitive():
+    red = RedBaron("a")
+    assert red.find("NameNode") is red[0]
+    assert red.find("NaMeNoDe") is red[0]
+    assert red.find("namenode") is red[0]

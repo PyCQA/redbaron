@@ -319,7 +319,7 @@ class Node(object):
         return None
 
     def _node_match_query(self, node, identifier, **kwargs):
-        if identifier not in node._generate_identifiers():
+        if identifier.lower() not in node._generate_identifiers():
             return False
 
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys
