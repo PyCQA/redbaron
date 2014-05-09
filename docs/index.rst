@@ -55,7 +55,11 @@ Table of content
    :maxdepth: 3
 
    why
-   tutorial
+   basics
+   querying
+   modifying
+   modifying_helpers
+   other
 
 
 Indices and tables
