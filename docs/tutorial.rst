@@ -501,7 +501,7 @@ This method is provided for:
 * ListNode (put a comma)
 * SetNode (put a comma)
 * TupleNode (put a comma and a leading trailing comma if there is only one item)
-* DictNode (put a comma)
+* DictNode (put a comma) **Warning: except a key and a value parameter**
 * CallNode (put a comma)
 * FuncdefNode (put an endl)
 * ForNode (put an endl)
