@@ -484,9 +484,17 @@ quite low level.
 .append_value()
 ---------------
 
-This method allows you to append an element to a node list attribute while
-taking care of inserting the correct separator (if needed) for you. For
-example: appending a new statement to a function body.
+This method allows you to append an element to the :file:`value` attribute of a
+node if this is a node liste while taking care of inserting the correct
+separator (if needed) for you. For example: appending a new statement to a
+function body.
+
+The way it choose the separator is simple: take the last one if the list if
+it's present, otherwise, use a default one (4 spaces indentations if the
+separator is an endl node).
+
+Like every other method of RedBaron you can pass it either a string, a fst item
+of a RedBaron instance.
 
 This method is provided for:
 
