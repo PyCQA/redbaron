@@ -481,6 +481,32 @@ An example on how you can do that by hand without the helper is provided
 everytime to teach you the general underlying of (Red)Baron. Expect this to be
 quite low level.
 
+.append_value()
+---------------
+
+This method allows you to append an element to a node list attribute while
+taking care of inserting the correct separator (if needed) for you. For
+example: appending a new statement to a function body.
+
+This method is provided for:
+
+* ListNode (put a comma)
+* SetNode (put a comma)
+* TupleNode (put a comma and a leading trailing comma if there is only one item)
+* DictNode (put a comma)
+* CallNode (put a comma)
+* FuncdefNode (put an endl)
+* ForNode (put an endl)
+* WhileNode (put an endl)
+* ClassNode (put an endl)
+* WithNode (put an endl)
+* IfNode (put an endl)
+* ElifNode (put an endl)
+* ElseNode (put an endl)
+* TryNode (put an endl)
+* FinallyNode (put an endl)
+* ExceptNode (put an endl)
+
 Other
 =====
 
