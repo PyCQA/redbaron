@@ -481,6 +481,8 @@ An example on how you can do that by hand without the helper is provided
 everytime to teach you the general underlying of (Red)Baron. Expect this to be
 quite low level.
 
+.. _to_node:
+
 to_node()
 ---------
 
@@ -569,6 +571,8 @@ Other
 =====
 
 List of other features of RedBaron.
+
+.. _parent:
 
 .parent
 -------
