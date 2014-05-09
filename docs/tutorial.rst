@@ -515,6 +515,32 @@ This method is provided for:
 * FinallyNode (put an endl)
 * ExceptNode (put an endl)
 
+.. ipython::
+
+    In [105]: red = RedBaron("[1, 2, 3]"); red[0].append_value("42"); red
+
+    In [105]: red = RedBaron("{1, 2, 3}"); red[0].append_value("42"); red
+
+    In [105]: red = RedBaron("(1, 2, 3)"); red[0].append_value("42"); red
+
+    In [105]: red = RedBaron("()"); red[0].append_value("42"); red
+
+    In [105]: red = RedBaron('{"a": 1, "b": 2, "c": 3}'); red[0].append_value(key='"d"', value="4"); red
+
+    In [105]: red = RedBaron("some_function(42)"); red[0].value[1].append_value("*some_args"); red
+
+    In [105]: red = RedBaron("def function(): pass"); red[0].append_value("print 'Hello World!'"); red
+
+    In [105]: red = RedBaron("for i in b:\n    print i"); red[0].append_value("stuff(i)"); red
+
+    In [105]: red = RedBaron("while i < 100:\n                       print i"); red[0].append_value("i += 1"); red
+
+    In [105]: red = RedBaron("class Cats: pass"); red[0].append_value("fluffy = True"); red
+
+    In [105]: red = RedBaron("with a: pass"); red[0].append_value("I_dont_have_any_inspiration"); red
+
+    In [105]: red = RedBaron("if True: stuff()"); red[0].if_.append_value("print 'It\\'s True!'"); red
+
 Other
 =====
 
