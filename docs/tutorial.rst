@@ -477,6 +477,10 @@ In an attempt to overcome some of the limitations describe at the end of the
 previous section and in an attempt to make RedBaron mor please to use, a series
 of helpers method are provided.
 
+An example on how you can do that by hand without the helper is provided
+everytime to teach you the general underlying of (Red)Baron. Expect this to be
+quite low level.
+
 Other
 =====
 
