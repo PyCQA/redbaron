@@ -481,6 +481,30 @@ An example on how you can do that by hand without the helper is provided
 everytime to teach you the general underlying of (Red)Baron. Expect this to be
 quite low level.
 
+to_node()
+---------
+
+:file:`to_node()` is an helper function that takes a FST node and return a
+RedBaron node instance. Except if you need to go down at a low level or that
+RedBaron doesn't provide the helper you need, you shouldn't use it.
+
+.. ipython:: python
+
+    from redbaron import to_node
+    to_node({"type": "name", "value": "a"})
+
+:file:`to_node()` takes 2 optional keywords arguments: :file:`parent` and
+:file:`on_attribute` that should respectively be RedBaron node instance (the
+parent node) and a string (the attribute of the parent node on which this node
+is stored). See :ref:`parent` doc for a better understanding of those 2
+parameters.
+
+.. ipython:: python
+
+    red = RedBaron("[1,]")
+    new_name = to_node({"type": "name", "value": "a"}, parent=red[0], on_attribute="value")
+    red[0].value.append(new_name)
+
 .append_value()
 ---------------
 
