@@ -553,7 +553,7 @@ This method is provided for:
 
     In [105]: red = RedBaron('{"a": 1, "b": 2, "c": 3}'); red[0].append_value(key='"d"', value="4"); red
 
-    In [105]: red = RedBaron("some_function(42)"); red[0].value[1].append_value("*some_args"); red
+    In [105]: red = RedBaron("some_function(42)"); red[0].value[1].append_value("a=b"); red
 
     In [105]: red = RedBaron("def function(): pass"); red[0].append_value("print 'Hello World!'"); red
 
@@ -566,6 +566,59 @@ This method is provided for:
     In [105]: red = RedBaron("with a: pass"); red[0].append_value("I_dont_have_any_inspiration"); red
 
     In [105]: red = RedBaron("if True: stuff()"); red[0].if_.append_value("print 'It\\'s True!'"); red
+
+
+By hand
+~~~~~~~
+
+Not really a very funny thing to do. You have 2 strategies: add nodes by
+writting FST and using :ref`to_node` (but I don't expect anyone to really have
+to remember the FST from head) by hand or using :file:`.copy()` if nodes
+already exist (please note that I'm not going to cover all the cases possible
+you can encounter, :file:`.append_value()` does that, you can read its code if
+you want to).
+
+.. note::
+
+    Remember that you can use :file:`.fst()` on any node to have an idea of the
+    corresponding fst.
+
+.. warning::
+
+    You have to explicitly set :file:`.parent` and :file:`on_attribute` by hand
+
+With FST:
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+
+    list_node_value = red[0]
+    comma = to_node({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=list_node_value, on_attribute="value")
+    new_name = to_node({"type": "name", "value": "a"}, parent=list_node_value, on_attribute="value")
+    list_node_value.value.append(comma)
+    list_node_value.value.append(new_name)
+    list_node_value
+    list_node_value.value
+
+With :file:`.copy()`:
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+
+    list_node_value = red[0]
+    comma = red[0].value[-2].copy()
+    comma.parent = list_node_value
+    comma.on_attribute = "value"
+    new_int = red[0].value[-1].copy()
+    new_int.value = "42"
+    new_int.parent = list_node_value
+    new_int.on_attribute = "value"
+    list_node_value.value.append(comma)
+    list_node_value.value.append(new_int)
+    list_node_value
+    list_node_value.value
 
 Other
 =====
