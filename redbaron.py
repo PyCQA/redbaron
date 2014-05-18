@@ -638,6 +638,8 @@ class MissingNodesBuilder(dict):
             self.globals[key] = new_node_class
             return new_node_class
 
+        raise ImportError("cannot import name %s" % key)
+
 
 class BlackMagicImportHook(ModuleType):
     def __init__(self, self_module, baked_args={}):
