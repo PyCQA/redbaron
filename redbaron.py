@@ -2,9 +2,14 @@ import sys
 import inspect
 import itertools
 from types import ModuleType
-from UserList import UserList
-
 import baron
+from baron.utils import python_version, string_instance
+
+
+if python_version == 3:
+    from collections import UserList
+else:
+    from UserList import UserList
 
 
 def indent(line, indentation):
@@ -62,8 +67,8 @@ class NodeList(UserList):
 
     def help(self, deep=2, with_formatting=False):
         for num, i in enumerate(self.data):
-            print num, "-----------------------------------------------------"
-            print i.__help__(deep=deep, with_formatting=with_formatting)
+            sys.stdout.write(str(num) + " -----------------------------------------------------\n")
+            sys.stdout.write(i.__help__(deep=deep, with_formatting=with_formatting) + "\n")
 
     def __help__(self, deep=2, with_formatting=False):
         return [x.__help__(deep=deep, with_formatting=with_formatting) for x in self.data]
@@ -108,7 +113,7 @@ class NodeList(UserList):
         elif len(self.data) != 0:
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=parent, on_attribute=on_attribute))
 
-        if isinstance(value, basestring):
+        if isinstance(value, string_instance):
             self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
         elif isinstance(value, dict):
             self.data.append(to_node(value, parent=parent, on_attribute=on_attribute))
@@ -183,7 +188,7 @@ class Node(object):
             return None
 
         generator = itertools.dropwhile(lambda x: x is not self, in_list)
-        generator.next()
+        next(generator)
         return generator
 
     @property
@@ -203,7 +208,7 @@ class Node(object):
             return None
 
         generator = itertools.dropwhile(lambda x: x is not self, reversed(in_list))
-        generator.next()
+        next(generator)
         return generator
 
     def get_indentation_node(self):
@@ -343,8 +348,8 @@ class Node(object):
         ] + self._other_identifiers)))
 
     def _get_helpers(self):
-        not_helpers = {'copy', 'dumps', 'find', 'findAll', 'find_all', 'fst', 'help', 'next_generator', 'previous_generator', 'get_indentation_node', 'indentation_node_is_direct', 'parent_find'}
-        return filter(lambda x: not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x)), dir(self))
+        not_helpers = set(['copy', 'dumps', 'find', 'findAll', 'find_all', 'fst', 'help', 'next_generator', 'previous_generator', 'get_indentation_node', 'indentation_node_is_direct', 'parent_find'])
+        return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
     def fst(self):
         to_return = {}
@@ -363,7 +368,7 @@ class Node(object):
         return baron.dumps(self.fst())
 
     def help(self, deep=2, with_formatting=False):
-        print self.__help__(deep=deep, with_formatting=with_formatting)
+        sys.stdout.write(self.__help__(deep=deep, with_formatting=with_formatting) + "\n")
 
     def __help__(self, deep=2, with_formatting=False):
         new_deep = deep - 1 if not isinstance(deep, bool) else deep
@@ -407,11 +412,11 @@ class Node(object):
         if name == "init" or self.init:
             return super(Node, self).__setattr__(name, value)
 
-        if name in self._str_keys and not isinstance(value, (basestring, int)):
+        if name in self._str_keys and not isinstance(value, (string_instance, int)):
             value = str(value)
 
         elif name in self._dict_keys:
-            if isinstance(value, basestring):
+            if isinstance(value, string_instance):
                 value = to_node(baron.parse(value)[0], parent=self, on_attribute=name)
 
             if isinstance(value, dict):  # assuming that we got some fst
@@ -424,7 +429,7 @@ class Node(object):
             # TODO check attribution to raise error/warning?
 
         elif name in self._list_keys:
-            if isinstance(value, basestring):
+            if isinstance(value, string_instance):
                 value = NodeList(map(lambda x: to_node(x, parent=self, on_attribute=name), baron.parse(value)))
 
             elif isinstance(value, dict):  # assuming that we got some fst
@@ -440,7 +445,7 @@ class Node(object):
                 # assume the user can pass a list of random stuff
                 new_value = NodeList()
                 for i in value:
-                    if isinstance(i, basestring):
+                    if isinstance(i, string_instance):
                         new_value.append(to_node(baron.parse(i)[0], parent=self, on_attribute=name))
 
                     elif isinstance(i, dict):  # assuming that we got some fst
@@ -607,14 +612,14 @@ class DotNode(Node):
 
 class CallNode(Node):
     def append_value(self, value, trailing=False):
-        if isinstance(value, basestring):
+        if isinstance(value, string_instance):
             value = baron.parse("a(%s)" % value)[0]["value"][1]["value"][0]
         self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
 
 class RedBaron(NodeList):
     def __init__(self, source_code):
-        self.data = map(lambda x: to_node(x, parent=self, on_attribute="root"), baron.parse(source_code))
+        self.data = [to_node(x, parent=self, on_attribute="root") for x in baron.parse(source_code)]
 
 
 # enter the black magic realm, beware of what you might find
@@ -655,6 +660,8 @@ class BlackMagicImportHook(ModuleType):
         self._env = MissingNodesBuilder(globals(), baked_args)
 
     def __getattr__(self, name):
+        if name == "_env":
+            raise AttributeError
         return self._env[name]
 
     def __setattr__(self, name, value):

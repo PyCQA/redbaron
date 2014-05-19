@@ -125,7 +125,7 @@ def test_assign_on_object_value_fst():
 
 def test_generate_helpers():
     red = RedBaron("def a(): pass")
-    assert set(red[0]._generate_identifiers()) == {"funcdef", "funcdef_", "funcdefnode", "def", "def_"}
+    assert set(red[0]._generate_identifiers()) == set(["funcdef", "funcdef_", "funcdefnode", "def", "def_"])
 
 
 def test_assign_node_list():
@@ -183,8 +183,8 @@ def test_parent():
     red = RedBaron("[1, 2, 3]")
     assert red.parent is None
     assert red[0].parent is red
-    assert map(lambda x: x.parent, red[0].value) == [red[0]]*5
-    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]*5
+    assert [x.parent for x in red[0].value] == [red[0]]*5
+    assert [x.on_attribute for x in red[0].value] == ["value"]*5
 
 
 def test_parent_copy():
@@ -206,26 +206,26 @@ def test_parent_assign():
     assert red[0].target.on_attribute == "target"
 
     red = RedBaron("[1, 2, 3]")
-    assert map(lambda x: x.parent, red[0].value) == [red[0]]*5
-    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]*5
+    assert [x.parent for x in red[0].value] == [red[0]]*5
+    assert [x.on_attribute for x in red[0].value] == ["value"]*5
     red[0].value = "pouet"
-    assert map(lambda x: x.parent, red[0].value) == [red[0]]
-    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
+    assert [x.parent for x in red[0].value] == [red[0]]
+    assert [x.on_attribute for x in red[0].value] == ["value"]
     red[0].value = ["pouet"]
-    assert map(lambda x: x.parent, red[0].value) == [red[0]]
-    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
+    assert [x.parent for x in red[0].value] == [red[0]]
+    assert [x.on_attribute for x in red[0].value] == ["value"]
     red[0].value = {"type": "name", "value": "plop"}
-    assert map(lambda x: x.parent, red[0].value) == [red[0]]
-    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
+    assert [x.parent for x in red[0].value] == [red[0]]
+    assert [x.on_attribute for x in red[0].value] == ["value"]
     red[0].value = [{"type": "name", "value": "plop"}]
-    assert map(lambda x: x.parent, red[0].value) == [red[0]]
-    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
+    assert [x.parent for x in red[0].value] == [red[0]]
+    assert [x.on_attribute for x in red[0].value] == ["value"]
     red[0].value = NameNode({"type": "name", "value": "pouet"})
-    assert map(lambda x: x.parent, red[0].value) == [red[0]]
-    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
+    assert [x.parent for x in red[0].value] == [red[0]]
+    assert [x.on_attribute for x in red[0].value] == ["value"]
     red[0].value = [NameNode({"type": "name", "value": "pouet"})]
-    assert map(lambda x: x.parent, red[0].value) == [red[0]]
-    assert map(lambda x: x.on_attribute, red[0].value) == ["value"]
+    assert [x.parent for x in red[0].value] == [red[0]]
+    assert [x.on_attribute for x in red[0].value] == ["value"]
 
 
 def test_node_next():
@@ -441,8 +441,8 @@ def test_indent_root():
     red = RedBaron("pouet")
     assert red[0].indentation == ""
     red = RedBaron("pouet\nplop\npop")
-    assert map(lambda x: x.indentation, red) == ["", "", "", "", ""]
-    assert map(lambda x: x.get_indentation_node(), red) == [None]*5
+    assert [x.indentation for x in red] == ["", "", "", "", ""]
+    assert [x.get_indentation_node() for x in red] == [None]*5
 
 
 def test_in_while():
