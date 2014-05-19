@@ -348,7 +348,7 @@ class Node(object):
         ] + self._other_identifiers)))
 
     def _get_helpers(self):
-        not_helpers = {'copy', 'dumps', 'find', 'findAll', 'find_all', 'fst', 'help', 'next_generator', 'previous_generator', 'get_indentation_node', 'indentation_node_is_direct', 'parent_find'}
+        not_helpers = set(['copy', 'dumps', 'find', 'findAll', 'find_all', 'fst', 'help', 'next_generator', 'previous_generator', 'get_indentation_node', 'indentation_node_is_direct', 'parent_find'])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
     def fst(self):
