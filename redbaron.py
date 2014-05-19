@@ -2,9 +2,14 @@ import sys
 import inspect
 import itertools
 from types import ModuleType
-from utils.utils import UserList, string_instance
-
 import baron
+from baron.utils import python_version, string_instance
+
+
+if python_version == 3:
+    from collections import UserList
+else:
+    from UserList import UserList
 
 
 def indent(line, indentation):
