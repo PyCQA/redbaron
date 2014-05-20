@@ -1,3 +1,12 @@
+.. ipython:: python
+    :suppress:
+
+    import sys
+    sys.path.append("..")
+
+    from redbaron import RedBaron
+
+
 Other
 =====
 
