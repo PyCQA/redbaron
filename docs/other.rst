@@ -51,9 +51,9 @@ match the query.
     r = red.pass_
     r
     r.parent
-    r.find_parent('def')
-    r.find_parent('def', name='a')
-    r.find_parent('def', name='dont_exist')
+    r.parent_find('def')
+    r.parent_find('def', name='a')
+    r.parent_find('def', name='dont_exist')
 
 .next .previous .next_generator() .previous_generator()
 -------------------------------------------------------
