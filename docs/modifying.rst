@@ -160,3 +160,7 @@ As you can guess :file:`","` is not a valid python program.
 This will be fixed in the future but it will require quite a lot of work to be
 done correctly and other things are more urgent.
 
+Next
+====
+
+To learn advanced modifying function in RedBaron read :doc:`modifying_helpers`.

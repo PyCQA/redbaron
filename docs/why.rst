@@ -40,3 +40,8 @@ Having a FST (or at least a good abstraction build on it) also makes it easier
 to do code generation and code analysis while those two operations are already
 quite feasible (using `ast.py <http://docs.python.org/2/library/ast.html>`_ for
 example and a templating engine).
+
+Next
+====
+
+To start playing with RedBaron read :doc:`basics`.

@@ -225,3 +225,8 @@ way:
 
     In [52]: red[0].target.copy()
 
+
+Next
+====
+
+To learn how to find things in RedBaron read :doc:`querying`.

@@ -148,3 +148,7 @@ With :file:`.copy()`:
     list_node_value
     list_node_value.value
 
+Next
+====
+
+To learn some other misc details of RedBaron read :doc:`other`.
