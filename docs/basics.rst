@@ -227,6 +227,6 @@ way:
 
 
 Next
-====
+~~~~
 
 To learn how to find things in RedBaron read :doc:`querying`.

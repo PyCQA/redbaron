@@ -77,6 +77,6 @@ you try to *call* the node this way :file:`node(some_arguments)` this will call
 :file:`.find_all()` also supports the option :file:`recursive=False`.
 
 Next
-====
+~~~~
 
 To learn how to modify stuff in RedBaron read :doc:`modifying`.

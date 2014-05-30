@@ -42,6 +42,6 @@ quite feasible (using `ast.py <http://docs.python.org/2/library/ast.html>`_ for
 example and a templating engine).
 
 Next
-====
+~~~~
 
 To start playing with RedBaron read :doc:`basics`.
