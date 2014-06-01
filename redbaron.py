@@ -406,7 +406,7 @@ class Node(object):
 
     def copy(self):
         # XXX not very optimised but at least very simple
-        return Node(self.fst())
+        return to_node(self.fst())
 
     def __setattr__(self, name, value):
         if name == "init" or self.init:

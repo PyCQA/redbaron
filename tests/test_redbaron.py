@@ -4,7 +4,7 @@
 
 import baron
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
-                      PassNode, NodeList, CommaNode, DotNode)
+                      PassNode, NodeList, CommaNode, DotNode, CallNode)
 
 
 def test_empty():
@@ -916,3 +916,8 @@ def test_find_case_insensitive():
     assert red.find("NameNode") is red[0]
     assert red.find("NaMeNoDe") is red[0]
     assert red.find("namenode") is red[0]
+
+
+def test_copy_correct_isntance():
+    red = RedBaron("a()")
+    assert isinstance(red[0].value[1].copy(), CallNode)
