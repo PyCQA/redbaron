@@ -10,7 +10,7 @@ heavily inspired by BeautifulSoup.
 Baron is a Full Syntax Tree (FST) library for Python. By opposition to an AST
 which drops some syntax information in the process of its creation (like empty
 lines, comments, formatting), a FST keeps everything and guarantees the
-operation **ast_to_code(code_to_ast(source_code)) == source_code**.
+operation :file:`fst_to_code(code_to_fst(source_code)) == source_code`.
 
 Code
 ----
