@@ -25,6 +25,8 @@ def to_node(node, parent=None, on_attribute=None):
 
 
 class NodeList(UserList):
+    # NodeList doesn't have a previous nor a next
+    # avoid common bug in shell by providing None
     next = None
     previous = None
 
