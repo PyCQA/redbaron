@@ -2,8 +2,10 @@ import sys
 import inspect
 import itertools
 from types import ModuleType
+
 import baron
 from baron.utils import python_version, string_instance
+from baron.render import nodes_rendering_order
 
 
 if python_version == 3:
@@ -479,6 +481,10 @@ class Node(object):
                 value = new_value
 
         return super(Node, self).__setattr__(name, value)
+
+
+    def _render(self):
+        return nodes_rendering_order[self.type]
 
 
 class IntNode(Node):
