@@ -103,6 +103,7 @@ class NodeList(UserList):
         return tuple([x for x in self.data if not isinstance(x, (EndlNode, CommaNode, DotNode))])
 
     def append_comma(self, value, parent, on_attribute, trailing):
+        "Generic function to append a value in a separated by comma list"
         if self.find("comma", recursive=False) and self.data[-1].type != "comma":
             comma = self.comma.copy()
             comma.parent = parent
@@ -130,6 +131,7 @@ class NodeList(UserList):
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": []}, parent=parent, on_attribute=on_attribute))
 
     def append_endl(self, value, parent, on_attribute):
+        "Generic function to append a value in a separated by endl list"
         if self.filtered()[-1].indentation_node_is_direct() is False:
             # we are in this kind of case: while a: pass
             self.data.insert(0, to_node({
