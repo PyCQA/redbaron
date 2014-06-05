@@ -921,3 +921,9 @@ def test_find_case_insensitive():
 def test_copy_correct_isntance():
     red = RedBaron("a()")
     assert isinstance(red[0].value[1].copy(), CallNode)
+
+
+def test_indentation_no_parent():
+    red = RedBaron("a")
+    assert red[0].copy().get_indentation_node() is None
+    assert red[0].copy().indentation == ''

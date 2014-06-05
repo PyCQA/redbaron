@@ -225,6 +225,10 @@ class Node(object):
             # by convention, an endl node will always have this indentation
             return None
 
+        if self.parent is None:
+            # we have been copied and not parent is set yet
+            return None
+
         if isinstance(getattr(self.parent, self.on_attribute), Node):
             return self.parent.get_indentation_node()
 
