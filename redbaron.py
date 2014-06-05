@@ -633,6 +633,7 @@ class RedBaron(NodeList):
 # and a new class with Node as the parent will be created on the fly
 # if this class doesn't already exist (like IntNode for example)
 # while this is horribly black magic, this allows quite some cool stuff
+# FIXME since we have the rendering_order_dict we can remove that and generate missing class instead
 class MissingNodesBuilder(dict):
     def __init__(self, globals, baked_args={}):
         self.globals = globals
