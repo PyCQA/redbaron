@@ -158,22 +158,28 @@ class Node(object):
         self.init = True
         self.parent = parent
         self.on_attribute = on_attribute
-        self._str_keys = []
+        self._str_keys = ["type"]
         self._list_keys = []
         self._dict_keys = []
-        for key, value in node.items():
-            if isinstance(value, dict):
-                if value:
-                    setattr(self, key, to_node(value, parent=self, on_attribute=key))
+        self.type = node["type"]
+        for kind, key, _ in filter(lambda x: x[0] != "constant", self._render()):
+            if kind == "key" and isinstance(node[key], (dict, type(None))):
+                if node[key]:
+                    setattr(self, key, to_node(node[key], parent=self, on_attribute=key))
                 else:
                     setattr(self, key, None)
                 self._dict_keys.append(key)
-            elif isinstance(value, list):
-                setattr(self, key, NodeList(map(lambda x: to_node(x, parent=self, on_attribute=key), value), parent=self))
-                self._list_keys.append(key)
-            else:
-                setattr(self, key, value)
+
+            elif kind == "key" and isinstance(node[key], basestring):
+                setattr(self, key, node[key])
                 self._str_keys.append(key)
+
+            elif kind in ("list", "formatting"):
+                setattr(self, key, NodeList(map(lambda x: to_node(x, parent=self, on_attribute=key), node[key]), parent=self))
+                self._list_keys.append(key)
+
+            else:
+                raise Exception(str((node["type"], kind, key)))
 
         self.init = False
 
