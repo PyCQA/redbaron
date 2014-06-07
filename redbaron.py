@@ -38,7 +38,7 @@ class GenericNodesUtils(object):
             value.on_attribute = on_attribute
             return value
 
-        raise NotImplemented()
+        raise NotImplemented
 
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
         if isinstance(value, string_instance):
@@ -73,7 +73,7 @@ class GenericNodesUtils(object):
 
             return new_value
 
-        raise NotImplemented()
+        raise NotImplemented
 
 
 class NodeList(UserList, GenericNodesUtils):
