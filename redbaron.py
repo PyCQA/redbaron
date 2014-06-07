@@ -404,7 +404,9 @@ class Node(object):
 
         to_join = ["%s()" % self.__class__.__name__]
 
-        if deep:
+        if not deep:
+            to_join[-1] += " ..."
+        else:
             to_join.append("  # identifiers: %s" % ", ".join(self._generate_identifiers()))
             if self._get_helpers():
                 to_join.append("  # helpers: %s" % ", ".join(self._get_helpers()))
@@ -416,8 +418,6 @@ class Node(object):
                 to_join.append(("%s ->" % key))
                 for i in getattr(self, key):
                     to_join.append("  * " + indent(i.__help__(deep=new_deep, with_formatting=with_formatting), "      ").lstrip())
-        else:
-            to_join[-1] += " ..."
 
         if deep and with_formatting:
             to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" in key]
