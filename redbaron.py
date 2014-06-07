@@ -348,16 +348,20 @@ class Node(GenericNodesUtils):
         if not recursive:
             return to_return
 
-        for i in self._dict_keys:
-            i = getattr(self, i)
-            if not i:
-                continue
+        for kind, key, _ in filter(lambda x: x[0] == "list" or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
+            if kind == "key":
+                i = getattr(self, key)
+                if not i:
+                    continue
 
-            to_return += i.find_all(identifier, recursive, **kwargs)
-
-        for key in self._list_keys:
-            for i in getattr(self, key):
                 to_return += i.find_all(identifier, recursive, **kwargs)
+
+            elif kind == "list":
+                for i in getattr(self, key):
+                    to_return += i.find_all(identifier, recursive, **kwargs)
+
+            else:
+                raise Exception()
 
         return to_return
 
