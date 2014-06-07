@@ -148,6 +148,8 @@ class NodeList(UserList):
             new_endl_node.parent = parent
             new_endl_node.on_attribute = on_attribute
             self.data.insert(-1, new_endl_node)
+
+        # FIXME only working with string, I need generic convertion function somewhere for Node and NodeList
         self.data.insert(-1, to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
 
 
