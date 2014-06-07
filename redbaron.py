@@ -26,7 +26,22 @@ def to_node(node, parent=None, on_attribute=None):
         return type(class_name, (Node,), {})(node, parent=parent, on_attribute=on_attribute)
 
 
-class NodeList(UserList):
+class GenericNodesUtils(object):
+    # XXX should this be an abstract class?
+    def _convert_input_to_node_object(self, value, parent, on_attribute):
+        if isinstance(value, string_instance):
+            return to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute)
+        elif isinstance(value, dict):
+            return to_node(value, parent=parent, on_attribute=on_attribute)
+        elif isinstance(value, Node):
+            value.parent = parent
+            value.on_attribute = on_attribute
+            return value
+        else:
+            raise NotImplemented
+
+
+class NodeList(UserList, GenericNodesUtils):
     # NodeList doesn't have a previous nor a next
     # avoid common bug in shell by providing None
     next = None
@@ -118,16 +133,7 @@ class NodeList(UserList):
         elif len(self.data) != 0:
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=parent, on_attribute=on_attribute))
 
-        if isinstance(value, string_instance):
-            self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
-        elif isinstance(value, dict):
-            self.data.append(to_node(value, parent=parent, on_attribute=on_attribute))
-        elif isinstance(value, Node):
-            value.parent = parent
-            value.on_attribute = on_attribute
-            self.data.append(value)
-        else:
-            raise NotImplemented
+        self.data.append(self._convert_input_to_node_object(value, parent, on_attribute))
 
         if trailing:
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": []}, parent=parent, on_attribute=on_attribute))
@@ -149,8 +155,7 @@ class NodeList(UserList):
             new_endl_node.on_attribute = on_attribute
             self.data.insert(-1, new_endl_node)
 
-        # FIXME only working with string, I need generic convertion function somewhere for Node and NodeList
-        self.data.insert(-1, to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
+        self.data.insert(-1, self._convert_input_to_node_object(value, parent=parent, on_attribute=on_attribute))
 
 
 class Node(object):
