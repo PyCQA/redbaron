@@ -57,19 +57,7 @@ class GenericNodesUtils(object):
             # assume the user can pass a list of random stuff
             new_value = NodeList()
             for i in value:
-                if isinstance(i, string_instance):
-                    new_value.append(to_node(baron.parse(i)[0], parent=parent, on_attribute=on_attribute))
-
-                elif isinstance(i, dict):  # assuming that we got some fst
-                    new_value.append(to_node(i, parent=parent, on_attribute=on_attribute))
-
-                elif isinstance(i, Node):
-                    i.parent = parent
-                    i.on_attribute = on_attribute
-                    new_value.append(i)
-
-                else:
-                    new_value.append(i)
+                new_value.append(self._convert_input_to_node_object(i, parent, on_attribute))
 
             return new_value
 
