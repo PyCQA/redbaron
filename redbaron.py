@@ -443,6 +443,8 @@ class Node(object):
         if name == "init" or self.init:
             return super(Node, self).__setattr__(name, value)
 
+        # FIXME I'm pretty sure that Bool should also be put in the isinstance for cases like with_parenthesis/as
+        # also, the int stuff won't scale to all number notations
         if name in self._str_keys and not isinstance(value, (string_instance, int)):
             value = str(value)
 
