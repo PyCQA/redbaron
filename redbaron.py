@@ -158,7 +158,7 @@ class NodeList(UserList, GenericNodesUtils):
         self.data.insert(-1, self._convert_input_to_node_object(value, parent=parent, on_attribute=on_attribute))
 
 
-class Node(object):
+class Node(GenericNodesUtils):
     _other_identifiers = []
 
     def __init__(self, node, parent=None, on_attribute=None):
@@ -454,17 +454,7 @@ class Node(object):
             value = str(value)
 
         elif name in self._dict_keys:
-            if isinstance(value, string_instance):
-                value = to_node(baron.parse(value)[0], parent=self, on_attribute=name)
-
-            if isinstance(value, dict):  # assuming that we got some fst
-                value = to_node(value, parent=self, on_attribute=name)
-
-            if isinstance(value, Node):
-                value.parent = self
-                value.on_attribute = name
-
-            # TODO check attribution to raise error/warning?
+            value = self._convert_input_to_node_object(value, self, name)
 
         elif name in self._list_keys:
             if isinstance(value, string_instance):
