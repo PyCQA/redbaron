@@ -37,8 +37,8 @@ class GenericNodesUtils(object):
             value.parent = parent
             value.on_attribute = on_attribute
             return value
-        else:
-            raise NotImplemented
+
+        raise NotImplemented()
 
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
         if isinstance(value, string_instance):
