@@ -40,6 +40,41 @@ class GenericNodesUtils(object):
         else:
             raise NotImplemented
 
+    def _convert_input_to_node_object_list(self, value, parent, on_attribute):
+        if isinstance(value, string_instance):
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(value)))
+
+        if isinstance(value, dict):  # assuming that we got some fst
+                                     # also assuming the user do strange things
+            return NodeList([to_node(value, parent=parent, on_attribute=on_attribute)])
+
+        if isinstance(value, Node):
+            value.parent = parent
+            value.on_attribute = on_attribute
+            return [value]
+
+        if isinstance(value, list) and not isinstance(value, NodeList):
+            # assume the user can pass a list of random stuff
+            new_value = NodeList()
+            for i in value:
+                if isinstance(i, string_instance):
+                    new_value.append(to_node(baron.parse(i)[0], parent=parent, on_attribute=on_attribute))
+
+                elif isinstance(i, dict):  # assuming that we got some fst
+                    new_value.append(to_node(i, parent=parent, on_attribute=on_attribute))
+
+                elif isinstance(i, Node):
+                    i.parent = parent
+                    i.on_attribute = on_attribute
+                    new_value.append(i)
+
+                else:
+                    new_value.append(i)
+
+            return new_value
+
+        raise NotImplemented()
+
 
 class NodeList(UserList, GenericNodesUtils):
     # NodeList doesn't have a previous nor a next
@@ -457,37 +492,7 @@ class Node(GenericNodesUtils):
             value = self._convert_input_to_node_object(value, self, name)
 
         elif name in self._list_keys:
-            if isinstance(value, string_instance):
-                value = NodeList(map(lambda x: to_node(x, parent=self, on_attribute=name), baron.parse(value)))
-
-            elif isinstance(value, dict):  # assuming that we got some fst
-                                         # also assuming the user do strange things
-                value = NodeList([to_node(value, parent=self, on_attribute=name)])
-
-            elif isinstance(value, Node):
-                value.parent = self
-                value.on_attribute = name
-                value = [value]
-
-            elif isinstance(value, list) and not isinstance(value, NodeList):
-                # assume the user can pass a list of random stuff
-                new_value = NodeList()
-                for i in value:
-                    if isinstance(i, string_instance):
-                        new_value.append(to_node(baron.parse(i)[0], parent=self, on_attribute=name))
-
-                    elif isinstance(i, dict):  # assuming that we got some fst
-                        new_value.append(to_node(i, parent=self, on_attribute=name))
-
-                    elif isinstance(i, Node):
-                        i.parent = self
-                        i.on_attribute = name
-                        new_value.append(i)
-
-                    else:
-                        new_value.append(i)
-
-                value = new_value
+            value = self._convert_input_to_node_object_list(value, self, name)
 
         return super(Node, self).__setattr__(name, value)
 
