@@ -655,54 +655,7 @@ class RedBaron(NodeList):
         self.data = [to_node(x, parent=self, on_attribute="root") for x in baron.parse(source_code)]
 
 
-# enter the black magic realm, beware of what you might find
-# (in fact that's pretty simple appart from the strange stuff needed)
-# this basically allows to write code like:
-# from redbaron.nodes import WatheverNode
-# and a new class with Node as the parent will be created on the fly
-# if this class doesn't already exist (like IntNode for example)
-# while this is horribly black magic, this allows quite some cool stuff
-# FIXME since we have the rendering_order_dict we can remove that and generate missing class instead
-class MissingNodesBuilder(dict):
-    def __init__(self, globals, baked_args={}):
-        self.globals = globals
-        self.baked_args = baked_args
-
-    def __getitem__(self, key):
-        if key in self.globals:
-            return self.globals[key]
-
-        if key.endswith("Node"):
-            new_node_class = type(key, (Node,), {})
-            self.globals[key] = new_node_class
-            return new_node_class
-
-        raise ImportError("cannot import name %s" % key)
-
-
-class BlackMagicImportHook(ModuleType):
-    def __init__(self, self_module, baked_args={}):
-        # this code is directly inspired by amoffat/sh
-        # see https://github.com/amoffat/sh/blob/80af5726d8aa42017ced548abbd39b489068922a/sh.py#L1695
-        for attr in ["__builtins__", "__doc__", "__name__", "__package__"]:
-            setattr(self, attr, getattr(self_module, attr))
-
-        # python 3.2 (2.7 and 3.3 work fine) breaks on osx (not ubuntu)
-        # if we set this to None. and 3.3 needs a value for __path__
-        self.__path__ = []
-        self.self_module = self_module
-        self._env = MissingNodesBuilder(globals(), baked_args)
-
-    def __getattr__(self, name):
-        if name == "_env":
-            raise AttributeError
-        return self._env[name]
-
-    def __setattr__(self, name, value):
-        if hasattr(self, "_env"):
-            self._env[name] = value
-        ModuleType.__setattr__(self, name, value)
-
-
-self = sys.modules[__name__]
-sys.modules[__name__] = BlackMagicImportHook(self)
+for node_type in nodes_rendering_order:
+    class_name = node_type.capitalize() + "Node"
+    if class_name not in globals():
+        globals()[class_name] = type(class_name, (Node,), {})
