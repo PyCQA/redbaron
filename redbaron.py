@@ -655,6 +655,8 @@ class RedBaron(NodeList):
         self.data = [to_node(x, parent=self, on_attribute="root") for x in baron.parse(source_code)]
 
 
+# to avoid to have to declare EVERY node class, dynamically create the missings
+# ones using nodes_rendering_order as a reference
 for node_type in nodes_rendering_order:
     class_name = node_type.capitalize() + "Node"
     if class_name not in globals():
