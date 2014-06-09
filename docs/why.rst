@@ -14,7 +14,7 @@ series of problems to illustrate it. Let's say that you want to write a program 
 * implement the class browser of smalltalk for python (the whole one where you can edit the code of the methods, not just showing code)
 
 It is very likely that you will end up with the awkward feeling of writing
-clumpsy weak code that is very likely to break because you didn't though about
+clumpsy weak code that is very likely to break because you didn't thought about
 all the annoying special cases and the formatting keeps bothering you. You may
 end up playing with `ast.py <http://docs.python.org/2/library/ast.html>`_ until
 you realize that it removes too much information to be suitable for those
@@ -29,8 +29,8 @@ representation of your code, modifying it and converting it back to a string
 will give you back your code only modified where you have modified the tree.
 
 Said in another way, what I'm trying to achieve with Baron is a paradigm change in
-which writing code that will modify code is now a realist task that is worth
-the price (I'm not saying a simple task, but a realist task, it's still a
+which writing code that will modify code is now a realistic task that is worth
+the price (I'm not saying a simple task, but a realistic task, it's still a
 complex task).
 
 Other usages
@@ -38,8 +38,8 @@ Other usages
 
 Having a FST (or at least a good abstraction build on it) also makes it easier
 to do code generation and code analysis while those two operations are already
-quite feasible (using `ast.py <http://docs.python.org/2/library/ast.html>`_ for
-example and a templating engine).
+quite feasible (using `ast.py <http://docs.python.org/2/library/ast.html>`_ and 
+a templating engine for example).
 
 Next
 ~~~~
