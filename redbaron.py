@@ -113,7 +113,7 @@ class NodeList(UserList, GenericNodesUtils):
     def help(self, deep=2, with_formatting=False):
         for num, i in enumerate(self.data):
             sys.stdout.write(str(num) + " -----------------------------------------------------\n")
-            sys.stdout.write(i.__help__(deep=deep, with_formatting=with_formatting) + "\n")
+            i.help()
 
     def __help__(self, deep=2, with_formatting=False):
         return [x.__help__(deep=deep, with_formatting=with_formatting) for x in self.data]
