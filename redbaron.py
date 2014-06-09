@@ -3,6 +3,10 @@ import inspect
 import itertools
 from types import ModuleType
 
+from pygments import highlight
+from pygments.lexers import PythonLexer
+from pygments.formatters import Terminal256Formatter
+
 import baron
 from baron.utils import python_version, string_instance
 from baron.render import nodes_rendering_order
@@ -469,7 +473,10 @@ class Node(GenericNodesUtils):
         return "\n  ".join(to_join)
 
     def __repr__(self):
-        return baron.dumps([self.fst()])
+        if "get_ipython" in globals():
+            return highlight(baron.dumps([self.fst()]), PythonLexer(), Terminal256Formatter(style='monokai'))
+        else:
+            return baron.dumps()
 
     def copy(self):
         # XXX not very optimised but at least very simple
