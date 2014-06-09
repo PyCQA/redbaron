@@ -448,9 +448,9 @@ class Node(GenericNodesUtils):
         if not deep:
             to_join[-1] += " ..."
         else:
-            to_join.append("  # identifiers: %s" % ", ".join(self._generate_identifiers()))
+            to_join.append("# identifiers: %s" % ", ".join(self._generate_identifiers()))
             if self._get_helpers():
-                to_join.append("  # helpers: %s" % ", ".join(self._get_helpers()))
+                to_join.append("# helpers: %s" % ", ".join(self._get_helpers()))
             to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
             to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(deep=new_deep, with_formatting=with_formatting), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
             # need to do this otherwise I end up with stacked quoted list
