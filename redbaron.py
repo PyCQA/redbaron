@@ -692,7 +692,7 @@ class HelpLexer(RegexLexer):
             (r"(None|False|True)", String),
             (r'(\*)( \w+Node)', bygroups(Operator, Keyword)),
             (r'\w+Node', Name.Function),
-            (r'(\*|=|->|\(|\))', Operator),
+            (r'(\*|=|->|\(|\)|\.\.\.)', Operator),
             (r'\w+', Text),
             (r'\s+', Text),
         ]
