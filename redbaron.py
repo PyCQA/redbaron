@@ -1,7 +1,6 @@
 import sys
 import inspect
 import itertools
-from types import ModuleType
 
 from pygments import highlight
 from pygments.lexers import PythonLexer
