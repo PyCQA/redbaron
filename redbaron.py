@@ -475,7 +475,7 @@ class Node(GenericNodesUtils):
         if "get_ipython" in globals():
             return highlight(baron.dumps([self.fst()]), PythonLexer(), Terminal256Formatter(style='monokai'))
         else:
-            return baron.dumps()
+            return baron.dumps([self.fst()])
 
     def copy(self):
         # XXX not very optimised but at least very simple
