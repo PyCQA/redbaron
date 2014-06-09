@@ -3,6 +3,8 @@ import inspect
 import itertools
 
 from pygments import highlight
+from pygments.token import Comment, Text, String, Keyword, Name, Operator
+from pygments.lexer import RegexLexer, bygroups
 from pygments.lexers import PythonLexer
 from pygments.formatters import Terminal256Formatter
 
@@ -438,7 +440,10 @@ class Node(GenericNodesUtils):
         return baron.dumps(self.fst())
 
     def help(self, deep=2, with_formatting=False):
-        sys.stdout.write(self.__help__(deep=deep, with_formatting=with_formatting) + "\n")
+        if runned_from_ipython():
+            sys.stdout.write(highlight(self.__help__(deep=deep, with_formatting=with_formatting) + "\n", HelpLexer(), Terminal256Formatter(style='monokai')))
+        else:
+            sys.stdout.write(self.__help__(deep=deep, with_formatting=with_formatting) + "\n")
 
     def __help__(self, deep=2, with_formatting=False):
         new_deep = deep - 1 if not isinstance(deep, bool) else deep
@@ -675,3 +680,20 @@ def runned_from_ipython():
         return True
     except NameError:
         return False
+
+
+class HelpLexer(RegexLexer):
+    name = 'Lexer for RedBaron .help() method output'
+
+    tokens = {
+        'root': [
+            (r"#.*$", Comment),
+            (r"'[^']*'", String),
+            (r"(None|False|True)", String),
+            (r'(\*)( \w+Node)', bygroups(Operator, Keyword)),
+            (r'\w+Node', Name.Function),
+            (r'(\*|=|->|\(|\))', Operator),
+            (r'\w+', Text),
+            (r'\s+', Text),
+        ]
+    }
