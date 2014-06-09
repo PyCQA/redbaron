@@ -90,7 +90,7 @@ when called on a :file:`NodeList`:
 helpers
 ~~~~~~~
 
-Some nodes comme with helpers method, :file:`.help()` display them when they
+Some nodes come with helpers method, :file:`.help()` displays them when they
 are present:
 
 .. ipython:: python
@@ -129,8 +129,8 @@ the value :file:`True` if you want to display the whole tree.
 with_formatting
 ~~~~~~~~~~~~~~~
 
-:file:`.help()` accept the option :file:`with_formatting` that is set a
-:file:`False` by default. With set at :file:`True` it will also display the
+:file:`.help()` accepts the option :file:`with_formatting` that is set at
+:file:`False` by default. If set at :file:`True` it will also display the
 attributes responsible for holding the formatting of the node (they are always
 node list):
 
@@ -138,10 +138,10 @@ node list):
 
     In [12]: red.help(with_formatting=True)
 
-Those attributes are always surrounding syntax element of python like
-:file:`[](),.{}` or keywords. You should, normally, won't have a lot of reasons
+Those attributes are always surrounding syntax element of Python like
+:file:`[](),.{}` or keywords. You should, normally, not have a lot of reasons
 to play with them. For the moment, the nodes aren't documented, so the best way
-to have an idea on where a formatting nodes takes action, appart from modifying
+to have an idea on where a formatting node takes action, apart from modifying
 it, is to look at `the code of baron.dumps<https://github.com/Psycojoker/baron/blob/master/baron/dumper.py>`_.
 
 nodes structure
@@ -150,7 +150,7 @@ nodes structure
 Nodes can have 3 kind of attributes (which can be accessed like normal object
 attributes):
 
-* data attributes which are nearly always strings, they are shown with a :file:`=` in
+* data attributes, which are nearly always strings. They are shown with a :file:`=` in
   :file:`.help()`. :file:`.value` here for example.
 
 .. ipython::
@@ -161,7 +161,8 @@ attributes):
 
     In [3]: red[0].value
 
-* node attributes which are other nodes, they are shown with a :file:`->` followed by the name of the other node at the next line in :file:`.help()`. :file:`.target` and :file:`.value` here for example.
+* node attributes, which are other nodes. They are shown with a :file:`->` followed by the name of the other node 
+  at the next line in :file:`.help()`. :file:`.target` and :file:`.value` here for example.
 
 .. ipython::
 
@@ -171,7 +172,8 @@ attributes):
 
     In [21]: red[0].target.help()
 
-* nodelist attributes which are a list of other nodes, they are shown with a :file:`->` followed by a series of names of the other nodes starting with a \* for every item of the list. :file:`.value` here for example:
+* nodelist attributes, which are lists of other nodes. They are shown with a :file:`->` followed by a series of names 
+  of the other nodes starting with a :file:`*` for every item of the list. :file:`.value` here for example:
 
 .. ipython::
 
@@ -184,7 +186,7 @@ attributes):
 .dumps(), transform the tree into source code
 ---------------------------------------------
 
-To transform a RedBaron tree back into source code, just use the
+To transform a RedBaron tree back into source code, use the
 :file:`.dumps()` method. This will transform the **current selection** back
 into code.
 
@@ -196,7 +198,7 @@ into code.
 
     In [28]: red[0].target.dumps()
 
-.fst(), transform the redbaron tree into Baron FST
+.fst(), transform the RedBaron tree into Baron FST
 --------------------------------------------------
 
 To transform a RedBaron tree into Baron Full Syntax Tree, just use the
