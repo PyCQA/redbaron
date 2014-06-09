@@ -472,7 +472,7 @@ class Node(GenericNodesUtils):
         return "\n  ".join(to_join)
 
     def __repr__(self):
-        if "get_ipython" in globals():
+        if runned_from_ipython():
             return highlight(baron.dumps([self.fst()]), PythonLexer(), Terminal256Formatter(style='monokai'))
         else:
             return baron.dumps([self.fst()])
@@ -667,3 +667,11 @@ for node_type in nodes_rendering_order:
     class_name = node_type.capitalize() + "Node"
     if class_name not in globals():
         globals()[class_name] = type(class_name, (Node,), {})
+
+
+def runned_from_ipython():
+    try:
+        __IPYTHON__
+        return True
+    except NameError:
+        return False
