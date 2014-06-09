@@ -8,7 +8,7 @@ Obvious boring and annoying way to do that
 ------------------------------------------
 
 This is the way of doing things that you'll probably never want to have to do.
-You can construct by hand new RedBaron nodes and attach them to existing node's
+You can construct by hand new RedBaron nodes and attach them to existing node
 attributes. This is very boring to do since you need to construct everything by
 hand and that RedBaron node except Baron FST as first argument, but knowing how
 to do this might proves itself useful in some situation to bypass RedBaron
@@ -137,7 +137,7 @@ of setting the :file:`.parent` value of the new attribute to the corresponding
 node.
 
 This will be done if you set the attribute value using either a :file:`string`,
-a :file:`fst node` or an instance of a node or a node list.
+a :file:`fst node`, an instance of a node or a node list.
 
 The same is done for :file:`.on_attribute`.
 
@@ -145,9 +145,9 @@ Limitations
 -----------
 
 As of today, this magical parsing on string has a **big** limitation: it is
-expecting something parsable by Baron which only parse a **valid python
-program**. That means that a string passed in a __setattr__ case has to be an
-entire valid python program that the command :file:`python` can execute. This
+expecting something parsable by Baron which only parse a **valid Python
+program**. That means that a string passed in a :file:`__setattr__` case has to be an
+entire valid Python program that the command :file:`python` can execute. This
 mean that you wouldn't have been able to write something like this in the
 previous example:
 
