@@ -10,3 +10,5 @@ python:
   - "3.3"
 script:
   - py.test tests
+notifications:
+  irc: "chat.freenode.net#baron"

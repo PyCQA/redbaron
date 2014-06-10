@@ -1,7 +1,12 @@
 import sys
 import inspect
 import itertools
-from types import ModuleType
+
+from pygments import highlight
+from pygments.token import Comment, Text, String, Keyword, Name, Operator
+from pygments.lexer import RegexLexer, bygroups
+from pygments.lexers import PythonLexer
+from pygments.formatters import Terminal256Formatter
 
 import baron
 from baron.utils import python_version, string_instance
@@ -26,7 +31,45 @@ def to_node(node, parent=None, on_attribute=None):
         return type(class_name, (Node,), {})(node, parent=parent, on_attribute=on_attribute)
 
 
-class NodeList(UserList):
+class GenericNodesUtils(object):
+    # XXX should this be an abstract class?
+    def _convert_input_to_node_object(self, value, parent, on_attribute):
+        if isinstance(value, string_instance):
+            return to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute)
+        elif isinstance(value, dict):
+            return to_node(value, parent=parent, on_attribute=on_attribute)
+        elif isinstance(value, Node):
+            value.parent = parent
+            value.on_attribute = on_attribute
+            return value
+
+        raise NotImplemented
+
+    def _convert_input_to_node_object_list(self, value, parent, on_attribute):
+        if isinstance(value, string_instance):
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(value)))
+
+        if isinstance(value, dict):  # assuming that we got some fst
+                                     # also assuming the user do strange things
+            return NodeList([to_node(value, parent=parent, on_attribute=on_attribute)])
+
+        if isinstance(value, Node):
+            value.parent = parent
+            value.on_attribute = on_attribute
+            return [value]
+
+        if isinstance(value, list) and not isinstance(value, NodeList):
+            # assume the user can pass a list of random stuff
+            new_value = NodeList()
+            for i in value:
+                new_value.append(self._convert_input_to_node_object(i, parent, on_attribute))
+
+            return new_value
+
+        raise NotImplemented
+
+
+class NodeList(UserList, GenericNodesUtils):
     # NodeList doesn't have a previous nor a next
     # avoid common bug in shell by providing None
     next = None
@@ -72,7 +115,7 @@ class NodeList(UserList):
     def help(self, deep=2, with_formatting=False):
         for num, i in enumerate(self.data):
             sys.stdout.write(str(num) + " -----------------------------------------------------\n")
-            sys.stdout.write(i.__help__(deep=deep, with_formatting=with_formatting) + "\n")
+            i.help()
 
     def __help__(self, deep=2, with_formatting=False):
         return [x.__help__(deep=deep, with_formatting=with_formatting) for x in self.data]
@@ -118,16 +161,7 @@ class NodeList(UserList):
         elif len(self.data) != 0:
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=parent, on_attribute=on_attribute))
 
-        if isinstance(value, string_instance):
-            self.data.append(to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
-        elif isinstance(value, dict):
-            self.data.append(to_node(value, parent=parent, on_attribute=on_attribute))
-        elif isinstance(value, Node):
-            value.parent = parent
-            value.on_attribute = on_attribute
-            self.data.append(value)
-        else:
-            raise NotImplemented
+        self.data.append(self._convert_input_to_node_object(value, parent, on_attribute))
 
         if trailing:
             self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": []}, parent=parent, on_attribute=on_attribute))
@@ -148,32 +182,39 @@ class NodeList(UserList):
             new_endl_node.parent = parent
             new_endl_node.on_attribute = on_attribute
             self.data.insert(-1, new_endl_node)
-        self.data.insert(-1, to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute))
+
+        self.data.insert(-1, self._convert_input_to_node_object(value, parent=parent, on_attribute=on_attribute))
 
 
-class Node(object):
+class Node(GenericNodesUtils):
     _other_identifiers = []
 
     def __init__(self, node, parent=None, on_attribute=None):
         self.init = True
         self.parent = parent
         self.on_attribute = on_attribute
-        self._str_keys = []
+        self._str_keys = ["type"]
         self._list_keys = []
         self._dict_keys = []
-        for key, value in node.items():
-            if isinstance(value, dict):
-                if value:
-                    setattr(self, key, to_node(value, parent=self, on_attribute=key))
+        self.type = node["type"]
+        for kind, key, _ in filter(lambda x: x[0] != "constant", self._render()):
+            if kind == "key" and isinstance(node[key], (dict, type(None))):
+                if node[key]:
+                    setattr(self, key, to_node(node[key], parent=self, on_attribute=key))
                 else:
                     setattr(self, key, None)
                 self._dict_keys.append(key)
-            elif isinstance(value, list):
-                setattr(self, key, NodeList(map(lambda x: to_node(x, parent=self, on_attribute=key), value), parent=self))
-                self._list_keys.append(key)
-            else:
-                setattr(self, key, value)
+
+            elif kind == "bool" or (kind == "key" and isinstance(node[key], string_instance)):
+                setattr(self, key, node[key])
                 self._str_keys.append(key)
+
+            elif kind in ("list", "formatting"):
+                setattr(self, key, NodeList(map(lambda x: to_node(x, parent=self, on_attribute=key), node[key]), parent=self))
+                self._list_keys.append(key)
+
+            else:
+                raise Exception(str((node["type"], kind, key)))
 
         self.init = False
 
@@ -282,20 +323,24 @@ class Node(object):
         if not recursive:
             return None
 
-        for i in self._dict_keys:
-            i = getattr(self, i)
-            if not i:
-                continue
+        for kind, key, _ in filter(lambda x: x[0] == "list" or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
+            if kind == "key":
+                i = getattr(self, key)
+                if not i:
+                    continue
 
-            found = i.find(identifier, recursive, **kwargs)
-            if found:
-                return found
-
-        for key in self._list_keys:
-            for i in getattr(self, key):
                 found = i.find(identifier, recursive, **kwargs)
                 if found:
                     return found
+
+            elif kind == "list":
+                for i in getattr(self, key):
+                    found = i.find(identifier, recursive, **kwargs)
+                    if found:
+                        return found
+
+            else:
+                raise Exception()
 
     def __getattr__(self, key):
         return self.find(key)
@@ -308,16 +353,20 @@ class Node(object):
         if not recursive:
             return to_return
 
-        for i in self._dict_keys:
-            i = getattr(self, i)
-            if not i:
-                continue
+        for kind, key, _ in filter(lambda x: x[0] == "list" or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
+            if kind == "key":
+                i = getattr(self, key)
+                if not i:
+                    continue
 
-            to_return += i.find_all(identifier, recursive, **kwargs)
-
-        for key in self._list_keys:
-            for i in getattr(self, key):
                 to_return += i.find_all(identifier, recursive, **kwargs)
+
+            elif kind == "list":
+                for i in getattr(self, key):
+                    to_return += i.find_all(identifier, recursive, **kwargs)
+
+            else:
+                raise Exception()
 
         return to_return
 
@@ -391,17 +440,22 @@ class Node(object):
         return baron.dumps(self.fst())
 
     def help(self, deep=2, with_formatting=False):
-        sys.stdout.write(self.__help__(deep=deep, with_formatting=with_formatting) + "\n")
+        if runned_from_ipython():
+            sys.stdout.write(highlight(self.__help__(deep=deep, with_formatting=with_formatting) + "\n", HelpLexer(), Terminal256Formatter(style='monokai')))
+        else:
+            sys.stdout.write(self.__help__(deep=deep, with_formatting=with_formatting) + "\n")
 
     def __help__(self, deep=2, with_formatting=False):
         new_deep = deep - 1 if not isinstance(deep, bool) else deep
 
         to_join = ["%s()" % self.__class__.__name__]
 
-        if deep:
-            to_join.append("  # identifiers: %s" % ", ".join(self._generate_identifiers()))
+        if not deep:
+            to_join[-1] += " ..."
+        else:
+            to_join.append("# identifiers: %s" % ", ".join(self._generate_identifiers()))
             if self._get_helpers():
-                to_join.append("  # helpers: %s" % ", ".join(self._get_helpers()))
+                to_join.append("# helpers: %s" % ", ".join(self._get_helpers()))
             to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
             to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(deep=new_deep, with_formatting=with_formatting), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
             # need to do this otherwise I end up with stacked quoted list
@@ -410,8 +464,6 @@ class Node(object):
                 to_join.append(("%s ->" % key))
                 for i in getattr(self, key):
                     to_join.append("  * " + indent(i.__help__(deep=new_deep, with_formatting=with_formatting), "      ").lstrip())
-        else:
-            to_join[-1] += " ..."
 
         if deep and with_formatting:
             to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" in key]
@@ -425,7 +477,10 @@ class Node(object):
         return "\n  ".join(to_join)
 
     def __repr__(self):
-        return baron.dumps([self.fst()])
+        if runned_from_ipython():
+            return highlight(baron.dumps([self.fst()]), PythonLexer(), Terminal256Formatter(style='monokai'))
+        else:
+            return baron.dumps([self.fst()])
 
     def copy(self):
         # XXX not very optimised but at least very simple
@@ -435,54 +490,16 @@ class Node(object):
         if name == "init" or self.init:
             return super(Node, self).__setattr__(name, value)
 
+        # FIXME I'm pretty sure that Bool should also be put in the isinstance for cases like with_parenthesis/as
+        # also, the int stuff won't scale to all number notations
         if name in self._str_keys and not isinstance(value, (string_instance, int)):
             value = str(value)
 
         elif name in self._dict_keys:
-            if isinstance(value, string_instance):
-                value = to_node(baron.parse(value)[0], parent=self, on_attribute=name)
-
-            if isinstance(value, dict):  # assuming that we got some fst
-                value = to_node(value, parent=self, on_attribute=name)
-
-            if isinstance(value, Node):
-                value.parent = self
-                value.on_attribute = name
-
-            # TODO check attribution to raise error/warning?
+            value = self._convert_input_to_node_object(value, self, name)
 
         elif name in self._list_keys:
-            if isinstance(value, string_instance):
-                value = NodeList(map(lambda x: to_node(x, parent=self, on_attribute=name), baron.parse(value)))
-
-            elif isinstance(value, dict):  # assuming that we got some fst
-                                         # also assuming the user do strange things
-                value = NodeList([to_node(value, parent=self, on_attribute=name)])
-
-            elif isinstance(value, Node):
-                value.parent = self
-                value.on_attribute = name
-                value = [value]
-
-            elif isinstance(value, list) and not isinstance(value, NodeList):
-                # assume the user can pass a list of random stuff
-                new_value = NodeList()
-                for i in value:
-                    if isinstance(i, string_instance):
-                        new_value.append(to_node(baron.parse(i)[0], parent=self, on_attribute=name))
-
-                    elif isinstance(i, dict):  # assuming that we got some fst
-                        new_value.append(to_node(i, parent=self, on_attribute=name))
-
-                    elif isinstance(i, Node):
-                        i.parent = self
-                        i.on_attribute = name
-                        new_value.append(i)
-
-                    else:
-                        new_value.append(i)
-
-                value = new_value
+            value = self._convert_input_to_node_object_list(value, self, name)
 
         return super(Node, self).__setattr__(name, value)
 
@@ -649,54 +666,34 @@ class RedBaron(NodeList):
         self.data = [to_node(x, parent=self, on_attribute="root") for x in baron.parse(source_code)]
 
 
-# enter the black magic realm, beware of what you might find
-# (in fact that's pretty simple appart from the strange stuff needed)
-# this basically allows to write code like:
-# from redbaron.nodes import WatheverNode
-# and a new class with Node as the parent will be created on the fly
-# if this class doesn't already exist (like IntNode for example)
-# while this is horribly black magic, this allows quite some cool stuff
-# FIXME since we have the rendering_order_dict we can remove that and generate missing class instead
-class MissingNodesBuilder(dict):
-    def __init__(self, globals, baked_args={}):
-        self.globals = globals
-        self.baked_args = baked_args
-
-    def __getitem__(self, key):
-        if key in self.globals:
-            return self.globals[key]
-
-        if key.endswith("Node"):
-            new_node_class = type(key, (Node,), {})
-            self.globals[key] = new_node_class
-            return new_node_class
-
-        raise ImportError("cannot import name %s" % key)
+# to avoid to have to declare EVERY node class, dynamically create the missings
+# ones using nodes_rendering_order as a reference
+for node_type in nodes_rendering_order:
+    class_name = node_type.capitalize() + "Node"
+    if class_name not in globals():
+        globals()[class_name] = type(class_name, (Node,), {})
 
 
-class BlackMagicImportHook(ModuleType):
-    def __init__(self, self_module, baked_args={}):
-        # this code is directly inspired by amoffat/sh
-        # see https://github.com/amoffat/sh/blob/80af5726d8aa42017ced548abbd39b489068922a/sh.py#L1695
-        for attr in ["__builtins__", "__doc__", "__name__", "__package__"]:
-            setattr(self, attr, getattr(self_module, attr))
-
-        # python 3.2 (2.7 and 3.3 work fine) breaks on osx (not ubuntu)
-        # if we set this to None. and 3.3 needs a value for __path__
-        self.__path__ = []
-        self.self_module = self_module
-        self._env = MissingNodesBuilder(globals(), baked_args)
-
-    def __getattr__(self, name):
-        if name == "_env":
-            raise AttributeError
-        return self._env[name]
-
-    def __setattr__(self, name, value):
-        if hasattr(self, "_env"):
-            self._env[name] = value
-        ModuleType.__setattr__(self, name, value)
+def runned_from_ipython():
+    try:
+        __IPYTHON__
+        return True
+    except NameError:
+        return False
 
 
-self = sys.modules[__name__]
-sys.modules[__name__] = BlackMagicImportHook(self)
+class HelpLexer(RegexLexer):
+    name = 'Lexer for RedBaron .help() method output'
+
+    tokens = {
+        'root': [
+            (r"#.*$", Comment),
+            (r"'[^']*'", String),
+            (r"(None|False|True)", String),
+            (r'(\*)( \w+Node)', bygroups(Operator, Keyword)),
+            (r'\w+Node', Name.Function),
+            (r'(\*|=|->|\(|\)|\.\.\.)', Operator),
+            (r'\w+', Text),
+            (r'\s+', Text),
+        ]
+    }
