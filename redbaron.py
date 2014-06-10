@@ -205,7 +205,7 @@ class Node(GenericNodesUtils):
                     setattr(self, key, None)
                 self._dict_keys.append(key)
 
-            elif kind == "key" and isinstance(node[key], string_instance):
+            elif kind == "bool" or (kind == "key" and isinstance(node[key], string_instance)):
                 setattr(self, key, node[key])
                 self._str_keys.append(key)
 
