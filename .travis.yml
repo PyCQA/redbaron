@@ -1,6 +1,6 @@
 language: python
 install:
-  - pip install git+https://github.com/Psycojoker/baron.git@finder_bugs
+  - pip install git+https://github.com/Psycojoker/baron.git
   - pip install pytest
   - python setup.py install
 python:
