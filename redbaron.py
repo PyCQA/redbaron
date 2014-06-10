@@ -48,6 +48,46 @@ def find_by_path(node, path):
         return getattr(node, node._render()[path.position_in_rendering_list][1])
 
 
+def path(node):
+    parent = get_direct_parent_node(node)
+    if parent is None:
+        return baron.path.make_path()
+
+    parent_node_type = parent.type if isinstance(parent, Node) else 'list'
+    render_pos, _ = get_position_to_parent(node)
+
+    path = []
+    while parent is not None:
+        _, key = get_position_to_parent(parent)
+        if key is not None:
+            path.insert(0, key)
+        parent = get_direct_parent_node(parent)
+
+    return baron.path.make_path(path, parent_node_type, render_pos)
+
+
+def get_direct_parent_node(node):
+    if node.on_attribute is not None and isinstance(node.parent, Node):
+        if getattr(node.parent, node.on_attribute) is not node:
+            return getattr(node.parent, node.on_attribute)
+    return node.parent
+
+
+def get_position_to_parent(node):
+    parent = get_direct_parent_node(node)
+    if parent is None:
+        return (None, None)
+
+    if isinstance(parent, NodeList):
+        pos = parent.index(node)
+        return (pos, pos)
+
+    if isinstance(node, NodeList):
+        return next((i, t[1]) for i, t in enumerate(parent._render()) if getattr(parent, t[1]) is node)
+
+    return next((i, t[1]) for i, t in enumerate(parent._render()) if t[1] == node.on_attribute)
+
+
 class GenericNodesUtils(object):
     # XXX should this be an abstract class?
     def _convert_input_to_node_object(self, value, parent, on_attribute):
@@ -117,6 +157,9 @@ class NodeList(UserList, GenericNodesUtils):
 
     def find_by_path(self, path):
         return find_by_path(self, path)
+
+    def path(self):
+        return path(self)
 
     def fst(self):
         return [x.fst() for x in self.data]
@@ -420,6 +463,9 @@ class Node(GenericNodesUtils):
     def find_by_path(self, path):
         return find_by_path(self, path)
 
+    def path(self):
+        return path(self)
+
     def _generate_identifiers(self):
         return sorted(set(map(lambda x: x.lower(), [
             self.type,
@@ -442,6 +488,7 @@ class Node(GenericNodesUtils):
             'get_indentation_node',
             'indentation_node_is_direct',
             'parent_find',
+            'path',
             'find_by_path'
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
