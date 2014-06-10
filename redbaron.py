@@ -9,6 +9,7 @@ from pygments.lexers import PythonLexer
 from pygments.formatters import Terminal256Formatter
 
 import baron
+import baron.path
 from baron.utils import python_version, string_instance
 from baron.render import nodes_rendering_order
 
@@ -29,6 +30,22 @@ def to_node(node, parent=None, on_attribute=None):
         return globals()[class_name](node, parent=parent, on_attribute=on_attribute)
     else:
         return type(class_name, (Node,), {})(node, parent=parent, on_attribute=on_attribute)
+
+
+def find_by_path(node, path):
+    if path == baron.path.make_path():
+        return node
+
+    for key in path.path:
+        if isinstance(key, string_instance):
+            node = getattr(node, key)
+        else:
+            node = node[key]
+
+    if isinstance(node, NodeList):
+        return node[path.position_in_rendering_list]
+    else:
+        return getattr(node, node._render()[path.position_in_rendering_list][1])
 
 
 class GenericNodesUtils(object):
@@ -97,6 +114,9 @@ class NodeList(UserList, GenericNodesUtils):
 
     findAll = find_all
     __call__ = find_all
+
+    def find_by_path(self, path):
+        return find_by_path(self, path)
 
     def fst(self):
         return [x.fst() for x in self.data]
@@ -397,6 +417,8 @@ class Node(GenericNodesUtils):
 
         return True
 
+    def find_by_path(self, path):
+        return find_by_path(self, path)
 
     def _generate_identifiers(self):
         return sorted(set(map(lambda x: x.lower(), [
@@ -419,7 +441,8 @@ class Node(GenericNodesUtils):
             'previous_generator',
             'get_indentation_node',
             'indentation_node_is_direct',
-            'parent_find'
+            'parent_find',
+            'find_by_path'
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
