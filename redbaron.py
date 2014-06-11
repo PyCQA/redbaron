@@ -138,6 +138,10 @@ class NodeList(UserList, GenericNodesUtils):
         return
         yield
 
+    def apply(self, function):
+        [function(x) for x in self.data]
+        return self
+
     def map(self, function):
         return NodeList([function(x) for x in self.data])
 

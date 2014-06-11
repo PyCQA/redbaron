@@ -267,6 +267,11 @@ def test_map():
     assert red('int').map(lambda x: x.value) == NodeList([1, 2, 3])
 
 
+def test_apply():
+    red = RedBaron("a()\nb()")
+    assert red('call').apply(lambda x: x.append_value("plop")) == red('call')
+
+
 def test_filter():
     red = RedBaron("[1, 2, 3]")
     assert red[0].value.filter(lambda x: x.type != "comma") == red('int')
