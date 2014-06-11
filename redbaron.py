@@ -33,11 +33,11 @@ def to_node(node, parent=None, on_attribute=None):
 
 
 class Path:
-    def __init__(self, node, path = None):
+    def __init__(self, node):
         """Holds the path to a FST node
 
         Path(node): path coming from the node's root
-        Path(node, path): path going down the node following the given path
+        Path.from_baron_path(node, path): path going down the node following the given path
 
         Note that the second argument "path" is a baron path, i.e.
         created by baron.path.make_path() or
@@ -48,10 +48,7 @@ class Path:
         """
         self.path = None
         self.node = None
-        if path is None:
-            self.set_node(node)
-        else:
-            self.from_baron_path(node, path)
+        self.set_node(node)
 
     def set_node(self, node):
         self.node = node
@@ -73,23 +70,24 @@ class Path:
 
         self.path = baron.path.make_path(path, parent_node_type, render_pos)
 
-    def from_baron_path(self, node, path):
-        self.path = path
+    @classmethod
+    def from_baron_path(class_, node, path):
+        if baron.path.is_empty(path):
+            return class_(node)
 
-        if baron.path.is_empty(self.path):
-            self.node = node
-            return
-
-        for key in self.path.path:
+        for key in path.path:
             if isinstance(key, string_instance):
                 node = getattr(node, key)
             else:
                 node = node[key]
 
         if isinstance(node, NodeList):
-            self.node = node[path.position_in_rendering_list]
+            to_return = class_(node[path.position_in_rendering_list])
         else:
-            self.node = getattr(node, node._render()[path.position_in_rendering_list][1])
+            to_return = class_(getattr(node, node._render()[path.position_in_rendering_list][1]))
+
+        to_return.path = path
+        return to_return
 
     def to_baron_path(self):
         return self.path
@@ -185,7 +183,7 @@ class NodeList(UserList, GenericNodesUtils):
     __call__ = find_all
 
     def find_by_path(self, path):
-        return Path(self, path).node
+        return Path.from_baron_path(self, path).node
 
     def path(self):
         return Path(self)
