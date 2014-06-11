@@ -478,9 +478,9 @@ class Node(GenericNodesUtils):
 
     def __repr__(self):
         if runned_from_ipython():
-            return highlight(baron.dumps([self.fst()]), PythonLexer(), Terminal256Formatter(style='monokai'))
+            return highlight(self.dumps(), PythonLexer(), Terminal256Formatter(style='monokai'))
         else:
-            return baron.dumps([self.fst()])
+            return self.dumps()
 
     def copy(self):
         # XXX not very optimised but at least very simple
