@@ -32,60 +32,87 @@ def to_node(node, parent=None, on_attribute=None):
         return type(class_name, (Node,), {})(node, parent=parent, on_attribute=on_attribute)
 
 
-def find_by_path(node, path):
-    if baron.path.is_empty(path):
-        return node
+class Path:
+    def __init__(self, node, path = None):
+        """Holds the path to a FST node
 
-    for key in path.path:
-        if isinstance(key, string_instance):
-            node = getattr(node, key)
+        Path(node): path coming from the node's root
+        Path(node, path): path going down the node following the given path
+
+        Note that the second argument "path" is a baron path, i.e.
+        created by baron.path.make_path() or
+        redbaron.Path(node).to_baron_path()
+
+        The second form is useful when converting a path given by baron
+        to a redbaron node
+        """
+        self.path = None
+        self.node = None
+        if path is None:
+            self.set_node(node)
         else:
-            node = node[key]
+            self.from_baron_path(node, path)
 
-    if isinstance(node, NodeList):
-        return node[path.position_in_rendering_list]
-    else:
-        return getattr(node, node._render()[path.position_in_rendering_list][1])
+    def set_node(self, node):
+        self.node = node
 
+        parent = Path.get_holder(node)
+        if parent is None:
+            self.path = baron.path.make_path()
+            return
 
-def path(node):
-    parent = get_holder(node)
-    if parent is None:
-        return baron.path.make_path()
+        parent_node_type = parent.type if isinstance(parent, Node) else 'list'
+        render_pos, _ = Path.get_position_to_parent(node)
 
-    parent_node_type = parent.type if isinstance(parent, Node) else 'list'
-    render_pos, _ = get_position_to_parent(node)
+        path = []
+        while parent is not None:
+            _, key = Path.get_position_to_parent(parent)
+            if key is not None:
+                path.insert(0, key)
+            parent = Path.get_holder(parent)
 
-    path = []
-    while parent is not None:
-        _, key = get_position_to_parent(parent)
-        if key is not None:
-            path.insert(0, key)
-        parent = get_holder(parent)
+        self.path = baron.path.make_path(path, parent_node_type, render_pos)
 
-    return baron.path.make_path(path, parent_node_type, render_pos)
+    def from_baron_path(self, node, path):
+        self.path = path
 
+        if baron.path.is_empty(self.path):
+            self.node = node
+            return
 
-def get_holder(node):
-    if node.on_attribute is not None and isinstance(node.parent, Node):
-        if getattr(node.parent, node.on_attribute) is not node:
-            return getattr(node.parent, node.on_attribute)
-    return node.parent
+        for key in self.path.path:
+            if isinstance(key, string_instance):
+                node = getattr(node, key)
+            else:
+                node = node[key]
 
+        if isinstance(node, NodeList):
+            self.node = node[path.position_in_rendering_list]
+        else:
+            self.node = getattr(node, node._render()[path.position_in_rendering_list][1])
 
-def get_position_to_parent(node):
-    parent = get_holder(node)
-    if parent is None:
-        return (None, None)
+    def to_baron_path(self):
+        return self.path
 
-    if isinstance(parent, NodeList):
-        pos = parent.index(node)
-        return (pos, pos)
+    def get_holder(node):
+        if node.on_attribute is not None and isinstance(node.parent, Node):
+            if getattr(node.parent, node.on_attribute) is not node:
+                return getattr(node.parent, node.on_attribute)
+        return node.parent
 
-    if isinstance(node, NodeList):
-        return next((pos, key) for pos, (_, key, _) in enumerate(parent._render()) if getattr(parent, key) is node)
+    def get_position_to_parent(node):
+        parent = Path.get_holder(node)
+        if parent is None:
+            return (None, None)
 
-    return next((pos, key) for pos, (_, key, _) in enumerate(parent._render()) if key == node.on_attribute)
+        if isinstance(parent, NodeList):
+            pos = parent.index(node)
+            return (pos, pos)
+
+        if isinstance(node, NodeList):
+            return next((pos, key) for pos, (_, key, _) in enumerate(parent._render()) if getattr(parent, key) is node)
+
+        return next((pos, key) for pos, (_, key, _) in enumerate(parent._render()) if key == node.on_attribute)
 
 
 class GenericNodesUtils(object):
@@ -156,10 +183,10 @@ class NodeList(UserList, GenericNodesUtils):
     __call__ = find_all
 
     def find_by_path(self, path):
-        return find_by_path(self, path)
+        return Path(self, path).node
 
     def path(self):
-        return path(self)
+        return Path(self)
 
     def fst(self):
         return [x.fst() for x in self.data]
@@ -461,10 +488,10 @@ class Node(GenericNodesUtils):
         return True
 
     def find_by_path(self, path):
-        return find_by_path(self, path)
+        return Path(self, path).node()
 
     def path(self):
-        return path(self)
+        return Path(self)
 
     def _generate_identifiers(self):
         return sorted(set(map(lambda x: x.lower(), [

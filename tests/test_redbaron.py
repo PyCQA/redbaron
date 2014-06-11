@@ -941,7 +941,7 @@ def a(c, d):
 
 
 def check_path(root, node, path):
-    assert node.path() == path
+    assert node.path().to_baron_path() == path
     assert root.find_by_path(path) is node
 
 
