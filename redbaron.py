@@ -478,7 +478,9 @@ class Node(GenericNodesUtils):
 
     def __repr__(self):
         if runned_from_ipython():
-            return highlight(self.dumps(), PythonLexer(), Terminal256Formatter(style='monokai'))
+            return highlight(self.dumps(), PythonLexer(encoding="Utf-8"),
+                             Terminal256Formatter(style='monokai',
+                                                  encoding="Utf-8"))
         else:
             return self.dumps()
 
