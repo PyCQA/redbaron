@@ -83,9 +83,9 @@ def get_position_to_parent(node):
         return (pos, pos)
 
     if isinstance(node, NodeList):
-        return next((i, t[1]) for i, t in enumerate(parent._render()) if getattr(parent, t[1]) is node)
+        return next((pos, key) for pos, (_, key, _) in enumerate(parent._render()) if getattr(parent, key) is node)
 
-    return next((i, t[1]) for i, t in enumerate(parent._render()) if t[1] == node.on_attribute)
+    return next((pos, key) for pos, (_, key, _) in enumerate(parent._render()) if key == node.on_attribute)
 
 
 class GenericNodesUtils(object):
