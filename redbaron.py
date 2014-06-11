@@ -49,7 +49,7 @@ def find_by_path(node, path):
 
 
 def path(node):
-    parent = get_direct_parent_node(node)
+    parent = get_holder(node)
     if parent is None:
         return baron.path.make_path()
 
@@ -61,12 +61,12 @@ def path(node):
         _, key = get_position_to_parent(parent)
         if key is not None:
             path.insert(0, key)
-        parent = get_direct_parent_node(parent)
+        parent = get_holder(parent)
 
     return baron.path.make_path(path, parent_node_type, render_pos)
 
 
-def get_direct_parent_node(node):
+def get_holder(node):
     if node.on_attribute is not None and isinstance(node.parent, Node):
         if getattr(node.parent, node.on_attribute) is not node:
             return getattr(node.parent, node.on_attribute)
@@ -74,7 +74,7 @@ def get_direct_parent_node(node):
 
 
 def get_position_to_parent(node):
-    parent = get_direct_parent_node(node)
+    parent = get_holder(node)
     if parent is None:
         return (None, None)
 
