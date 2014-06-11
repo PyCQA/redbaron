@@ -94,13 +94,15 @@ class Path:
     def to_baron_path(self):
         return self.path
 
-    def get_holder(node):
+    @classmethod
+    def get_holder(class_, node):
         if node.on_attribute is not None and isinstance(node.parent, Node):
             if getattr(node.parent, node.on_attribute) is not node:
                 return getattr(node.parent, node.on_attribute)
         return node.parent
 
-    def get_position_to_parent(node):
+    @classmethod
+    def get_position_to_parent(class_, node):
         parent = Path.get_holder(node)
         if parent is None:
             return (None, None)
