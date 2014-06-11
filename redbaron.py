@@ -33,7 +33,7 @@ def to_node(node, parent=None, on_attribute=None):
 
 
 def find_by_path(node, path):
-    if path == baron.path.make_path():
+    if baron.path.is_empty(path):
         return node
 
     for key in path.path:
