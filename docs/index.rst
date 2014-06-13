@@ -36,6 +36,9 @@ Basic usage
     import sys
     sys.path.append("..")
 
+    import redbaron
+    redbaron.ipython_behavior = False
+
 
 .. ipython:: python
 

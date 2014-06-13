@@ -228,6 +228,10 @@ class NodeList(UserList, GenericNodesUtils):
         return
         yield
 
+    def apply(self, function):
+        [function(x) for x in self.data]
+        return self
+
     def map(self, function):
         return NodeList([function(x) for x in self.data])
 
@@ -575,9 +579,11 @@ class Node(GenericNodesUtils):
 
     def __repr__(self):
         if runned_from_ipython():
-            return highlight(baron.dumps([self.fst()]), PythonLexer(), Terminal256Formatter(style='monokai'))
+            return highlight(self.dumps(), PythonLexer(encoding="Utf-8"),
+                             Terminal256Formatter(style='monokai',
+                                                  encoding="Utf-8"))
         else:
-            return baron.dumps([self.fst()])
+            return self.dumps()
 
     def copy(self):
         # XXX not very optimised but at least very simple
@@ -771,7 +777,10 @@ for node_type in nodes_rendering_order:
         globals()[class_name] = type(class_name, (Node,), {})
 
 
+ipython_behavior = True
 def runned_from_ipython():
+    if not ipython_behavior:
+        return False
     try:
         __IPYTHON__
         return True
