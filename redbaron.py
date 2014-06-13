@@ -32,7 +32,7 @@ def to_node(node, parent=None, on_attribute=None):
         return type(class_name, (Node,), {})(node, parent=parent, on_attribute=on_attribute)
 
 
-class Path:
+class Path(object):
     def __init__(self, node):
         """Holds the path to a FST node
 
