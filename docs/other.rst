@@ -163,3 +163,10 @@ and a :file:`.to_baron_path` that returns a `Baron Path namedtuple
 
     path.node
     path.to_baron_path()
+
+Path class
+----------
+
+RedBaron provides a Path class that represent a path to a node.
+
+.. autoclass:: redbaron.Path
