@@ -1,3 +1,15 @@
+.. ipython:: python
+    :suppress:
+
+    import sys
+    sys.path.append("..")
+
+    import redbaron
+    redbaron.ipython_behavior = False
+
+    from redbaron import RedBaron
+
+
 Before starting, just a reminder of what RedBaron is and is not:
 
 * I assume that you know what is Baron and why it is important. If it's not the
@@ -31,6 +43,9 @@ for it, like BeautifulSoup.
 
     import sys
     sys.path.append("..")
+
+    import redbaron
+    redbaron.ipython_behavior = False
 
 .. ipython:: python
 
