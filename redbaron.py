@@ -33,19 +33,20 @@ def to_node(node, parent=None, on_attribute=None):
 
 
 class Path(object):
+    """Holds the path to a FST node
+
+    Path(node): path coming from the node's root
+    Path.from_baron_path(node, path): path going down the node following the given path
+
+    Note that the second argument "path" is a baron path, i.e.
+    created by baron.path.make_path() or
+    redbaron.Path(node).to_baron_path()
+
+    The second form is useful when converting a path given by baron
+    to a redbaron node
+    """
+
     def __init__(self, node):
-        """Holds the path to a FST node
-
-        Path(node): path coming from the node's root
-        Path.from_baron_path(node, path): path going down the node following the given path
-
-        Note that the second argument "path" is a baron path, i.e.
-        created by baron.path.make_path() or
-        redbaron.Path(node).to_baron_path()
-
-        The second form is useful when converting a path given by baron
-        to a redbaron node
-        """
         self.path = None
         self.node = None
         self.set_node(node)
