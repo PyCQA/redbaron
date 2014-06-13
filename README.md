@@ -25,7 +25,7 @@ but it is probably not the most shiny experience yet.** Feedback is very welcome
 Installation
 ============
 
-    pip install git+https://github.com/Psycojoker/redbaron.git
+    pip install redbaron
 
 Links
 =====
