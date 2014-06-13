@@ -144,3 +144,22 @@ indentation level of the node:
 
     red = RedBaron("while a: pass")
     red.pass_.indentation
+
+.path()
+-------
+
+Every node has a :file:`path()` method that will return a :file:`Path` object
+to it. Every path object has a :file:`.node` attribute that point to the node
+and a :file:`.to_baron_path` that returns a `Baron Path namedtuple
+<https://baron.readthedocs.org/en/latest/#locate-a-node>`_.
+
+.. ipython:: python
+
+    red = RedBaron("while a:\n    pass")
+    red.pass_
+    path = red.pass_.path()
+
+    path
+
+    path.node
+    path.to_baron_path()
