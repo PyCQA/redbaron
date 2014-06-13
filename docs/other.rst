@@ -170,3 +170,34 @@ Path class
 RedBaron provides a Path class that represent a path to a node.
 
 .. autoclass:: redbaron.Path
+
+.map .filter .apply
+-------------------
+
+RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :file:`.apply` quite similar to python buildins (except for apply). The main difference is that they return a node list instance instead of a python buildin list.
+
+* :file:`.map` takes a callable (like a lambda or a function) that receive a
+  node as first argument, this callable is applied on every node of the node
+  list and a node list containing the return of those applies will be returned.
+* :file:`.filter` works like :file:`.map` but instead of returning a node list
+  of the return of the callable, it returns a node list that contains the nodes
+  for which the callable returned :file:`True` (or something considered
+  :file:`True` in python)
+* :file:`.apply` works like :file:`.map` but instead of returning the result of
+  the callable, it returns to original node.
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+    red('int')
+    red('int').map(lambda x: x.value + 1)
+    red('int').filter(lambda x: x.value % 2 == 0)
+
+.. ipython:: python
+
+    red = RedBaron("a()\nb()\nc(x=y)")
+    red('call')
+    red('call').map(lambda x: x.append_value("answer=42"))
+    red('call')
+    red = RedBaron("a()\nb()\nc(x=y)")
+    red('call').apply(lambda x: x.append_value("answer=42"))
