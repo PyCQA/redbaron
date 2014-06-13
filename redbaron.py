@@ -680,7 +680,10 @@ for node_type in nodes_rendering_order:
         globals()[class_name] = type(class_name, (Node,), {})
 
 
+ipython_behavior = True
 def runned_from_ipython():
+    if not ipython_behavior:
+        return False
     try:
         __IPYTHON__
         return True
