@@ -804,3 +804,17 @@ class HelpLexer(RegexLexer):
             (r'\s+', Text),
         ]
     }
+
+
+if __name__ == '__main__':
+    if not len(sys.argv[1:]):
+        print("Give me a filename as first argument")
+        sys.exit(1)
+
+    from IPython.terminal.embed import InteractiveShellEmbed
+
+    red = RedBaron(open(sys.argv[1]).read())
+
+    shell = InteractiveShellEmbed()
+    shell.push("a,RedBaron,red", interactive=True)
+    shell()
