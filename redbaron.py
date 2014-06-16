@@ -38,8 +38,8 @@ class Path(object):
     Path(node): path coming from the node's root
     Path.from_baron_path(node, path): path going down the node following the given path
 
-    Note that the second argument "path" is a baron path, i.e.
-    created by baron.path.make_path() or
+    Note that the second argument "path" is a baron path, i.e. list of
+    keys that can be given for example by
     redbaron.Path(node).to_baron_path()
 
     The second form is useful when converting a path given by baron
@@ -54,41 +54,25 @@ class Path(object):
     def set_node(self, node):
         self.node = node
 
-        parent = Path.get_holder(node)
-        if parent is None:
-            self.path = baron.path.make_path()
-            return
-
-        parent_node_type = parent.type if isinstance(parent, Node) else 'list'
-        render_pos, _ = Path.get_position_to_parent(node)
-
+        parent = node
         path = []
         while parent is not None:
-            _, key = Path.get_position_to_parent(parent)
+            key = Path.get_holder_on_attribute(parent)
             if key is not None:
                 path.insert(0, key)
             parent = Path.get_holder(parent)
 
-        self.path = baron.path.make_path(path, parent_node_type, render_pos)
+        self.path = path
 
     @classmethod
     def from_baron_path(class_, node, path):
-        if baron.path.is_empty(path):
-            return class_(node)
-
-        for key in path.path:
+        for key in path:
             if isinstance(key, string_instance):
                 node = getattr(node, key)
             else:
                 node = node[key]
 
-        if isinstance(node, NodeList):
-            to_return = class_(node[path.position_in_rendering_list])
-        else:
-            to_return = class_(getattr(node, node._render()[path.position_in_rendering_list][1]))
-
-        to_return.path = path
-        return to_return
+        return class_(node)
 
     def to_baron_path(self):
         return self.path
@@ -101,19 +85,19 @@ class Path(object):
         return node.parent
 
     @classmethod
-    def get_position_to_parent(class_, node):
+    def get_holder_on_attribute(class_, node):
         parent = Path.get_holder(node)
         if parent is None:
-            return (None, None)
+            return None
 
         if isinstance(parent, NodeList):
             pos = parent.index(node)
-            return (pos, pos)
+            return pos
 
         if isinstance(node, NodeList):
-            return next((pos, key) for pos, (_, key, _) in enumerate(parent._render()) if getattr(parent, key) is node)
+            return next(key for (_, key, _) in parent._render() if getattr(parent, key) is node)
 
-        return next((pos, key) for pos, (_, key, _) in enumerate(parent._render()) if key == node.on_attribute)
+        return next(key for (_, key, _) in parent._render() if key == node.on_attribute)
 
 
 class GenericNodesUtils(object):

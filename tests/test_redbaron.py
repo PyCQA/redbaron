@@ -4,7 +4,7 @@
 
 import baron
 import pytest
-from baron.path import make_path, path_to_node
+from baron.path import path_to_node
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                       PassNode, NodeList, CommaNode, DotNode, CallNode)
 
@@ -951,187 +951,187 @@ def check_path(root, node, path):
 
 
 def test_path_root(red):
-    check_path(red, red, make_path())
+    check_path(red, red, [])
 
 
 def test_path_first_statement(red):
     check_path(red,
             red.funcdef,
-            make_path([], "list", 0)
+            [0]
         )
 
 
 def test_path_funcdef_decorators(red):
     check_path(red,
             red.funcdef.decorators,
-            make_path([0], "funcdef", 0)
+            [0, "decorators"]
         )
 
 
 def test_path_decorators_first(red):
     check_path(red,
             red.funcdef.decorators[0],
-            make_path([0, "decorators"], "list", 0)
+            [0, "decorators", 0]
         )
 
 
 def test_path_decorators_first_dotted_name(red):
     check_path(red,
             red.funcdef.decorators[0].value,
-            make_path([0, "decorators", 0], "decorator", 1)
+            [0, "decorators", 0, "value"]
         )
 
 
 def test_path_decorators_first_dotted_name_value(red):
     check_path(red,
             red.funcdef.decorators[0].value.value,
-            make_path([0, "decorators", 0, "value"], "dotted_name", 0)
+            [0, "decorators", 0, "value", "value"]
         )
 
 
 def test_path_decorators_first_dotted_name_value_first(red):
     check_path(red,
             red.funcdef.decorators[0].value.value[0],
-            make_path([0, "decorators", 0, "value", "value"], "list", 0)
+            [0, "decorators", 0, "value", "value", 0]
         )
 
 
 def test_path_decorators_endl(red):
     check_path(red,
             red.funcdef.decorators[1],
-            make_path([0, "decorators"], "list", 1)
+            [0, "decorators", 1]
         )
 
 
 def test_path_first_formatting(red):
     check_path(red,
             red.funcdef.first_formatting,
-            make_path([0], "funcdef", 2)
+            [0, "first_formatting"]
         )
 
 
 def test_path_first_formatting_value(red):
     check_path(red,
             red.funcdef.first_formatting[0],
-            make_path([0, "first_formatting"], "list", 0)
+            [0, "first_formatting", 0]
         )
 
 
 def test_path_second_formatting(red):
     check_path(red,
             red.funcdef.second_formatting,
-            make_path([0], "funcdef", 4)
+            [0, "second_formatting"]
         )
 
 
 def test_path_third_formatting(red):
     check_path(red,
             red.funcdef.third_formatting,
-            make_path([0], "funcdef", 6)
+            [0, "third_formatting"]
         )
 
 
 def test_path_arguments(red):
     check_path(red,
             red.funcdef.arguments,
-            make_path([0], "funcdef", 7)
+            [0, "arguments"]
         )
 
 
 def test_path_arguments_first(red):
     check_path(red,
             red.funcdef.arguments[0],
-            make_path([0, "arguments"], "list", 0)
+            [0, "arguments", 0]
         )
 
 
 def test_path_arguments_comma(red):
     check_path(red,
             red.funcdef.arguments[1],
-            make_path([0, "arguments"], "list", 1)
+            [0, "arguments", 1]
         )
 
 
 def test_path_arguments_second(red):
     check_path(red,
             red.funcdef.arguments[2],
-            make_path([0, "arguments"], "list", 2)
+            [0, "arguments", 2]
         )
 
 
 def test_path_fourth_formatting(red):
     check_path(red,
             red.funcdef.fourth_formatting,
-            make_path([0], "funcdef", 8)
+            [0, "fourth_formatting"]
         )
 
 
 def test_path_fifth_formatting(red):
     check_path(red,
             red.funcdef.fifth_formatting,
-            make_path([0], "funcdef", 10)
+            [0, "fifth_formatting"]
         )
 
 
 def test_path_sixth_formatting(red):
     check_path(red,
             red.funcdef.sixth_formatting,
-            make_path([0], "funcdef", 12)
+            [0, "sixth_formatting"]
         )
 
 
 def test_path_value(red):
     check_path(red,
             red.funcdef.value,
-            make_path([0], "funcdef", 13)
+            [0, "value"]
         )
 
 
 def test_path_value_first_endl(red):
     check_path(red,
             red.funcdef.value[0],
-            make_path([0, "value"], "list", 0)
+            [0, "value", 0]
         )
 
 
 def test_path_value_assignment(red):
     check_path(red,
             red.funcdef.value[1],
-            make_path([0, "value"], "list", 1)
+            [0, "value", 1]
         )
 
 
 def test_path_value_assignment_target(red):
     check_path(red,
             red.funcdef.value[1].target,
-            make_path([0, "value", 1], "assignment", 0)
+            [0, "value", 1, "target"]
         )
 
 
 def test_path_value_assignment_value(red):
     check_path(red,
             red.funcdef.value[1].value,
-            make_path([0, "value", 1], "assignment", 5)
+            [0, "value", 1, "value"]
         )
 
 
 def test_path_value_assignment_value_first(red):
     check_path(red,
             red.funcdef.value[1].value.first,
-            make_path([0, "value", 1, "value"], "binary_operator", 0)
+            [0, "value", 1, "value", "first"]
         )
 
 
 def test_path_value_assignment_value_second(red):
     check_path(red,
             red.funcdef.value[1].value.second,
-            make_path([0, "value", 1, "value"], "binary_operator", 4)
+            [0, "value", 1, "value", "second"]
         )
 
 
 def test_path_value_second_endl(red):
     check_path(red,
             red.funcdef.value[2],
-            make_path([0, "value"], "list", 2)
+            [0, "value", 2]
         )
 
