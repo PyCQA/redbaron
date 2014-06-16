@@ -146,6 +146,12 @@ class GenericNodesUtils(object):
             root = root.parent
         return root
 
+    def bounding_box(self):
+        return baron.path.node_to_bounding_box(self.fst())
+
+    def absolute_bounding_box(self):
+        return baron.path.path_to_bounding_box(self.root().fst(), self.path().to_baron_path())
+
 
 class NodeList(UserList, GenericNodesUtils):
     # NodeList doesn't have a previous nor a next
@@ -515,7 +521,9 @@ class Node(GenericNodesUtils):
             'parent_find',
             'path',
             'find_by_path',
-            'root'
+            'root',
+            'bounding_box',
+            'absolute_bounding_box'
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 

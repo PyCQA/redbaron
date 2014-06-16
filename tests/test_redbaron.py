@@ -1169,3 +1169,49 @@ def test_root(red):
     for node in nodes:
         assert red is node.root()
 
+
+# Should the bounding box of a node with rendering length = 0 be None?
+# see fst.funcdef.second_formatting and others
+#
+# What should be the bounding box of a \n node?
+# see fst.funcdef.decorators[1] and fst.funcdef.value[2]
+fst = red()
+bounding_boxes = [
+    (((1, 1), (3, 13)), ((1, 1), (3, 13)), fst),
+    (((1, 1), (3, 13)), ((1, 1), (3, 13)), fst.funcdef),
+    (((1, 1), (1, 5)), ((1, 1), (1, 5)), fst.funcdef.decorators),
+    (((1, 1), (1, 5)), ((1, 1), (1, 5)), fst.funcdef.decorators[0]),
+    (((1, 2), (1, 5)), ((1, 1), (1, 4)), fst.funcdef.decorators[0].value),
+    (((1, 2), (1, 5)), ((1, 1), (1, 4)), fst.funcdef.decorators[0].value.value),
+    (((1, 2), (1, 5)), ((1, 1), (1, 4)), fst.funcdef.decorators[0].value.value[0]),
+    #(((1, 6), (1, 5)), ((1, 1), (1, 0)), fst.funcdef.decorators[1]),
+    (((2, 4), (2, 4)), ((1, 1), (1, 1)), fst.funcdef.first_formatting),
+    (((2, 4), (2, 4)), ((1, 1), (1, 1)), fst.funcdef.first_formatting[0]),
+    #((?, ?), (?, ?), fst.funcdef.second_formatting),
+    #((?, ?), (?, ?), fst.funcdef.third_formatting),
+    (((2, 7), (2, 10)), ((1, 1), (1, 4)), fst.funcdef.arguments),
+    (((2, 7), (2, 7)), ((1, 1), (1, 1)), fst.funcdef.arguments[0]),
+    (((2, 8), (2, 9)), ((1, 1), (1, 2)), fst.funcdef.arguments[1]),
+    (((2, 10), (2, 10)), ((1, 1), (1, 1)), fst.funcdef.arguments[2]),
+    #((?, ?), (?, ?)), fst.funcdef.fourth_formatting),
+    #((?, ?), (?, ?)), fst.funcdef.fifth_formatting),
+    #((?, ?), (?, ?)), fst.funcdef.sixth_formatting),
+    (((2, 13), (3, 13)), ((1, 1), (2, 13)), fst.funcdef.value),
+    (((2, 13), (3, 4)), ((1, 1), (2, 4)), fst.funcdef.value[0]),
+    (((3, 5), (3, 13)), ((1, 1), (1, 9)), fst.funcdef.value[1]),
+    (((3, 5), (3, 5)), ((1, 1), (1, 1)), fst.funcdef.value[1].target),
+    (((3, 9), (3, 13)), ((1, 1), (1, 5)), fst.funcdef.value[1].value),
+    (((3, 9), (3, 9)), ((1, 1), (1, 1)), fst.funcdef.value[1].value.first),
+    (((3, 13), (3, 13)), ((1, 1), (1, 1)), fst.funcdef.value[1].value.second),
+    #((?, ?), (?, ?), fst.funcdef.value[2])
+]
+
+@pytest.fixture(params = bounding_boxes)
+def bounding_box_fixture(request):
+    return request.param
+
+def test_bounding_box(red, bounding_box_fixture):
+    absolute_bounding_box, bounding_box, node = bounding_box_fixture
+    assert bounding_box == node.bounding_box()
+    assert absolute_bounding_box == node.absolute_bounding_box()
+
