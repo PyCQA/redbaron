@@ -795,7 +795,7 @@ class HelpLexer(RegexLexer):
     tokens = {
         'root': [
             (r"#.*$", Comment),
-            (r"'[^']*'", String),
+            (r"('([^\\']|\\.)*'|\"([^\\\"]|\\.)*\")", String),
             (r"(None|False|True)", String),
             (r'(\*)( \w+Node)', bygroups(Operator, Keyword)),
             (r'\w+Node', Name.Function),
