@@ -767,7 +767,11 @@ class CallNode(Node):
 
 class RedBaron(NodeList):
     def __init__(self, source_code):
-        self.data = [to_node(x, parent=self, on_attribute="root") for x in baron.parse(source_code)]
+        if isinstance(source_code, string_instance):
+            self.data = [to_node(x, parent=self, on_attribute="root") for x in baron.parse(source_code)]
+        else:
+            # Might be init from same object, or slice
+            NodeList.__init__(self, source_code)
 
 
 # to avoid to have to declare EVERY node class, dynamically create the missings
