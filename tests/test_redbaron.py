@@ -1135,3 +1135,37 @@ def test_path_value_second_endl(red):
             [0, "value", 2]
         )
 
+
+def test_root(red):
+    nodes = [
+        red.funcdef,
+        red.funcdef.decorators,
+        red.funcdef.decorators[0],
+        red.funcdef.decorators[0].value,
+        red.funcdef.decorators[0].value.value,
+        red.funcdef.decorators[0].value.value[0],
+        red.funcdef.decorators[1],
+        red.funcdef.first_formatting,
+        red.funcdef.first_formatting[0],
+        red.funcdef.second_formatting,
+        red.funcdef.third_formatting,
+        red.funcdef.arguments,
+        red.funcdef.arguments[0],
+        red.funcdef.arguments[1],
+        red.funcdef.arguments[2],
+        red.funcdef.fourth_formatting,
+        red.funcdef.fifth_formatting,
+        red.funcdef.sixth_formatting,
+        red.funcdef.value,
+        red.funcdef.value[0],
+        red.funcdef.value[1],
+        red.funcdef.value[1].target,
+        red.funcdef.value[1].value,
+        red.funcdef.value[1].value.first,
+        red.funcdef.value[1].value.second,
+        red.funcdef.value[2]
+    ]
+
+    for node in nodes:
+        assert red is node.root()
+

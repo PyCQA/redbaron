@@ -137,6 +137,15 @@ class GenericNodesUtils(object):
 
         raise NotImplemented
 
+    def root(self):
+        root = self.parent
+        if root is None:
+            return self
+
+        while not isinstance(root, RedBaron):
+            root = root.parent
+        return root
+
 
 class NodeList(UserList, GenericNodesUtils):
     # NodeList doesn't have a previous nor a next
@@ -505,7 +514,8 @@ class Node(GenericNodesUtils):
             'indentation_node_is_direct',
             'parent_find',
             'path',
-            'find_by_path'
+            'find_by_path',
+            'root'
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
