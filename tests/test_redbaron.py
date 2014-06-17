@@ -4,9 +4,9 @@
 
 import baron
 import pytest
-from baron.path import path_to_node
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
-                      PassNode, NodeList, CommaNode, DotNode, CallNode)
+                      PassNode, NodeList, CommaNode, DotNode, CallNode,
+                      Position)
 
 
 def test_empty():
@@ -1214,4 +1214,50 @@ def test_bounding_box(red, bounding_box_fixture):
     absolute_bounding_box, bounding_box, node = bounding_box_fixture
     assert bounding_box == node.bounding_box()
     assert absolute_bounding_box == node.absolute_bounding_box()
+
+
+fst = RedBaron("""\
+@deco
+
+def a(c, d):
+    b = c + d
+""")
+
+# Same question here: should (2, 0) and (2, 1) return something?
+positions = [
+    (fst.funcdef.decorators[0],                       [(1, 1)]),
+    (fst.funcdef.decorators[0].value.value[0],        [(1, 2),  (1, 3), (1, 4), (1, 5)]),
+    # How to get this one ? (2, 0) and (2, 1) does not work, see out of scope
+    #(fst.funcdef.decorators[1],                       [(?, ?)]),
+    (fst.funcdef,                                     [(3, 1),  (3, 2), (3, 3)]),
+    (fst.funcdef.first_formatting[0],                 [(3, 4)]),
+    (fst.funcdef,                                     [(3, 5),  (3, 6)]),
+    (fst.funcdef.arguments[0],                        [(3, 7)]),
+    (fst.funcdef.arguments[1],                        [(3, 8)]),
+    (fst.funcdef.arguments[1].second_formatting[0],   [(3, 9)]),
+    (fst.funcdef.arguments[2],                        [(3, 10)]),
+    (fst.funcdef,                                     [(3, 11), (3, 12)]),
+    (fst.funcdef.value[0],                            [(4, 1),  (4, 2), (4, 3), (4, 4)]),
+    (fst.funcdef.value[1].target,                     [(4, 5)]),
+    (fst.funcdef.value[1].first_formatting[0],        [(4, 6)]),
+    (fst.funcdef.value[1],                            [(4, 7)]),
+    (fst.funcdef.value[1].second_formatting[0],       [(4, 8)]),
+    (fst.funcdef.value[1].value.first,                [(4, 9)]),
+    (fst.funcdef.value[1].value.first_formatting[0],  [(4, 10)]),
+    (fst.funcdef.value[1].value,                      [(4, 11)]),
+    (fst.funcdef.value[1].value.second_formatting[0], [(4, 12)]),
+    (fst.funcdef.value[1].value.second,               [(4, 13)]),
+    # out of scope
+    (fst,                                             [(2, 0), (2, 1)]),
+]
+
+
+@pytest.fixture(params = positions)
+def position_fixture(request):
+    return request.param
+
+def test_find_by_position(position_fixture):
+    node, positions = position_fixture
+    for position in positions:
+        assert node == fst.find_by_position(Position.from_tuple(position))
 

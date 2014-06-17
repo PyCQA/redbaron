@@ -10,6 +10,7 @@ from pygments.formatters import Terminal256Formatter
 
 import baron
 import baron.path
+from baron.path import make_position, Position
 from baron.utils import python_version, string_instance
 from baron.render import nodes_rendering_order
 
@@ -66,11 +67,16 @@ class Path(object):
 
     @classmethod
     def from_baron_path(class_, node, path):
+        if path is None:
+            return class_(node)
+
         for key in path:
             if isinstance(key, string_instance):
-                node = getattr(node, key)
+                child = getattr(node, key)
             else:
-                node = node[key]
+                child = node[key]
+            if child is not None and not isinstance(child, string_instance):
+                node = child
 
         return class_(node)
 
@@ -151,6 +157,9 @@ class GenericNodesUtils(object):
 
     def absolute_bounding_box(self):
         return baron.path.path_to_bounding_box(self.root().fst(), self.path().to_baron_path())
+
+    def find_by_position(self, position):
+        return Path.from_baron_path(self, baron.path.position_to_path(self.fst(), position.line, position.column)).node
 
 
 class NodeList(UserList, GenericNodesUtils):
@@ -523,7 +532,8 @@ class Node(GenericNodesUtils):
             'find_by_path',
             'root',
             'bounding_box',
-            'absolute_bounding_box'
+            'absolute_bounding_box',
+            'find_by_position'
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
