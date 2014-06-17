@@ -586,6 +586,15 @@ class Node(GenericNodesUtils):
         else:
             return self.dumps()
 
+    def __eq__(self, other):
+        return not self != other
+
+    def __ne__(self, other):
+        for key in itertools.chain(self._str_keys, self._list_keys, self._dict_keys):
+            if getattr(self, key) != getattr(other, key, None):
+                return True
+        return False
+
     def copy(self):
         # XXX not very optimised but at least very simple
         return to_node(self.fst())
