@@ -71,6 +71,14 @@ class Path(object):
 
         self.path = baron.path.make_path(path, parent_node_type, render_pos)
 
+    def __eq__(self, other):
+        return not self != other
+
+    def __ne__(self, other):
+        if not isinstance(other, Path):
+            return True
+        return self.path != other.path
+
     @classmethod
     def from_baron_path(class_, node, path):
         if baron.path.is_empty(path):
