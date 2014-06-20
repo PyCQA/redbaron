@@ -155,8 +155,9 @@ class GenericNodesUtils(object):
     def bounding_box(self):
         return baron.path.node_to_bounding_box(self.fst())
 
-    def absolute_bounding_box(self):
-        return baron.path.path_to_bounding_box(self.root().fst(), self.path().to_baron_path())
+    def absolute_bounding_box(self, attribute = None):
+        path = self.path().to_baron_path() + ([attribute] if attribute is not None else [])
+        return baron.path.path_to_bounding_box(self.root().fst(), path)
 
     def find_by_position(self, position):
         return Path.from_baron_path(self, baron.path.position_to_path(self.fst(), position.line, position.column)).node

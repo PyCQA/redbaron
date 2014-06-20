@@ -1216,6 +1216,10 @@ def test_bounding_box(red, bounding_box_fixture):
     assert absolute_bounding_box == node.absolute_bounding_box()
 
 
+def test_bounding_box_of_attribute(red):
+    assert ((2, 1), (2, 3)) == red.funcdef.absolute_bounding_box("def")
+
+
 fst = RedBaron("""\
 @deco
 
