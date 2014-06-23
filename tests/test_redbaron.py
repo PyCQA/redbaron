@@ -1143,15 +1143,28 @@ def test_equality_node():
     assert r == r
     assert r is r
 
+    assert r.parent == r.parent
+    assert r.parent is r.parent
+
     assert r == r.copy()
     assert r is not r.copy()
 
+    assert r.parent != r.copy().parent
+    assert r.parent is not r.copy().parent
+
 
 def test_equality_node_list():
-    red = RedBaron("raise SomeStuff()")
+    red = RedBaron("def pouet():\n raise SomeStuff()")
+    red = red[0].value
 
     assert red == red
     assert red is red
 
+    assert red.parent == red.parent
+    assert red.parent is red.parent
+
     assert red == red.copy()
     assert red is not red.copy()
+
+    assert red.parent != red.copy().parent
+    assert red.parent is not red.copy().parent
