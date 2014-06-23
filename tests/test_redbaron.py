@@ -1135,3 +1135,23 @@ def test_path_value_second_endl(red):
             make_path([0, "value"], "list", 2)
         )
 
+
+def test_equality_node():
+    red = RedBaron("raise SomeStuff()")
+    r = red.raise_
+
+    assert r == r
+    assert r is r
+
+    assert r == r.copy()
+    assert r is not r.copy()
+
+
+def test_equality_node_list():
+    red = RedBaron("raise SomeStuff()")
+
+    assert red == red
+    assert red is red
+
+    assert red == red.copy()
+    assert red is not red.copy()
