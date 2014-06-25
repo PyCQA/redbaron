@@ -1,5 +1,11 @@
 # Todo
 
+### Import
+
+- .replace() on a node that allow to replace *in place* a node with new fst
+  (via string, dict/list or redbaron node)
+- maybe magic in NodeList on setattr to call .replace() on backend (kinda make sens but is a bit magic)
+
 ### Generic append\_stuff that take care of the delimiter:
 
 Need: DotList, CommaList, EndlList (.append\_item, .extend, +=)
