@@ -1,10 +1,11 @@
 # Todo
 
-### Import
+### Important
 
 - .replace() on a node that allow to replace *in place* a node with new fst
   (via string, dict/list or redbaron node)
 - maybe magic in NodeList on setattr to call .replace() on backend (kinda make sens but is a bit magic)
+- .indent() to change indentation of a block of nodes (.indent(+4), .indent(-4))
 
 ### Generic append\_stuff that take care of the delimiter:
 
