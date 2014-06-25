@@ -6,6 +6,13 @@
   (via string, dict/list or redbaron node)
 - maybe magic in NodeList on setattr to call .replace() on backend (kinda make sens but is a bit magic)
 - .indent() to change indentation of a block of nodes (.indent(+4), .indent(-4))
+- __setattr__ should work as expected when possible (will be a long list of stuff to do for that)
+  for eg: RedBaron("{a: 1}")[0].value[0] = "b: c" fails now
+- automatic reindentation when attribute a NodeList to an attribute (like adding a new body to a function)
+- when dealing with a block, ensure you don't break the indentation of the
+  block after you (like when playing with a method, be carreful with the next
+  method)
+- when set a function/other body block, ensure that it starts with a "\n" + correct indentation
 
 ### Find/Find_All (comparison)
 
@@ -45,6 +52,10 @@ now. It should implement every expected method of a list (.sort, .extend, .remov
 
 * .assign, .map\_concat
 * __setitem__ on NodeList
+* .swap, .move on a NodeList
+* .cut (like .copy but with del self)
+* .remove on nodelist
+* method to change style of formatting in a datastructure
 
 ### Misc
 
