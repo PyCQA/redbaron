@@ -679,6 +679,10 @@ class FuncdefNode(Node):
             self.sixth_formatting = []
 
 
+class AssignmentNode(Node):
+    _other_identifiers = ["assign"]
+
+
 class ForNode(Node):
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")

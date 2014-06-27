@@ -1135,3 +1135,7 @@ def test_path_value_second_endl(red):
             make_path([0, "value"], "list", 2)
         )
 
+
+def test_other_name_assignment():
+    red = RedBaron("a = b")
+    assert red.assign is red[0]
