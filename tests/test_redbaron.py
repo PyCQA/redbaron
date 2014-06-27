@@ -4,7 +4,7 @@
 
 import baron
 import pytest
-from baron.path import make_path, path_to_node
+from baron.path import make_path
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                       PassNode, NodeList, CommaNode, DotNode, CallNode)
 
