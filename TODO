@@ -20,6 +20,16 @@ Can use:
 - regex: re.compile
 - regex: "re:..."
 - callable: lambda
+- globs "g:..."
+
+Uniformise this with RedFlyingBaron?
+
+On a .find/.find_all, the first next argument should be defaulted to the obvious value:
+- NameNode -> value
+- FuncdefNode -> name
+- ClassdefNode -> name
+
+*args can be a list of lambda that receive the node has argument
 
 ### Generic append\_stuff that take care of the delimiter:
 
@@ -57,6 +67,7 @@ now. It should implement every expected method of a list (.sort, .extend, .remov
 * .remove on nodelist
 * method to change style of formatting in a datastructure
 * .append_value should take a *args
+* .grep method that test on successive .dumps()
 
 ### Misc
 
