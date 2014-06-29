@@ -16,12 +16,13 @@
 
 ### Find/Find_All (comparison)
 
-Can use:
-- regex: re.compile
-- regex: "re:..."
+Test identifier with:
+- regex instance
+- regex "re:..."
 - globs "g:..."
+- list/tuple
 
-Uniformise this with RedFlyingBaron?
+-> refactor to use the tests on kwargs
 
 On a .find/.find_all, the first next argument should be defaulted to the obvious value:
 - NameNode -> value
