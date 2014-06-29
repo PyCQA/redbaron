@@ -925,6 +925,18 @@ def test_find_case_insensitive():
     assert red.find("namenode") is red[0]
 
 
+def test_find_kwarg_lambda():
+    red = RedBaron("[1, 2, 3, 4]")
+    assert red.find("int", value=lambda x: int(x) % 2 == 0) == red("int")[1]
+    assert red("int", value=lambda x: int(x) % 2 == 0) == red('int')[1::2]
+
+
+def test_find_lambda():
+    red = RedBaron("[1, 2, 3, 4]")
+    assert red.find("int", lambda x: int(x.value) % 2 == 0) == red('int')[1]
+    assert red("int", lambda x: int(x.value) % 2 == 0) == red('int')[1::2]
+
+
 def test_copy_correct_isntance():
     red = RedBaron("a()")
     assert isinstance(red[0].value[1].copy(), CallNode)

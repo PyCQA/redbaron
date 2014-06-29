@@ -165,19 +165,19 @@ class NodeList(UserList, GenericNodesUtils):
         self.parent = parent
         self.on_attribute = on_attribute
 
-    def find(self, identifier, recursive=True, **kwargs):
+    def find(self, identifier, *args, **kwargs):
         for i in self.data:
-            candidate = i.find(identifier, recursive=recursive, **kwargs)
+            candidate = i.find(identifier, *args, **kwargs)
             if candidate is not None:
                 return candidate
 
     def __getattr__(self, key):
         return self.find(key)
 
-    def find_all(self, identifier, recursive=True, **kwargs):
+    def find_all(self, identifier, *args, **kwargs):
         to_return = NodeList([])
         for i in self.data:
-            to_return += i.find_all(identifier, recursive=recursive, **kwargs)
+            to_return += i.find_all(identifier, *args, **kwargs)
         return to_return
 
     findAll = find_all
@@ -411,11 +411,15 @@ class Node(GenericNodesUtils):
         return in_list
 
 
-    def find(self, identifier, recursive=True, **kwargs):
-        if self._node_match_query(self, identifier, **kwargs):
+    def find(self, identifier, *args, **kwargs):
+        if "recursive" in kwargs:
+            kwargs = kwargs.copy()
+            del kwargs["recursive"]
+
+        if self._node_match_query(self, identifier, *args, **kwargs):
             return self
 
-        if not recursive:
+        if not kwargs.get("recursive", True):
             return None
 
         for kind, key, _ in filter(lambda x: x[0] == "list" or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
@@ -424,13 +428,13 @@ class Node(GenericNodesUtils):
                 if not i:
                     continue
 
-                found = i.find(identifier, recursive, **kwargs)
+                found = i.find(identifier, *args, **kwargs)
                 if found:
                     return found
 
             elif kind == "list":
                 for i in getattr(self, key):
-                    found = i.find(identifier, recursive, **kwargs)
+                    found = i.find(identifier, *args, **kwargs)
                     if found:
                         return found
 
@@ -440,12 +444,12 @@ class Node(GenericNodesUtils):
     def __getattr__(self, key):
         return self.find(key)
 
-    def find_all(self, identifier, recursive=True, **kwargs):
+    def find_all(self, identifier, *args, **kwargs):
         to_return = NodeList([])
-        if self._node_match_query(self, identifier, **kwargs):
+        if self._node_match_query(self, identifier, *args, **kwargs):
             to_return.append(self)
 
-        if not recursive:
+        if not kwargs.get("recursive", True):
             return to_return
 
         for kind, key, _ in filter(lambda x: x[0] == "list" or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
@@ -454,11 +458,11 @@ class Node(GenericNodesUtils):
                 if not i:
                     continue
 
-                to_return += i.find_all(identifier, recursive, **kwargs)
+                to_return += i.find_all(identifier, *args, **kwargs)
 
             elif kind == "list":
                 for i in getattr(self, key):
-                    to_return += i.find_all(identifier, recursive, **kwargs)
+                    to_return += i.find_all(identifier, *args, **kwargs)
 
             else:
                 raise Exception()
@@ -468,27 +472,38 @@ class Node(GenericNodesUtils):
     findAll = find_all
     __call__ = find_all
 
-    def parent_find(self, identifier, **kwargs):
+    def parent_find(self, identifier, *args, **kwargs):
         current = self
         while current.parent and current.on_attribute != 'root':
-            if self._node_match_query(current.parent, identifier, **kwargs):
+            if self._node_match_query(current.parent, identifier, *args, **kwargs):
                 return current.parent
 
             current = current.parent
         return None
 
-    def _node_match_query(self, node, identifier, **kwargs):
+    def _node_match_query(self, node, identifier, *args, **kwargs):
+        print [node, identifier, args, kwargs]
         if identifier.lower() not in node._generate_identifiers():
             return False
 
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys
 
+        for arg in args:
+            print arg, arg(node)
+            if not arg(node):
+                return False
+
         for key in kwargs:
             if key not in all_my_keys:
                 return False
 
-            if getattr(node, key) != kwargs[key]:
-                return False
+            if callable(kwargs[key]):
+                if not kwargs[key](getattr(node, key)):
+                    return False
+
+            else:
+                if getattr(node, key) != kwargs[key]:
+                    return False
 
         return True
 
