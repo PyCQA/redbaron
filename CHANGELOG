@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.2 (unreleased)
+----------------
+
+- it's now possible to use regex, globs and lambda (callable) in .find and
+  .find_all, see https://redbaron.readthedocs.org/en/latest/querying.html#advanced-querying
+
 0.1 (2014-06-13)
 ----------------
 
