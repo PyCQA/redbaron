@@ -19,7 +19,6 @@
 Can use:
 - regex: re.compile
 - regex: "re:..."
-- callable: lambda
 - globs "g:..."
 
 Uniformise this with RedFlyingBaron?
