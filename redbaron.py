@@ -494,27 +494,27 @@ class Node(GenericNodesUtils):
             if not arg(node):
                 return False
 
-        for key in kwargs:
+        for key, value in kwargs.items():
             if key not in all_my_keys:
                 return False
 
-            if isinstance(kwargs[key], string_instance) and kwargs[key].startswith("re:"):
-                kwargs[key] = re.compile(kwargs[key][3:])
+            if isinstance(value, string_instance) and value.startswith("re:"):
+                value = re.compile(value[3:])
 
-            if callable(kwargs[key]):
-                if not kwargs[key](getattr(node, key)):
+            if callable(value):
+                if not value(getattr(node, key)):
                     return False
 
-            elif isinstance(kwargs[key], string_instance) and kwargs[key].startswith("g:"):
-                if not fnmatch(getattr(node, key), kwargs[key][2:]):
+            elif isinstance(value, string_instance) and value.startswith("g:"):
+                if not fnmatch(getattr(node, key), value[2:]):
                     return False
 
-            elif isinstance(kwargs[key], re._pattern_type):
-                if not kwargs[key].match(getattr(node, key)):
+            elif isinstance(value, re._pattern_type):
+                if not value.match(getattr(node, key)):
                     return False
 
             else:
-                if getattr(node, key) != kwargs[key]:
+                if getattr(node, key) != value:
                     return False
 
         return True
