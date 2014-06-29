@@ -3,6 +3,8 @@ import sys
 import inspect
 import itertools
 
+from fnmatch import fnmatch
+
 from pygments import highlight
 from pygments.token import Comment, Text, String, Keyword, Name, Operator
 from pygments.lexer import RegexLexer, bygroups
@@ -501,6 +503,10 @@ class Node(GenericNodesUtils):
 
             if callable(kwargs[key]):
                 if not kwargs[key](getattr(node, key)):
+                    return False
+
+            elif isinstance(kwargs[key], string_instance) and kwargs[key].startswith("g:"):
+                if not fnmatch(getattr(node, key), kwargs[key][2:]):
                     return False
 
             elif isinstance(kwargs[key], re._pattern_type):
