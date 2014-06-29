@@ -136,6 +136,21 @@ Having to compile regex is boring, so you can use this shorthand syntaxe instead
     red.find("name", value="re:^p")
     red.find_all("name", value="re:^p")
 
+Globs
+~~~~~
+
+Same than in a shell, you can use globs by prefixing the string with "g:":
+
+.. ipython:: python
+
+    red = RedBaron("abcd = plop + pouf")
+    red.find("name", value="g:p*")
+    red.find_all("name", value="g:p*")
+
+In the background, the comparison is done using the `fnmatch
+<https://docs.python.org/2/library/fnmatch.html#fnmatch.fnmatch>`_ module of
+the standard lib.
+
 Next
 ~~~~
 
