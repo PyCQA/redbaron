@@ -128,7 +128,8 @@ compiled regex:
     red.find("name", value=re.compile("^p"))
     red.find_all("name", value=re.compile("^p"))
 
-Having to compile regex is boring, so you can use this shorthand syntaxe instead:
+Having to compile regex is boring, so you can use this shorthand syntaxe
+instead (prefixing a string with "re:"):
 
 .. ipython:: python
 
