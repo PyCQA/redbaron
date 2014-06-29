@@ -496,6 +496,9 @@ class Node(GenericNodesUtils):
             if key not in all_my_keys:
                 return False
 
+            if isinstance(kwargs[key], string_instance) and kwargs[key].startswith("re:"):
+                kwargs[key] = re.compile(kwargs[key][3:])
+
             if callable(kwargs[key]):
                 if not kwargs[key](getattr(node, key)):
                     return False

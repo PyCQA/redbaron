@@ -948,6 +948,16 @@ def test_find_all_kwarg_regex_instance():
     assert red("name", value=re.compile("^po")) == red("name", value=lambda x: x.startswith("po"))
 
 
+def test_find_kwarg_regex_syntaxe():
+    red = RedBaron("plop\npop\npouf\nabcd")
+    assert red.find("name", value="re:^po") == red[2]
+
+
+def test_find_all_kwarg_regex_syntaxe():
+    red = RedBaron("plop\npop\npouf\nabcd")
+    assert red("name", value="re:^po") == red("name", value=lambda x: x.startswith("po"))
+
+
 def test_copy_correct_isntance():
     red = RedBaron("a()")
     assert isinstance(red[0].value[1].copy(), CallNode)
