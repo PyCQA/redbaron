@@ -1,3 +1,4 @@
+import re
 import sys
 import inspect
 import itertools
@@ -497,6 +498,10 @@ class Node(GenericNodesUtils):
 
             if callable(kwargs[key]):
                 if not kwargs[key](getattr(node, key)):
+                    return False
+
+            elif isinstance(kwargs[key], re._pattern_type):
+                if not kwargs[key].match(getattr(node, key)):
                     return False
 
             else:

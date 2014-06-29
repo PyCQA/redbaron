@@ -2,6 +2,7 @@
 # -*- coding:Utf-8 -*-
 
 
+import re
 import baron
 import pytest
 from baron.path import make_path
@@ -935,6 +936,16 @@ def test_find_lambda():
     red = RedBaron("[1, 2, 3, 4]")
     assert red.find("int", lambda x: int(x.value) % 2 == 0) == red('int')[1]
     assert red("int", lambda x: int(x.value) % 2 == 0) == red('int')[1::2]
+
+
+def test_find_kwarg_regex_instance():
+    red = RedBaron("plop\npop\npouf\nabcd")
+    assert red.find("name", value=re.compile("^po")) == red[2]
+
+
+def test_find_all_kwarg_regex_instance():
+    red = RedBaron("plop\npop\npouf\nabcd")
+    assert red("name", value=re.compile("^po")) == red("name", value=lambda x: x.startswith("po"))
 
 
 def test_copy_correct_isntance():
