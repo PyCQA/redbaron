@@ -128,6 +128,14 @@ compiled regex:
     red.find("name", value=re.compile("^p"))
     red.find_all("name", value=re.compile("^p"))
 
+Having to compile regex is boring, so you can use this shorthand syntaxe instead:
+
+.. ipython:: python
+
+    red = RedBaron("abcd = plop + pouf")
+    red.find("name", value="re:^p")
+    red.find_all("name", value="re:^p")
+
 Next
 ~~~~
 
