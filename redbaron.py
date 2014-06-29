@@ -488,7 +488,6 @@ class Node(GenericNodesUtils):
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys
 
         for arg in args:
-            print arg, arg(node)
             if not arg(node):
                 return False
 
