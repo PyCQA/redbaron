@@ -482,7 +482,6 @@ class Node(GenericNodesUtils):
         return None
 
     def _node_match_query(self, node, identifier, *args, **kwargs):
-        print [node, identifier, args, kwargs]
         if identifier.lower() not in node._generate_identifiers():
             return False
 
