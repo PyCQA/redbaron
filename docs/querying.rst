@@ -88,6 +88,33 @@ you try to *call* the node this way :file:`node(some_arguments)` this will call
 
 :file:`.find_all()` also supports the option :file:`recursive=False`.
 
+Advanced querying
+-----------------
+
+:file:`.find()` and :file:`.find_all()` offer more powerful comparison mean
+than just equality comparison.
+
+Callable (lambda)
+~~~~~~~~~~~~~~~~~
+
+Instead of passing a string to test properties of a node, you can pass a
+callable, like a lambda. It will receive the value as first argument:
+
+.. ipython:: python
+
+    red = RedBaron("a = [1, 2, 3, 4]")
+    red.find("int", value=lambda value: int(value) % 2 == 0)
+    red.find_all("int", value=lambda value: int(value) % 2 == 0)
+
+You can also pass a callable as an arg (without giving it a key), this callable
+will receive the node itself as first argument:
+
+.. ipython:: python
+
+    red = RedBaron("a = [1, 2, 3, 4]")
+    red.find("int", lambda node: int(node.value) % 2 == 0)
+    red.find_all("int", lambda node: int(node.value) % 2 == 0)
+
 Next
 ~~~~
 
