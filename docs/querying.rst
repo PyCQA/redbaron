@@ -115,6 +115,19 @@ will receive the node itself as first argument:
     red.find("int", lambda node: int(node.value) % 2 == 0)
     red.find_all("int", lambda node: int(node.value) % 2 == 0)
 
+Regex
+~~~~~
+
+Instead of passing a string to test properties of a node, you can pass a
+compiled regex:
+
+.. ipython:: python
+
+    import re
+    red = RedBaron("abcd = plop + pouf")
+    red.find("name", value=re.compile("^p"))
+    red.find_all("name", value=re.compile("^p"))
+
 Next
 ~~~~
 
