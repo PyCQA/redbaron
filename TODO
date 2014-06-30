@@ -69,6 +69,11 @@ now. It should implement every expected method of a list (.sort, .extend, .remov
 * .append_value should take a *args
 * .grep method that test on successive .dumps()
 
+### More refactoring like
+
+- find_name_binding -> search assign, def (args && name), class, except, with, for ...
+- find_identifier -> search name + everything up there ^
+
 ### Misc
 
 * delegate .filtered on the value if the value is a NodeList? Can quickly become magic behavior
