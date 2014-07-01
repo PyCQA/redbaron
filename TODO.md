@@ -14,7 +14,7 @@
   method)
 - when set a function/other body block, ensure that it starts with a "\n" + correct indentation
 
-### Find/Find_All (comparison)
+### Find/Find\_All (comparison)
 
 Test identifier with:
 - regex instance
@@ -24,12 +24,15 @@ Test identifier with:
 
 -> refactor to use the tests on kwargs
 
-On a .find/.find_all, the first next argument should be defaulted to the obvious value:
+On a .find/.find\_all, the first next argument should be defaulted to the obvious value:
 - NameNode -> value
 - FuncdefNode -> name
 - ClassdefNode -> name
 
-*args can be a list of lambda that receive the node has argument
+\*args can be a list of lambda that receive the node has argument
+
+Magic stuff like:
+value\_\_dumps that compare the .dumps() with a string? or use lambda for that instead?
 
 ### Generic append\_stuff that take care of the delimiter:
 
@@ -66,13 +69,13 @@ now. It should implement every expected method of a list (.sort, .extend, .remov
 * .cut (like .copy but with del self)
 * .remove on nodelist
 * method to change style of formatting in a datastructure
-* .append_value should take a *args
+* .append\_value should take a \*args
 * .grep method that test on successive .dumps()
 
 ### More refactoring like
 
-- find_name_binding -> search assign, def (args && name), class, except, with, for ...
-- find_identifier -> search name + everything up there ^
+- find\_name\_binding -> search assign, def (args && name), class, except, with, for ...
+- find\_identifier -> search name + everything up there ^
 
 ### Misc
 
