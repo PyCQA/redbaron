@@ -75,7 +75,7 @@ class Path(object):
                 child = getattr(node, key)
             else:
                 child = node[key]
-            if child is not None and not isinstance(child, string_instance):
+            if child is not None and (isinstance(child, Node) or isinstance(child, NodeList)):
                 node = child
 
         return class_(node)

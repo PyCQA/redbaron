@@ -1225,23 +1225,24 @@ fst = RedBaron("""\
 
 def a(c, d):
     b = c + d
+    e = 1
 """)
 
 # Same question here: should (2, 0) and (2, 1) return something?
 positions = [
     (fst.funcdef.decorators[0],                       [(1, 1)]),
-    (fst.funcdef.decorators[0].value.value[0],        [(1, 2),  (1, 3), (1, 4), (1, 5)]),
+    (fst.funcdef.decorators[0].value.value[0],        [(1, 2), (1, 3), (1, 4), (1, 5)]),
     # How to get this one ? (2, 0) and (2, 1) does not work, see out of scope
     #(fst.funcdef.decorators[1],                       [(?, ?)]),
-    (fst.funcdef,                                     [(3, 1),  (3, 2), (3, 3)]),
+    (fst.funcdef,                                     [(3, 1), (3, 2), (3, 3)]),
     (fst.funcdef.first_formatting[0],                 [(3, 4)]),
-    (fst.funcdef,                                     [(3, 5),  (3, 6)]),
+    (fst.funcdef,                                     [(3, 5), (3, 6)]),
     (fst.funcdef.arguments[0],                        [(3, 7)]),
     (fst.funcdef.arguments[1],                        [(3, 8)]),
     (fst.funcdef.arguments[1].second_formatting[0],   [(3, 9)]),
     (fst.funcdef.arguments[2],                        [(3, 10)]),
     (fst.funcdef,                                     [(3, 11), (3, 12)]),
-    (fst.funcdef.value[0],                            [(4, 1),  (4, 2), (4, 3), (4, 4)]),
+    (fst.funcdef.value[0],                            [(4, 1), (4, 2), (4, 3), (4, 4)]),
     (fst.funcdef.value[1].target,                     [(4, 5)]),
     (fst.funcdef.value[1].first_formatting[0],        [(4, 6)]),
     (fst.funcdef.value[1],                            [(4, 7)]),
@@ -1251,8 +1252,14 @@ positions = [
     (fst.funcdef.value[1].value,                      [(4, 11)]),
     (fst.funcdef.value[1].value.second_formatting[0], [(4, 12)]),
     (fst.funcdef.value[1].value.second,               [(4, 13)]),
+    (fst.funcdef.value[2],                            [(5, 1), (5, 2), (5, 3), (5, 4)]),
+    (fst.funcdef.value[3].target,                     [(5, 5)]),
+    (fst.funcdef.value[3].first_formatting[0],        [(5, 6)]),
+    (fst.funcdef.value[3],                            [(5, 7)]),
+    (fst.funcdef.value[3].second_formatting[0],       [(5, 8)]),
+    (fst.funcdef.value[3].value,                      [(5, 9)]),
     # out of scope
-    (fst,                                             [(2, 0), (2, 1)]),
+    (fst,                                             [(2, 0),  (2, 1)]),
 ]
 
 
