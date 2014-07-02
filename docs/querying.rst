@@ -161,6 +161,26 @@ In the background, the comparison is done using the `fnmatch
 <https://docs.python.org/2/library/fnmatch.html#fnmatch.fnmatch>`_ module of
 the standard lib.
 
+List or tuple
+~~~~~~~~~~~~~
+
+You can pass a list as a shorthand to test if the tested attribute is in any of
+the member of the list/tuple:
+
+.. ipython:: python
+
+    red = RedBaron("foo\nbar\nbaz")
+    red.find("name", value=["foo", "baz"])
+    red.find("name", value=("foo", "baz"))
+    red("name", value=["foo", "baz"])
+    red("name", value=("foo", "baz"))
+
+.. ipython:: python
+
+    red = RedBaron("1\nstuff\n'string'\n")
+    red.find(["int", "string"])
+    red(["int", "string"])
+
 Next
 ~~~~
 
