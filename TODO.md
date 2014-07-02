@@ -16,11 +16,6 @@
 
 ### Find/Find\_All (comparison)
 
-On a .find/.find\_all, the first next argument should be defaulted to the obvious value:
-- NameNode -> value
-- FuncdefNode -> name
-- ClassdefNode -> name
-
 Magic stuff like:
 value\_\_dumps that compare the .dumps() with a string? or use lambda for that instead?
 
