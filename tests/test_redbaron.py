@@ -1004,6 +1004,30 @@ def test_identifier_find_all_kwarg_glob_syntaxe():
     assert red("g:s*") == red[-1:]
 
 
+def test_find_kwarg_list_tuple_instance():
+    red = RedBaron("pouet\n'string'\n1")
+    assert red.find("name", value=["pouet", 1]) == red[0]
+    assert red.find("name", value=("pouet", 1)) == red[0]
+
+
+def test_find_all_kwarg_list_tuple_instance():
+    red = RedBaron("pouet\nstuff\n1")
+    assert red("name", value=["pouet", "stuff"]) == red[::2][:2]
+    assert red("name", value=("pouet", "stuff")) == red[::2][:2]
+
+
+def test_identifier_find_kwarg_list_tuple_instance():
+    red = RedBaron("pouet\n'string'\n1")
+    assert red.find(["name", "string"]) == red[0]
+    assert red.find(("name", "string")) == red[0]
+
+
+def test_identifier_find_all_kwarg_list_tuple_instance():
+    red = RedBaron("pouet\n'string'\n1")
+    assert red(["name", "string"]) == red[::2][:2]
+    assert red(("name", "string")) == red[::2][:2]
+
+
 def test_copy_correct_isntance():
     red = RedBaron("a()")
     assert isinstance(red[0].value[1].copy(), CallNode)

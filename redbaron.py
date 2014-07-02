@@ -526,6 +526,9 @@ class Node(GenericNodesUtils):
                 if query.match(attribute):
                     return True
 
+            elif isinstance(query, (list, tuple)):
+                if attribute in query:
+                    return True
             else:
                 if attribute == query:
                     return True
