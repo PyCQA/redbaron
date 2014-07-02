@@ -17,19 +17,12 @@
 ### Find/Find\_All (comparison)
 
 Test identifier with:
-- regex instance
-- regex "re:..."
-- globs "g:..."
 - list/tuple
-
--> refactor to use the tests on kwargs
 
 On a .find/.find\_all, the first next argument should be defaulted to the obvious value:
 - NameNode -> value
 - FuncdefNode -> name
 - ClassdefNode -> name
-
-\*args can be a list of lambda that receive the node has argument
 
 Magic stuff like:
 value\_\_dumps that compare the .dumps() with a string? or use lambda for that instead?
