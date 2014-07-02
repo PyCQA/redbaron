@@ -109,19 +109,6 @@ argument:
     red.find(lambda identifier: identifier == "comma")
     red.find_all(lambda identifier: identifier == "comma")
 
-\*args
-~~~~~~
-
-You can also pass as namy callable as args (without giving it a key) as you
-want, those callables will receive the node itself as first argument (and must
-return a value that will be tested as a boolable):
-
-.. ipython:: python
-
-    red = RedBaron("a = [1, 2, 3, 4]")
-    red.find("int", lambda node: int(node.value) % 2 == 0)
-    red.find_all("int", lambda node: int(node.value) % 2 == 0)
-
 Regex
 ~~~~~
 
@@ -184,6 +171,37 @@ the member of the list/tuple:
     red = RedBaron("1\nstuff\n'string'\n")
     red.find(["int", "string"])
     red(["int", "string"])
+
+\*args and default value
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also pass as namy callable as args (without giving it a key) as you
+want, those callables will receive the node itself as first argument (and must
+return a value that will be tested as a boolable):
+
+.. ipython:: python
+
+    red = RedBaron("a = [1, 2, 3, 4]")
+    red.find("int", lambda node: int(node.value) % 2 == 0)
+    red.find_all("int", lambda node: int(node.value) % 2 == 0)
+    red.find("int", lambda node: int(node.value) % 2 == 0, lambda node: int(node.value) == 4)
+
+To ease the usage of RedBaron in ipython (and in general), you can pass any of
+the previous testing methods (**except the lambda**) as the **first** argument of
+\*args, it will be tested against the default testing attribute which is the
+"value" attribute by default. This mean that: :file:`red.find("name", "foo")`
+is the equivalent of :file:`red.find("name", value="foo")`.
+
+If the default tested attribute is different, it will be shown in
+:file:`.help()`. For now, the 2 only cases where this happens is on class node
+and funcdef node where the attribute is "name".
+
+.. ipython:: python
+
+    red = RedBaron("foo\ndef bar(): pass\nbaz\ndef badger(): pass")
+    red.find("name", "baz")
+    red.find("def", "bar")
+    red.find("def").help()
 
 Next
 ~~~~
