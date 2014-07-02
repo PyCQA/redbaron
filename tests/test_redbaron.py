@@ -1059,6 +1059,13 @@ def test_indentation_no_parent():
     assert red[0].copy().indentation == ''
 
 
+def test_replace():
+    red = RedBaron("1 + 2")
+    red[0].replace("caramba")
+    assert isinstance(red[0], NameNode)
+    assert red.dumps() == "caramba"
+
+
 @pytest.fixture
 def red():
     return RedBaron("""\

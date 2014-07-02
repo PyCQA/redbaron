@@ -2,8 +2,6 @@
 
 ### Important
 
-- .replace() on a node that allow to replace *in place* a node with new fst
-  (via string, dict/list or redbaron node)
 - maybe magic in NodeList on setattr to call .replace() on backend (kinda make sens but is a bit magic)
 - .indent() to change indentation of a block of nodes (.indent(+4), .indent(-4))
 - __setattr__ should work as expected when possible (will be a long list of stuff to do for that)

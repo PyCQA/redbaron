@@ -571,7 +571,8 @@ class Node(GenericNodesUtils):
             'indentation_node_is_direct',
             'parent_find',
             'path',
-            'find_by_path'
+            'find_by_path',
+            'replace'
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -662,6 +663,12 @@ class Node(GenericNodesUtils):
 
     def _render(self):
         return nodes_rendering_order[self.type]
+
+
+    def replace(self, new_node):
+        new_node = self._convert_input_to_node_object(new_node, parent=None, on_attribute=None)
+        self.__class__ = new_node.__class__  # YOLO
+        self.__init__(new_node.fst(), parent=self.parent, on_attribute=self.on_attribute)
 
 
 class IntNode(Node):
