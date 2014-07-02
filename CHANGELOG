@@ -4,8 +4,13 @@ Changelog
 0.2 (unreleased)
 ----------------
 
-- it's now possible to use regex, globs and lambda (callable) in .find and
+- it's now possible to use regex, globs, list/tuple  and lambda (callable) in .find and
   .find_all, see https://redbaron.readthedocs.org/en/latest/querying.html#advanced-querying
+- new method on node: .replace() to replace in place a node
+  https://redbaron.readthedocs.org/en/latest/other.html#replace
+- .map .filter and .apply are now documented https://redbaron.readthedocs.org/en/latest/other.html#map-filter-apply
+- various small bugfix
+- we have one new contributor \o/ https://github.com/ze42
 
 0.1 (2014-06-13)
 ----------------
