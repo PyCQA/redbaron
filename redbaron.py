@@ -286,6 +286,7 @@ class NodeList(UserList, GenericNodesUtils):
 
 class Node(GenericNodesUtils):
     _other_identifiers = []
+    _default_test_value = "value"
 
     def __init__(self, node, parent=None, on_attribute=None):
         self.init = True
@@ -490,6 +491,11 @@ class Node(GenericNodesUtils):
 
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys
 
+        if args and isinstance(args[0], (string_instance, re._pattern_type, list, tuple)):
+            if not self._attribute_match_query([getattr(node, node._default_test_value)], args[0]):
+                return False
+            args = args[1:]
+
         for arg in args:
             if not arg(node):
                 return False
@@ -602,6 +608,8 @@ class Node(GenericNodesUtils):
             to_join.append("# identifiers: %s" % ", ".join(self._generate_identifiers()))
             if self._get_helpers():
                 to_join.append("# helpers: %s" % ", ".join(self._get_helpers()))
+            if self._default_test_value != "value":
+                to_join.append("# default test value: %s" % self._default_test_value)
             to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
             to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(deep=new_deep, with_formatting=with_formatting), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
             # need to do this otherwise I end up with stacked quoted list
@@ -717,6 +725,8 @@ class DictNode(Node):
 
 class FuncdefNode(Node):
     _other_identifiers = ["def", "def_"]
+    _default_test_value = "name"
+
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
@@ -742,6 +752,8 @@ class WhileNode(Node):
 
 
 class ClassNode(Node):
+    _default_test_value = "name"
+
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":

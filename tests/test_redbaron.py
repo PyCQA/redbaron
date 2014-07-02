@@ -1028,6 +1028,26 @@ def test_identifier_find_all_kwarg_list_tuple_instance():
     assert red(("name", "string")) == red[::2][:2]
 
 
+def test_default_test_value_find():
+    red = RedBaron("badger\nmushroom\nsnake")
+    assert red.find("name", "snake") == red.find("name", value="snake")
+
+
+def test_default_test_value_find_all():
+    red = RedBaron("badger\nmushroom\nsnake")
+    assert red("name", "snake") == red("name", value="snake")
+
+
+def test_default_test_value_find_def():
+    red = RedBaron("def a(): pass\ndef b(): pass")
+    assert red.find("def", "b") == red.find("def", name="b")
+
+
+def test_default_test_value_find_class():
+    red = RedBaron("class a(): pass\nclass b(): pass")
+    assert red.find("class", "b") == red.find("class", name="b")
+
+
 def test_copy_correct_isntance():
     red = RedBaron("a()")
     assert isinstance(red[0].value[1].copy(), CallNode)
