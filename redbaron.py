@@ -485,7 +485,7 @@ class Node(GenericNodesUtils):
         return None
 
     def _node_match_query(self, node, identifier, *args, **kwargs):
-        if identifier.lower() not in node._generate_identifiers():
+        if not self._attribute_match_query(node._generate_identifiers(), identifier.lower() if isinstance(identifier, string_instance) and not identifier.startswith("re:") else identifier):
             return False
 
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys

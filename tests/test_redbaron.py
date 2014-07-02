@@ -968,6 +968,42 @@ def test_find_all_kwarg_glob_syntaxe():
     assert red("name", value="g:po*") == red("name", value=lambda x: x.startswith("po"))
 
 
+def test_identifier_find_kwarg_lambda():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red.find(lambda x: x in ["name", "int"]) == red[0]
+    assert red(lambda x: x in ["name", "int"]) == red[::2][:2]
+
+
+def test_identifier_find_kwarg_regex_instance():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red.find(re.compile("^[ni]")) == red[0]
+
+
+def test_identifier_find_all_kwarg_regex_instance():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red(re.compile("^[ni]")) == red[::2][:2]
+
+
+def test_identifier_find_kwarg_regex_syntaxe():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red.find("re:^[ni]") == red[0]
+
+
+def test_identifier_find_all_kwarg_regex_syntaxe():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red("re:^[ni]") == red[::2][:2]
+
+
+def test_identifier_find_kwarg_glob_syntaxe():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red.find("g:s*") == red[-1]
+
+
+def test_identifier_find_all_kwarg_glob_syntaxe():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red("g:s*") == red[-1:]
+
+
 def test_copy_correct_isntance():
     red = RedBaron("a()")
     assert isinstance(red[0].value[1].copy(), CallNode)
