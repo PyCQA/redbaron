@@ -498,26 +498,40 @@ class Node(GenericNodesUtils):
             if key not in all_my_keys:
                 return False
 
-            if isinstance(value, string_instance) and value.startswith("re:"):
-                value = re.compile(value[3:])
-
-            if callable(value):
-                if not value(getattr(node, key)):
-                    return False
-
-            elif isinstance(value, string_instance) and value.startswith("g:"):
-                if not fnmatch(getattr(node, key), value[2:]):
-                    return False
-
-            elif isinstance(value, re._pattern_type):
-                if not value.match(getattr(node, key)):
-                    return False
-
-            else:
-                if getattr(node, key) != value:
-                    return False
+            if not self._attribute_match_query([getattr(node, key)], value):
+                return False
 
         return True
+
+    def _attribute_match_query(self, attribute_names, query):
+        """
+        Take a list/tuple of attributes that can match and a query, return True
+        if any of the attributes match the query.
+        """
+        assert isinstance(attribute_names, (list, tuple))
+
+        if isinstance(query, string_instance) and query.startswith("re:"):
+            query = re.compile(query[3:])
+
+        for attribute in attribute_names:
+            if callable(query):
+                if query(attribute):
+                    return True
+
+            elif isinstance(query, string_instance) and query.startswith("g:"):
+                if fnmatch(attribute, query[2:]):
+                    return True
+
+            elif isinstance(query, re._pattern_type):
+                if query.match(attribute):
+                    return True
+
+            else:
+                if attribute == query:
+                    return True
+
+        return False
+
 
     def find_by_path(self, path):
         return Path(self, path).node()
