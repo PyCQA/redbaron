@@ -53,7 +53,7 @@ if the parent is a RedBaron instance.
 A helper method that allow you to do the equivalent of the :file:`.find()`
 method but in the chain of the parents of the node. This is the equivalent of
 doing: :file:`while node has a parent: if node.parent match query: return
-node.parent, else: node = node.parent`. It returns :file:`None` if not parent
+node.parent, else: node = node.parent`. It returns :file:`None` if no parent
 match the query.
 
 .. ipython:: python
@@ -70,9 +70,9 @@ match the query.
 .next .previous .next_generator() .previous_generator()
 -------------------------------------------------------
 
-In a similar fashion, node have a :file:`.next` and :file:`.previous`
+In a similar fashion, nodes have a :file:`.next` and :file:`.previous`
 attributes that point to the next or previous node if the node is located in a
-node list. They are set at :file:`None` if their is not adjacent node or if the
+node list. They are set at :file:`None` if there is not adjacent node or if the
 node is not in a node list. A node list will never have a :file:`.next` or
 :file:`.previous` node, so those attributes will always be set at :file:`None`.
 
@@ -116,7 +116,7 @@ if you want to iterate on the neighbours of the node.
 -----------
 
 Node list comes with a small helper function: :file:`.filtered()` that returns
-a **tuple** containing the "signifiant" node (nodes that aren't comma node, dot
+a **tuple** containing the "significant" node (nodes that aren't comma node, dot
 node, space node or endl node).
 
 .. ipython:: python
@@ -132,7 +132,7 @@ to do something better right now.
 .indentation
 ------------
 
-Every node have the property :file:`.indentation` that will return the
+Every node has the property :file:`.indentation` that will return the
 indentation level of the node:
 
 .. ipython:: python
