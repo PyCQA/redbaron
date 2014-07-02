@@ -109,8 +109,12 @@ argument:
     red.find(lambda identifier: identifier == "comma")
     red.find_all(lambda identifier: identifier == "comma")
 
-You can also pass a callable as an arg (without giving it a key), this callable
-will receive the node itself as first argument:
+\*args
+~~~~~~
+
+You can also pass as namy callable as args (without giving it a key) as you
+want, those callables will receive the node itself as first argument (and must
+return a value that will be tested as a boolable):
 
 .. ipython:: python
 
