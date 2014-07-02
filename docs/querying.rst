@@ -97,14 +97,17 @@ than just equality comparison.
 Callable (lambda)
 ~~~~~~~~~~~~~~~~~
 
-Instead of passing a string to test properties of a node, you can pass a
-callable, like a lambda. It will receive the value as first argument:
+Instead of passing a string to test properties of the identifier of a node, you
+can pass a callable, like a lambda. It will receive the value as first
+argument:
 
 .. ipython:: python
 
     red = RedBaron("a = [1, 2, 3, 4]")
     red.find("int", value=lambda value: int(value) % 2 == 0)
     red.find_all("int", value=lambda value: int(value) % 2 == 0)
+    red.find(lambda identifier: identifier == "comma")
+    red.find_all(lambda identifier: identifier == "comma")
 
 You can also pass a callable as an arg (without giving it a key), this callable
 will receive the node itself as first argument:
@@ -127,6 +130,8 @@ compiled regex:
     red = RedBaron("abcd = plop + pouf")
     red.find("name", value=re.compile("^p"))
     red.find_all("name", value=re.compile("^p"))
+    red.find(re.compile("^n"))
+    red.find_all(re.compile("^n"))
 
 Having to compile regex is boring, so you can use this shorthand syntaxe
 instead (prefixing a string with "re:"):
@@ -136,6 +141,8 @@ instead (prefixing a string with "re:"):
     red = RedBaron("abcd = plop + pouf")
     red.find("name", value="re:^p")
     red.find_all("name", value="re:^p")
+    red.find("re:^n")
+    red.find_all("re:^n")
 
 Globs
 ~~~~~
@@ -147,6 +154,8 @@ Same than in a shell, you can use globs by prefixing the string with "g:":
     red = RedBaron("abcd = plop + pouf")
     red.find("name", value="g:p*")
     red.find_all("name", value="g:p*")
+    red.find("g:n*")
+    red.find_all("g:n*")
 
 In the background, the comparison is done using the `fnmatch
 <https://docs.python.org/2/library/fnmatch.html#fnmatch.fnmatch>`_ module of
