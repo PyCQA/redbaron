@@ -201,3 +201,18 @@ RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :fil
     red('call')
     red = RedBaron("a()\nb()\nc(x=y)")
     red('call').apply(lambda x: x.append_value("answer=42"))
+
+.replace()
+----------
+
+:file:`.replace()` is a method that allow to replace **in place** a node by
+another one. Like every operation of this nature, you can pass a string, a
+dict, a list of length one or a node instance.
+
+.. ipython:: python
+
+    red = RedBaron("a()\nb()\nc(x=y)")
+    red[2].replace("1 + 2")
+    red
+    red[-1].replace("plop")
+    red
