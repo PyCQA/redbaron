@@ -16,9 +16,6 @@
 
 ### Find/Find\_All (comparison)
 
-Test identifier with:
-- list/tuple
-
 On a .find/.find\_all, the first next argument should be defaulted to the obvious value:
 - NameNode -> value
 - FuncdefNode -> name
