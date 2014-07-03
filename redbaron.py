@@ -124,7 +124,7 @@ class GenericNodesUtils(object):
     # XXX should this be an abstract class?
     def _convert_input_to_node_object(self, value, parent, on_attribute):
         if isinstance(value, string_instance):
-            return to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute)
+            return self._string_to_node(value, parent=parent, on_attribute=on_attribute)
         elif isinstance(value, dict):
             return to_node(value, parent=parent, on_attribute=on_attribute)
         elif isinstance(value, Node):
@@ -134,9 +134,12 @@ class GenericNodesUtils(object):
 
         raise NotImplemented
 
+    def _string_to_node(self, string, parent, on_attribute):
+        return to_node(baron.parse(string)[0], parent=parent, on_attribute=on_attribute)
+
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
         if isinstance(value, string_instance):
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(value)))
+            return self._string_to_node_list(value, parent=parent, on_attribute=on_attribute)
 
         if isinstance(value, dict):  # assuming that we got some fst
                                      # also assuming the user do strange things
@@ -156,6 +159,9 @@ class GenericNodesUtils(object):
             return new_value
 
         raise NotImplemented
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(string)))
 
     @property
     def root(self):
