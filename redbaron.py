@@ -1,4 +1,5 @@
 import re
+import os
 import sys
 import inspect
 import itertools
@@ -572,7 +573,8 @@ class Node(GenericNodesUtils):
             'parent_find',
             'path',
             'find_by_path',
-            'replace'
+            'replace',
+            'edit',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -668,6 +670,28 @@ class Node(GenericNodesUtils):
         new_node = self._convert_input_to_node_object(new_node, parent=None, on_attribute=None)
         self.__class__ = new_node.__class__  # YOLO
         self.__init__(new_node.fst(), parent=self.parent, on_attribute=self.on_attribute)
+
+    def edit(self, editor=None):
+        if editor is None:
+            editor = os.environ.get("EDITOR", "nano")
+
+        base_path = os.path.join("/tmp", "baron_%s" % os.getpid())
+        if not os.path.exists(base_path):
+            os.makedirs(base_path)
+
+        temp_file_path = os.path.join(base_path, str(id(self)))
+
+        self_in_string = self.dumps()
+        with open(temp_file_path, "w") as temp_file:
+            temp_file.write(self_in_string)
+
+        os.system("%s %s" % (editor, temp_file_path))
+
+        with open(temp_file_path, "r") as temp_file:
+            result = temp_file.read()
+
+        if result != self_in_string:
+            self.replace(result)
 
 
 class IntNode(Node):
