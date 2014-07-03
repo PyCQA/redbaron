@@ -1282,4 +1282,4 @@ def test_setitem_nodelist():
     red.dumps()
     assert red[0].value[2].type == "binary_operator"
     assert red[0].value[2].parent is red[0]
-    assert red[0].value[2].on_attribute is "value"
+    assert red[0].value[2].on_attribute == "value"
