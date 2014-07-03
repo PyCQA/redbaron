@@ -216,3 +216,19 @@ dict, a list of length one or a node instance.
     red
     red[-1].replace("plop")
     red
+
+.edit()
+-------
+
+Helper method that allow to edit the code of the current **node** into an
+editor. The result is parsed and replace the code of the current node.
+
+.. ipython:: python
+
+    red = RedBaron("def a(): return 42")
+    # should be used like this: (I can't execute this code here, obviously)
+    # red.return_.edit()
+
+By default, the editor is taken from the variable :file:`EDITOR` in the
+environements variables. If this variable is not present, nano is used. You can
+use a different editor this way: :file:`node.edit(editor="vim")`.
