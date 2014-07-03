@@ -13,6 +13,8 @@ Changelog
   replace the node with the modified code https://redbaron.readthedocs.org/en/latest/other.html#edit
 - .root attribute (property) that return the root node of the tree in which the
   node is stored https://redbaron.readthedocs.org/en/latest/other.html#root
+- setitem (a[x] = b) on nodelist now works as expected (accepting string, fst
+  node and redbaron node)
 - various small bugfix
 - we have one new contributor \o/ https://github.com/ze42
 
