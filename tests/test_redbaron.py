@@ -1269,3 +1269,8 @@ def test_path_value_second_endl(red):
 def test_other_name_assignment():
     red = RedBaron("a = b")
     assert red.assign is red[0]
+
+
+def test_get_root():
+    red = RedBaron("def a(b=c):\n    return 42")
+    assert red is red.find("int").root

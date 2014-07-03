@@ -157,6 +157,13 @@ class GenericNodesUtils(object):
 
         raise NotImplemented
 
+    @property
+    def root(self):
+        current = self
+        while not isinstance(current, RedBaron):
+            current = current.parent
+        return current
+
 
 class NodeList(UserList, GenericNodesUtils):
     # NodeList doesn't have a previous nor a next
