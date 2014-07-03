@@ -112,6 +112,18 @@ if you want to iterate on the neighbours of the node.
     In [42]: print [x for x assign.target.next_generator()]
     In [42]: print [x for x assign.target.previous_generator()]
 
+.root
+-----
+
+Every node have the :file:`.root` attribute (property) that returns the root
+node in which this node is located:
+
+.. ipython:: python
+
+    red = RedBaron("def a(): return 42")
+    red.int_
+    assert red.int_.root is red
+
 .filtered()
 -----------
 
