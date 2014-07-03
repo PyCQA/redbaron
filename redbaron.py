@@ -317,7 +317,7 @@ class Node(GenericNodesUtils):
                 self._str_keys.append(key)
 
             elif kind in ("list", "formatting"):
-                setattr(self, key, NodeList(map(lambda x: to_node(x, parent=self, on_attribute=key), node[key]), parent=self))
+                setattr(self, key, NodeList(map(lambda x: to_node(x, parent=self, on_attribute=key), node[key]), parent=self, on_attribute=key))
                 self._list_keys.append(key)
 
             else:
