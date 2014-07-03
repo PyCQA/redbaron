@@ -757,6 +757,10 @@ class ListNode(Node):
 class SetNode(Node):
     append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("{%s}" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
 
 class ReprNode(Node):
     append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
