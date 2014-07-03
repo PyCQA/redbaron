@@ -9,6 +9,10 @@ Changelog
 - new method on node: .replace() to replace in place a node
   https://redbaron.readthedocs.org/en/latest/other.html#replace
 - .map .filter and .apply are now documented https://redbaron.readthedocs.org/en/latest/other.html#map-filter-apply
+- .edit() new helper method to launch a text editor on the selected node and
+  replace the node with the modified code https://redbaron.readthedocs.org/en/latest/other.html#edit
+- .root attribute (property) that return the root node of the tree in which the
+  node is stored https://redbaron.readthedocs.org/en/latest/other.html#root
 - various small bugfix
 - we have one new contributor \o/ https://github.com/ze42
 
