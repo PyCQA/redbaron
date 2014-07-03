@@ -785,6 +785,10 @@ class TupleNode(Node):
 
 
 class DictNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("{%s}" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
     def append_value(self, key, value, trailing=False):
         value = baron.parse("{%s: %s}" % (key, value))[0]["value"][0]
         self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)

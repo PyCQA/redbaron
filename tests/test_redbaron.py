@@ -1313,3 +1313,9 @@ def test_set_attr_on_repr():
     red = RedBaron("`1`")
     red[0].value = "1, 2, 3"
     assert red[0].value[0].type == "int"
+
+
+def test_set_attr_on_dict():
+    red = RedBaron("{}")
+    red[0].value = "1: 2, 3: 4"
+    assert red[0].value[0].key.type == "int"
