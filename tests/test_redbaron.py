@@ -1289,3 +1289,9 @@ def test_set_attr_on_import():
     red = RedBaron("import a")
     red[0].value = "a.b.c as d, qsd, plop as pouet"
     assert red.dumps() == "import a.b.c as d, qsd, plop as pouet"
+
+
+def test_set_attr_on_list():
+    red = RedBaron("[]")
+    red[0].value = "1, 2, 3"
+    assert red[0].value[0].type == "int"
