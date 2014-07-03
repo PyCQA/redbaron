@@ -185,6 +185,9 @@ class NodeList(UserList, GenericNodesUtils):
     def __getattr__(self, key):
         return self.find(key)
 
+    def __setitem__(self, key, value):
+        self.data[key] = self._convert_input_to_node_object(value, parent=self.parent, on_attribute=self.on_attribute)
+
     def find_all(self, identifier, *args, **kwargs):
         to_return = NodeList([])
         for i in self.data:

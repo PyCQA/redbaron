@@ -1274,3 +1274,12 @@ def test_other_name_assignment():
 def test_get_root():
     red = RedBaron("def a(b=c):\n    return 42")
     assert red is red.find("int").root
+
+
+def test_setitem_nodelist():
+    red = RedBaron("[1, 2, 3]")
+    red[0].value[2] = "2 + 'pouet'"
+    red.dumps()
+    assert red[0].value[2].type == "binary_operator"
+    assert red[0].value[2].parent is red[0]
+    assert red[0].value[2].on_attribute is "value"
