@@ -1283,3 +1283,9 @@ def test_setitem_nodelist():
     assert red[0].value[2].type == "binary_operator"
     assert red[0].value[2].parent is red[0]
     assert red[0].value[2].on_attribute == "value"
+
+
+def test_set_attr_on_import():
+    red = RedBaron("import a")
+    red[0].value = "a.b.c as d, qsd, plop as pouet"
+    assert red.dumps() == "import a.b.c as d, qsd, plop as pouet"
