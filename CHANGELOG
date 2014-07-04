@@ -11,8 +11,10 @@ Changelog
 - .map .filter and .apply are now documented https://redbaron.readthedocs.org/en/latest/other.html#map-filter-apply
 - .edit() new helper method to launch a text editor on the selected node and
   replace the node with the modified code https://redbaron.readthedocs.org/en/latest/other.html#edit
-- .root attribute (property) that return the root node of the tree in which the
+- .root node attribute (property) that return the root node of the tree in which the
   node is stored https://redbaron.readthedocs.org/en/latest/other.html#root
+- .index node attribute (property) that returns the index at which the node is
+  store if it's store in a nodelist, None otherwise https://redbaron.readthedocs.org/en/latest/other.html#index
 - setitem (a[x] = b) on nodelist now works as expected (accepting string, fst
   node and redbaron node)
 - various small bugfix
