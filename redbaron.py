@@ -300,6 +300,10 @@ class NodeList(UserList, GenericNodesUtils):
 
         self.data.insert(-1, self._convert_input_to_node_object(value, parent=parent, on_attribute=on_attribute))
 
+    def increase_indentation(self, number_of_spaces):
+        for node in self.filtered():
+            node.increase_indentation(number_of_spaces)
+
 
 class Node(GenericNodesUtils):
     _other_identifiers = []
@@ -376,7 +380,7 @@ class Node(GenericNodesUtils):
 
     def get_indentation_node(self):
         if self.on_attribute == "root":
-            return None
+            return self.previous if self.previous and self.previous.type == "endl" else None
 
         if self.type == "endl":
             # by convention, an endl node will always have this indentation
@@ -398,7 +402,8 @@ class Node(GenericNodesUtils):
         if self.previous.type == "endl":
             return self.previous
 
-        return self.previous.get_indentation_node()
+        previous_endls = self.previous("endl")
+        return previous_endls[-1] if previous_endls else None
 
     @property
     def indentation(self):
@@ -591,6 +596,7 @@ class Node(GenericNodesUtils):
             'find_by_path',
             'replace',
             'edit',
+            'increase_indentation',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -708,6 +714,16 @@ class Node(GenericNodesUtils):
 
         if result != self_in_string:
             self.replace(result)
+
+    def increase_indentation(self, number_of_spaces):
+        indentation_node = self.get_indentation_node()
+        indentation_node.indent += " " * number_of_spaces
+
+        if not isinstance(self.value, NodeList):
+            return
+
+        for node in self.value.filtered():
+            node.increase_indentation(number_of_spaces)
 
     @property
     def index(self):
@@ -854,6 +870,12 @@ class WithNode(Node):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
             self.third_formatting = []
+
+
+class IfelseblockNode(Node):
+    def increase_indentation(self, number_of_spaces):
+        for node in self.value.filtered():
+            node.increase_indentation(number_of_spaces)
 
 
 class IfNode(Node):

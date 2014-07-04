@@ -451,7 +451,7 @@ def test_indent_root():
     assert red[0].indentation == ""
     red = RedBaron("pouet\nplop\npop")
     assert [x.indentation for x in red] == ["", "", "", "", ""]
-    assert [x.get_indentation_node() for x in red] == [None]*5
+    assert [x.get_indentation_node() for x in red] == [None, None, red[1], None, red[3]]
 
 
 def test_in_while():
@@ -1356,3 +1356,19 @@ def test_indenx():
     assert red[0].value.value[2].index == 2
     assert red[0].index == 0
     assert red[0].value.index is None
+
+
+test_indent_code = """
+def a():
+    1 + 2
+    if caramba:
+        plop
+    pouf
+
+"""
+
+def test_indent():
+    red = RedBaron(test_indent_code)
+    red.increase_indentation(4)
+    indented_code = "\n" + "\n".join(map(lambda x: "    " + x, test_indent_code.split("\n")[1:-2])) + "\n\n"
+    assert red.dumps() == indented_code
