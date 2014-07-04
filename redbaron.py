@@ -709,6 +709,16 @@ class Node(GenericNodesUtils):
         if result != self_in_string:
             self.replace(result)
 
+    @property
+    def index(self):
+        if not self.parent:
+            return None
+
+        if not isinstance(getattr(self.parent, self.on_attribute), NodeList):
+            return None
+
+        return getattr(self.parent, self.on_attribute).index(self)
+
 
 class IntNode(Node):
     def __init__(self, node, *args, **kwargs):

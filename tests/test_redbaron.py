@@ -1350,3 +1350,9 @@ def test_set_attr_funcdef_arguments():
     red = RedBaron("def a(): pass")
     red[0].arguments = "x, y=z, *args, **kwargs"
     assert len(red[0].arguments.filtered()) == 4
+
+def test_indenx():
+    red = RedBaron("a = [1, 2, 3]")
+    assert red[0].value.value[2].index == 2
+    assert red[0].index == 0
+    assert red[0].value.index is None
