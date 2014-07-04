@@ -1350,6 +1350,10 @@ def test_bounding_box_of_attribute(red):
     assert ((2, 1), (2, 3)) == red.funcdef.absolute_bounding_box("def")
 
 
+def test_bounding_box_empty():
+    red = RedBaron("a()")
+    assert ((1, 3), (1, 2)) == red.atomtrailers.value[1].value.absolute_bounding_box()
+
 fst = RedBaron("""\
 @deco
 
