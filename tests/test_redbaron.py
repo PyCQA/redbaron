@@ -1371,4 +1371,15 @@ def test_indent():
     red = RedBaron(test_indent_code)
     red.increase_indentation(4)
     indented_code = "\n" + "\n".join(map(lambda x: "    " + x, test_indent_code.split("\n")[1:-2])) + "\n\n"
+    print "----"
+    print red.dumps()
+    print "----"
+    print indented_code
+    print "----"
     assert red.dumps() == indented_code
+
+
+def test_indent_no_previous():
+    red = RedBaron("a")
+    red.increase_indentation(4)
+    assert red.dumps() == "\n    a"

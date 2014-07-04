@@ -301,8 +301,12 @@ class NodeList(UserList, GenericNodesUtils):
         self.data.insert(-1, self._convert_input_to_node_object(value, parent=parent, on_attribute=on_attribute))
 
     def increase_indentation(self, number_of_spaces):
-        for node in self.filtered():
-            node.increase_indentation(number_of_spaces)
+        for endl in self("endl"):
+            if endl.next and endl.next.type == "endl":
+                continue
+            endl.indent += " " * number_of_spaces
+        # for node in self.filtered():
+            # node.increase_indentation(number_of_spaces)
 
 
 class Node(GenericNodesUtils):
@@ -716,14 +720,23 @@ class Node(GenericNodesUtils):
             self.replace(result)
 
     def increase_indentation(self, number_of_spaces):
+        if self.indentation_node_is_direct() is False:
+            return
+
         indentation_node = self.get_indentation_node()
-        indentation_node.indent += " " * number_of_spaces
+        print self.type, [self], [indentation_node]
+        if indentation_node is not None:
+            indentation_node.indent += " " * number_of_spaces
 
         if not isinstance(self.value, NodeList):
             return
 
-        for node in self.value.filtered():
-            node.increase_indentation(number_of_spaces)
+        for key in filter(lambda x: "formatting" not in x, self._list_keys):
+            for node in getattr(self, key).filtered():
+                node.increase_indentation(number_of_spaces)
+
+        for key in self._dict_keys:
+            getattr(self, key).increase_indentation(number_of_spaces)
 
     @property
     def index(self):
