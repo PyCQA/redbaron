@@ -5,6 +5,7 @@
 import re
 import baron
 import pytest
+from baron.utils import string_instance
 from baron.path import make_path
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                       PassNode, NodeList, CommaNode, DotNode, CallNode)
@@ -1337,3 +1338,15 @@ def test_set_attr_on_dict_empty():
     red = RedBaron("{1: 2, 3: 4}")
     red[0].value = ""
     assert len(red[0].value) == 0
+
+
+def test_set_attr_funcdef_name():
+    red = RedBaron("def a(): pass")
+    red[0].name = "plop"
+    assert isinstance(red[0].name, string_instance)
+
+
+def test_set_attr_funcdef_arguments():
+    red = RedBaron("def a(): pass")
+    red[0].arguments = "x, y=z, *args, **kwargs"
+    assert len(red[0].arguments.filtered()) == 4

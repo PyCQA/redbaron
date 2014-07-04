@@ -799,6 +799,13 @@ class FuncdefNode(Node):
     _other_identifiers = ["def", "def_"]
     _default_test_value = "name"
 
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute != "arguments":
+            return super(FuncdefNode, self)._string_to_node(string, parent, on_attribute)
+
+        fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
