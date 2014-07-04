@@ -10,6 +10,8 @@
   block after you (like when playing with a method, be carreful with the next
   method)
 - when set a function/other body block, ensure that it starts with a "\n" + correct indentation
+- .at() return the first item starting at line X
+- .rename() (name -> value, def/class -> name)
 
 ### Find/Find\_All (comparison)
 
