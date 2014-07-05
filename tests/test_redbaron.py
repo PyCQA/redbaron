@@ -1351,6 +1351,7 @@ def test_set_attr_funcdef_arguments():
     red[0].arguments = "x, y=z, *args, **kwargs"
     assert len(red[0].arguments.filtered()) == 4
 
+
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
     assert red[0].value.value[2].index == 2
