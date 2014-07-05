@@ -1357,3 +1357,9 @@ def test_index():
     assert red[0].value.value[2].index == 2
     assert red[0].index == 0
     assert red[0].value.index is None
+
+
+def test_rendering_iter():
+    red = RedBaron("a + 2")
+    assert list(red._generate_nodes_in_rendering_order()) == [red[0], red.name, red[0].first_formatting[0], red[0], red[0].second_formatting[0], red.int]
+    assert list(red[0]._generate_nodes_in_rendering_order()) == [red[0], red.name, red[0].first_formatting[0], red[0], red[0].second_formatting[0], red.int]

@@ -170,6 +170,24 @@ class GenericNodesUtils(object):
             current = current.parent
         return current
 
+    def _iter_in_rendering_order(self, node):
+        if not isinstance(node, (Node, NodeList)):
+            return
+        yield node
+        for kind, key, display in node._render():
+            if kind == "constant":
+                yield node
+            elif kind == "key":
+                if isinstance(getattr(node, key), string_instance):
+                    yield node
+                    continue
+                for i in self._iter_in_rendering_order(getattr(node, key)):
+                    yield i
+            elif kind in ("list", "formatting"):
+                for i in getattr(node, key):
+                    for j in self._iter_in_rendering_order(i):
+                        yield j
+
 
 class NodeList(UserList, GenericNodesUtils):
     # NodeList doesn't have a previous nor a next
@@ -299,6 +317,15 @@ class NodeList(UserList, GenericNodesUtils):
             self.data.insert(-1, new_endl_node)
 
         self.data.insert(-1, self._convert_input_to_node_object(value, parent=parent, on_attribute=on_attribute))
+
+    def _generate_nodes_in_rendering_order(self):
+        previous = None
+        for i in self:
+            for j in self._iter_in_rendering_order(i):
+                if j is previous:
+                    continue
+                previous = j
+                yield j
 
 
 class Node(GenericNodesUtils):
@@ -718,6 +745,14 @@ class Node(GenericNodesUtils):
             return None
 
         return getattr(self.parent, self.on_attribute).index(self)
+
+    def _generate_nodes_in_rendering_order(self):
+        previous = None
+        for j in self._iter_in_rendering_order(self):
+            if j is previous:
+                continue
+            previous = j
+            yield j
 
 
 class IntNode(Node):
