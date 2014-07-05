@@ -1363,3 +1363,13 @@ def test_rendering_iter():
     red = RedBaron("a + 2")
     assert list(red._generate_nodes_in_rendering_order()) == [red[0], red.name, red[0].first_formatting[0], red[0], red[0].second_formatting[0], red.int]
     assert list(red[0]._generate_nodes_in_rendering_order()) == [red[0], red.name, red[0].first_formatting[0], red[0], red[0].second_formatting[0], red.int]
+
+
+def test_next_rendered():
+    red = RedBaron("a + 2")
+    f = red.name
+
+    assert f.next_rendered is red[0].first_formatting[0]
+    assert f.next_rendered.next_rendered is red[0]
+    assert f.next_rendered.next_rendered.next_rendered is red[0].second_formatting[0]
+    assert f.next_rendered.next_rendered.next_rendered.next_rendered is red.int

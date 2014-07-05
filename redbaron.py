@@ -371,6 +371,14 @@ class Node(GenericNodesUtils):
         next_node = list(itertools.dropwhile(lambda x: x is not self, in_list))[1:]
         return next_node[0] if next_node else None
 
+    @property
+    def next_rendered(self):
+        previous = None
+        for i in reversed(list(self.parent._generate_nodes_in_rendering_order())):
+            if i is self:
+                return previous
+            previous = i
+
     def next_generator(self):
         in_list = self._get_list_attribute_is_member_off()
 
