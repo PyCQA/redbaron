@@ -1343,7 +1343,7 @@ def bounding_box_fixture(request):
 
 def test_bounding_box(red, bounding_box_fixture):
     absolute_bounding_box, bounding_box, node = bounding_box_fixture
-    assert bounding_box == node.bounding_box()
+    assert bounding_box == node.bounding_box
     assert absolute_bounding_box == node.absolute_bounding_box()
 
 

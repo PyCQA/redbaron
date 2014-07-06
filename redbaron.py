@@ -150,6 +150,7 @@ class GenericNodesUtils(object):
 
         raise NotImplemented
 
+    @property
     def bounding_box(self):
         return baron.path.node_to_bounding_box(self.fst())
 
