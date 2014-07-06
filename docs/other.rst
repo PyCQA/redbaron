@@ -298,3 +298,14 @@ root node so the top-left position is always :file:`(1, 1)`.
     red[0].funcdef.value.absolute_bounding_box()
     red[0].funcdef.value.bounding_box()
 
+.find_by_position()
+-------------------
+
+You can find which node is located at a given line and column:
+
+.. ipython:: python
+
+    red = RedBaron("def a(): return 42")
+    red.find_by_position(1, 5)
+    red.find_by_position(1, 6) # '(' is not a redbaron node
+
