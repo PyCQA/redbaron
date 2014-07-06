@@ -7,8 +7,7 @@ import baron
 import pytest
 from baron.utils import string_instance
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
-                      PassNode, NodeList, CommaNode, DotNode, CallNode,
-                      Position)
+                      PassNode, NodeList, CommaNode, DotNode, CallNode)
 
 
 def test_empty():
@@ -1401,7 +1400,7 @@ def position_fixture(request):
 def test_find_by_position(position_fixture):
     node, positions = position_fixture
     for position in positions:
-        assert node == fst.find_by_position(Position.from_tuple(position))
+        assert node == fst.find_by_position(*position)
 
 def test_other_name_assignment():
     red = RedBaron("a = b")

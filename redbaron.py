@@ -14,7 +14,7 @@ from pygments.formatters import Terminal256Formatter
 
 import baron
 import baron.path
-from baron.path import make_position, Position
+from baron.path import make_position
 from baron.utils import python_version, string_instance
 from baron.render import nodes_rendering_order
 
@@ -158,8 +158,8 @@ class GenericNodesUtils(object):
         path = self.path().to_baron_path() + ([attribute] if attribute is not None else [])
         return baron.path.path_to_bounding_box(self.root().fst(), path)
 
-    def find_by_position(self, position):
-        return Path.from_baron_path(self, baron.path.position_to_path(self.fst(), position.line, position.column)).node
+    def find_by_position(self, line, column):
+        return Path.from_baron_path(self, baron.path.position_to_path(self.fst(), line, column)).node
 
     def _string_to_node_list(self, string, parent, on_attribute):
         return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(string)))
