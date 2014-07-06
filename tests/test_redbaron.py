@@ -2,8 +2,10 @@
 # -*- coding:Utf-8 -*-
 
 
+import re
 import baron
 import pytest
+from baron.utils import string_instance
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                       PassNode, NodeList, CommaNode, DotNode, CallNode,
                       Position)
@@ -925,6 +927,128 @@ def test_find_case_insensitive():
     assert red.find("namenode") is red[0]
 
 
+def test_find_kwarg_lambda():
+    red = RedBaron("[1, 2, 3, 4]")
+    assert red.find("int", value=lambda x: int(x) % 2 == 0) == red("int")[1]
+    assert red("int", value=lambda x: int(x) % 2 == 0) == red('int')[1::2]
+
+
+def test_find_lambda():
+    red = RedBaron("[1, 2, 3, 4]")
+    assert red.find("int", lambda x: int(x.value) % 2 == 0) == red('int')[1]
+    assert red("int", lambda x: int(x.value) % 2 == 0) == red('int')[1::2]
+
+
+def test_find_kwarg_regex_instance():
+    red = RedBaron("plop\npop\npouf\nabcd")
+    assert red.find("name", value=re.compile("^po")) == red[2]
+
+
+def test_find_all_kwarg_regex_instance():
+    red = RedBaron("plop\npop\npouf\nabcd")
+    assert red("name", value=re.compile("^po")) == red("name", value=lambda x: x.startswith("po"))
+
+
+def test_find_kwarg_regex_syntaxe():
+    red = RedBaron("plop\npop\npouf\nabcd")
+    assert red.find("name", value="re:^po") == red[2]
+
+
+def test_find_all_kwarg_regex_syntaxe():
+    red = RedBaron("plop\npop\npouf\nabcd")
+    assert red("name", value="re:^po") == red("name", value=lambda x: x.startswith("po"))
+
+
+def test_find_kwarg_glob_syntaxe():
+    red = RedBaron("plop\npop\npouf\nabcd")
+    assert red.find("name", value="g:po*") == red[2]
+
+
+def test_find_all_kwarg_glob_syntaxe():
+    red = RedBaron("plop\npop\npouf\nabcd")
+    assert red("name", value="g:po*") == red("name", value=lambda x: x.startswith("po"))
+
+
+def test_identifier_find_kwarg_lambda():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red.find(lambda x: x in ["name", "int"]) == red[0]
+    assert red(lambda x: x in ["name", "int"]) == red[::2][:2]
+
+
+def test_identifier_find_kwarg_regex_instance():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red.find(re.compile("^[ni]")) == red[0]
+
+
+def test_identifier_find_all_kwarg_regex_instance():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red(re.compile("^[ni]")) == red[::2][:2]
+
+
+def test_identifier_find_kwarg_regex_syntaxe():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red.find("re:^[ni]") == red[0]
+
+
+def test_identifier_find_all_kwarg_regex_syntaxe():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red("re:^[ni]") == red[::2][:2]
+
+
+def test_identifier_find_kwarg_glob_syntaxe():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red.find("g:s*") == red[-1]
+
+
+def test_identifier_find_all_kwarg_glob_syntaxe():
+    red = RedBaron("stuff\n1\n'string'")
+    assert red("g:s*") == red[-1:]
+
+
+def test_find_kwarg_list_tuple_instance():
+    red = RedBaron("pouet\n'string'\n1")
+    assert red.find("name", value=["pouet", 1]) == red[0]
+    assert red.find("name", value=("pouet", 1)) == red[0]
+
+
+def test_find_all_kwarg_list_tuple_instance():
+    red = RedBaron("pouet\nstuff\n1")
+    assert red("name", value=["pouet", "stuff"]) == red[::2][:2]
+    assert red("name", value=("pouet", "stuff")) == red[::2][:2]
+
+
+def test_identifier_find_kwarg_list_tuple_instance():
+    red = RedBaron("pouet\n'string'\n1")
+    assert red.find(["name", "string"]) == red[0]
+    assert red.find(("name", "string")) == red[0]
+
+
+def test_identifier_find_all_kwarg_list_tuple_instance():
+    red = RedBaron("pouet\n'string'\n1")
+    assert red(["name", "string"]) == red[::2][:2]
+    assert red(("name", "string")) == red[::2][:2]
+
+
+def test_default_test_value_find():
+    red = RedBaron("badger\nmushroom\nsnake")
+    assert red.find("name", "snake") == red.find("name", value="snake")
+
+
+def test_default_test_value_find_all():
+    red = RedBaron("badger\nmushroom\nsnake")
+    assert red("name", "snake") == red("name", value="snake")
+
+
+def test_default_test_value_find_def():
+    red = RedBaron("def a(): pass\ndef b(): pass")
+    assert red.find("def", "b") == red.find("def", name="b")
+
+
+def test_default_test_value_find_class():
+    red = RedBaron("class a(): pass\nclass b(): pass")
+    assert red.find("class", "b") == red.find("class", name="b")
+
+
 def test_copy_correct_isntance():
     red = RedBaron("a()")
     assert isinstance(red[0].value[1].copy(), CallNode)
@@ -934,6 +1058,13 @@ def test_indentation_no_parent():
     red = RedBaron("a")
     assert red[0].copy().get_indentation_node() is None
     assert red[0].copy().indentation == ''
+
+
+def test_replace():
+    red = RedBaron("1 + 2")
+    red[0].replace("caramba")
+    assert isinstance(red[0], NameNode)
+    assert red.dumps() == "caramba"
 
 
 @pytest.fixture
@@ -1167,7 +1298,7 @@ def test_root(red):
     ]
 
     for node in nodes:
-        assert red is node.root()
+        assert red is node.root
 
 
 # Should the bounding box of a node with rendering length = 0 be None?
@@ -1272,3 +1403,99 @@ def test_find_by_position(position_fixture):
     for position in positions:
         assert node == fst.find_by_position(Position.from_tuple(position))
 
+def test_other_name_assignment():
+    red = RedBaron("a = b")
+    assert red.assign is red[0]
+
+
+def test_get_root():
+    red = RedBaron("def a(b=c):\n    return 42")
+    assert red is red.find("int").root
+
+
+def test_setitem_nodelist():
+    red = RedBaron("[1, 2, 3]")
+    red[0].value[2] = "2 + 'pouet'"
+    red.dumps()
+    assert red[0].value[2].type == "binary_operator"
+    assert red[0].value[2].parent is red[0]
+    assert red[0].value[2].on_attribute == "value"
+
+
+def test_set_attr_on_import():
+    red = RedBaron("import a")
+    red[0].value = "a.b.c as d, qsd, plop as pouet"
+    assert red.dumps() == "import a.b.c as d, qsd, plop as pouet"
+
+
+def test_set_attr_on_list():
+    red = RedBaron("[]")
+    red[0].value = "1, 2, 3"
+    assert red[0].value[0].type == "int"
+
+
+def test_set_attr_on_list_empty():
+    red = RedBaron("[1, 2, 3]")
+    red[0].value = ""
+    assert len(red[0].value) == 0
+
+
+def test_set_attr_on_set():
+    red = RedBaron("{1,}")
+    red[0].value = "1, 2, 3"
+    assert red[0].value[0].type == "int"
+
+
+def test_set_attr_on_tuple():
+    red = RedBaron("(1,)")
+    red[0].value = "1, 2, 3"
+    assert red[0].value[0].type == "int"
+
+
+def test_set_attr_on_tuple_empty():
+    red = RedBaron("(1,)")
+    red[0].value = ""
+    assert len(red[0].value) == 0
+
+
+def test_set_attr_on_repr():
+    red = RedBaron("`1`")
+    red[0].value = "1, 2, 3"
+    assert red[0].value[0].type == "int"
+
+
+def test_set_attr_on_dict():
+    red = RedBaron("{}")
+    red[0].value = "1: 2, 3: 4"
+    assert red[0].value[0].key.type == "int"
+
+
+def test_set_attr_on_dict_empty():
+    red = RedBaron("{1: 2, 3: 4}")
+    red[0].value = ""
+    assert len(red[0].value) == 0
+
+
+def test_set_attr_funcdef_name():
+    red = RedBaron("def a(): pass")
+    red[0].name = "plop"
+    assert isinstance(red[0].name, string_instance)
+
+
+def test_set_attr_funcdef_arguments():
+    red = RedBaron("def a(): pass")
+    red[0].arguments = "x, y=z, *args, **kwargs"
+    assert len(red[0].arguments.filtered()) == 4
+
+
+def test_index():
+    red = RedBaron("a = [1, 2, 3]")
+    assert red[0].value.value[2].index == 2
+    assert red[0].index == 0
+    assert red[0].value.index is None
+
+
+def test_rendering_iter():
+    red = RedBaron("a + 2")
+    assert list(red._generate_nodes_in_rendering_order()) == [red[0], red.name, red[0].first_formatting[0], red[0], red[0].second_formatting[0], red.int]
+    assert list(red[0]._generate_nodes_in_rendering_order()) == [red[0], red.name, red[0].first_formatting[0], red[0], red[0].second_formatting[0], red.int]

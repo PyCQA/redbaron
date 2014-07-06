@@ -1,6 +1,10 @@
+import re
+import os
 import sys
 import inspect
 import itertools
+
+from fnmatch import fnmatch
 
 from pygments import highlight
 from pygments.token import Comment, Text, String, Keyword, Name, Operator
@@ -110,7 +114,7 @@ class GenericNodesUtils(object):
     # XXX should this be an abstract class?
     def _convert_input_to_node_object(self, value, parent, on_attribute):
         if isinstance(value, string_instance):
-            return to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute)
+            return self._string_to_node(value, parent=parent, on_attribute=on_attribute)
         elif isinstance(value, dict):
             return to_node(value, parent=parent, on_attribute=on_attribute)
         elif isinstance(value, Node):
@@ -120,9 +124,12 @@ class GenericNodesUtils(object):
 
         raise NotImplemented
 
+    def _string_to_node(self, string, parent, on_attribute):
+        return to_node(baron.parse(string)[0], parent=parent, on_attribute=on_attribute)
+
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
         if isinstance(value, string_instance):
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(value)))
+            return self._string_to_node_list(value, parent=parent, on_attribute=on_attribute)
 
         if isinstance(value, dict):  # assuming that we got some fst
                                      # also assuming the user do strange things
@@ -143,15 +150,6 @@ class GenericNodesUtils(object):
 
         raise NotImplemented
 
-    def root(self):
-        root = self.parent
-        if root is None:
-            return self
-
-        while not isinstance(root, RedBaron):
-            root = root.parent
-        return root
-
     def bounding_box(self):
         return baron.path.node_to_bounding_box(self.fst())
 
@@ -161,6 +159,34 @@ class GenericNodesUtils(object):
 
     def find_by_position(self, position):
         return Path.from_baron_path(self, baron.path.position_to_path(self.fst(), position.line, position.column)).node
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(string)))
+
+    @property
+    def root(self):
+        current = self
+        while not isinstance(current, RedBaron):
+            current = current.parent
+        return current
+
+    def _iter_in_rendering_order(self, node):
+        if not isinstance(node, (Node, NodeList)):
+            return
+        yield node
+        for kind, key, display in node._render():
+            if kind == "constant":
+                yield node
+            elif kind == "key":
+                if isinstance(getattr(node, key), string_instance):
+                    yield node
+                    continue
+                for i in self._iter_in_rendering_order(getattr(node, key)):
+                    yield i
+            elif kind in ("list", "formatting"):
+                for i in getattr(node, key):
+                    for j in self._iter_in_rendering_order(i):
+                        yield j
 
 
 class NodeList(UserList, GenericNodesUtils):
@@ -174,19 +200,22 @@ class NodeList(UserList, GenericNodesUtils):
         self.parent = parent
         self.on_attribute = on_attribute
 
-    def find(self, identifier, recursive=True, **kwargs):
+    def find(self, identifier, *args, **kwargs):
         for i in self.data:
-            candidate = i.find(identifier, recursive=recursive, **kwargs)
+            candidate = i.find(identifier, *args, **kwargs)
             if candidate is not None:
                 return candidate
 
     def __getattr__(self, key):
         return self.find(key)
 
-    def find_all(self, identifier, recursive=True, **kwargs):
+    def __setitem__(self, key, value):
+        self.data[key] = self._convert_input_to_node_object(value, parent=self.parent, on_attribute=self.on_attribute)
+
+    def find_all(self, identifier, *args, **kwargs):
         to_return = NodeList([])
         for i in self.data:
-            to_return += i.find_all(identifier, recursive=recursive, **kwargs)
+            to_return += i.find_all(identifier, *args, **kwargs)
         return to_return
 
     findAll = find_all
@@ -215,7 +244,7 @@ class NodeList(UserList, GenericNodesUtils):
     def help(self, deep=2, with_formatting=False):
         for num, i in enumerate(self.data):
             sys.stdout.write(str(num) + " -----------------------------------------------------\n")
-            i.help()
+            i.help(deep=deep, with_formatting=with_formatting)
 
     def __help__(self, deep=2, with_formatting=False):
         return [x.__help__(deep=deep, with_formatting=with_formatting) for x in self.data]
@@ -289,9 +318,19 @@ class NodeList(UserList, GenericNodesUtils):
 
         self.data.insert(-1, self._convert_input_to_node_object(value, parent=parent, on_attribute=on_attribute))
 
+    def _generate_nodes_in_rendering_order(self):
+        previous = None
+        for i in self:
+            for j in self._iter_in_rendering_order(i):
+                if j is previous:
+                    continue
+                previous = j
+                yield j
+
 
 class Node(GenericNodesUtils):
     _other_identifiers = []
+    _default_test_value = "value"
 
     def __init__(self, node, parent=None, on_attribute=None):
         self.init = True
@@ -314,7 +353,7 @@ class Node(GenericNodesUtils):
                 self._str_keys.append(key)
 
             elif kind in ("list", "formatting"):
-                setattr(self, key, NodeList(map(lambda x: to_node(x, parent=self, on_attribute=key), node[key]), parent=self))
+                setattr(self, key, NodeList(map(lambda x: to_node(x, parent=self, on_attribute=key), node[key]), parent=self, on_attribute=key))
                 self._list_keys.append(key)
 
             else:
@@ -420,11 +459,15 @@ class Node(GenericNodesUtils):
         return in_list
 
 
-    def find(self, identifier, recursive=True, **kwargs):
-        if self._node_match_query(self, identifier, **kwargs):
+    def find(self, identifier, *args, **kwargs):
+        if "recursive" in kwargs:
+            kwargs = kwargs.copy()
+            del kwargs["recursive"]
+
+        if self._node_match_query(self, identifier, *args, **kwargs):
             return self
 
-        if not recursive:
+        if not kwargs.get("recursive", True):
             return None
 
         for kind, key, _ in filter(lambda x: x[0] == "list" or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
@@ -433,13 +476,13 @@ class Node(GenericNodesUtils):
                 if not i:
                     continue
 
-                found = i.find(identifier, recursive, **kwargs)
+                found = i.find(identifier, *args, **kwargs)
                 if found:
                     return found
 
             elif kind == "list":
                 for i in getattr(self, key):
-                    found = i.find(identifier, recursive, **kwargs)
+                    found = i.find(identifier, *args, **kwargs)
                     if found:
                         return found
 
@@ -449,12 +492,12 @@ class Node(GenericNodesUtils):
     def __getattr__(self, key):
         return self.find(key)
 
-    def find_all(self, identifier, recursive=True, **kwargs):
+    def find_all(self, identifier, *args, **kwargs):
         to_return = NodeList([])
-        if self._node_match_query(self, identifier, **kwargs):
+        if self._node_match_query(self, identifier, *args, **kwargs):
             to_return.append(self)
 
-        if not recursive:
+        if not kwargs.get("recursive", True):
             return to_return
 
         for kind, key, _ in filter(lambda x: x[0] == "list" or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
@@ -463,11 +506,11 @@ class Node(GenericNodesUtils):
                 if not i:
                     continue
 
-                to_return += i.find_all(identifier, recursive, **kwargs)
+                to_return += i.find_all(identifier, *args, **kwargs)
 
             elif kind == "list":
                 for i in getattr(self, key):
-                    to_return += i.find_all(identifier, recursive, **kwargs)
+                    to_return += i.find_all(identifier, *args, **kwargs)
 
             else:
                 raise Exception()
@@ -477,29 +520,71 @@ class Node(GenericNodesUtils):
     findAll = find_all
     __call__ = find_all
 
-    def parent_find(self, identifier, **kwargs):
+    def parent_find(self, identifier, *args, **kwargs):
         current = self
         while current.parent and current.on_attribute != 'root':
-            if self._node_match_query(current.parent, identifier, **kwargs):
+            if self._node_match_query(current.parent, identifier, *args, **kwargs):
                 return current.parent
 
             current = current.parent
         return None
 
-    def _node_match_query(self, node, identifier, **kwargs):
-        if identifier.lower() not in node._generate_identifiers():
+    def _node_match_query(self, node, identifier, *args, **kwargs):
+        if not self._attribute_match_query(node._generate_identifiers(), identifier.lower() if isinstance(identifier, string_instance) and not identifier.startswith("re:") else identifier):
             return False
 
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys
 
-        for key in kwargs:
+        if args and isinstance(args[0], (string_instance, re._pattern_type, list, tuple)):
+            if not self._attribute_match_query([getattr(node, node._default_test_value)], args[0]):
+                return False
+            args = args[1:]
+
+        for arg in args:
+            if not arg(node):
+                return False
+
+        for key, value in kwargs.items():
             if key not in all_my_keys:
                 return False
 
-            if getattr(node, key) != kwargs[key]:
+            if not self._attribute_match_query([getattr(node, key)], value):
                 return False
 
         return True
+
+    def _attribute_match_query(self, attribute_names, query):
+        """
+        Take a list/tuple of attributes that can match and a query, return True
+        if any of the attributes match the query.
+        """
+        assert isinstance(attribute_names, (list, tuple))
+
+        if isinstance(query, string_instance) and query.startswith("re:"):
+            query = re.compile(query[3:])
+
+        for attribute in attribute_names:
+            if callable(query):
+                if query(attribute):
+                    return True
+
+            elif isinstance(query, string_instance) and query.startswith("g:"):
+                if fnmatch(attribute, query[2:]):
+                    return True
+
+            elif isinstance(query, re._pattern_type):
+                if query.match(attribute):
+                    return True
+
+            elif isinstance(query, (list, tuple)):
+                if attribute in query:
+                    return True
+            else:
+                if attribute == query:
+                    return True
+
+        return False
+
 
     def find_by_path(self, path):
         return Path(self, path).node()
@@ -531,10 +616,8 @@ class Node(GenericNodesUtils):
             'parent_find',
             'path',
             'find_by_path',
-            'root',
-            'bounding_box',
-            'absolute_bounding_box',
-            'find_by_position'
+            'replace',
+            'edit',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -571,6 +654,8 @@ class Node(GenericNodesUtils):
             to_join.append("# identifiers: %s" % ", ".join(self._generate_identifiers()))
             if self._get_helpers():
                 to_join.append("# helpers: %s" % ", ".join(self._get_helpers()))
+            if self._default_test_value != "value":
+                to_join.append("# default test value: %s" % self._default_test_value)
             to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if key != "type" and "formatting" not in key]
             to_join += ["%s ->\n    %s" % (key, indent(getattr(self, key).__help__(deep=new_deep, with_formatting=with_formatting), "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if "formatting" not in key]
             # need to do this otherwise I end up with stacked quoted list
@@ -624,6 +709,51 @@ class Node(GenericNodesUtils):
     def _render(self):
         return nodes_rendering_order[self.type]
 
+    def replace(self, new_node):
+        new_node = self._convert_input_to_node_object(new_node, parent=None, on_attribute=None)
+        self.__class__ = new_node.__class__  # YOLO
+        self.__init__(new_node.fst(), parent=self.parent, on_attribute=self.on_attribute)
+
+    def edit(self, editor=None):
+        if editor is None:
+            editor = os.environ.get("EDITOR", "nano")
+
+        base_path = os.path.join("/tmp", "baron_%s" % os.getpid())
+        if not os.path.exists(base_path):
+            os.makedirs(base_path)
+
+        temp_file_path = os.path.join(base_path, str(id(self)))
+
+        self_in_string = self.dumps()
+        with open(temp_file_path, "w") as temp_file:
+            temp_file.write(self_in_string)
+
+        os.system("%s %s" % (editor, temp_file_path))
+
+        with open(temp_file_path, "r") as temp_file:
+            result = temp_file.read()
+
+        if result != self_in_string:
+            self.replace(result)
+
+    @property
+    def index(self):
+        if not self.parent:
+            return None
+
+        if not isinstance(getattr(self.parent, self.on_attribute), NodeList):
+            return None
+
+        return getattr(self.parent, self.on_attribute).index(self)
+
+    def _generate_nodes_in_rendering_order(self):
+        previous = None
+        for j in self._iter_in_rendering_order(self):
+            if j is previous:
+                continue
+            previous = j
+            yield j
+
 
 class IntNode(Node):
     def __init__(self, node, *args, **kwargs):
@@ -656,20 +786,41 @@ class ImportNode(Node):
         "return a list of string of new names inserted in the python context"
         return [x.target if x.target else x.value.dumps() for x in self('dotted_as_name')]
 
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("import %s" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
 
 class ListNode(Node):
     append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("[%s]" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
 
 class SetNode(Node):
     append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("{%s}" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
 
 class ReprNode(Node):
     append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("`%s`" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+
 
 class TupleNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("(%s)" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
     def append_value(self, value, trailing=False):
         if len(self.value) == 0:
             # a tuple of one item must have a trailing comma
@@ -679,17 +830,35 @@ class TupleNode(Node):
 
 
 class DictNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("{%s}" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
     def append_value(self, key, value, trailing=False):
+        # XXX sucks, only accept key/value, not fst/rebaron instance
         value = baron.parse("{%s: %s}" % (key, value))[0]["value"][0]
         self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
 
 class FuncdefNode(Node):
     _other_identifiers = ["def", "def_"]
+    _default_test_value = "name"
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute != "arguments":
+            return super(FuncdefNode, self)._string_to_node(string, parent, on_attribute)
+
+        fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
             self.sixth_formatting = []
+
+
+class AssignmentNode(Node):
+    _other_identifiers = ["assign"]
 
 
 class ForNode(Node):
@@ -707,6 +876,8 @@ class WhileNode(Node):
 
 
 class ClassNode(Node):
+    _default_test_value = "name"
+
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
@@ -780,7 +951,11 @@ class CallNode(Node):
 
 class RedBaron(NodeList):
     def __init__(self, source_code):
-        self.data = [to_node(x, parent=self, on_attribute="root") for x in baron.parse(source_code)]
+        if isinstance(source_code, string_instance):
+            self.data = [to_node(x, parent=self, on_attribute="root") for x in baron.parse(source_code)]
+        else:
+            # Might be init from same object, or slice
+            super(RedBaron, self).__init__(source_code)
 
 
 # to avoid to have to declare EVERY node class, dynamically create the missings
@@ -808,7 +983,7 @@ class HelpLexer(RegexLexer):
     tokens = {
         'root': [
             (r"#.*$", Comment),
-            (r"'[^']*'", String),
+            (r"('([^\\']|\\.)*'|\"([^\\\"]|\\.)*\")", String),
             (r"(None|False|True)", String),
             (r'(\*)( \w+Node)', bygroups(Operator, Keyword)),
             (r'\w+Node', Name.Function),

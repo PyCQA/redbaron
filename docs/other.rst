@@ -53,7 +53,7 @@ if the parent is a RedBaron instance.
 A helper method that allow you to do the equivalent of the :file:`.find()`
 method but in the chain of the parents of the node. This is the equivalent of
 doing: :file:`while node has a parent: if node.parent match query: return
-node.parent, else: node = node.parent`. It returns :file:`None` if not parent
+node.parent, else: node = node.parent`. It returns :file:`None` if no parent
 match the query.
 
 .. ipython:: python
@@ -70,9 +70,9 @@ match the query.
 .next .previous .next_generator() .previous_generator()
 -------------------------------------------------------
 
-In a similar fashion, node have a :file:`.next` and :file:`.previous`
+In a similar fashion, nodes have a :file:`.next` and :file:`.previous`
 attributes that point to the next or previous node if the node is located in a
-node list. They are set at :file:`None` if their is not adjacent node or if the
+node list. They are set at :file:`None` if there is not adjacent node or if the
 node is not in a node list. A node list will never have a :file:`.next` or
 :file:`.previous` node, so those attributes will always be set at :file:`None`.
 
@@ -112,11 +112,39 @@ if you want to iterate on the neighbours of the node.
     In [42]: print [x for x assign.target.next_generator()]
     In [42]: print [x for x assign.target.previous_generator()]
 
+.root
+-----
+
+Every node have the :file:`.root` attribute (property) that returns the root
+node in which this node is located:
+
+.. ipython:: python
+
+    red = RedBaron("def a(): return 42")
+    red.int_
+    assert red.int_.root is red
+
+.index
+------
+
+Every node have the :file:`.index` attribute (property) that returns the index
+at which this node is store in its parent node list. If the node isn't stored
+in a node list, it returns :file:`None`.
+
+.. ipython:: python
+
+    red = RedBaron("a = [1, 2, 3]")
+    red[0].value.value
+    red[0].value.value[2]
+    red[0].value.value[2].index
+    red[0].value
+    red[0].value.index
+
 .filtered()
 -----------
 
 Node list comes with a small helper function: :file:`.filtered()` that returns
-a **tuple** containing the "signifiant" node (nodes that aren't comma node, dot
+a **tuple** containing the "significant" node (nodes that aren't comma node, dot
 node, space node or endl node).
 
 .. ipython:: python
@@ -132,7 +160,7 @@ to do something better right now.
 .indentation
 ------------
 
-Every node have the property :file:`.indentation` that will return the
+Every node has the property :file:`.indentation` that will return the
 indentation level of the node:
 
 .. ipython:: python
@@ -170,3 +198,65 @@ Path class
 RedBaron provides a Path class that represent a path to a node.
 
 .. autoclass:: redbaron.Path
+
+.map .filter .apply
+-------------------
+
+RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :file:`.apply` quite similar to python buildins (except for apply). The main difference is that they return a node list instance instead of a python buildin list.
+
+* :file:`.map` takes a callable (like a lambda or a function) that receive a
+  node as first argument, this callable is applied on every node of the node
+  list and a node list containing the return of those applies will be returned.
+* :file:`.filter` works like :file:`.map` but instead of returning a node list
+  of the return of the callable, it returns a node list that contains the nodes
+  for which the callable returned :file:`True` (or something considered
+  :file:`True` in python)
+* :file:`.apply` works like :file:`.map` but instead of returning the result of
+  the callable, it returns to original node.
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+    red('int')
+    red('int').map(lambda x: x.value + 1)
+    red('int').filter(lambda x: x.value % 2 == 0)
+
+.. ipython:: python
+
+    red = RedBaron("a()\nb()\nc(x=y)")
+    red('call')
+    red('call').map(lambda x: x.append_value("answer=42"))
+    red('call')
+    red = RedBaron("a()\nb()\nc(x=y)")
+    red('call').apply(lambda x: x.append_value("answer=42"))
+
+.replace()
+----------
+
+:file:`.replace()` is a method that allow to replace **in place** a node by
+another one. Like every operation of this nature, you can pass a string, a
+dict, a list of length one or a node instance.
+
+.. ipython:: python
+
+    red = RedBaron("a()\nb()\nc(x=y)")
+    red[2].replace("1 + 2")
+    red
+    red[-1].replace("plop")
+    red
+
+.edit()
+-------
+
+Helper method that allow to edit the code of the current **node** into an
+editor. The result is parsed and replace the code of the current node.
+
+.. ipython:: python
+
+    red = RedBaron("def a(): return 42")
+    # should be used like this: (I can't execute this code here, obviously)
+    # red.return_.edit()
+
+By default, the editor is taken from the variable :file:`EDITOR` in the
+environements variables. If this variable is not present, nano is used. You can
+use a different editor this way: :file:`node.edit(editor="vim")`.

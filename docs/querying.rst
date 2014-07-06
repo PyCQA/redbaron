@@ -88,6 +88,121 @@ you try to *call* the node this way :file:`node(some_arguments)` this will call
 
 :file:`.find_all()` also supports the option :file:`recursive=False`.
 
+Advanced querying
+-----------------
+
+:file:`.find()` and :file:`.find_all()` offer more powerful comparison mean
+than just equality comparison.
+
+Callable (lambda)
+~~~~~~~~~~~~~~~~~
+
+Instead of passing a string to test properties of the identifier of a node, you
+can pass a callable, like a lambda. It will receive the value as first
+argument:
+
+.. ipython:: python
+
+    red = RedBaron("a = [1, 2, 3, 4]")
+    red.find("int", value=lambda value: int(value) % 2 == 0)
+    red.find_all("int", value=lambda value: int(value) % 2 == 0)
+    red.find(lambda identifier: identifier == "comma")
+    red.find_all(lambda identifier: identifier == "comma")
+
+Regex
+~~~~~
+
+Instead of passing a string to test properties of a node, you can pass a
+compiled regex:
+
+.. ipython:: python
+
+    import re
+    red = RedBaron("abcd = plop + pouf")
+    red.find("name", value=re.compile("^p"))
+    red.find_all("name", value=re.compile("^p"))
+    red.find(re.compile("^n"))
+    red.find_all(re.compile("^n"))
+
+Having to compile regex is boring, so you can use this shorthand syntaxe
+instead (prefixing a string with "re:"):
+
+.. ipython:: python
+
+    red = RedBaron("abcd = plop + pouf")
+    red.find("name", value="re:^p")
+    red.find_all("name", value="re:^p")
+    red.find("re:^n")
+    red.find_all("re:^n")
+
+Globs
+~~~~~
+
+Same than in a shell, you can use globs by prefixing the string with "g:":
+
+.. ipython:: python
+
+    red = RedBaron("abcd = plop + pouf")
+    red.find("name", value="g:p*")
+    red.find_all("name", value="g:p*")
+    red.find("g:n*")
+    red.find_all("g:n*")
+
+In the background, the comparison is done using the `fnmatch
+<https://docs.python.org/2/library/fnmatch.html#fnmatch.fnmatch>`_ module of
+the standard lib.
+
+List or tuple
+~~~~~~~~~~~~~
+
+You can pass a list as a shorthand to test if the tested attribute is in any of
+the member of the list/tuple:
+
+.. ipython:: python
+
+    red = RedBaron("foo\nbar\nbaz")
+    red.find("name", value=["foo", "baz"])
+    red.find("name", value=("foo", "baz"))
+    red("name", value=["foo", "baz"])
+    red("name", value=("foo", "baz"))
+
+.. ipython:: python
+
+    red = RedBaron("1\nstuff\n'string'\n")
+    red.find(["int", "string"])
+    red(["int", "string"])
+
+\*args and default value
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also pass as namy callable as args (without giving it a key) as you
+want, those callables will receive the node itself as first argument (and must
+return a value that will be tested as a boolable):
+
+.. ipython:: python
+
+    red = RedBaron("a = [1, 2, 3, 4]")
+    red.find("int", lambda node: int(node.value) % 2 == 0)
+    red.find_all("int", lambda node: int(node.value) % 2 == 0)
+    red.find("int", lambda node: int(node.value) % 2 == 0, lambda node: int(node.value) == 4)
+
+To ease the usage of RedBaron in ipython (and in general), you can pass any of
+the previous testing methods (**except the lambda**) as the **first** argument of
+\*args, it will be tested against the default testing attribute which is the
+"value" attribute by default. This mean that: :file:`red.find("name", "foo")`
+is the equivalent of :file:`red.find("name", value="foo")`.
+
+If the default tested attribute is different, it will be shown in
+:file:`.help()`. For now, the 2 only cases where this happens is on class node
+and funcdef node where the attribute is "name".
+
+.. ipython:: python
+
+    red = RedBaron("foo\ndef bar(): pass\nbaz\ndef badger(): pass")
+    red.find("name", "baz")
+    red.find("def", "bar")
+    red.find("def").help()
+
 Next
 ~~~~
 
