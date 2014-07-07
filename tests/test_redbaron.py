@@ -1373,3 +1373,12 @@ def test_next_rendered():
     assert f.next_rendered.next_rendered is red[0]
     assert f.next_rendered.next_rendered.next_rendered is red[0].second_formatting[0]
     assert f.next_rendered.next_rendered.next_rendered.next_rendered is red.int
+
+
+def test_previous_rendered():
+    red = RedBaron("a + 2")
+    f = red.int
+
+    assert f.previous_rendered is red[0].second_formatting[0]
+    assert f.previous_rendered.previous_rendered is red[0]
+    assert red[0].first_formatting[0].previous_rendered is red.name
