@@ -451,7 +451,7 @@ def test_indent_root():
     assert red[0].indentation == ""
     red = RedBaron("pouet\nplop\npop")
     assert [x.indentation for x in red] == ["", "", "", "", ""]
-    assert [x.get_indentation_node() for x in red] == [None]*5
+    assert [x.get_indentation_node() for x in red] == [None, None, red[1], None, red[3]]
 
 
 def test_in_while():

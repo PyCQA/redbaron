@@ -418,30 +418,17 @@ class Node(GenericNodesUtils):
         return generator
 
     def get_indentation_node(self):
-        if self.on_attribute == "root":
-            return None
-
         if self.type == "endl":
             # by convention, an endl node will always have this indentation
             return None
 
-        if self.parent is None:
-            # we have been copied and not parent is set yet
+        if self.previous_rendered is None:
             return None
 
-        if isinstance(getattr(self.parent, self.on_attribute), Node):
-            return self.parent.get_indentation_node()
+        if self.previous_rendered.type == "endl":
+            return self.previous_rendered
 
-        # I'm 'pass' in this kind of situation:
-        # if a: pass
-        # (so I don't have a previous 'endl')
-        if self.previous is None:
-            return self.parent.get_indentation_node()
-
-        if self.previous.type == "endl":
-            return self.previous
-
-        return self.previous.get_indentation_node()
+        return self.previous_rendered.get_indentation_node()
 
     @property
     def indentation(self):
@@ -449,7 +436,7 @@ class Node(GenericNodesUtils):
         return endl_node.indent if endl_node is not None else ""
 
     def indentation_node_is_direct(self):
-        if self.previous and self.previous.type == "endl":
+        if self.previous_rendered and self.previous_rendered.type == "endl":
             return True
 
         return False
