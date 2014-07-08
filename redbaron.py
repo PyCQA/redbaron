@@ -619,6 +619,8 @@ class Node(GenericNodesUtils):
             'find_by_path',
             'replace',
             'edit',
+            'absolute_bounding_box',
+            'find_by_position'
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
