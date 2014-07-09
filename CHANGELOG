@@ -17,7 +17,7 @@ Changelog
   store if it's store in a nodelist, None otherwise https://redbaron.readthedocs.org/en/latest/other.html#index
 - setitem (a[x] = b) on nodelist now works as expected (accepting string, fst
   node and redbaron node)
-- new method to handle indentation: .increase_indentation and .decreate_indentation https://redbaron.readthedocs.org/en/latest/other.html#increase-indentation-and-decrease-indentation
+- new method to handle indentation: .increase_indentation and .decrease_indentation https://redbaron.readthedocs.org/en/latest/other.html#increase-indentation-and-decrease-indentation
 - various small bugfix
 - we have one new contributor \o/ https://github.com/ze42
 
