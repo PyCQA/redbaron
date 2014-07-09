@@ -871,11 +871,16 @@ class FuncdefNode(Node):
     _default_test_value = "name"
 
     def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute != "arguments":
-            return super(FuncdefNode, self)._string_to_node(string, parent, on_attribute)
+        if on_attribute == "arguments":
+            fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
-        fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        elif on_attribute == "value":
+            fst = baron.parse("def a():\n    %s\n" % string)[0]["value"]
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+        else:
+            raise Exception("Unhandled case")
 
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")

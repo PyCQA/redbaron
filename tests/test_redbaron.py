@@ -1352,6 +1352,12 @@ def test_set_attr_funcdef_arguments():
     assert len(red[0].arguments.filtered()) == 4
 
 
+def test_set_attr_funcdef_value_simple():
+    red = RedBaron("def a(): pass")
+    red[0].value = "plop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
     assert red[0].value.value[2].index == 2
