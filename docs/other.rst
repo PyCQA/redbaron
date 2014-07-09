@@ -176,8 +176,8 @@ indentation level of the node:
 .increase_indentation() and .decrease_indentation()
 ---------------------------------------------------
 
-those 2 methods allow you to change the indentation of a part of the tree. They
-expect the number of space to add or to remove as first argument.
+Those 2 methods allow you to change the indentation of a part of the tree. They
+expect the number of spaces to add or to remove as first argument.
 
 .. ipython:: python
 
