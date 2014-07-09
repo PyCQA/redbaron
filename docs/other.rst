@@ -173,7 +173,7 @@ indentation level of the node:
     red = RedBaron("while a: pass")
     red.pass_.indentation
 
-.increase_indentation() and .decreate_indentation()
+.increase_indentation() and .decrease_indentation()
 ---------------------------------------------------
 
 those 2 methods allow you to change the indentation of a part of the tree. They
