@@ -112,7 +112,7 @@ By hand
 ~~~~~~~
 
 Not really a very funny thing to do. You have 2 strategies: add nodes by
-writting FST and using :ref`to_node` (but I don't expect anyone to really have
+writting FST and using :ref:`to_node` (but I don't expect anyone to really have
 to remember the FST from head) by hand or using :file:`.copy()` if nodes
 already exist (please note that I'm not going to cover all the cases possible
 you can encounter, :file:`.append_value()` does that, you can read its code if
