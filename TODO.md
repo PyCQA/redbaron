@@ -2,7 +2,6 @@
 
 ### Important
 
-- .indent() to change indentation of a block of nodes (.indent(+4), .indent(-4))
 - __setattr__ should work as expected when possible (will be a long list of stuff to do for that)
   for eg: RedBaron("{a: 1}")[0].value[0] = "b: c" fails now
 - automatic reindentation when attribute a NodeList to an attribute (like adding a new body to a function)

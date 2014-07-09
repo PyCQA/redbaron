@@ -173,6 +173,21 @@ indentation level of the node:
     red = RedBaron("while a: pass")
     red.pass_.indentation
 
+.increase_indentation() and .decreate_indentation()
+---------------------------------------------------
+
+those 2 methods allow you to change the indentation of a part of the tree. They
+expect the number of space to add or to remove as first argument.
+
+.. ipython:: python
+
+    red = RedBaron("def a():\n    if plop:\n        pass")
+    red
+    red[0].value.increase_indentation(15)
+    red
+    red[0].value.decrease_indentation(15)
+    red
+
 .path()
 -------
 
