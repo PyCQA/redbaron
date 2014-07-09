@@ -194,6 +194,12 @@ class GenericNodesUtils(object):
                (endl.next_rendered.type != "endl" or endl.next_rendered.formatting("comment")):
                 endl.indent += " " * number_of_spaces
 
+    def decrease_indentation(self, number_of_spaces):
+        for endl in set(self("endl")):
+            if endl.next_rendered and\
+               (endl.next_rendered.type != "endl" or endl.next_rendered.formatting("comment")):
+                endl.indent = endl.indent[number_of_spaces:]  # doesn't handle tabs well but for now I don't care
+
 
 class NodeList(UserList, GenericNodesUtils):
     # NodeList doesn't have a previous nor a next
@@ -637,6 +643,7 @@ class Node(GenericNodesUtils):
             'replace',
             'edit',
             'increase_indentation',
+            'decrease_indentation',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
