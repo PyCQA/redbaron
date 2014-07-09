@@ -188,6 +188,12 @@ class GenericNodesUtils(object):
                     for j in self._iter_in_rendering_order(i):
                         yield j
 
+    def increase_indentation(self, number_of_spaces):
+        for endl in set(self("endl")):
+            if endl.next_rendered and\
+               (endl.next_rendered.type != "endl" or endl.next_rendered.formatting("comment")):
+                endl.indent += " " * number_of_spaces
+
 
 class NodeList(UserList, GenericNodesUtils):
     # NodeList doesn't have a previous nor a next
@@ -374,10 +380,15 @@ class Node(GenericNodesUtils):
     @property
     def next_rendered(self):
         previous = None
-        for i in reversed(list(self.parent._generate_nodes_in_rendering_order())):
-            if i is self:
-                return previous
-            previous = i
+        target = self.parent
+        while target is not None:
+            for i in reversed(list(target._generate_nodes_in_rendering_order())):
+                if i is self and previous is not None:
+                    return previous
+                previous = i
+
+            previous = None
+            target = target.parent
 
     def next_generator(self):
         in_list = self._get_list_attribute_is_member_off()
@@ -402,10 +413,14 @@ class Node(GenericNodesUtils):
     @property
     def previous_rendered(self):
         previous = None
-        for i in self.parent._generate_nodes_in_rendering_order():
-            if i is self:
-                return previous
-            previous = i
+        target = self.parent
+        while target is not None:
+            for i in target._generate_nodes_in_rendering_order():
+                if i is self:
+                    return previous
+                previous = i
+
+            target = target.parent
 
     def previous_generator(self):
         in_list = self._get_list_attribute_is_member_off()
@@ -503,7 +518,7 @@ class Node(GenericNodesUtils):
         if not kwargs.get("recursive", True):
             return to_return
 
-        for kind, key, _ in filter(lambda x: x[0] == "list" or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
+        for kind, key, _ in filter(lambda x: x[0] in ("list", "formatting") or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
             if kind == "key":
                 i = getattr(self, key)
                 if not i:
@@ -511,7 +526,7 @@ class Node(GenericNodesUtils):
 
                 to_return += i.find_all(identifier, *args, **kwargs)
 
-            elif kind == "list":
+            elif kind in ("list", "formatting"):
                 for i in getattr(self, key):
                     to_return += i.find_all(identifier, *args, **kwargs)
 
@@ -621,6 +636,7 @@ class Node(GenericNodesUtils):
             'find_by_path',
             'replace',
             'edit',
+            'increase_indentation',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 

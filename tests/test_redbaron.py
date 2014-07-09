@@ -1382,3 +1382,24 @@ def test_previous_rendered():
     assert f.previous_rendered is red[0].second_formatting[0]
     assert f.previous_rendered.previous_rendered is red[0]
     assert red[0].first_formatting[0].previous_rendered is red.name
+
+
+test_indent_code = """
+def a():
+    1 + 2
+    if caramba:
+        plop
+    pouf
+
+"""
+
+def test_next_rendered_trapped():
+    red = RedBaron(test_indent_code)
+    assert red("endl")[4].next_rendered is red.find("name", "pouf")
+
+
+def test_indent():
+    red = RedBaron(test_indent_code)
+    red.increase_indentation(4)
+    indented_code = "\n" + "\n".join(map(lambda x: "    " + x, test_indent_code.split("\n")[1:-2])) + "\n\n"
+    assert red.dumps() == indented_code
