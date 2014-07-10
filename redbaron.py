@@ -248,6 +248,11 @@ class NodeList(UserList, GenericNodesUtils):
         return baron.dumps(self.fst())
 
     def __repr__(self):
+        if os.isatty(sys.stdout.fileno()):
+            return self.__str__()
+        return "{'class':'ListNode', 'value':" + repr(list(self.data)) + "}"
+
+    def __str__(self):
         to_return = ""
         for number, value in enumerate(self.data):
             to_return += ("%-3s " % number) + "\n    ".join(value.__repr__().split("\n"))
@@ -724,6 +729,12 @@ class Node(GenericNodesUtils):
         return "\n  ".join(to_join)
 
     def __repr__(self):
+        if os.isatty(sys.stdout.fileno()):
+            return self.__str__()
+        return "{'class':Node, 'type':'%s', 'on_attribute':'%s', 'parent_type':'%s', 'path':'%s', 'value':'%s'}" % \
+                    (self.__class__.__name__, self.on_attribute, self.parent.__class__.__name__, self.path().to_baron_path(), self.dumps())
+
+    def __str__(self):
         if runned_from_ipython():
             return highlight(self.dumps(), PythonLexer(encoding="Utf-8"),
                              Terminal256Formatter(style='monokai',
