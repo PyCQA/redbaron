@@ -271,15 +271,15 @@ given as a tuple :file:`(line, column)` with **both starting at 1**.
 .. ipython:: python
 
     red = RedBaron("def a(): return 42")
-    red[0].funcdef.value.absolute_bounding_box()
+    red.funcdef.value.absolute_bounding_box
 
 You can also get the bounding box of "string" nodes like the left
-parenthesis in the example above by giving the attribute's name in the
-method:
+parenthesis in the example above by giving the attribute's name to the
+:file:`get_absolute_bounding_box_of_attribute()` method:
 
 .. ipython:: python
 
-    red[0].funcdef.absolute_bounding_box('(')
+    red.funcdef.get_absolute_bounding_box_of_attribute('(')
 
 This is impossible to do without giving the attribute's name as an
 argument since the left parenthesis is not a redbaron Node.
@@ -289,14 +289,14 @@ argument since the left parenthesis is not a redbaron Node.
 
 Every node has the :file:`bounding_box` property which holds the
 top-left and bottom-right position of the node. Compared to the
-:file:`absolute_bounding_box()` method, it assumes the the node is the
+:file:`absolute_bounding_box` property, it assumes the the node is the
 root node so the top-left position is always :file:`(1, 1)`.
 
 .. ipython:: python
 
     red = RedBaron("def a(): return 42")
-    red[0].funcdef.value.absolute_bounding_box()
-    red[0].funcdef.value.bounding_box()
+    red.funcdef.value.absolute_bounding_box
+    red.funcdef.value.bounding_box
 
 .find_by_position()
 -------------------
