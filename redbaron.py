@@ -485,13 +485,16 @@ class Node(GenericNodesUtils):
 
     def find(self, identifier, *args, **kwargs):
         if "recursive" in kwargs:
+            recursive = kwargs["recursive"]
             kwargs = kwargs.copy()
             del kwargs["recursive"]
+        else:
+            recursive = True
 
         if self._node_match_query(self, identifier, *args, **kwargs):
             return self
 
-        if not kwargs.get("recursive", True):
+        if not recursive:
             return None
 
         for kind, key, _ in filter(lambda x: x[0] == "list" or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
