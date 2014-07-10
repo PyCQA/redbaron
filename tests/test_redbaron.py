@@ -6,7 +6,6 @@ import re
 import baron
 import pytest
 from baron.utils import string_instance
-from baron.path import make_path
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                       PassNode, NodeList, CommaNode, DotNode, CallNode)
 
@@ -1082,190 +1081,343 @@ def check_path(root, node, path):
 
 
 def test_path_root(red):
-    check_path(red, red, make_path())
+    check_path(red, red, [])
 
 
 def test_path_first_statement(red):
     check_path(red,
             red.funcdef,
-            make_path([], "list", 0)
+            [0]
         )
 
 
 def test_path_funcdef_decorators(red):
     check_path(red,
             red.funcdef.decorators,
-            make_path([0], "funcdef", 0)
+            [0, "decorators"]
         )
 
 
 def test_path_decorators_first(red):
     check_path(red,
             red.funcdef.decorators[0],
-            make_path([0, "decorators"], "list", 0)
+            [0, "decorators", 0]
         )
 
 
 def test_path_decorators_first_dotted_name(red):
     check_path(red,
             red.funcdef.decorators[0].value,
-            make_path([0, "decorators", 0], "decorator", 1)
+            [0, "decorators", 0, "value"]
         )
 
 
 def test_path_decorators_first_dotted_name_value(red):
     check_path(red,
             red.funcdef.decorators[0].value.value,
-            make_path([0, "decorators", 0, "value"], "dotted_name", 0)
+            [0, "decorators", 0, "value", "value"]
         )
 
 
 def test_path_decorators_first_dotted_name_value_first(red):
     check_path(red,
             red.funcdef.decorators[0].value.value[0],
-            make_path([0, "decorators", 0, "value", "value"], "list", 0)
+            [0, "decorators", 0, "value", "value", 0]
         )
 
 
 def test_path_decorators_endl(red):
     check_path(red,
             red.funcdef.decorators[1],
-            make_path([0, "decorators"], "list", 1)
+            [0, "decorators", 1]
         )
 
 
 def test_path_first_formatting(red):
     check_path(red,
             red.funcdef.first_formatting,
-            make_path([0], "funcdef", 2)
+            [0, "first_formatting"]
         )
 
 
 def test_path_first_formatting_value(red):
     check_path(red,
             red.funcdef.first_formatting[0],
-            make_path([0, "first_formatting"], "list", 0)
+            [0, "first_formatting", 0]
         )
 
 
 def test_path_second_formatting(red):
     check_path(red,
             red.funcdef.second_formatting,
-            make_path([0], "funcdef", 4)
+            [0, "second_formatting"]
         )
 
 
 def test_path_third_formatting(red):
     check_path(red,
             red.funcdef.third_formatting,
-            make_path([0], "funcdef", 6)
+            [0, "third_formatting"]
         )
 
 
 def test_path_arguments(red):
     check_path(red,
             red.funcdef.arguments,
-            make_path([0], "funcdef", 7)
+            [0, "arguments"]
         )
 
 
 def test_path_arguments_first(red):
     check_path(red,
             red.funcdef.arguments[0],
-            make_path([0, "arguments"], "list", 0)
+            [0, "arguments", 0]
         )
 
 
 def test_path_arguments_comma(red):
     check_path(red,
             red.funcdef.arguments[1],
-            make_path([0, "arguments"], "list", 1)
+            [0, "arguments", 1]
         )
 
 
 def test_path_arguments_second(red):
     check_path(red,
             red.funcdef.arguments[2],
-            make_path([0, "arguments"], "list", 2)
+            [0, "arguments", 2]
         )
 
 
 def test_path_fourth_formatting(red):
     check_path(red,
             red.funcdef.fourth_formatting,
-            make_path([0], "funcdef", 8)
+            [0, "fourth_formatting"]
         )
 
 
 def test_path_fifth_formatting(red):
     check_path(red,
             red.funcdef.fifth_formatting,
-            make_path([0], "funcdef", 10)
+            [0, "fifth_formatting"]
         )
 
 
 def test_path_sixth_formatting(red):
     check_path(red,
             red.funcdef.sixth_formatting,
-            make_path([0], "funcdef", 12)
+            [0, "sixth_formatting"]
         )
 
 
 def test_path_value(red):
     check_path(red,
             red.funcdef.value,
-            make_path([0], "funcdef", 13)
+            [0, "value"]
         )
 
 
 def test_path_value_first_endl(red):
     check_path(red,
             red.funcdef.value[0],
-            make_path([0, "value"], "list", 0)
+            [0, "value", 0]
         )
 
 
 def test_path_value_assignment(red):
     check_path(red,
             red.funcdef.value[1],
-            make_path([0, "value"], "list", 1)
+            [0, "value", 1]
         )
 
 
 def test_path_value_assignment_target(red):
     check_path(red,
             red.funcdef.value[1].target,
-            make_path([0, "value", 1], "assignment", 0)
+            [0, "value", 1, "target"]
         )
 
 
 def test_path_value_assignment_value(red):
     check_path(red,
             red.funcdef.value[1].value,
-            make_path([0, "value", 1], "assignment", 5)
+            [0, "value", 1, "value"]
         )
 
 
 def test_path_value_assignment_value_first(red):
     check_path(red,
             red.funcdef.value[1].value.first,
-            make_path([0, "value", 1, "value"], "binary_operator", 0)
+            [0, "value", 1, "value", "first"]
         )
 
 
 def test_path_value_assignment_value_second(red):
     check_path(red,
             red.funcdef.value[1].value.second,
-            make_path([0, "value", 1, "value"], "binary_operator", 4)
+            [0, "value", 1, "value", "second"]
         )
 
 
 def test_path_value_second_endl(red):
     check_path(red,
             red.funcdef.value[2],
-            make_path([0, "value"], "list", 2)
+            [0, "value", 2]
         )
 
+
+def test_root(red):
+    nodes = [
+        red.funcdef,
+        red.funcdef.decorators,
+        red.funcdef.decorators[0],
+        red.funcdef.decorators[0].value,
+        red.funcdef.decorators[0].value.value,
+        red.funcdef.decorators[0].value.value[0],
+        red.funcdef.decorators[1],
+        red.funcdef.first_formatting,
+        red.funcdef.first_formatting[0],
+        red.funcdef.second_formatting,
+        red.funcdef.third_formatting,
+        red.funcdef.arguments,
+        red.funcdef.arguments[0],
+        red.funcdef.arguments[1],
+        red.funcdef.arguments[2],
+        red.funcdef.fourth_formatting,
+        red.funcdef.fifth_formatting,
+        red.funcdef.sixth_formatting,
+        red.funcdef.value,
+        red.funcdef.value[0],
+        red.funcdef.value[1],
+        red.funcdef.value[1].target,
+        red.funcdef.value[1].value,
+        red.funcdef.value[1].value.first,
+        red.funcdef.value[1].value.second,
+        red.funcdef.value[2]
+    ]
+
+    for node in nodes:
+        assert red is node.root
+
+
+# Should the bounding box of a node with rendering length = 0 be None?
+# see fst.funcdef.second_formatting and others
+#
+# What should be the bounding box of a \n node?
+# see fst.funcdef.decorators[1] and fst.funcdef.value[2]
+fst = red()
+bounding_boxes = [
+    (((1, 1), (3, 13)), ((1, 1), (3, 13)), fst),
+    (((1, 1), (3, 13)), ((1, 1), (3, 13)), fst.funcdef),
+    (((1, 1), (1, 5)), ((1, 1), (1, 5)), fst.funcdef.decorators),
+    (((1, 1), (1, 5)), ((1, 1), (1, 5)), fst.funcdef.decorators[0]),
+    (((1, 2), (1, 5)), ((1, 1), (1, 4)), fst.funcdef.decorators[0].value),
+    (((1, 2), (1, 5)), ((1, 1), (1, 4)), fst.funcdef.decorators[0].value.value),
+    (((1, 2), (1, 5)), ((1, 1), (1, 4)), fst.funcdef.decorators[0].value.value[0]),
+    #(((1, 6), (1, 5)), ((1, 1), (1, 0)), fst.funcdef.decorators[1]),
+    (((2, 4), (2, 4)), ((1, 1), (1, 1)), fst.funcdef.first_formatting),
+    (((2, 4), (2, 4)), ((1, 1), (1, 1)), fst.funcdef.first_formatting[0]),
+    #((?, ?), (?, ?), fst.funcdef.second_formatting),
+    #((?, ?), (?, ?), fst.funcdef.third_formatting),
+    (((2, 7), (2, 10)), ((1, 1), (1, 4)), fst.funcdef.arguments),
+    (((2, 7), (2, 7)), ((1, 1), (1, 1)), fst.funcdef.arguments[0]),
+    (((2, 8), (2, 9)), ((1, 1), (1, 2)), fst.funcdef.arguments[1]),
+    (((2, 10), (2, 10)), ((1, 1), (1, 1)), fst.funcdef.arguments[2]),
+    #((?, ?), (?, ?)), fst.funcdef.fourth_formatting),
+    #((?, ?), (?, ?)), fst.funcdef.fifth_formatting),
+    #((?, ?), (?, ?)), fst.funcdef.sixth_formatting),
+    (((2, 13), (3, 13)), ((1, 1), (2, 13)), fst.funcdef.value),
+    (((2, 13), (3, 4)), ((1, 1), (2, 4)), fst.funcdef.value[0]),
+    (((3, 5), (3, 13)), ((1, 1), (1, 9)), fst.funcdef.value[1]),
+    (((3, 5), (3, 5)), ((1, 1), (1, 1)), fst.funcdef.value[1].target),
+    (((3, 9), (3, 13)), ((1, 1), (1, 5)), fst.funcdef.value[1].value),
+    (((3, 9), (3, 9)), ((1, 1), (1, 1)), fst.funcdef.value[1].value.first),
+    (((3, 13), (3, 13)), ((1, 1), (1, 1)), fst.funcdef.value[1].value.second),
+    #((?, ?), (?, ?), fst.funcdef.value[2])
+]
+
+@pytest.fixture(params = bounding_boxes)
+def bounding_box_fixture(request):
+    return request.param
+
+def test_bounding_box(red, bounding_box_fixture):
+    absolute_bounding_box, bounding_box, node = bounding_box_fixture
+    assert bounding_box == node.bounding_box
+    assert absolute_bounding_box == node.absolute_bounding_box
+
+
+def test_bounding_box_of_attribute(red):
+    assert ((2, 1), (2, 3)) == red.funcdef.get_absolute_bounding_box_of_attribute("def")
+
+
+def test_bounding_box_of_attribute_no_attribute(red):
+    with pytest.raises(KeyError):
+        red.funcdef.get_absolute_bounding_box_of_attribute("xxx")
+
+
+def test_bounding_box_of_attribute_no_index(red):
+    with pytest.raises(IndexError):
+        red.get_absolute_bounding_box_of_attribute(1)
+
+    with pytest.raises(IndexError):
+        red.get_absolute_bounding_box_of_attribute(-1)
+
+
+def test_bounding_box_empty():
+    red = RedBaron("a()")
+    assert ((1, 3), (1, 2)) == red.atomtrailers.value[1].value.absolute_bounding_box
+
+fst = RedBaron("""\
+@deco
+
+def a(c, d):
+    b = c + d
+    e = 1
+""")
+
+# Same question here: should (2, 0) and (2, 1) return something?
+positions = [
+    (fst.funcdef.decorators[0],                       [(1, 1)]),
+    (fst.funcdef.decorators[0].value.value[0],        [(1, 2), (1, 3), (1, 4), (1, 5)]),
+    # How to get this one ? (2, 0) and (2, 1) does not work, see out of scope
+    #(fst.funcdef.decorators[1],                       [(?, ?)]),
+    (fst.funcdef,                                     [(3, 1), (3, 2), (3, 3)]),
+    (fst.funcdef.first_formatting[0],                 [(3, 4)]),
+    (fst.funcdef,                                     [(3, 5), (3, 6)]),
+    (fst.funcdef.arguments[0],                        [(3, 7)]),
+    (fst.funcdef.arguments[1],                        [(3, 8)]),
+    (fst.funcdef.arguments[1].second_formatting[0],   [(3, 9)]),
+    (fst.funcdef.arguments[2],                        [(3, 10)]),
+    (fst.funcdef,                                     [(3, 11), (3, 12)]),
+    (fst.funcdef.value[0],                            [(4, 1), (4, 2), (4, 3), (4, 4)]),
+    (fst.funcdef.value[1].target,                     [(4, 5)]),
+    (fst.funcdef.value[1].first_formatting[0],        [(4, 6)]),
+    (fst.funcdef.value[1],                            [(4, 7)]),
+    (fst.funcdef.value[1].second_formatting[0],       [(4, 8)]),
+    (fst.funcdef.value[1].value.first,                [(4, 9)]),
+    (fst.funcdef.value[1].value.first_formatting[0],  [(4, 10)]),
+    (fst.funcdef.value[1].value,                      [(4, 11)]),
+    (fst.funcdef.value[1].value.second_formatting[0], [(4, 12)]),
+    (fst.funcdef.value[1].value.second,               [(4, 13)]),
+    (fst.funcdef.value[2],                            [(5, 1), (5, 2), (5, 3), (5, 4)]),
+    (fst.funcdef.value[3].target,                     [(5, 5)]),
+    (fst.funcdef.value[3].first_formatting[0],        [(5, 6)]),
+    (fst.funcdef.value[3],                            [(5, 7)]),
+    (fst.funcdef.value[3].second_formatting[0],       [(5, 8)]),
+    (fst.funcdef.value[3].value,                      [(5, 9)]),
+    # out of scope
+    (fst,                                             [(2, 0),  (2, 1)]),
+]
+
+
+@pytest.fixture(params = positions)
+def position_fixture(request):
+    return request.param
+
+def test_find_by_position(position_fixture):
+    node, positions = position_fixture
+    for position in positions:
+        assert node == fst.find_by_position(*position)
 
 def test_other_name_assignment():
     red = RedBaron("a = b")

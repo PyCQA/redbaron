@@ -14,6 +14,7 @@ from pygments.formatters import Terminal256Formatter
 
 import baron
 import baron.path
+from baron.path import make_position
 from baron.utils import python_version, string_instance
 from baron.render import nodes_rendering_order
 
@@ -42,8 +43,8 @@ class Path(object):
     Path(node): path coming from the node's root
     Path.from_baron_path(node, path): path going down the node following the given path
 
-    Note that the second argument "path" is a baron path, i.e.
-    created by baron.path.make_path() or
+    Note that the second argument "path" is a baron path, i.e. list of
+    keys that can be given for example by
     redbaron.Path(node).to_baron_path()
 
     The second form is useful when converting a path given by baron
@@ -58,41 +59,30 @@ class Path(object):
     def set_node(self, node):
         self.node = node
 
-        parent = Path.get_holder(node)
-        if parent is None:
-            self.path = baron.path.make_path()
-            return
-
-        parent_node_type = parent.type if isinstance(parent, Node) else 'list'
-        render_pos, _ = Path.get_position_to_parent(node)
-
+        parent = node
         path = []
         while parent is not None:
-            _, key = Path.get_position_to_parent(parent)
+            key = Path.get_holder_on_attribute(parent)
             if key is not None:
                 path.insert(0, key)
             parent = Path.get_holder(parent)
 
-        self.path = baron.path.make_path(path, parent_node_type, render_pos)
+        self.path = path
 
     @classmethod
     def from_baron_path(class_, node, path):
-        if baron.path.is_empty(path):
+        if path is None:
             return class_(node)
 
-        for key in path.path:
+        for key in path:
             if isinstance(key, string_instance):
-                node = getattr(node, key)
+                child = getattr(node, key)
             else:
-                node = node[key]
+                child = node[key]
+            if child is not None and isinstance(child, (Node, NodeList)):
+                node = child
 
-        if isinstance(node, NodeList):
-            to_return = class_(node[path.position_in_rendering_list])
-        else:
-            to_return = class_(getattr(node, node._render()[path.position_in_rendering_list][1]))
-
-        to_return.path = path
-        return to_return
+        return class_(node)
 
     def to_baron_path(self):
         return self.path
@@ -105,19 +95,19 @@ class Path(object):
         return node.parent
 
     @classmethod
-    def get_position_to_parent(class_, node):
+    def get_holder_on_attribute(class_, node):
         parent = Path.get_holder(node)
         if parent is None:
-            return (None, None)
+            return None
 
         if isinstance(parent, NodeList):
             pos = parent.index(node)
-            return (pos, pos)
+            return pos
 
         if isinstance(node, NodeList):
-            return next((pos, key) for pos, (_, key, _) in enumerate(parent._render()) if getattr(parent, key) is node)
+            return next(key for (_, key, _) in parent._render() if getattr(parent, key) is node)
 
-        return next((pos, key) for pos, (_, key, _) in enumerate(parent._render()) if key == node.on_attribute)
+        return next(key for (_, key, _) in parent._render() if key == node.on_attribute)
 
 
 class GenericNodesUtils(object):
@@ -159,6 +149,18 @@ class GenericNodesUtils(object):
             return new_value
 
         raise NotImplemented
+
+    @property
+    def bounding_box(self):
+        return baron.path.node_to_bounding_box(self.fst())
+
+    @property
+    def absolute_bounding_box(self):
+        path = self.path().to_baron_path()
+        return baron.path.path_to_bounding_box(self.root.fst(), path)
+
+    def find_by_position(self, line, column):
+        return Path.from_baron_path(self, baron.path.position_to_path(self.fst(), line, column)).node
 
     def _string_to_node_list(self, string, parent, on_attribute):
         return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(string)))
@@ -338,6 +340,12 @@ class NodeList(UserList, GenericNodesUtils):
                     continue
                 previous = j
                 yield j
+
+    def get_absolute_bounding_box_of_attribute(self, index):
+        if index >= len(self.data) or index < 0:
+            raise IndexError()
+        path = self.path().to_baron_path() + [index]
+        return baron.path.path_to_bounding_box(self.root.fst(), path)
 
 
 class Node(GenericNodesUtils):
@@ -654,6 +662,9 @@ class Node(GenericNodesUtils):
             'edit',
             'increase_indentation',
             'decrease_indentation',
+            'has_render_key',
+            'get_absolute_bounding_box_of_attribute',
+            'find_by_position'
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -789,6 +800,18 @@ class Node(GenericNodesUtils):
                 continue
             previous = j
             yield j
+
+    def has_render_key(self, target_key):
+        for _, _, key in baron.render.render(self.fst()):
+            if key == target_key:
+                return True
+        return False
+
+    def get_absolute_bounding_box_of_attribute(self, attribute):
+        if not self.has_render_key(attribute):
+            raise KeyError()
+        path = self.path().to_baron_path() + [attribute]
+        return baron.path.path_to_bounding_box(self.root.fst(), path)
 
 
 class IntNode(Node):

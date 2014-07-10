@@ -275,3 +275,52 @@ editor. The result is parsed and replace the code of the current node.
 By default, the editor is taken from the variable :file:`EDITOR` in the
 environements variables. If this variable is not present, nano is used. You can
 use a different editor this way: :file:`node.edit(editor="vim")`.
+
+.absolute_bounding_box()
+------------------------
+
+The absolute bounding box of a node represents its top-left and
+bottom-right position relative to the fst's root node. The position is
+given as a tuple :file:`(line, column)` with **both starting at 1**.
+
+.. ipython:: python
+
+    red = RedBaron("def a(): return 42")
+    red.funcdef.value.absolute_bounding_box
+
+You can also get the bounding box of "string" nodes like the left
+parenthesis in the example above by giving the attribute's name to the
+:file:`get_absolute_bounding_box_of_attribute()` method:
+
+.. ipython:: python
+
+    red.funcdef.get_absolute_bounding_box_of_attribute('(')
+
+This is impossible to do without giving the attribute's name as an
+argument since the left parenthesis is not a redbaron Node.
+
+.bounding_box
+-------------
+
+Every node has the :file:`bounding_box` property which holds the
+top-left and bottom-right position of the node. Compared to the
+:file:`absolute_bounding_box` property, it assumes the the node is the
+root node so the top-left position is always :file:`(1, 1)`.
+
+.. ipython:: python
+
+    red = RedBaron("def a(): return 42")
+    red.funcdef.value.absolute_bounding_box
+    red.funcdef.value.bounding_box
+
+.find_by_position()
+-------------------
+
+You can find which node is located at a given line and column:
+
+.. ipython:: python
+
+    red = RedBaron("def a(): return 42")
+    red.find_by_position(1, 5)
+    red.find_by_position(1, 6) # '(' is not a redbaron node
+
