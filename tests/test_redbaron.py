@@ -1343,16 +1343,29 @@ def bounding_box_fixture(request):
 def test_bounding_box(red, bounding_box_fixture):
     absolute_bounding_box, bounding_box, node = bounding_box_fixture
     assert bounding_box == node.bounding_box
-    assert absolute_bounding_box == node.absolute_bounding_box()
+    assert absolute_bounding_box == node.absolute_bounding_box
 
 
 def test_bounding_box_of_attribute(red):
-    assert ((2, 1), (2, 3)) == red.funcdef.absolute_bounding_box("def")
+    assert ((2, 1), (2, 3)) == red.funcdef.get_absolute_bounding_box_of_attribute("def")
+
+
+def test_bounding_box_of_attribute_no_attribute(red):
+    with pytest.raises(KeyError):
+        red.funcdef.get_absolute_bounding_box_of_attribute("xxx")
+
+
+def test_bounding_box_of_attribute_no_index(red):
+    with pytest.raises(IndexError):
+        red.get_absolute_bounding_box_of_attribute(1)
+
+    with pytest.raises(IndexError):
+        red.get_absolute_bounding_box_of_attribute(-1)
 
 
 def test_bounding_box_empty():
     red = RedBaron("a()")
-    assert ((1, 3), (1, 2)) == red.atomtrailers.value[1].value.absolute_bounding_box()
+    assert ((1, 3), (1, 2)) == red.atomtrailers.value[1].value.absolute_bounding_box
 
 fst = RedBaron("""\
 @deco

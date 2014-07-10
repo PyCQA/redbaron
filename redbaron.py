@@ -154,8 +154,9 @@ class GenericNodesUtils(object):
     def bounding_box(self):
         return baron.path.node_to_bounding_box(self.fst())
 
-    def absolute_bounding_box(self, attribute = None):
-        path = self.path().to_baron_path() + ([attribute] if attribute is not None else [])
+    @property
+    def absolute_bounding_box(self):
+        path = self.path().to_baron_path()
         return baron.path.path_to_bounding_box(self.root.fst(), path)
 
     def find_by_position(self, line, column):
@@ -327,6 +328,12 @@ class NodeList(UserList, GenericNodesUtils):
                     continue
                 previous = j
                 yield j
+
+    def get_absolute_bounding_box_of_attribute(self, index):
+        if index >= len(self.data) or index < 0:
+            raise IndexError()
+        path = self.path().to_baron_path() + [index]
+        return baron.path.path_to_bounding_box(self.root.fst(), path)
 
 
 class Node(GenericNodesUtils):
@@ -619,7 +626,8 @@ class Node(GenericNodesUtils):
             'find_by_path',
             'replace',
             'edit',
-            'absolute_bounding_box',
+            'has_render_key',
+            'get_absolute_bounding_box_of_attribute',
             'find_by_position'
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
@@ -756,6 +764,18 @@ class Node(GenericNodesUtils):
                 continue
             previous = j
             yield j
+
+    def has_render_key(self, target_key):
+        for _, _, key in baron.render.render(self.fst()):
+            if key == target_key:
+                return True
+        return False
+
+    def get_absolute_bounding_box_of_attribute(self, attribute):
+        if not self.has_render_key(attribute):
+            raise KeyError()
+        path = self.path().to_baron_path() + [attribute]
+        return baron.path.path_to_bounding_box(self.root.fst(), path)
 
 
 class IntNode(Node):
