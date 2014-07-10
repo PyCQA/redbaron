@@ -175,7 +175,8 @@ class GenericNodesUtils(object):
     def _iter_in_rendering_order(self, node):
         if not isinstance(node, (Node, NodeList)):
             return
-        yield node
+        if not (isinstance(node, Node) and node.type == "endl"):
+            yield node
         for kind, key, display in node._render():
             if kind == "constant":
                 yield node
@@ -191,16 +192,24 @@ class GenericNodesUtils(object):
                         yield j
 
     def increase_indentation(self, number_of_spaces):
-        for endl in set(self("endl")):
-            if endl.next_rendered and\
-               (endl.next_rendered.type != "endl" or endl.next_rendered.formatting("comment")):
-                endl.indent += " " * number_of_spaces
+        previous = None
+        done = set()
+        for i in self.data:
+            for node in i._generate_nodes_in_rendering_order():
+                if node.type != "endl" and previous is not None and previous.type == "endl" and previous not in done:
+                    previous.indent += number_of_spaces * " "
+                    done.add(previous)
+                previous = node
 
     def decrease_indentation(self, number_of_spaces):
-        for endl in set(self("endl")):
-            if endl.next_rendered and\
-               (endl.next_rendered.type != "endl" or endl.next_rendered.formatting("comment")):
-                endl.indent = endl.indent[number_of_spaces:]  # doesn't handle tabs well but for now I don't care
+        previous = None
+        done = set()
+        for i in self.data:
+            for node in i._generate_nodes_in_rendering_order():
+                if node.type != "endl" and previous is not None and previous.type == "endl" and previous not in done:
+                    previous.indent = previous.indent[number_of_spaces:]
+                    done.add(previous)
+                previous = node
 
 
 class NodeList(UserList, GenericNodesUtils):

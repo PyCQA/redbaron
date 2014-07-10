@@ -1544,6 +1544,7 @@ def test_previous_rendered():
 
 test_indent_code = """
 def a():
+    # plop
     1 + 2
     if caramba:
         plop
@@ -1553,7 +1554,7 @@ def a():
 
 def test_next_rendered_trapped():
     red = RedBaron(test_indent_code)
-    assert red("endl")[4].next_rendered is red.find("name", "pouf")
+    assert red("endl")[5].next_rendered is red.find("name", "pouf")
 
 
 def test_increase_indentation():
