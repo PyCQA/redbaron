@@ -518,10 +518,17 @@ class Node(GenericNodesUtils):
 
     def find_all(self, identifier, *args, **kwargs):
         to_return = NodeList([])
+        if "recursive" in kwargs:
+            recursive = kwargs["recursive"]
+            kwargs = kwargs.copy()
+            del kwargs["recursive"]
+        else:
+            recursive = True
+
         if self._node_match_query(self, identifier, *args, **kwargs):
             to_return.append(self)
 
-        if not kwargs.get("recursive", True):
+        if not recursive:
             return to_return
 
         for kind, key, _ in filter(lambda x: x[0] in ("list", "formatting") or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):

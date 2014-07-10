@@ -1416,3 +1416,8 @@ def test_decrease_indentation():
     red.decrease_indentation(4)
     indented_code = "\ndef a():\n" + "\n".join(map(lambda x: x[4:], test_indent_code.split("\n")[2:-2])) + "\n\n"
     assert red.dumps() == indented_code
+
+
+def test_regression_find_all_recursive():
+    red = RedBaron("a.b()")
+    assert red[0].value("name", recursive=False) == [red.name, red("name")[1]]
