@@ -918,7 +918,7 @@ class FuncdefNode(Node):
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
         elif on_attribute == "value":
-            fst = baron.parse("def a():\n    %s\n" % string)[0]["value"]
+            fst = baron.parse("def a():\n    %s\n" % string.lstrip())[0]["value"]
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
