@@ -921,7 +921,7 @@ class FuncdefNode(Node):
             indentation = len(re.search("^ *", clean_string).group())
             target_indentation = len(self.indentation) + 4
 
-            if indentation == 0:  # putting this in string will fail, need at least some indent
+            if indentation == 0:  # putting this in the string template will fail, need at least some indent
                 clean_string = "    " + "\n    ".join(clean_string.split("\n"))
                 clean_string = clean_string.rstrip()
 
