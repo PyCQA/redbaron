@@ -1720,13 +1720,6 @@ def test_set_attr_funcdef_advanced_inline_dont_break_next_block_indent_one_endl(
     assert red.find("def", name="zomg").value[-1].indent == "    "
 
 
-# next TODO
-# ensure you don't break the indentation of the .next of the funcnode
-# ensure that if you are in a class def you add one blank line
-# and 2 blank line on root or the last one of a class
-# but only if you aren't the last one
-
-
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
     assert red[0].value.value[2].index == 2
