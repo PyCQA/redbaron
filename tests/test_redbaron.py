@@ -1713,6 +1713,37 @@ def test_set_attr_funcdef_advanced_inline_dont_break_next_block_indent_one_endl(
     assert red.find("def", name="zomg").value[-1].indent == "    "
 
 
+# TODO
+
+# "@decorator"
+# "decorator"
+# "@decorator\n"
+# "decorator\n"
+# "    @decorator"
+# "    decorator"
+# "    @decorator\n"
+# "    decorator\n"
+# " @decorator"
+# " decorator"
+# " @decorator\n"
+# " decorator\n"
+# "       @decorator"
+# "       decorator"
+# "       @decorator\n"
+# "       decorator\n"
+
+# "\n@plop\n@plouf"
+# "    @plop\n    @plouf"
+# "\n    @plop\n    @plouf"
+# "    \n    @plop\n    @plouf"
+# " @plop\n @plouf"
+# "\n @plop\n @plouf"
+# " \n @plop\n @plouf"
+# "        @plop\n        @plouf"
+# "\n        @plop\n        @plouf"
+# " \n        @plop\n        @plouf"
+
+
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
     assert red[0].value.value[2].index == 2
