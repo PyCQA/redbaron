@@ -14,7 +14,6 @@ from pygments.formatters import Terminal256Formatter
 
 import baron
 import baron.path
-from baron.path import make_position
 from baron.utils import python_version, string_instance
 from baron.render import nodes_rendering_order
 
