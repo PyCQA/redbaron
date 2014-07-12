@@ -1713,9 +1713,15 @@ def test_set_attr_funcdef_advanced_inline_dont_break_next_block_indent_one_endl(
     assert red.find("def", name="zomg").value[-1].indent == "    "
 
 
+def test_set_decorator_funcdef():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "@decorator"
+    assert len(red[0].decorators) == 2
+    assert red[0].decorators.dumps() == "@decorator\n"
+
+
 # TODO
 
-# "@decorator"
 # "decorator"
 # "@decorator\n"
 # "decorator\n"

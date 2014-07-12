@@ -961,6 +961,10 @@ class FuncdefNode(Node):
 
             return result
 
+        elif on_attribute == "decorators":
+            fst = baron.parse("%s\ndef a(): pass" % string)[0]["decorators"]
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
         else:
             raise Exception("Unhandled case")
 
