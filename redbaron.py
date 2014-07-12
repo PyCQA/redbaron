@@ -928,6 +928,8 @@ class FuncdefNode(Node):
             fst = baron.parse("def a():\n%s\n" % clean_string)[0]["value"]
 
             result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+            # set indentation to the correct level
             indentation = len(result[0].indent)
             if indentation > target_indentation:
                 result.decrease_indentation(indentation - target_indentation)
