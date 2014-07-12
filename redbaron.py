@@ -936,8 +936,9 @@ class FuncdefNode(Node):
             elif indentation < target_indentation:
                 result.increase_indentation(target_indentation - indentation)
 
+            endl_base_node = to_node({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'}, on_attribute=on_attribute, parent=parent)
+
             if self.on_attribute == "root" and self.next:
-                endl_base_node = to_node({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'}, on_attribute=on_attribute, parent=parent)
                 # I need to finish with 3 endl nodes
                 if not all(map(lambda x: x.type == "endl", result[-1:])):
                     result.append(endl_base_node.copy())
@@ -948,6 +949,15 @@ class FuncdefNode(Node):
                     result.append(endl_base_node.copy())
                     result.append(endl_base_node.copy())
                     result.append(endl_base_node.copy())
+            elif self.parent.type == "class":
+                # I need to finish with 2 endl nodes
+                if not all(map(lambda x: x.type == "endl", result[-2:])):
+                    result.append(endl_base_node.copy())
+                elif not all(map(lambda x: x.type == "endl", result[-3:])):
+                    result.append(endl_base_node.copy())
+                    result.append(endl_base_node.copy())
+
+                result[-1].indent = self.indentation
 
             return result
 
