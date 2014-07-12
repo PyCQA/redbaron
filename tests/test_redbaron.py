@@ -1516,14 +1516,41 @@ def test_set_attr_funcdef_value_simple_indented():
     assert red[0].value.dumps() == "\n    plop\n"
 
 
+def test_set_attr_funcdef_value_simple_endl():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\nplop"
+    assert red[0].value.dumps() == "\n    plop\n"
 
 
-# TODO
-# "\nplop"
-# "  \nplop"
-# "                 plop"
-# "\n                 plop"
-# "   \n                 plop"
+def test_set_attr_funcdef_value_simple_space_endl():
+    red = RedBaron("def a(): pass")
+    red[0].value = "  \nplop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_simple_space_endl_space():
+    red = RedBaron("def a(): pass")
+    red[0].value = "  \n   plop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_simple_too_much_space():
+    red = RedBaron("def a(): pass")
+    red[0].value = "                          plop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_simple_endl_too_much_space():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\n                          plop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_simple_space_endl_too_much_space():
+    red = RedBaron("def a(): pass")
+    red[0].value = "  \n                        plop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
 
 # "plop\nplouf"
 # "\nplop\nplouf"
