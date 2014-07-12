@@ -1558,16 +1558,65 @@ def test_set_attr_funcdef_value_complex():
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-# "\nplop\nplouf"
-# "    plop\n    plouf"
-# "\n    plop\n    plouf"
-# "    \n    plop\n    plouf"
-# " plop\n plouf"
-# "\n plop\n plouf"
-# " \n plop\n plouf"
-# "        plop\n        plouf"
-# "\n        plop\n        plouf"
-# " \n        plop\n        plouf"
+def test_set_attr_funcdef_value_endl_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\nplop\nplouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_value_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "    plop\n    plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_value_endl_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\n    plop\n    plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_value_space_endl_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "    \n    plop\n    plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_too_small_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = " plop\n plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_endl_too_small_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\n plop\n plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_space_endl_too_small_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = " \n plop\n plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_too_much_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "            plop\n            plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_endl_too_much_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\n            plop\n            plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_space_endl_too_much_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "            \n            plop\n            plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
 
 # "plop\nif pouet:\n    pass"
 
