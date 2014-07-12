@@ -938,7 +938,7 @@ class FuncdefNode(Node):
 
             endl_base_node = to_node({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'}, on_attribute=on_attribute, parent=parent)
 
-            if (self.on_attribute == "root" and self.next) or (self.parent.type == "class" and not self.next and self.parent.next):
+            if (self.on_attribute == "root" and self.next) or (not self.next and self.parent.next):
                 # I need to finish with 3 endl nodes
                 if not all(map(lambda x: x.type == "endl", result[-1:])):
                     result.append(endl_base_node.copy())
@@ -949,7 +949,7 @@ class FuncdefNode(Node):
                     result.append(endl_base_node.copy())
                     result.append(endl_base_node.copy())
                     result.append(endl_base_node.copy())
-            elif self.parent.type == "class":
+            elif self.next:
                 # I need to finish with 2 endl nodes
                 if not all(map(lambda x: x.type == "endl", result[-2:])):
                     result.append(endl_base_node.copy())
