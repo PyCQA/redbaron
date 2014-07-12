@@ -1678,6 +1678,30 @@ def test_set_attr_funcdef_advanced_in_class_dont_break_next_block_indent_one_end
     assert red.find("def", name="a").value[-1].indent == "    "
 
 
+def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="b").value = "return 42"
+    print [red.find("def", "b").value]
+    assert len(red.find("def", name="b")("endl")) == 4
+    assert red.find("def", name="b").value[-1].indent == ""
+
+
+def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent_one_endl():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="b").value = "return 42\n"
+    print [red.find("def", "b").value]
+    assert len(red.find("def", name="b")("endl")) == 4
+    assert red.find("def", name="b").value[-1].indent == ""
+
+
+def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent_two_endl():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="b").value = "return 42\n\n"
+    print [red.find("def", "b").value]
+    assert len(red.find("def", name="b")("endl")) == 4
+    assert red.find("def", name="b").value[-1].indent == ""
+
+
 # next TODO
 # ensure you don't break the indentation of the .next of the funcnode
 # ensure that if you are in a class def you add one blank line
