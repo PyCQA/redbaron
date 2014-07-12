@@ -1552,7 +1552,12 @@ def test_set_attr_funcdef_value_simple_space_endl_too_much_space():
     assert red[0].value.dumps() == "\n    plop\n"
 
 
-# "plop\nplouf"
+def test_set_attr_funcdef_value_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "plop\nplouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
 # "\nplop\nplouf"
 # "    plop\n    plouf"
 # "\n    plop\n    plouf"

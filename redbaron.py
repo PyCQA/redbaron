@@ -917,8 +917,23 @@ class FuncdefNode(Node):
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
         elif on_attribute == "value":
-            fst = baron.parse("def a():\n    %s\n" % string.lstrip())[0]["value"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
+            indentation = len(re.search("^ *", clean_string).group())
+            target_indentation = len(self.indentation) + 4
+
+            if indentation == 0:  # putting this in string will fail, need at least some indent
+                clean_string = "    " + "\n    ".join(clean_string.split("\n"))
+
+            fst = baron.parse("def a():\n%s\n" % clean_string)[0]["value"]
+
+            result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            indentation = len(result[0].indent)
+            if indentation > target_indentation:
+                result.decrease_indentation(indentation - target_indentation)
+            elif indentation < target_indentation:
+                result.increase_indentation(target_indentation - indentation)
+
+            return result
 
         else:
             raise Exception("Unhandled case")
