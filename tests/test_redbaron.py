@@ -1618,7 +1618,12 @@ def test_set_attr_funcdef_space_endl_too_much_indent_complex():
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-# "plop\nif pouet:\n    pass"
+def test_set_attr_funcdef_space_complex_with_more_complex_indent():
+    red = RedBaron("def a(): pass")
+    red[0].value = "plop\nif a:\n    pass\n"
+    print [red[0].value.dumps()]
+    assert red[0].value.dumps() == "\n    plop\n    if a:\n        pass\n"
+
 
 # next TODO
 # ensure you don't break the indentation of the .next of the funcnode

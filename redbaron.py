@@ -923,6 +923,7 @@ class FuncdefNode(Node):
 
             if indentation == 0:  # putting this in string will fail, need at least some indent
                 clean_string = "    " + "\n    ".join(clean_string.split("\n"))
+                clean_string = clean_string.rstrip()
 
             fst = baron.parse("def a():\n%s\n" % clean_string)[0]["value"]
 
