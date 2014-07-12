@@ -1516,6 +1516,30 @@ def test_set_attr_funcdef_value_simple_indented():
     assert red[0].value.dumps() == "\n    plop\n"
 
 
+
+
+# TODO
+# "\nplop"
+# "  \nplop"
+# "                 plop"
+# "\n                 plop"
+# "   \n                 plop"
+
+# "plop\nplouf"
+# "\nplop\nplouf"
+# "    plop\n    plouf"
+# "\n    plop\n    plouf"
+# "    \n    plop\n    plouf"
+# " plop\n plouf"
+# "\n plop\n plouf"
+# " \n plop\n plouf"
+# "        plop\n        plouf"
+# "\n        plop\n        plouf"
+# " \n        plop\n        plouf"
+
+# "plop\nif pouet:\n    pass"
+
+
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
     assert red[0].value.value[2].index == 2
