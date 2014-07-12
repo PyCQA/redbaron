@@ -1566,6 +1566,12 @@ def test_set_attr_funcdef_value_simple_space_endl_too_much_space():
 
 # "plop\nif pouet:\n    pass"
 
+# next TODO
+# ensure you don't break the indentation of the .next of the funcnode
+# ensure that if you are in a class def you add one blank line
+# and 2 blank line on root or the last one of a class
+# but only if you aren't the last one
+
 
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
