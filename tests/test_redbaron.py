@@ -1749,6 +1749,13 @@ def test_set_decorator_funcdef():
 # "\n        @plop\n        @plouf"
 # " \n        @plop\n        @plouf"
 
+# TODO
+
+# for body setattr of function
+# the reindentation
+# and the ensuring that the last node correctly indent the next node
+# must be done ALSO for fst and redbaron node setattr
+
 
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
