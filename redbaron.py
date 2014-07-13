@@ -926,17 +926,7 @@ class FuncdefNode(Node):
             return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "decorators":
-            indentation = self.indentation
-            string = re.sub(" *@", "@", string)
-            fst = baron.parse("%s\ndef a(): pass" % string.strip())[0]["decorators"]
-            fst[-1]["indent"] = indentation
-            result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-            if indentation:
-                # with re.sub they don't have indentation
-                for i in filter(lambda x: x.type == "endl", result[1:-1]):
-                    i.indent = indentation
-
-            return result
+            return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -984,6 +974,19 @@ class FuncdefNode(Node):
                 result.append(endl_base_node.copy())
 
             result[-1].indent = self.indentation
+
+        return result
+
+    def parse_decorators(self, string, parent, on_attribute):
+        indentation = self.indentation
+        string = re.sub(" *@", "@", string)
+        fst = baron.parse("%s\ndef a(): pass" % string.strip())[0]["decorators"]
+        fst[-1]["indent"] = indentation
+        result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        if indentation:
+            # with re.sub they don't have indentation
+            for i in filter(lambda x: x.type == "endl", result[1:-1]):
+                i.indent = indentation
 
         return result
 
