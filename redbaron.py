@@ -164,6 +164,52 @@ class GenericNodesUtils(object):
     def _string_to_node_list(self, string, parent, on_attribute):
         return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(string)))
 
+    def parse_code_block(self, string, parent, on_attribute):
+        clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
+        indentation = len(re.search("^ *", clean_string).group())
+        target_indentation = len(self.indentation) + 4
+
+        # putting this in the string template will fail, need at least some indent
+        if indentation == 0:
+            clean_string = "    " + "\n    ".join(clean_string.split("\n"))
+            clean_string = clean_string.rstrip()
+
+        fst = baron.parse("def a():\n%s\n" % clean_string)[0]["value"]
+
+        result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+        # set indentation to the correct level
+        indentation = len(result[0].indent)
+        if indentation > target_indentation:
+            result.decrease_indentation(indentation - target_indentation)
+        elif indentation < target_indentation:
+            result.increase_indentation(target_indentation - indentation)
+
+        endl_base_node = to_node({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'}, on_attribute=on_attribute, parent=parent)
+
+        if (self.on_attribute == "root" and self.next) or (not self.next and self.parent.next):
+            # I need to finish with 3 endl nodes
+            if not all(map(lambda x: x.type == "endl", result[-1:])):
+                result.append(endl_base_node.copy())
+            elif not all(map(lambda x: x.type == "endl", result[-2:])):
+                result.append(endl_base_node.copy())
+                result.append(endl_base_node.copy())
+            elif not all(map(lambda x: x.type == "endl", result[-3:])):
+                result.append(endl_base_node.copy())
+                result.append(endl_base_node.copy())
+                result.append(endl_base_node.copy())
+        elif self.next:
+            # I need to finish with 2 endl nodes
+            if not all(map(lambda x: x.type == "endl", result[-2:])):
+                result.append(endl_base_node.copy())
+            elif not all(map(lambda x: x.type == "endl", result[-3:])):
+                result.append(endl_base_node.copy())
+                result.append(endl_base_node.copy())
+
+            result[-1].indent = self.indentation
+
+        return result
+
     @property
     def root(self):
         current = self
@@ -672,7 +718,8 @@ class Node(GenericNodesUtils):
             'decrease_indentation',
             'has_render_key',
             'get_absolute_bounding_box_of_attribute',
-            'find_by_position'
+            'find_by_position',
+            'parse_code_block',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -931,52 +978,6 @@ class FuncdefNode(Node):
         else:
             raise Exception("Unhandled case")
 
-    def parse_code_block(self, string, parent, on_attribute):
-        clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
-        indentation = len(re.search("^ *", clean_string).group())
-        target_indentation = len(self.indentation) + 4
-
-        # putting this in the string template will fail, need at least some indent
-        if indentation == 0:
-            clean_string = "    " + "\n    ".join(clean_string.split("\n"))
-            clean_string = clean_string.rstrip()
-
-        fst = baron.parse("def a():\n%s\n" % clean_string)[0]["value"]
-
-        result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-        # set indentation to the correct level
-        indentation = len(result[0].indent)
-        if indentation > target_indentation:
-            result.decrease_indentation(indentation - target_indentation)
-        elif indentation < target_indentation:
-            result.increase_indentation(target_indentation - indentation)
-
-        endl_base_node = to_node({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'}, on_attribute=on_attribute, parent=parent)
-
-        if (self.on_attribute == "root" and self.next) or (not self.next and self.parent.next):
-            # I need to finish with 3 endl nodes
-            if not all(map(lambda x: x.type == "endl", result[-1:])):
-                result.append(endl_base_node.copy())
-            elif not all(map(lambda x: x.type == "endl", result[-2:])):
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-            elif not all(map(lambda x: x.type == "endl", result[-3:])):
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-        elif self.next:
-            # I need to finish with 2 endl nodes
-            if not all(map(lambda x: x.type == "endl", result[-2:])):
-                result.append(endl_base_node.copy())
-            elif not all(map(lambda x: x.type == "endl", result[-3:])):
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-
-            result[-1].indent = self.indentation
-
-        return result
-
     def parse_decorators(self, string, parent, on_attribute):
         indentation = self.indentation
         string = re.sub(" *@", "@", string)
@@ -1011,6 +1012,13 @@ class AssignmentNode(Node):
 
 
 class ForNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.fifth_formatting) == 1 and self.fifth_formatting[0].type == "space":

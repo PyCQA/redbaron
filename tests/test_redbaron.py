@@ -1870,15 +1870,21 @@ def test_assign_node_setattr_value():
         red[0].value = "raise"
 
 
+def test_for_setattr_value():
+    red = RedBaron("for i in a: pass")
+    red[0].value = "continue"
+    assert red[0].value.dumps() == "\n    continue\n"
+
+# for -> iterator
+# for -> target
+# for -> else
+
 # MASTA TODO
 
 # argument_generator_comprehension -> result
 # argument_generator_comprehension -> generators
 # assert -> value
 # assert -> message
-# assignment -> target
-# assignment -> operator
-# assignment -> value
 # associative_parenthesis -> value
 # atomtrailers -> value
 # binary -> value
@@ -1934,10 +1940,6 @@ def test_assign_node_setattr_value():
 # finally -> value
 # float -> value
 # float_exponant -> value
-# for -> iterator
-# for -> target
-# for -> value
-# for -> else
 # from_import -> value
 # from_import -> targets
 # generator_comprehension -> result
