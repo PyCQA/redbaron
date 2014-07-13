@@ -1854,6 +1854,14 @@ def test_set_decoratorS_indented_funcdef():
     assert red.find("def", "b").decorators[-3].indent == "    "
 
 
+def test_assign_node_setattr_target():
+    red = RedBaron("a = b")
+    red[0].target = "plop"
+    assert red.dumps() == "plop = b"
+    with pytest.raises(Exception):
+        red[0].target = "raise"
+
+
 # MASTA TODO
 
 # argument_generator_comprehension -> result

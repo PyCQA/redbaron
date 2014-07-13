@@ -999,6 +999,9 @@ class FuncdefNode(Node):
 class AssignmentNode(Node):
     _other_identifiers = ["assign"]
 
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "target":
+            return to_node(baron.parse("%s = a" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
 
 class ForNode(Node):
     def append_value(self, value):
