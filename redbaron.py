@@ -1003,6 +1003,13 @@ class AssignmentNode(Node):
         if on_attribute == "target":
             return to_node(baron.parse("%s = a" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "value":
+            return to_node(baron.parse("a = %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class ForNode(Node):
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")

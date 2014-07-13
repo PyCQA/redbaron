@@ -1862,6 +1862,14 @@ def test_assign_node_setattr_target():
         red[0].target = "raise"
 
 
+def test_assign_node_setattr_value():
+    red = RedBaron("a = b")
+    red[0].value = "plop"
+    assert red.dumps() == "a = plop"
+    with pytest.raises(Exception):
+        red[0].value = "raise"
+
+
 # MASTA TODO
 
 # argument_generator_comprehension -> result
