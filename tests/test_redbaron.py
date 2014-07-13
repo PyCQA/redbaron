@@ -1720,9 +1720,15 @@ def test_set_decorator_funcdef():
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
+def test_set_decorator_funcdef_endl():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "@decorator\n"
+    assert len(red[0].decorators) == 2
+    assert red[0].decorators.dumps() == "@decorator\n"
+
+
 # TODO
 
-# "@decorator\n"
 # "    @decorator"
 # "    @decorator\n"
 # " @decorator"
