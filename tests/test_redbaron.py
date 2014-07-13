@@ -1722,21 +1722,13 @@ def test_set_decorator_funcdef():
 
 # TODO
 
-# "decorator"
 # "@decorator\n"
-# "decorator\n"
 # "    @decorator"
-# "    decorator"
 # "    @decorator\n"
-# "    decorator\n"
 # " @decorator"
-# " decorator"
 # " @decorator\n"
-# " decorator\n"
 # "       @decorator"
-# "       decorator"
 # "       @decorator\n"
-# "       decorator\n"
 
 # "\n@plop\n@plouf"
 # "    @plop\n    @plouf"
