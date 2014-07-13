@@ -962,8 +962,10 @@ class FuncdefNode(Node):
             return result
 
         elif on_attribute == "decorators":
+            indentation = self.indentation
             string = re.sub(" *@", "@", string)
             fst = baron.parse("%s\ndef a(): pass" % string.strip())[0]["decorators"]
+            fst[-1]["indent"] = indentation
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:

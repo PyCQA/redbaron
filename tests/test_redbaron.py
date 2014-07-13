@@ -1839,6 +1839,13 @@ def test_set_decorator_funcdef_complex_space_endl_too_big_indent():
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
+def test_set_decorator_indented_funcdef():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", "b").decorators = "@pouet"
+    assert len(red.find("def", "b").decorators) == 2
+    assert red.find("def", "b").decorators[-1].indent == "    "
+
+
 # TODO
 
 # also an indented funcdef
