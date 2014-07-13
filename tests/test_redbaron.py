@@ -1769,18 +1769,79 @@ def test_set_decorator_funcdef_too_big_indent_endl():
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
+def test_set_decorator_funcdef_complex():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "@plop\n@plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "    @plop\n    @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_endl_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "\n    @plop\n    @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_space_endl_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "      \n    @plop\n    @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_too_small_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = " @plop\n @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_endl_too_small_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "\n @plop\n @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_space_endl_too_small_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = " \n @plop\n @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_too_big_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "     @plop\n     @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_endl_too_big_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "\n     @plop\n     @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_space_endl_too_big_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = " \n     @plop\n     @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
 # TODO
 
-# "\n@plop\n@plouf"
-# "    @plop\n    @plouf"
-# "\n    @plop\n    @plouf"
-# "    \n    @plop\n    @plouf"
-# " @plop\n @plouf"
-# "\n @plop\n @plouf"
-# " \n @plop\n @plouf"
-# "        @plop\n        @plouf"
-# "\n        @plop\n        @plouf"
-# " \n        @plop\n        @plouf"
+# also an indented funcdef
 
 # TODO
 
