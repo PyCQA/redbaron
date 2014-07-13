@@ -1876,8 +1876,6 @@ def test_set_decoratorS_indented_funcdef():
 # boolean_operator -> second
 # call -> value
 # call_argument -> name
-# call -> value
-# call_argument -> name
 # call_argument -> value
 # class -> decorators
 # class -> name
@@ -1926,7 +1924,6 @@ def test_set_decoratorS_indented_funcdef():
 # for -> else
 # from_import -> value
 # from_import -> targets
-# funcdef -> decorators
 # generator_comprehension -> result
 # generator_comprehension -> generators
 # getitem -> value
