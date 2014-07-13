@@ -190,26 +190,6 @@ class GenericNodesUtils(object):
                     for j in self._iter_in_rendering_order(i):
                         yield j
 
-    def increase_indentation(self, number_of_spaces):
-        previous = None
-        done = set()
-        for i in self.data:
-            for node in i._generate_nodes_in_rendering_order():
-                if node.type != "endl" and previous is not None and previous.type == "endl" and previous not in done:
-                    previous.indent += number_of_spaces * " "
-                    done.add(previous)
-                previous = node
-
-    def decrease_indentation(self, number_of_spaces):
-        previous = None
-        done = set()
-        for i in self.data:
-            for node in i._generate_nodes_in_rendering_order():
-                if node.type != "endl" and previous is not None and previous.type == "endl" and previous not in done:
-                    previous.indent = previous.indent[number_of_spaces:]
-                    done.add(previous)
-                previous = node
-
 
 class NodeList(UserList, GenericNodesUtils):
     # NodeList doesn't have a previous nor a next
@@ -354,6 +334,26 @@ class NodeList(UserList, GenericNodesUtils):
             raise IndexError()
         path = self.path().to_baron_path() + [index]
         return baron.path.path_to_bounding_box(self.root.fst(), path)
+
+    def increase_indentation(self, number_of_spaces):
+        previous = None
+        done = set()
+        for i in self.data:
+            for node in i._generate_nodes_in_rendering_order():
+                if node.type != "endl" and previous is not None and previous.type == "endl" and previous not in done:
+                    previous.indent += number_of_spaces * " "
+                    done.add(previous)
+                previous = node
+
+    def decrease_indentation(self, number_of_spaces):
+        previous = None
+        done = set()
+        for i in self.data:
+            for node in i._generate_nodes_in_rendering_order():
+                if node.type != "endl" and previous is not None and previous.type == "endl" and previous not in done:
+                    previous.indent = previous.indent[number_of_spaces:]
+                    done.add(previous)
+                previous = node
 
 
 class Node(GenericNodesUtils):
@@ -821,6 +821,12 @@ class Node(GenericNodesUtils):
         path = self.path().to_baron_path() + [attribute]
         return baron.path.path_to_bounding_box(self.root.fst(), path)
 
+    def increase_indentation(self, number_of_spaces):
+        self.get_indentation_node().indent += number_of_spaces * " "
+
+    def decrease_indentation(self, number_of_spaces):
+        self.get_indentation_node().indent -= number_of_spaces * " "
+
 
 class IntNode(Node):
     def __init__(self, node, *args, **kwargs):
@@ -966,7 +972,13 @@ class FuncdefNode(Node):
             string = re.sub(" *@", "@", string)
             fst = baron.parse("%s\ndef a(): pass" % string.strip())[0]["decorators"]
             fst[-1]["indent"] = indentation
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            if indentation:
+                # with re.sub they don't have indentation
+                for i in filter(lambda x: x.type == "endl", result[1:-1]):
+                    i.indent = indentation
+
+            return result
 
         else:
             raise Exception("Unhandled case")

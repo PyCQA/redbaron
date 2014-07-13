@@ -1846,16 +1846,13 @@ def test_set_decorator_indented_funcdef():
     assert red.find("def", "b").decorators[-1].indent == "    "
 
 
-# TODO
+def test_set_decoratorS_indented_funcdef():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", "b").decorators = "@pouet\n@plop"
+    assert len(red.find("def", "b").decorators) == 4
+    assert red.find("def", "b").decorators[-1].indent == "    "
+    assert red.find("def", "b").decorators[-3].indent == "    "
 
-# also an indented funcdef
-
-# TODO
-
-# for body setattr of function
-# the reindentation
-# and the ensuring that the last node correctly indent the next node
-# must be done ALSO for fst and redbaron node setattr
 
 # MASTA TODO
 
