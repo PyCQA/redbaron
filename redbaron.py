@@ -962,7 +962,7 @@ class FuncdefNode(Node):
             return result
 
         elif on_attribute == "decorators":
-            fst = baron.parse("%s\ndef a(): pass" % string.rstrip())[0]["decorators"]
+            fst = baron.parse("%s\ndef a(): pass" % string.strip())[0]["decorators"]
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
