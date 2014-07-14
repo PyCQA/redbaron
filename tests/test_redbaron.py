@@ -1894,6 +1894,14 @@ def test_for_setattr_iterator():
         red[0].iterator = "raise"
 
 
+def test_while_setattr_value():
+    red = RedBaron("while a: pass")
+    red[0].value = "continue"
+    assert red[0].value.dumps() == "\n    continue\n"
+
+
+# while -> test
+
 # MASTA TODO
 
 # argument_generator_comprehension -> result
@@ -2001,9 +2009,6 @@ def test_for_setattr_iterator():
 # unicode_string -> value
 # unitary_operator -> value
 # unitary_operator -> target
-# while -> test
-# while -> value
-# while -> else
 # with -> contexts
 # with -> value
 # with_context_item -> value
