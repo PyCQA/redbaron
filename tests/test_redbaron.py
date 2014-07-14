@@ -1967,7 +1967,15 @@ def test_setattr_if_test():
         red[0].value[0].test = "raise"
 
 
-# ifelseblock -> value
+def test_elif_setattr_value():
+    red = RedBaron("if a: pass\nelif b: pass")
+    red[0].value[1].value = "continue"
+    assert red[0].value[1].value.dumps() == "\n    continue\n"
+
+
+# elif -> test
+# elif -> value
+# else -> value
 
 # MASTA TODO
 
@@ -2013,9 +2021,6 @@ def test_setattr_if_test():
 # dotted_as_name -> value
 # dotted_as_name -> target
 # dotted_name -> value
-# elif -> test
-# elif -> value
-# else -> value
 # except -> exception
 # except -> delimiteur
 # except -> target
