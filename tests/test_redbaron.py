@@ -1982,6 +1982,12 @@ def test_setattr_elif_test():
         red[0].value[1].test = "raise"
 
 
+def test_else_setattr_value():
+    red = RedBaron("if a: pass\nelse: pass")
+    red[0].value[1].value = "continue"
+    assert red[0].value[1].value.dumps() == "\n    continue\n"
+
+
 # else -> value
 
 # MASTA TODO

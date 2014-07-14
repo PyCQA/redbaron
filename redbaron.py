@@ -1171,6 +1171,13 @@ class ElifNode(Node):
 
 
 class ElseNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
