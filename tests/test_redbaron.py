@@ -1900,7 +1900,14 @@ def test_while_setattr_value():
     assert red[0].value.dumps() == "\n    continue\n"
 
 
-# while -> test
+def test_while_setattr_test():
+    red = RedBaron("while a: pass")
+    red[0].test = "caramba"
+    assert red.dumps() == "while caramba: pass\n"
+    assert red[0].test.type == "name"
+    with pytest.raises(Exception):
+        red[0].test = "raise"
+
 
 # MASTA TODO
 
