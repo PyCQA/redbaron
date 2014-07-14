@@ -1023,6 +1023,12 @@ class ForNode(Node):
         if on_attribute == "target":
             return to_node(baron.parse("for i in %s: pass" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "iterator":
+            return to_node(baron.parse("for %s in i: pass" % string)[0]["iterator"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.fifth_formatting) == 1 and self.fifth_formatting[0].type == "space":

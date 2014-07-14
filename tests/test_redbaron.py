@@ -1885,8 +1885,14 @@ def test_for_setattr_target():
         red[0].target = "raise"
 
 
-# for -> iterator
-# for -> else
+def test_for_setattr_iterator():
+    red = RedBaron("for i in a: pass")
+    red[0].iterator = "caramba"
+    assert red.dumps() == "for caramba in a: pass\n"
+    assert red[0].iterator.type == "name"
+    with pytest.raises(Exception):
+        red[0].iterator = "raise"
+
 
 # MASTA TODO
 
