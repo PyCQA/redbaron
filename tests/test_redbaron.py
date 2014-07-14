@@ -1952,6 +1952,18 @@ def test_with_context_item_as():
     assert red[0].dumps() == "with a as plop: pass\n"
 
 
+def test_setattr_if_test():
+    red = RedBaron("if a: pass")
+    red[0].value[0].test = "caramba"
+    assert red.dumps() == "if caramba: pass\n"
+    assert red[0].value[0].test.type == "name"
+    with pytest.raises(Exception):
+        red[0].value[0].test = "raise"
+
+
+# if -> value
+# ifelseblock -> value
+
 # MASTA TODO
 
 # argument_generator_comprehension -> result
@@ -2016,9 +2028,6 @@ def test_with_context_item_as():
 # getitem -> value
 # global -> value
 # hexa -> value
-# if -> test
-# if -> value
-# ifelseblock -> value
 # lambda -> arguments
 # lambda -> value
 # left_parenthesis -> value
