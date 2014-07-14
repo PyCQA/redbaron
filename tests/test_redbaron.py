@@ -1933,7 +1933,12 @@ def test_with_setattr_value():
     assert red[0].value.dumps() == "\n    def z(): pass\n"
 
 
-# with -> contexts
+def test_with_setattr_context():
+    red = RedBaron("with a: pass")
+    red[0].contexts = "a as b, b as c"
+    assert red[0].dumps() == "with a as b, b as c: pass\n"
+
+
 # with_context_item -> value
 # with_context_item -> as
 

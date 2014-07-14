@@ -1089,6 +1089,9 @@ class WithNode(Node):
         if on_attribute == "value":
             return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "contexts":
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("with %s: pass" % string)[0]["contexts"]))
+
         else:
             raise Exception("Unhandled case")
 
