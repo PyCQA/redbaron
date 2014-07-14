@@ -1875,8 +1875,17 @@ def test_for_setattr_value():
     red[0].value = "continue"
     assert red[0].value.dumps() == "\n    continue\n"
 
+
+def test_for_setattr_target():
+    red = RedBaron("for i in a: pass")
+    red[0].target = "caramba"
+    assert red.dumps() == "for i in caramba: pass\n"
+    assert red[0].target.type == "name"
+    with pytest.raises(Exception):
+        red[0].target = "raise"
+
+
 # for -> iterator
-# for -> target
 # for -> else
 
 # MASTA TODO
