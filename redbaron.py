@@ -210,6 +210,19 @@ class GenericNodesUtils(object):
 
         return result
 
+    def parse_decorators(self, string, parent, on_attribute):
+        indentation = self.indentation
+        string = re.sub(" *@", "@", string)
+        fst = baron.parse("%s\ndef a(): pass" % string.strip())[0]["decorators"]
+        fst[-1]["indent"] = indentation
+        result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        if indentation:
+            # with re.sub they don't have indentation
+            for i in filter(lambda x: x.type == "endl", result[1:-1]):
+                i.indent = indentation
+
+        return result
+
     @property
     def root(self):
         current = self
@@ -720,6 +733,7 @@ class Node(GenericNodesUtils):
             'get_absolute_bounding_box_of_attribute',
             'find_by_position',
             'parse_code_block',
+            'parse_decorators',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -978,19 +992,6 @@ class FuncdefNode(Node):
         else:
             raise Exception("Unhandled case")
 
-    def parse_decorators(self, string, parent, on_attribute):
-        indentation = self.indentation
-        string = re.sub(" *@", "@", string)
-        fst = baron.parse("%s\ndef a(): pass" % string.strip())[0]["decorators"]
-        fst[-1]["indent"] = indentation
-        result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-        if indentation:
-            # with re.sub they don't have indentation
-            for i in filter(lambda x: x.type == "endl", result[1:-1]):
-                i.indent = indentation
-
-        return result
-
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
@@ -1062,6 +1063,9 @@ class ClassNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
             return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "decorators":
+            return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")

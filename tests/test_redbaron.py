@@ -1915,7 +1915,12 @@ def test_class_setattr_value():
     assert red[0].value.dumps() == "\n    def z(): pass\n"
 
 
-# class -> decorators
+def test_class_setattr_decorators():
+    red = RedBaron("class a: pass")
+    red[0].decorators = "@plop\n@plouf"
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
 # class -> name
 # class -> inherit_from
 
