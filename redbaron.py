@@ -1129,6 +1129,13 @@ class WithContextItemNode(Node):
 
 
 class IfNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
             return to_node(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)

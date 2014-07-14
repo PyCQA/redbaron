@@ -1952,6 +1952,12 @@ def test_with_context_item_as():
     assert red[0].dumps() == "with a as plop: pass\n"
 
 
+def test_if_setattr_value():
+    red = RedBaron("if a: pass")
+    red[0].value[0].value = "continue"
+    assert red[0].value[0].value.dumps() == "\n    continue\n"
+
+
 def test_setattr_if_test():
     red = RedBaron("if a: pass")
     red[0].value[0].test = "caramba"
@@ -1961,7 +1967,6 @@ def test_setattr_if_test():
         red[0].value[0].test = "raise"
 
 
-# if -> value
 # ifelseblock -> value
 
 # MASTA TODO
