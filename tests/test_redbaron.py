@@ -1945,8 +1945,12 @@ def test_with_context_item_value():
     assert red[0].dumps() == "with plop: pass\n"
 
 
+def test_with_context_item_as():
+    red = RedBaron("with a: pass")
+    red[0].contexts[0].as_ = "plop"
+    assert red[0].contexts[0].as_ is not None
+    assert red[0].dumps() == "with a as plop: pass\n"
 
-# with_context_item -> as
 
 # MASTA TODO
 

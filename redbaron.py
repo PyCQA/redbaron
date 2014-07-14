@@ -1101,6 +1101,33 @@ class WithNode(Node):
             self.third_formatting = []
 
 
+class WithContextItemNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return to_node(baron.parse("with %s: pass" % string)[0]["contexts"][0]["value"], parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "as":
+            if string:
+                self.first_formatting = [{"type": "space", "value": " "}]
+                self.second_formatting = [{"type": "space", "value": " "}]
+            return to_node(baron.parse("with a as %s: pass" % string)[0]["contexts"][0]["as"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+    def __getattr__(self, name):
+        if name == "as_":
+            return getattr(self, "as")
+
+        return super(WithContextItemNode, self).__getattr__(name)
+
+    def __setattr__(self, name, value):
+        if name == "as_":
+            name = "as"
+
+        return super(WithContextItemNode, self).__setattr__(name, value)
+
+
 class IfNode(Node):
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
