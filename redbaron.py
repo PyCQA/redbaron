@@ -1157,6 +1157,13 @@ class ElifNode(Node):
         else:
             raise Exception("Unhandled case")
 
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "test":
+            return to_node(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":

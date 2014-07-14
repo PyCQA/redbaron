@@ -1973,8 +1973,15 @@ def test_elif_setattr_value():
     assert red[0].value[1].value.dumps() == "\n    continue\n"
 
 
-# elif -> test
-# elif -> value
+def test_setattr_elif_test():
+    red = RedBaron("if a: pass\nelif b: pass")
+    red[0].value[1].test = "caramba"
+    assert red.dumps() == "if a: pass\nelif caramba: pass\n"
+    assert red[0].value[1].test.type == "name"
+    with pytest.raises(Exception):
+        red[0].value[1].test = "raise"
+
+
 # else -> value
 
 # MASTA TODO
