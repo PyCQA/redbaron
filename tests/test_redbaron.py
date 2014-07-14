@@ -1988,7 +1988,18 @@ def test_else_setattr_value():
     assert red[0].value[1].value.dumps() == "\n    continue\n"
 
 
-# else -> value
+def test_try_setattr_value():
+    red = RedBaron("try: pass\nexcept: pass\n")
+    red[0].value = "continue"
+    assert red[0].value.dumps() == "\n    continue\n"
+
+
+# try -> excepts
+# try -> finally
+
+# while -> else
+# for -> else
+# try -> else
 
 # MASTA TODO
 
@@ -2079,10 +2090,6 @@ def test_else_setattr_value():
 # ternary_operator -> first
 # ternary_operator -> value
 # ternary_operator -> second
-# try -> value
-# try -> excepts
-# try -> else
-# try -> finally
 # unicode_raw_string -> value
 # unicode_string -> value
 # unitary_operator -> value
