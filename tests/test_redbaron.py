@@ -1927,6 +1927,16 @@ def test_class_setattr_inherit_from():
     assert red[0].dumps() == "class a(A): pass\n"
 
 
+def test_with_setattr_value():
+    red = RedBaron("with a: pass")
+    red[0].value = "def z(): pass"
+    assert red[0].value.dumps() == "\n    def z(): pass\n"
+
+
+# with -> contexts
+# with_context_item -> value
+# with_context_item -> as
+
 # MASTA TODO
 
 # argument_generator_comprehension -> result
@@ -2030,10 +2040,6 @@ def test_class_setattr_inherit_from():
 # unicode_string -> value
 # unitary_operator -> value
 # unitary_operator -> target
-# with -> contexts
-# with -> value
-# with_context_item -> value
-# with_context_item -> as
 # yield -> value
 # yield_atom -> value
 
