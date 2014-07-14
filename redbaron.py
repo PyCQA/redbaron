@@ -1067,6 +1067,14 @@ class ClassNode(Node):
         elif on_attribute == "decorators":
             return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "inherit_from":
+            if string:
+                self.parenthesis = True
+            else:
+                self.parenthesis = False
+
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("class a(%s): pass" % string)[0]["inherit_from"]))
+
         else:
             raise Exception("Unhandled case")
 
