@@ -1909,6 +1909,16 @@ def test_while_setattr_test():
         red[0].test = "raise"
 
 
+def test_class_setattr_value():
+    red = RedBaron("class a: pass")
+    red[0].value = "def z(): pass"
+    assert red[0].value.dumps() == "\n    def z(): pass\n"
+
+
+# class -> decorators
+# class -> name
+# class -> inherit_from
+
 # MASTA TODO
 
 # argument_generator_comprehension -> result
@@ -1929,10 +1939,6 @@ def test_while_setattr_test():
 # call -> value
 # call_argument -> name
 # call_argument -> value
-# class -> decorators
-# class -> name
-# class -> inherit_from
-# class -> value
 # comment -> value
 # comparison -> first
 # comparison -> value
