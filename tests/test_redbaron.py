@@ -2097,6 +2097,12 @@ def test_try_setattr_value():
 # yield -> value
 # yield_atom -> value
 
+# next TODO
+
+# on setattr with FST and RedBaron NODES
+# fix indent and next/previous endl nodes on:
+# * function/while/other body
+# * decorators
 
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
