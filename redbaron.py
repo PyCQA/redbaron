@@ -1185,6 +1185,12 @@ class ElseNode(Node):
 
 
 class TryNode(Node):
+    def __getattr__(self, name):
+        if name == "finally_":
+            return getattr(self, "finally")
+
+        return super(TryNode, self).__getattr__(name)
+
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
             return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)

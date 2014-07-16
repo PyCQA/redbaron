@@ -1993,6 +1993,13 @@ def test_try_setattr_value():
     red[0].value = "continue"
     assert red[0].value.dumps() == "\n    continue\n"
 
+
+def test_finally_setattr_value():
+    red = RedBaron("try: pass\nfinally: pass\n")
+    red[0].value = "continue"
+    assert red[0].value.dumps() == "\n    continue\n"
+
+
 # except -> exception
 # except -> delimiteur
 # except -> target
