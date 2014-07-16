@@ -1993,6 +1993,12 @@ def test_try_setattr_value():
     red[0].value = "continue"
     assert red[0].value.dumps() == "\n    continue\n"
 
+# except -> exception
+# except -> delimiteur
+# except -> target
+# except -> value
+
+# finally -> value
 
 # try -> excepts
 # try -> finally
@@ -2045,14 +2051,9 @@ def test_try_setattr_value():
 # dotted_as_name -> value
 # dotted_as_name -> target
 # dotted_name -> value
-# except -> exception
-# except -> delimiteur
-# except -> target
-# except -> value
 # exec -> value
 # exec -> globals
 # exec -> locals
-# finally -> value
 # float -> value
 # float_exponant -> value
 # from_import -> value
