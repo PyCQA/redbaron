@@ -12,6 +12,8 @@
 - .at() return the first item starting at line X
 - .rename() (name -> value, def/class -> name)
 
+- there is a global problem of some node having some attributes that are keyword in python, eg: trynode.finally, WithContextItemNode.as How to handle that in general? For now I use allow to use $KEYWORD + "\_" but that breaks that completion and probably other things
+
 ### Find/Find\_All (comparison)
 
 Magic stuff like:
