@@ -2023,6 +2023,12 @@ def test_except_setattr_exception_none():
     assert red[0].excepts[0].dumps() == "except: pass\n"
 
 
+def test_except_setattr_exception_none_with_target():
+    red = RedBaron("try: pass\nexcept Pouet as plop: pass\n")
+    red[0].excepts[0].exception = ""
+    assert red[0].excepts[0].dumps() == "except: pass\n"
+
+
 # except -> exception
 # except -> delimiteur
 # except -> target

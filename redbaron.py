@@ -1177,6 +1177,8 @@ class ExceptNode(CodeBlockNode):
                 return to_node(baron.parse("try: pass\nexcept %s: pass" % string)[0]["excepts"][0]["exception"], parent=parent, on_attribute=on_attribute)
             else:
                 self.first_formatting = []
+                self.delimiteur = ""
+                self.target = ""
                 return ""
 
     def append_value(self, value):
