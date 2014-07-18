@@ -2033,7 +2033,7 @@ def test_except_setattr_exception_none_with_target():
 # except -> delimiteur
 # except -> target
 
-# finally -> value
+# advanced
 
 # try -> excepts
 # try -> finally
@@ -2041,6 +2041,10 @@ def test_except_setattr_exception_none_with_target():
 # while -> else
 # for -> else
 # try -> else
+
+# important
+
+# in addition of passing empty string, allow to pass None value on setattr
 
 # MASTA TODO
 
