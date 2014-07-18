@@ -1181,6 +1181,16 @@ class ExceptNode(CodeBlockNode):
                 self.target = ""
                 return ""
 
+        elif on_attribute == "target":
+            if string:
+                self.delimiteur = "as"
+                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+                return to_node(baron.parse("try: pass\nexcept a as %s: pass" % string)[0]["excepts"][0]["target"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
     def append_value(self, value):
         self.help(with_formatting=True)
         self.value.append_endl(value, parent=self, on_attribute="value")
