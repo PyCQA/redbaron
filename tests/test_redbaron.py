@@ -2000,6 +2000,11 @@ def test_finally_setattr_value():
     assert red[0].finally_.value.dumps() == "\n    continue\n"
 
 
+def test_finally_getattr_on_try():
+    red = RedBaron("try: pass\nfinally: pass\n")
+    assert red[0].finally_ is getattr(red[0], "finally")
+
+
 # except -> exception
 # except -> delimiteur
 # except -> target
