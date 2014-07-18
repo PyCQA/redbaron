@@ -164,52 +164,6 @@ class GenericNodesUtils(object):
     def _string_to_node_list(self, string, parent, on_attribute):
         return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(string)))
 
-    def parse_code_block(self, string, parent, on_attribute):
-        clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
-        indentation = len(re.search("^ *", clean_string).group())
-        target_indentation = len(self.indentation) + 4
-
-        # putting this in the string template will fail, need at least some indent
-        if indentation == 0:
-            clean_string = "    " + "\n    ".join(clean_string.split("\n"))
-            clean_string = clean_string.rstrip()
-
-        fst = baron.parse("def a():\n%s\n" % clean_string)[0]["value"]
-
-        result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-        # set indentation to the correct level
-        indentation = len(result[0].indent)
-        if indentation > target_indentation:
-            result.decrease_indentation(indentation - target_indentation)
-        elif indentation < target_indentation:
-            result.increase_indentation(target_indentation - indentation)
-
-        endl_base_node = to_node({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'}, on_attribute=on_attribute, parent=parent)
-
-        if (self.on_attribute == "root" and self.next) or (not self.next and self.parent.next):
-            # I need to finish with 3 endl nodes
-            if not all(map(lambda x: x.type == "endl", result[-1:])):
-                result.append(endl_base_node.copy())
-            elif not all(map(lambda x: x.type == "endl", result[-2:])):
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-            elif not all(map(lambda x: x.type == "endl", result[-3:])):
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-        elif self.next:
-            # I need to finish with 2 endl nodes
-            if not all(map(lambda x: x.type == "endl", result[-2:])):
-                result.append(endl_base_node.copy())
-            elif not all(map(lambda x: x.type == "endl", result[-3:])):
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-
-            result[-1].indent = self.indentation
-
-        return result
-
     def parse_decorators(self, string, parent, on_attribute):
         indentation = self.indentation
         string = re.sub(" *@", "@", string)
@@ -889,6 +843,61 @@ class Node(GenericNodesUtils):
         self.get_indentation_node().indent -= number_of_spaces * " "
 
 
+class CodeBlockNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+    def parse_code_block(self, string, parent, on_attribute):
+        clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
+        indentation = len(re.search("^ *", clean_string).group())
+        target_indentation = len(self.indentation) + 4
+
+        # putting this in the string template will fail, need at least some indent
+        if indentation == 0:
+            clean_string = "    " + "\n    ".join(clean_string.split("\n"))
+            clean_string = clean_string.rstrip()
+
+        fst = baron.parse("def a():\n%s\n" % clean_string)[0]["value"]
+
+        result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+        # set indentation to the correct level
+        indentation = len(result[0].indent)
+        if indentation > target_indentation:
+            result.decrease_indentation(indentation - target_indentation)
+        elif indentation < target_indentation:
+            result.increase_indentation(target_indentation - indentation)
+
+        endl_base_node = to_node({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'}, on_attribute=on_attribute, parent=parent)
+
+        if (self.on_attribute == "root" and self.next) or (not self.next and self.parent.next):
+            # I need to finish with 3 endl nodes
+            if not all(map(lambda x: x.type == "endl", result[-1:])):
+                result.append(endl_base_node.copy())
+            elif not all(map(lambda x: x.type == "endl", result[-2:])):
+                result.append(endl_base_node.copy())
+                result.append(endl_base_node.copy())
+            elif not all(map(lambda x: x.type == "endl", result[-3:])):
+                result.append(endl_base_node.copy())
+                result.append(endl_base_node.copy())
+                result.append(endl_base_node.copy())
+        elif self.next:
+            # I need to finish with 2 endl nodes
+            if not all(map(lambda x: x.type == "endl", result[-2:])):
+                result.append(endl_base_node.copy())
+            elif not all(map(lambda x: x.type == "endl", result[-3:])):
+                result.append(endl_base_node.copy())
+                result.append(endl_base_node.copy())
+
+            result[-1].indent = self.indentation
+
+        return result
+
+
 class IntNode(Node):
     def __init__(self, node, *args, **kwargs):
         super(IntNode, self).__init__(node, *args, **kwargs)
@@ -974,7 +983,7 @@ class DictNode(Node):
         self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
 
-class FuncdefNode(Node):
+class FuncdefNode(CodeBlockNode):
     _other_identifiers = ["def", "def_"]
     _default_test_value = "name"
 
@@ -983,14 +992,11 @@ class FuncdefNode(Node):
             fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
-        elif on_attribute == "value":
-            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
-
         elif on_attribute == "decorators":
             return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
 
         else:
-            raise Exception("Unhandled case")
+            return super(FuncdefNode, self)._string_to_node_list(string, parent, on_attribute)
 
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
@@ -1012,14 +1018,7 @@ class AssignmentNode(Node):
             raise Exception("Unhandled case")
 
 
-class ForNode(Node):
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
+class ForNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "target":
             return to_node(baron.parse("for i in %s: pass" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
@@ -1036,14 +1035,7 @@ class ForNode(Node):
             self.fifth_formatting = []
 
 
-class WhileNode(Node):
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
+class WhileNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
             return to_node(baron.parse("while %s: pass" % string)[0]["test"], parent=parent, on_attribute=on_attribute)
@@ -1057,14 +1049,11 @@ class WhileNode(Node):
             self.third_formatting = []
 
 
-class ClassNode(Node):
+class ClassNode(CodeBlockNode):
     _default_test_value = "name"
 
     def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
-
-        elif on_attribute == "decorators":
+        if on_attribute == "decorators":
             return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "inherit_from":
@@ -1076,7 +1065,7 @@ class ClassNode(Node):
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("class a(%s): pass" % string)[0]["inherit_from"]))
 
         else:
-            raise Exception("Unhandled case")
+            return super(ClassNode, self)._string_to_node_list(string, parent, on_attribute)
 
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
@@ -1084,16 +1073,13 @@ class ClassNode(Node):
             self.sixth_formatting = []
 
 
-class WithNode(Node):
+class WithNode(CodeBlockNode):
     def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
-
-        elif on_attribute == "contexts":
+        if on_attribute == "contexts":
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("with %s: pass" % string)[0]["contexts"]))
 
         else:
-            raise Exception("Unhandled case")
+            return super(WithNode, self)._string_to_node_list(string, parent, on_attribute)
 
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
@@ -1128,14 +1114,7 @@ class WithContextItemNode(Node):
         return super(WithContextItemNode, self).__setattr__(name, value)
 
 
-class IfNode(Node):
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
+class IfNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
             return to_node(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
@@ -1149,14 +1128,7 @@ class IfNode(Node):
             self.third_formatting = []
 
 
-class ElifNode(Node):
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
+class ElifNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
             return to_node(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
@@ -1170,33 +1142,19 @@ class ElifNode(Node):
             self.third_formatting = []
 
 
-class ElseNode(Node):
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
+class ElseNode(CodeBlockNode):
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
             self.second_formatting = []
 
 
-class TryNode(Node):
+class TryNode(CodeBlockNode):
     def __getattr__(self, name):
         if name == "finally_":
             return getattr(self, "finally")
 
         return super(TryNode, self).__getattr__(name)
-
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
 
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
