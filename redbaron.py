@@ -1169,7 +1169,7 @@ class FinallyNode(CodeBlockNode):
             self.second_formatting = []
 
 
-class ExceptNode(Node):
+class ExceptNode(CodeBlockNode):
     def append_value(self, value):
         self.help(with_formatting=True)
         self.value.append_endl(value, parent=self, on_attribute="value")
