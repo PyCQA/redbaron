@@ -2011,6 +2011,12 @@ def test_except_setattr_value():
     assert red[0].excepts[0].value.dumps() == "\n    continue\n"
 
 
+def test_except_setattr_exception():
+    red = RedBaron("try: pass\nexcept: pass\n")
+    red[0].excepts[0].exception = "Plop"
+    assert red[0].excepts[0].dumps() == "except Plop: pass\n"
+
+
 # except -> exception
 # except -> delimiteur
 # except -> target

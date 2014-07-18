@@ -1170,6 +1170,11 @@ class FinallyNode(CodeBlockNode):
 
 
 class ExceptNode(CodeBlockNode):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "exception":
+            self.first_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+            return to_node(baron.parse("try: pass\nexcept %s: pass" % string)[0]["excepts"][0]["exception"], parent=parent, on_attribute=on_attribute)
+
     def append_value(self, value):
         self.help(with_formatting=True)
         self.value.append_endl(value, parent=self, on_attribute="value")
