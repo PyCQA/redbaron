@@ -1162,7 +1162,7 @@ class TryNode(CodeBlockNode):
             self.second_formatting = []
 
 
-class FinallyNode(Node):
+class FinallyNode(CodeBlockNode):
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
         if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":

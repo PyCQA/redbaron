@@ -1996,8 +1996,8 @@ def test_try_setattr_value():
 
 def test_finally_setattr_value():
     red = RedBaron("try: pass\nfinally: pass\n")
-    red[0].value = "continue"
-    assert red[0].value.dumps() == "\n    continue\n"
+    red[0].finally_.value = "continue"
+    assert red[0].finally_.value.dumps() == "\n    continue\n"
 
 
 # except -> exception
