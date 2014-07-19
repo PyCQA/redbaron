@@ -1255,6 +1255,15 @@ class AssertNode(Node):
         else:
             raise Exception("Unhandled case")
 
+class AssociativeParenthesisNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return to_node(baron.parse("(%s)" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class RedBaron(NodeList):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):

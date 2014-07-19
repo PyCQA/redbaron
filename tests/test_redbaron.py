@@ -2094,6 +2094,13 @@ def test_assert_setattr_message_none():
     assert red.dumps() == "assert a"
 
 
+def test_associative_parenthesis_setattr_value():
+    red = RedBaron("(plop)")
+    red[0].value = "1 + 43"
+    assert red.dumps() == "(1 + 43)"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass"
+
 # advanced
 
 # try -> excepts
@@ -2113,7 +2120,6 @@ def test_assert_setattr_message_none():
 
 # argument_generator_comprehension -> result
 # argument_generator_comprehension -> generators
-# associative_parenthesis -> value
 # atomtrailers -> value
 # binary -> value
 # binary_operator -> first
