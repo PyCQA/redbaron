@@ -1171,9 +1171,13 @@ class FinallyNode(CodeBlockNode):
 
 class ExceptNode(CodeBlockNode):
     def __setattr__(self, key, value):
-        if key == "delimiteur" and value == ",":
-            self.second_formatting = []
-            self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiteur", parent=self)]
+        if key == "delimiteur":
+            if value == ",":
+                self.second_formatting = []
+                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiteur", parent=self)]
+            elif value == "as":
+                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiteur", parent=self)]
+                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiteur", parent=self)]
 
         return super(CodeBlockNode, self).__setattr__(key, value)
 
