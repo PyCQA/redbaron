@@ -2197,7 +2197,16 @@ def test_call_argument_setattr_value():
     with pytest.raises(Exception):
         red[0].value[1].value[0].value = "def a(): pass"
 
-# call_argument -> name
+
+def test_call_argument_setattr_name():
+    red = RedBaron("a(b)")
+    red[0].value[1].value[0].name = "caramba"
+    assert red.dumps() == "a(caramba=b)"
+    red[0].value[1].value[0].name = ""
+    assert red.dumps() == "a(b)"
+    with pytest.raises(Exception):
+        red[0].value[1].value[0].value = "def a(): pass"
+
 
 # advanced
 
