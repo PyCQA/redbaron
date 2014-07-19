@@ -1242,6 +1242,14 @@ class CallNode(Node):
         self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
 
+class AssertNode(Node):
+    def _convert_input_to_node_object(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return to_node(baron.parse("assert %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
 class RedBaron(NodeList):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):

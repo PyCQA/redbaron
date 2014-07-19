@@ -2074,6 +2074,15 @@ def test_call_setattr_value():
     assert red.dumps() == "a(b=2, *pouet)"
 
 
+def test_assert_setattr_value():
+    red = RedBaron("assert a")
+    red[0].value = "42 + pouet"
+    assert red.dumps() == "assert 42 + pouet"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass"
+
+# assert -> message
+
 # advanced
 
 # try -> excepts
@@ -2093,8 +2102,6 @@ def test_call_setattr_value():
 
 # argument_generator_comprehension -> result
 # argument_generator_comprehension -> generators
-# assert -> value
-# assert -> message
 # associative_parenthesis -> value
 # atomtrailers -> value
 # binary -> value
