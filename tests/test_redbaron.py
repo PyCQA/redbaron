@@ -2062,7 +2062,11 @@ def test_except_setattr_delimiter_as():
     assert red[0].excepts[0].dumps() == "except Pouet as plop: pass\n"
 
 
-# except -> delimiteur
+def test_except_setattr_delimiter_bad():
+    red = RedBaron("try: pass\nexcept Pouet, plop: pass\n")
+    with pytest.raises(Exception):
+        red[0].excepts[0].delimiteur = "pouet"
+
 
 # advanced
 
