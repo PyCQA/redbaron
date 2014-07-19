@@ -2088,6 +2088,12 @@ def test_assert_setattr_message():
     assert red.dumps() == "assert a, plop"
 
 
+def test_assert_setattr_message_none():
+    red = RedBaron("assert a, plop")
+    red[0].message = ""
+    assert red.dumps() == "assert a"
+
+
 # advanced
 
 # try -> excepts
