@@ -1170,6 +1170,13 @@ class FinallyNode(CodeBlockNode):
 
 
 class ExceptNode(CodeBlockNode):
+    def __setattr__(self, key, value):
+        if key == "delimiteur" and value == ",":
+            self.second_formatting = []
+            self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiteur", parent=self)]
+
+        return super(CodeBlockNode, self).__setattr__(key, value)
+
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "exception":
             if string:

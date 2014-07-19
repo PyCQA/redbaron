@@ -2048,6 +2048,13 @@ def test_except_setattr_target_none():
     assert red[0].excepts[0].dumps() == "except Pouet: pass\n"
 
 
+def test_except_setattr_delimiter():
+    red = RedBaron("try: pass\nexcept Pouet as plop: pass\n")
+    red[0].excepts[0].delimiteur = ","
+    assert red[0].excepts[0].delimiteur == ","
+    assert red[0].excepts[0].dumps() == "except Pouet, plop: pass\n"
+
+
 # except -> delimiteur
 
 # advanced
