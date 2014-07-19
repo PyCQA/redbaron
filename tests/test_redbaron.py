@@ -2260,7 +2260,6 @@ def test_comparison_setattr_second():
 # slice -> upper
 # slice -> step
 # star -> value
-# string -> value
 # string_chain -> value
 # ternary_operator -> first
 # ternary_operator -> value
