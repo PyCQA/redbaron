@@ -2081,7 +2081,12 @@ def test_assert_setattr_value():
     with pytest.raises(Exception):
         red[0].value = "def a(): pass"
 
-# assert -> message
+
+def test_assert_setattr_message():
+    red = RedBaron("assert a")
+    red[0].message = "plop"
+    assert red.dumps() == "assert a, plop"
+
 
 # advanced
 

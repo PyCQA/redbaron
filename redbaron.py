@@ -1243,9 +1243,13 @@ class CallNode(Node):
 
 
 class AssertNode(Node):
-    def _convert_input_to_node_object(self, string, parent, on_attribute):
+    def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
             return to_node(baron.parse("assert %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "message":
+            self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+            return to_node(baron.parse("assert plop, %s" % string)[0]["message"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
