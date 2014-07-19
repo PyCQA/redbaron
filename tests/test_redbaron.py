@@ -2190,6 +2190,15 @@ def test_comparison_setattr_second():
         red[0].second = "def a(): pass"
 
 
+def test_call_argument_setattr_value():
+    red = RedBaron("a(b)")
+    red[0].value[1].value[0].value = "caramba"
+    assert red.dumps() == "a(caramba)"
+    with pytest.raises(Exception):
+        red[0].value[1].value[0].value = "def a(): pass"
+
+# call_argument -> name
+
 # advanced
 
 # try -> excepts
@@ -2210,8 +2219,6 @@ def test_comparison_setattr_second():
 
 # argument_generator_comprehension -> result
 # argument_generator_comprehension -> generators
-# call_argument -> name
-# call_argument -> value
 # complex_operator -> first
 # complex_operator -> second
 # comprehension_if -> value
