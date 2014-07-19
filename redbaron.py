@@ -111,9 +111,12 @@ class Path(object):
 
 class GenericNodesUtils(object):
     # XXX should this be an abstract class?
-    def _convert_input_to_node_object(self, value, parent, on_attribute):
+    def _convert_input_to_node_object(self, value, parent, on_attribute, generic=False):
         if isinstance(value, string_instance):
-            return self._string_to_node(value, parent=parent, on_attribute=on_attribute)
+            if generic:
+                return to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute)
+            else:
+                return self._string_to_node(value, parent=parent, on_attribute=on_attribute)
         elif isinstance(value, dict):
             return to_node(value, parent=parent, on_attribute=on_attribute)
         elif isinstance(value, Node):
@@ -780,7 +783,7 @@ class Node(GenericNodesUtils):
         return nodes_rendering_order[self.type]
 
     def replace(self, new_node):
-        new_node = self._convert_input_to_node_object(new_node, parent=None, on_attribute=None)
+        new_node = self._convert_input_to_node_object(new_node, parent=None, on_attribute=None, generic=True)
         self.__class__ = new_node.__class__  # YOLO
         self.__init__(new_node.fst(), parent=self.parent, on_attribute=self.on_attribute)
 
@@ -1288,6 +1291,13 @@ class BinaryOperatorNode(Node):
             assert baron.parse("a %s b" % value)[0]["type"] == "binary_operator"
 
         return super(BinaryOperatorNode, self).__setattr__(key, value)
+
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "first":
+            return to_node(baron.parse("%s + b" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
 
 
 class RedBaron(NodeList):
