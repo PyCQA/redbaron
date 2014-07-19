@@ -14,8 +14,6 @@
 
 - there is a global problem of some node having some attributes that are keyword in python, eg: trynode.finally, WithContextItemNode.as How to handle that in general? For now I use allow to use $KEYWORD + "\_" but that breaks that completion and probably other things
 
-- node.to_python return an instance in python of the node (in a "safe" eval), for eg RedBaron("42")[0].to_python() -> 42 as an int instance
-
 - to_node -> Node.from_fst, same for NodeList.from_fst
 - generate default constructors for nodes using nodes_rendering_order
 - if possible try to keep a coherent signature with possibles attributes, set correctly default attributes
@@ -75,3 +73,6 @@ now. It should implement every expected method of a list (.sort, .extend, .remov
 ### Misc
 
 * delegate .filtered on the value if the value is a NodeList? Can quickly become magic behavior
+
+- node.to_python return an instance in python of the node (in a "safe" eval), for eg RedBaron("42")[0].to_python() -> 42 as an int instance
+- to_python car accept an argument context which is a context dict to pass to it
