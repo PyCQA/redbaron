@@ -1191,6 +1191,12 @@ class ExceptNode(CodeBlockNode):
                 self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
                 return to_node(baron.parse("try: pass\nexcept a as %s: pass" % string)[0]["excepts"][0]["target"], parent=parent, on_attribute=on_attribute)
 
+            else:
+                self.delimiteur = ""
+                self.second_formatting = []
+                self.third_formatting = []
+                return ""
+
         else:
             raise Exception("Unhandled case")
 
