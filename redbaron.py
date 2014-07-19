@@ -1296,6 +1296,9 @@ class BinaryOperatorNode(Node):
         if on_attribute == "first":
             return to_node(baron.parse("%s + b" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "second":
+            return to_node(baron.parse("bb + %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
+
         else:
             raise Exception("Unhandled case")
 
