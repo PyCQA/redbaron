@@ -2068,6 +2068,12 @@ def test_except_setattr_delimiter_bad():
         red[0].excepts[0].delimiteur = "pouet"
 
 
+def test_call_setattr_value():
+    red = RedBaron("a()")
+    red[0].value[1].value = "b=2, *pouet"
+    assert red.dumps() == "a(b=2, *pouet)"
+
+
 # advanced
 
 # try -> excepts
@@ -2100,7 +2106,6 @@ def test_except_setattr_delimiter_bad():
 # boolean_operator -> first
 # boolean_operator -> value
 # boolean_operator -> second
-# call -> value
 # call_argument -> name
 # call_argument -> value
 # comment -> value

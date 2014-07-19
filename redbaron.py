@@ -1229,6 +1229,13 @@ class DotNode(Node):
 
 
 class CallNode(Node):
+    def _convert_input_to_node_object_list(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("a(%s)" % string)[0]["value"][1]["value"]))
+
+        else:
+            raise Exception("Unhandled case")
+
     def append_value(self, value, trailing=False):
         if isinstance(value, string_instance):
             value = baron.parse("a(%s)" % value)[0]["value"][1]["value"][0]
