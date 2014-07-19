@@ -2101,6 +2101,14 @@ def test_associative_parenthesis_setattr_value():
     with pytest.raises(Exception):
         red[0].value = "def a(): pass"
 
+
+def test_atom_trailers_setattr_value():
+    red = RedBaron("a(plop)")
+    red[0].value = "a.plop[2](42)"
+    assert red.dumps() == "a.plop[2](42)"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass"
+
 # advanced
 
 # try -> excepts
@@ -2120,7 +2128,6 @@ def test_associative_parenthesis_setattr_value():
 
 # argument_generator_comprehension -> result
 # argument_generator_comprehension -> generators
-# atomtrailers -> value
 # binary -> value
 # binary_operator -> first
 # binary_operator -> value
