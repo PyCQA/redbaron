@@ -2118,6 +2118,14 @@ def test_binary_setattr_value():
         red[0].value = "not_binary"
 
 
+def test_binary_operator_setattr_value():
+    red = RedBaron("a + b")
+    red[0].value = "+"
+    assert red.dumps() == "a + b"
+    with pytest.raises(Exception):
+        red[0].value = "some illegal stuff"
+
+
 # binary_operator -> first
 # binary_operator -> value
 # binary_operator -> second

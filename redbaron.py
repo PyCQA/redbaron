@@ -1279,7 +1279,15 @@ class BinaryNode(Node):
         if key == "value" and isinstance(value, string_instance):
             assert baron.parse(value)[0]["type"] == "binary"
 
-        return super(Node, self).__setattr__(key, value)
+        return super(BinaryNode, self).__setattr__(key, value)
+
+
+class BinaryOperatorNode(Node):
+    def __setattr__(self, key, value):
+        if key == "value" and isinstance(value, string_instance):
+            assert baron.parse("a %s b" % value)[0]["type"] == "binary_operator"
+
+        return super(BinaryOperatorNode, self).__setattr__(key, value)
 
 
 class RedBaron(NodeList):
