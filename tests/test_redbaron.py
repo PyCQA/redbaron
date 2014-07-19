@@ -2077,6 +2077,8 @@ def test_except_setattr_delimiter_bad():
 # for -> else
 # try -> else
 
+# convertion from list/set/dict to comprehension version
+
 # important
 
 # in addition of passing empty string, allow to pass None value on setattr
