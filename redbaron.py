@@ -1182,6 +1182,9 @@ class ExceptNode(CodeBlockNode):
                 return ""
 
         elif on_attribute == "target":
+            if not self.exception:
+                raise Exception("Can't set a target to an exception node that doesn't have an exception set")
+
             if string:
                 self.delimiteur = "as"
                 self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
