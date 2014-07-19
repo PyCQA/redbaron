@@ -2118,6 +2118,10 @@ def test_binary_setattr_value():
         red[0].value = "not_binary"
 
 
+# binary_operator -> first
+# binary_operator -> value
+# binary_operator -> second
+
 # advanced
 
 # try -> excepts
@@ -2137,21 +2141,14 @@ def test_binary_setattr_value():
 
 # argument_generator_comprehension -> result
 # argument_generator_comprehension -> generators
-# binary_operator -> first
-# binary_operator -> value
-# binary_operator -> second
-# binary_raw_string -> value
-# binary_string -> value
 # boolean_operator -> first
 # boolean_operator -> value
 # boolean_operator -> second
 # call_argument -> name
 # call_argument -> value
-# comment -> value
 # comparison -> first
 # comparison -> value
 # comparison -> second
-# complex -> value
 # complex_operator -> first
 # complex_operator -> second
 # comprehension_if -> value
@@ -2174,30 +2171,24 @@ def test_binary_setattr_value():
 # exec -> value
 # exec -> globals
 # exec -> locals
-# float -> value
-# float_exponant -> value
 # from_import -> value
 # from_import -> targets
 # generator_comprehension -> result
 # generator_comprehension -> generators
 # getitem -> value
 # global -> value
-# hexa -> value
 # lambda -> arguments
 # lambda -> value
-# left_parenthesis -> value
 # list_argument -> value
 # list_comprehension -> result
 # list_comprehension -> generators
 # name_as_name -> value
 # name_as_name -> target
-# octa -> value
 # print -> destination
 # print -> value
 # raise -> value
 # raise -> instance
 # raise -> traceback
-# raw_string -> value
 # return -> value
 # right_parenthesis -> value
 # set_comprehension -> result
@@ -2211,8 +2202,6 @@ def test_binary_setattr_value():
 # ternary_operator -> first
 # ternary_operator -> value
 # ternary_operator -> second
-# unicode_raw_string -> value
-# unicode_string -> value
 # unitary_operator -> value
 # unitary_operator -> target
 # yield -> value
