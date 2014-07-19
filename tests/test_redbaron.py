@@ -2109,6 +2109,15 @@ def test_atom_trailers_setattr_value():
     with pytest.raises(Exception):
         red[0].value = "def a(): pass"
 
+
+def test_binary_setattr_value():
+    red = RedBaron("0b101001")
+    red[0].value = "0b1100"
+    assert red.dumps() == "0b1100"
+    with pytest.raises(Exception):
+        red[0].value = "not_binary"
+
+
 # advanced
 
 # try -> excepts
@@ -2128,7 +2137,6 @@ def test_atom_trailers_setattr_value():
 
 # argument_generator_comprehension -> result
 # argument_generator_comprehension -> generators
-# binary -> value
 # binary_operator -> first
 # binary_operator -> value
 # binary_operator -> second

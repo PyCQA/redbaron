@@ -1274,6 +1274,14 @@ class AtomtrailersNode(Node):
             raise Exception("Unhandled case")
 
 
+class BinaryNode(Node):
+    def __setattr__(self, key, value):
+        if key == "value" and isinstance(value, string_instance):
+            assert baron.parse(value)[0]["type"] == "binary"
+
+        return super(Node, self).__setattr__(key, value)
+
+
 class RedBaron(NodeList):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):
