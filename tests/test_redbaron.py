@@ -2166,6 +2166,30 @@ def test_boolean_operator_setattr_second():
         red[0].second = "def a(): pass"
 
 
+def test_comparison_setattr_value():
+    red = RedBaron("a > b")
+    red[0].value = "<"
+    assert red.dumps() == "a < b"
+    with pytest.raises(Exception):
+        red[0].value = "some illegal stuff"
+
+
+def test_comparison_setattr_first():
+    red = RedBaron("a > b")
+    red[0].first = "caramba"
+    assert red.dumps() == "caramba > b"
+    with pytest.raises(Exception):
+        red[0].first = "def a(): pass"
+
+
+def test_comparison_setattr_second():
+    red = RedBaron("a > b")
+    red[0].second = "caramba"
+    assert red.dumps() == "a > caramba"
+    with pytest.raises(Exception):
+        red[0].second = "def a(): pass"
+
+
 # advanced
 
 # try -> excepts
@@ -2176,6 +2200,7 @@ def test_boolean_operator_setattr_second():
 # try -> else
 
 # convertion from list/set/dict to comprehension version
+# convertion between binary_operator/boolean_operator/comparison
 
 # important
 
@@ -2187,9 +2212,6 @@ def test_boolean_operator_setattr_second():
 # argument_generator_comprehension -> generators
 # call_argument -> name
 # call_argument -> value
-# comparison -> first
-# comparison -> value
-# comparison -> second
 # complex_operator -> first
 # complex_operator -> second
 # comprehension_if -> value
