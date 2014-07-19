@@ -1303,6 +1303,24 @@ class BinaryOperatorNode(Node):
             raise Exception("Unhandled case")
 
 
+class BooleanOperatorNode(Node):
+    def __setattr__(self, key, value):
+        if key == "value" and isinstance(value, string_instance):
+            assert baron.parse("a %s b" % value)[0]["type"] == "boolean_operator"
+
+        return super(BooleanOperatorNode, self).__setattr__(key, value)
+
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "first":
+            return to_node(baron.parse("%s + b" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "second":
+            return to_node(baron.parse("bb + %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class RedBaron(NodeList):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):

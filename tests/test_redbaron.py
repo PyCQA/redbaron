@@ -2142,6 +2142,30 @@ def test_binary_operator_setattr_second():
         red[0].second = "def a(): pass"
 
 
+def test_boolean_operator_setattr_value():
+    red = RedBaron("a and b")
+    red[0].value = "or"
+    assert red.dumps() == "a or b"
+    with pytest.raises(Exception):
+        red[0].value = "some illegal stuff"
+
+
+def test_boolean_operator_setattr_first():
+    red = RedBaron("a and b")
+    red[0].first = "caramba"
+    assert red.dumps() == "caramba and b"
+    with pytest.raises(Exception):
+        red[0].first = "def a(): pass"
+
+
+def test_boolean_operator_setattr_second():
+    red = RedBaron("a and b")
+    red[0].second = "caramba"
+    assert red.dumps() == "a and caramba"
+    with pytest.raises(Exception):
+        red[0].second = "def a(): pass"
+
+
 # advanced
 
 # try -> excepts
@@ -2161,9 +2185,6 @@ def test_binary_operator_setattr_second():
 
 # argument_generator_comprehension -> result
 # argument_generator_comprehension -> generators
-# boolean_operator -> first
-# boolean_operator -> value
-# boolean_operator -> second
 # call_argument -> name
 # call_argument -> value
 # comparison -> first
