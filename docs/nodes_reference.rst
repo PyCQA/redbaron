@@ -142,6 +142,39 @@ if the CommentNode is the last node of the file).
     RedBaron("# first node of the file\n# last node of the file").help(with_formatting=True)
 
 
+ForNode
+=======
+
+A node representing a for loop.
+
+.. ipython:: python
+
+    RedBaron("for i in b:\n    pass")[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+ForNode is a CodeBlockNode whichs means its value attribute accept a wide range
+of values, see :ref:`CodeBlockNode` for more informations. Other attributes
+works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("for i in b: pass")
+    red
+    red[0].iterator = "i, j, k"
+    red
+    red[0].target = "[x for x in stuff if condition]"
+    red
+
+Helpers
+-------
+
+FuncdefNode comes with one helper to add another item at the end of the value
+of the node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
+
 FuncdefNode
 ===========
 
