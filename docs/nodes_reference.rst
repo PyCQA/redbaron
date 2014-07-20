@@ -192,6 +192,32 @@ ElifNode comes with one helper to add another item at the end of the value of th
 node without having to think about formating. It is documented here:
 :ref:`append_value`.
 
+.. _ElseNode:
+
+ElseNode
+========
+
+A node representing an else statement.
+
+The ElseNode, like the :ref:`IfNode` or the :ref:`ElifNode` are stored in a :ref:`IfelseblockNode`.
+
+.. ipython:: python
+
+    RedBaron("if a: pass\nelse: pass")[0].value[1].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+ElifNode is a CodeBlockNode whichs means its value attribute accept a wide range
+of values, see :ref:`CodeBlockNode` for more informations.
+
+Helpers
+-------
+
+ElifNode comes with one helper to add another item at the end of the value of the
+node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
 
 EndlNode
 ========
