@@ -2044,28 +2044,28 @@ def test_except_setattr_target_raise_no_exception():
 def test_except_setattr_target_none():
     red = RedBaron("try: pass\nexcept Pouet as plop: pass\n")
     red[0].excepts[0].target = ""
-    assert red[0].excepts[0].delimiteur == ""
+    assert red[0].excepts[0].delimiter == ""
     assert red[0].excepts[0].dumps() == "except Pouet: pass\n"
 
 
 def test_except_setattr_delimiter_comma():
     red = RedBaron("try: pass\nexcept Pouet as plop: pass\n")
-    red[0].excepts[0].delimiteur = ","
-    assert red[0].excepts[0].delimiteur == ","
+    red[0].excepts[0].delimiter = ","
+    assert red[0].excepts[0].delimiter == ","
     assert red[0].excepts[0].dumps() == "except Pouet, plop: pass\n"
 
 
 def test_except_setattr_delimiter_as():
     red = RedBaron("try: pass\nexcept Pouet, plop: pass\n")
-    red[0].excepts[0].delimiteur = "as"
-    assert red[0].excepts[0].delimiteur == "as"
+    red[0].excepts[0].delimiter = "as"
+    assert red[0].excepts[0].delimiter == "as"
     assert red[0].excepts[0].dumps() == "except Pouet as plop: pass\n"
 
 
 def test_except_setattr_delimiter_bad():
     red = RedBaron("try: pass\nexcept Pouet, plop: pass\n")
     with pytest.raises(Exception):
-        red[0].excepts[0].delimiteur = "pouet"
+        red[0].excepts[0].delimiter = "pouet"
 
 
 def test_call_setattr_value():
