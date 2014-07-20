@@ -2243,6 +2243,8 @@ def test_call_argument_setattr_name():
 # convertion from list/set/dict to comprehension version
 # convertion between binary_operator/boolean_operator/comparison
 
+# convertion from if/elif/else to if/elif/else (careful about the ifelseblock)
+
 # important
 
 # in addition of passing empty string, allow to pass None value on setattr
