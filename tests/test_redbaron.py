@@ -1870,6 +1870,22 @@ def test_assign_node_setattr_value():
         red[0].value = "raise"
 
 
+def test_assign_node_setattr_operator():
+    red = RedBaron("a = b")
+    red[0].operator = '+'
+    assert red.dumps() == "a += b"
+    red[0].operator = '+='
+    assert red.dumps() == "a += b"
+    red[0].operator = '='
+    assert red.dumps() == "a = b"
+    red[0].operator = '-'
+    assert red.dumps() == "a -= b"
+    red[0].operator = ''
+    assert red.dumps() == "a = b"
+    with pytest.raises(Exception):
+        red[0].operator = "raise"
+
+
 def test_for_setattr_value():
     red = RedBaron("for i in a: pass")
     red[0].value = "continue"

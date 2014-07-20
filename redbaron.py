@@ -1010,6 +1010,19 @@ class FuncdefNode(CodeBlockNode):
 class AssignmentNode(Node):
     _other_identifiers = ["assign"]
 
+    def __setattr__(self, key, value):
+        if key == "operator":
+            if len(value) == 2 and value[1] == "=":
+                value = value[0]
+            elif len(value) == 1 and value == "=":
+                value = ""
+            elif value is None:
+                value = ""
+            elif len(value) not in (0, 1, 2):
+                raise Exception("The value of the operator can only be a string of one or two char, for eg: '+', '+=', '=', ''")
+
+        return super(AssignmentNode, self).__setattr__(key, value)
+
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "target":
             return to_node(baron.parse("%s = a" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
