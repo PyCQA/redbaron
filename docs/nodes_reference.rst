@@ -15,6 +15,49 @@ their specificities.
 
 **This page is still a WIP**.
 
+========
+TopClass
+========
+
+.. _CodeBlockNode:
+
+CodeBlockNode
+=============
+
+CodeBlockNode are a type of node that have a body composed of indented code
+like the FuncdefNode or the IfNode. Great care has been taken on the SetAttr of
+their value so you don't have to take care about reindenting and other
+formating details.
+
+Demontration:
+
+.. ipython:: python
+
+    red = RedBaron("def function():\n    pass\n")
+    red
+    red[0].value = "stuff"  # first '\n' will be hadded, indentation will be set
+    red
+    red[0].value = "                    bad_indent"
+    red
+    red[0].value = " some\n stuff"
+    red
+
+Some for indented cases:
+
+.. ipython:: python
+
+    red = RedBaron("class A:\n    def __init__():\n        pass\n\n    def plop():\n        pass")
+    red.def_.value = "not_indented"
+    red
+    red.def_.value = "\n                              badly_indented"
+    red
+    red.def_.value = "some\nstuff\nfoo\nbar\n\npouet"
+    red
+
+=====
+Nodes
+=====
+
 DictNode
 ========
 
