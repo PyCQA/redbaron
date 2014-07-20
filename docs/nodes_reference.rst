@@ -94,6 +94,23 @@ the node without having to think about formating. It is documented here:
 :ref:`append_value`.
 
 
+ReprNode
+========
+
+A node representing python sugar syntaxic notation for repr.
+
+.. ipython:: python
+
+    RedBaron("`pouet`")[0].help(deep=True, with_formatting=True)
+
+Helpers
+-------
+
+SetNode comes with one helper to add another item at the end of the value of
+the node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
+
 SetNode
 ========
 
