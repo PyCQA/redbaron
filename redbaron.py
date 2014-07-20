@@ -1182,7 +1182,7 @@ class ExceptNode(CodeBlockNode):
                 self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
                 self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
             elif value:
-                raise Exception("Delimiters of an except nodes can only be 'as' or ',' (without spaces arround it).")
+                raise Exception("Delimiters of an except nodes can only be 'as' or ',' (without spaces around it).")
 
         return super(CodeBlockNode, self).__setattr__(key, value)
 
