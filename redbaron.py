@@ -1112,7 +1112,11 @@ class WithContextItemNode(Node):
             if string:
                 self.first_formatting = [{"type": "space", "value": " "}]
                 self.second_formatting = [{"type": "space", "value": " "}]
-            return to_node(baron.parse("with a as %s: pass" % string)[0]["contexts"][0]["as"], parent=parent, on_attribute=on_attribute)
+                return to_node(baron.parse("with a as %s: pass" % string)[0]["contexts"][0]["as"], parent=parent, on_attribute=on_attribute)
+            else:
+                self.first_formatting = []
+                self.second_formatting = []
+                return ""
 
         else:
             raise Exception("Unhandled case")

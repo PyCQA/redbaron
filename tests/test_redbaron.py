@@ -1964,8 +1964,15 @@ def test_with_context_item_value():
 def test_with_context_item_as():
     red = RedBaron("with a: pass")
     red[0].contexts[0].as_ = "plop"
-    assert red[0].contexts[0].as_ is not None
+    assert red[0].contexts[0].as_ != ""
     assert red[0].dumps() == "with a as plop: pass\n"
+
+
+def test_with_context_item_as_empty_string():
+    red = RedBaron("with a as b: pass")
+    red[0].contexts[0].as_ = ""
+    assert red[0].contexts[0].as_ is ""
+    assert red[0].dumps() == "with a: pass\n"
 
 
 def test_if_setattr_value():
