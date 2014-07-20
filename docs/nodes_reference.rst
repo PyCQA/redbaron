@@ -15,6 +15,31 @@ their specificities.
 
 **This page is still a WIP**.
 
+DictNode
+========
+
+A node representing python sugar syntaxic notation for dict.
+
+.. ipython:: python
+
+    RedBaron("{'a': 1, 'b': 2, 'c': 3}")[0].help(deep=True, with_formatting=True)
+
+Helpers
+-------
+
+DictNode comes with one helper to add another item at the end of the value of
+the node without having to think about formating. It is documented here:
+:ref:`append_value`. **Warning**: :file:`append_value` of DictNode has a
+different signature than the append_value of other nodes: it expects 2
+arguments: one of the key and one of the value.
+
+.. ipython:: python
+
+    red = RedBaron("{}")
+    red[0].append_value(key="'a'", value="42")
+    red
+
+
 EndlNode
 ========
 
@@ -126,6 +151,7 @@ Helpers
 SetNode comes with one helper to add another item at the end of the value of
 the node without having to think about formating. It is documented here:
 :ref:`append_value`.
+
 
 SpaceNode
 =========
