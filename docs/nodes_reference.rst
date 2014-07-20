@@ -58,6 +58,49 @@ Some for indented cases:
 Nodes
 =====
 
+AssignmentNode
+==============
+
+A node representing the assign operation in python ("foo = bar") and the
+"augmented" assign ("foo += bar").
+
+.. ipython:: python
+
+    RedBaron("a = b")[0].help(deep=True, with_formatting=True)
+    RedBaron("a += b")[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+Works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("a = b")
+    red[0].first = "caramba"
+    red
+    red[0].second = "42"
+    red
+
+For the operator part, expected input should work:
+
+.. ipython:: python
+
+    red = RedBaron("a = b")
+    red[0].operator = "+="
+    red
+    red[0].operator = "+" # equivalent to '+='
+    red
+    red[0].operator = "-" # equivalent to '-='
+    red
+    red[0].operator = "=" # equivalent to '='
+    red
+    red[0].operator = "/="
+    red
+    red[0].operator = "" # equivalent to '='
+    red
+
+
 DictNode
 ========
 
