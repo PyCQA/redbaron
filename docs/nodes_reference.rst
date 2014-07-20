@@ -30,6 +30,43 @@ if the CommentNode is the last node of the file).
     RedBaron("suff\n")[1].help(with_formatting=True)
     RedBaron("# first node of the file\n# last node of the file").help(with_formatting=True)
 
+ImportNode
+==========
+
+A node representing the import statement of the python language.
+
+*Be careful, this node and its subnodes are way more complex than what you can
+expect*.
+
+.. ipython:: python
+
+    RedBaron("import foo")[0].help(with_formatting=True, deep=True)
+    RedBaron("import foo.bar.baz as stuff, another_thing.plop")[0].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+Works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("import foo")
+    red[0].value = "foo.bar.baz as plop, stuff, plop.dot"
+    red
+    red.help(deep=True)
+
+Helpers
+-------
+
+To reduce the complexity, 2 helpers method are provided:
+
+.. ipython:: python
+
+    red = RedBaron("import foo.bar.baz as stuff, another_thing.plop")
+    red[0].modules()  # modules imported
+    red[0].names()  # names added to the context
+
+
 IntNode
 =======
 
