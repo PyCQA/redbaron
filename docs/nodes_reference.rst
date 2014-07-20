@@ -250,6 +250,34 @@ FuncdefNode comes with one helper to add another item at the end of the value
 of the node without having to think about formating. It is documented here:
 :ref:`append_value`.
 
+IfNode
+======
+
+A node representing an if statement.
+
+The IfNode, like the :ref:`ElifNode` or the :ref:`ElseNode` are stored in a :ref:`IfelseblockNode`.
+
+.. ipython:: python
+
+    RedBaron("if a: pass")[0].value[0].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("if a: pass")
+    red
+    red[0].value[0].test = "1 + 1 == 11"
+    red
+
+Helpers
+-------
+
+IfNode comes with one helper to add another item at the end of the value of the
+node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
 
 ImportNode
 ==========
