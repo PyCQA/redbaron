@@ -1174,15 +1174,15 @@ class FinallyNode(CodeBlockNode):
 
 class ExceptNode(CodeBlockNode):
     def __setattr__(self, key, value):
-        if key == "delimiteur":
+        if key == "delimiter":
             if value == ",":
                 self.second_formatting = []
-                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiteur", parent=self)]
+                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
             elif value == "as":
-                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiteur", parent=self)]
-                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiteur", parent=self)]
+                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
             elif value:
-                raise Exception("Delimiteurs of an except nodes can only be 'as' or ',' (without spaces arround it).")
+                raise Exception("Delimiters of an except node can only be 'as' or ',' (without spaces around it).")
 
         return super(CodeBlockNode, self).__setattr__(key, value)
 
@@ -1193,7 +1193,7 @@ class ExceptNode(CodeBlockNode):
                 return to_node(baron.parse("try: pass\nexcept %s: pass" % string)[0]["excepts"][0]["exception"], parent=parent, on_attribute=on_attribute)
             else:
                 self.first_formatting = []
-                self.delimiteur = ""
+                self.delimiter = ""
                 self.target = ""
                 return ""
 
@@ -1202,13 +1202,13 @@ class ExceptNode(CodeBlockNode):
                 raise Exception("Can't set a target to an exception node that doesn't have an exception set")
 
             if string:
-                self.delimiteur = "as"
+                self.delimiter = "as"
                 self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
                 self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
                 return to_node(baron.parse("try: pass\nexcept a as %s: pass" % string)[0]["excepts"][0]["target"], parent=parent, on_attribute=on_attribute)
 
             else:
-                self.delimiteur = ""
+                self.delimiter = ""
                 self.second_formatting = []
                 self.third_formatting = []
                 return ""
