@@ -158,6 +158,41 @@ arguments: one of the key and one of the value.
     red
 
 
+.. _ElifNode:
+
+ElifNode
+======
+
+A node representing an elif statement.
+
+The ElifNode, like the :ref:`IfNode` or the :ref:`ElseNode` are stored in a :ref:`IfelseblockNode`.
+
+.. ipython:: python
+
+    RedBaron("if a: pass\nelif b: pass")[0].value[1].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+ElifNode is a CodeBlockNode whichs means its value attribute accept a wide range
+of values, see :ref:`CodeBlockNode` for more informations. Other attributes
+works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("if a: pass\nelif b: pass")
+    red
+    red[0].value[1].test = "1 + 1 == 11"
+    red
+
+Helpers
+-------
+
+ElifNode comes with one helper to add another item at the end of the value of the
+node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
+
 EndlNode
 ========
 
@@ -250,6 +285,8 @@ FuncdefNode comes with one helper to add another item at the end of the value
 of the node without having to think about formating. It is documented here:
 :ref:`append_value`.
 
+.. _IfNode:
+
 IfNode
 ======
 
@@ -263,6 +300,10 @@ The IfNode, like the :ref:`ElifNode` or the :ref:`ElseNode` are stored in a :ref
 
 SetAttr
 -------
+
+IfNode is a CodeBlockNode whichs means its value attribute accept a wide range
+of values, see :ref:`CodeBlockNode` for more informations. Other attributes
+works as expected:
 
 .. ipython:: python
 
