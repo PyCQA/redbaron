@@ -64,6 +64,14 @@ Table of content
    other
    nodes_reference
 
+Reference
+---------
+
+.. toctree::
+   :maxdepth: 2
+
+   nodes_reference
+
 
 Indices and tables
 ==================
