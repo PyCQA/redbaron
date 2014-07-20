@@ -411,6 +411,37 @@ of the node without having to think about formating. It is documented here:
 :ref:`append_value`.
 
 
+WithContextItemNode
+===================
+
+A node representing a while loop.
+
+.. ipython:: python
+
+    RedBaron("with a as b: pass")[0].contexts[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("with a: pass")
+    red
+    red[0].contexts[0].value = "plop"
+    red
+    red[0].contexts[0].as_ = "stuff"
+    red
+    red[0].contexts[0].as_ = ""
+    red
+
+Helpers
+-------
+
+WithContextItemNode comes with one helper to add another item at the end of the
+value of the node without having to think about formating. It is documented
+here: :ref:`append_value`.
+
+
 WithNode
 ========
 
