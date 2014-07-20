@@ -76,6 +76,23 @@ A python integer.
 
     RedBaron("42")[0].help(with_formatting=True)
 
+
+ListNode
+========
+
+A node representing python sugar syntaxic notation for list.
+
+.. ipython:: python
+
+    RedBaron("[1, 2, 3]")[0].help(deep=True, with_formatting=True)
+
+Helpers
+-------
+
+ListNode comes with one helper to add another item at the end of the value of
+the node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
 SpaceNode
 =========
 
