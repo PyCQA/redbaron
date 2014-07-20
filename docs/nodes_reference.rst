@@ -55,6 +55,51 @@ if the CommentNode is the last node of the file).
     RedBaron("suff\n")[1].help(with_formatting=True)
     RedBaron("# first node of the file\n# last node of the file").help(with_formatting=True)
 
+
+FuncdefNode
+===========
+
+A node representing a function definition.
+
+.. ipython:: python
+
+    RedBaron("def stuff():\n    pass\n")[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+FuncdefNode is a CodeBlockNode whichs means its value attribute accept a wide
+range of values, see :ref:`CodeBlockNode` for more informations. Most other
+attributes works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("def stuff():\n    body\n")
+    red[0]
+    red[0].name = "awesome_function"
+    red[0].arguments = "a, b=None, *c, **d"
+    red
+
+Decorators might be a bit less intuitive:
+
+.. ipython:: python
+
+    red =  RedBaron("def stuff():\n    body\n")
+    red[0].decorators = "@foo(*plop)"
+    red
+    red[0].decorators = "@foo\n@bar.baz()"
+    red
+    red[0].decorators = "    @pouet"  # SetAttr will take care of reindenting everything as expected
+    red
+
+Helpers
+-------
+
+FuncdefNode comes with one helper to add another item at the end of the value
+of the node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
+
 ImportNode
 ==========
 
