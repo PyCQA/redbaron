@@ -409,3 +409,34 @@ Helpers
 WhileNode comes with one helper to add another item at the end of the value
 of the node without having to think about formating. It is documented here:
 :ref:`append_value`.
+
+
+WithNode
+========
+
+A node representing a while loop.
+
+.. ipython:: python
+
+    RedBaron("with a as b, c: pass")[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+WithNode is a CodeBlockNode whichs means its value attribute accept a wide range
+of values, see :ref:`CodeBlockNode` for more informations. Other attributes
+works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("with a: pass")
+    red
+    red[0].contexts = "b as plop, stuff()"
+    red
+
+Helpers
+-------
+
+WithNode comes with one helper to add another item at the end of the value
+of the node without having to think about formating. It is documented here:
+:ref:`append_value`.
