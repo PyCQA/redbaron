@@ -38,3 +38,16 @@ A python integer.
 .. ipython:: python
 
     RedBaron("42")[0].help(with_formatting=True)
+
+SpaceNode
+=========
+
+A formatting node representing a space. You'll probably never have to deal with
+it except if you play with the way the file is rendered.
+
+**Those nodes will be hidden in formatting keys 99% of the time** (the only exception is if it's the last node fo the file).
+
+.. ipython:: python
+
+    RedBaron("1 + 1")[0].first_formatting[0].help(with_formatting=True)
+    RedBaron("1 + 1").help(with_formatting=True)
