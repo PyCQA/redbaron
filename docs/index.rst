@@ -62,6 +62,7 @@ Table of content
    modifying
    modifying_helpers
    other
+   nodes_reference
 
 
 Indices and tables
