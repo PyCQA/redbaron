@@ -101,6 +101,38 @@ For the operator part, expected input should work:
     red
 
 
+ClassNode
+=========
+
+A node representing a class definition.
+
+.. ipython:: python
+
+    RedBaron("class SomeAwsomeName(A, B, C): pass")[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+ClassNode is a CodeBlockNode whichs means its value attribute accept a wide
+range of values, see :ref:`CodeBlockNode` for more informations. Most other
+attributes works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("class SomeAwsomeName(A, B, C): pass")
+    red[0].name = "AnotherAwesomeName"
+    red
+    red[0].inherit_from = "object"
+    red
+
+Helpers
+-------
+
+ClassNode comes with one helper to add another item at the end of the value
+of the node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
+
 DictNode
 ========
 
@@ -170,7 +202,7 @@ works as expected:
 Helpers
 -------
 
-FuncdefNode comes with one helper to add another item at the end of the value
+ForNode comes with one helper to add another item at the end of the value
 of the node without having to think about formating. It is documented here:
 :ref:`append_value`.
 
@@ -214,7 +246,7 @@ Decorators might be a bit less intuitive:
 Helpers
 -------
 
-ForNode comes with one helper to add another item at the end of the value
+FuncdefNode comes with one helper to add another item at the end of the value
 of the node without having to think about formating. It is documented here:
 :ref:`append_value`.
 
