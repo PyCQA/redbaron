@@ -214,7 +214,7 @@ Decorators might be a bit less intuitive:
 Helpers
 -------
 
-FuncdefNode comes with one helper to add another item at the end of the value
+ForNode comes with one helper to add another item at the end of the value
 of the node without having to think about formating. It is documented here:
 :ref:`append_value`.
 
@@ -345,4 +345,35 @@ Helpers
 
 TupleNode comes with one helper to add another item at the end of the value of
 the node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
+
+WhileNode
+=========
+
+A node representing a while loop.
+
+.. ipython:: python
+
+    RedBaron("while condition:\n    pass")[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+WhileNode is a CodeBlockNode whichs means its value attribute accept a wide range
+of values, see :ref:`CodeBlockNode` for more informations. Other attributes
+works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("while condition: pass")
+    red
+    red[0].test = "a is not None"
+    red
+
+Helpers
+-------
+
+WhileNode comes with one helper to add another item at the end of the value
+of the node without having to think about formating. It is documented here:
 :ref:`append_value`.
