@@ -1,4 +1,4 @@
-git+https://github.com/Psycojoker/baron.git@finder
+git+https://github.com/Psycojoker/baron.git
 git+https://github.com/Psycojoker/redbaron.git
 ipython
 matplotlib
