@@ -458,6 +458,33 @@ it except if you play with the way the file is rendered.
     RedBaron("1 + 1").help(with_formatting=True)
 
 
+TryNode
+=======
+
+A node representing a try statement. This node is responsible for holding the
+except(s), finally and else statements.
+
+.. ipython:: python
+
+    RedBaron("try: pass\nexcept FooBar: pass\nexcept Exception: pass\nelse: pass\nfinally: pass\n")[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+TryNode is a CodeBlockNode whichs means its value attribute accept a wide range
+of values, see :ref:`CodeBlockNode` for more informations.
+
+**The other attributes (excepts, finally, else) cannot be setted easily for
+now**. It is planned to fix this in a near future.
+
+Helpers
+-------
+
+WhileNode comes with one helper to add another item at the end of the value
+of the node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
+
 TupleNode
 =========
 
