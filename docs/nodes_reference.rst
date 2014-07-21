@@ -173,6 +173,18 @@ arguments: one of the key and one of the value.
     red
 
 
+DotNode
+=======
+
+A node representing a dot '.', generally found in atom trailers (this kind of structure: 'variable.another_variable(call)[getitem]'), this is the kind of formatting node that you might
+have to deal with if not enough high level helpers are available.
+
+The dot node is reponsible for holding the formatting arround it.
+
+.. ipython:: python
+
+    RedBaron("a.b")[0].value[1].help(with_formatting=True, deep=True)
+
 .. _ElifNode:
 
 ElifNode
