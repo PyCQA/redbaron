@@ -234,6 +234,30 @@ if the CommentNode is the last node of the file).
     RedBaron("suff\n")[1].help(with_formatting=True)
     RedBaron("# first node of the file\n# last node of the file").help(with_formatting=True)
 
+.. _FinallyNode:
+
+FinallyNode
+===========
+
+A node representing a finally statement (member of a :ref:`TryNode`).
+
+.. ipython:: python
+
+    RedBaron("try: pass\nexcept FooBar: pass\nexcept Exception: pass\nelse: pass\nfinally: pass\n").finally_.help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+FinallyNode is a CodeBlockNode whichs means its value attribute accept a wide range
+of values, see :ref:`CodeBlockNode` for more informations.
+
+Helpers
+-------
+
+FinallyNode comes with one helper to add another item at the end of the value
+of the node without having to think about formating. It is documented here:
+:ref:`append_value`.
+
 
 ForNode
 =======
@@ -458,11 +482,13 @@ it except if you play with the way the file is rendered.
     RedBaron("1 + 1").help(with_formatting=True)
 
 
+.. _TryNode:
+
 TryNode
 =======
 
 A node representing a try statement. This node is responsible for holding the
-except(s), finally and else statements.
+:ref:`ExceptNode`, :ref:`FinallyNode` and :ref:`ElseNode`.
 
 .. ipython:: python
 
@@ -480,7 +506,7 @@ now**. It is planned to fix this in a near future.
 Helpers
 -------
 
-WhileNode comes with one helper to add another item at the end of the value
+TryNode comes with one helper to add another item at the end of the value
 of the node without having to think about formating. It is documented here:
 :ref:`append_value`.
 
@@ -531,7 +557,6 @@ Helpers
 WhileNode comes with one helper to add another item at the end of the value
 of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
-
 
 WithContextItemNode
 ===================
