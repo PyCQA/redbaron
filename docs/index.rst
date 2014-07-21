@@ -62,7 +62,6 @@ Table of content
    modifying
    modifying_helpers
    other
-   nodes_reference
 
 Reference
 ---------
