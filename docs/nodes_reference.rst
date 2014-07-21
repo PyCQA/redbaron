@@ -133,6 +133,21 @@ of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
+CommaNode
+=========
+
+A node representing a comma, this is the kind of formatting node that you might
+have to deal with if not enough high level helpers are available. They are
+generally present in call, function arguments definition and data structure
+sugar syntaxic notation.
+
+The comma node is reponsible for holding the formatting arround it.
+
+.. ipython:: python
+
+    RedBaron("[1, 2, 3]")[0].value[1].help(with_formatting=True, deep=True)
+
+
 DictNode
 ========
 
