@@ -24,18 +24,18 @@ TopClass
 CodeBlockNode
 =============
 
-CodeBlockNode are a type of node that have a body composed of indented code
+CodeBlockNode is a type of node that has a body composed of indented code
 like the FuncdefNode or the IfNode. Great care has been taken on the SetAttr of
 their value so you don't have to take care about reindenting and other
-formating details.
+formatting details.
 
-Demontration:
+Demonstration:
 
 .. ipython:: python
 
     red = RedBaron("def function():\n    pass\n")
     red
-    red[0].value = "stuff"  # first '\n' will be hadded, indentation will be set
+    red[0].value = "stuff"  # first '\n' will be added, indentation will be set
     red
     red[0].value = "                    bad_indent"
     red
@@ -61,8 +61,8 @@ Nodes
 AssignmentNode
 ==============
 
-A node representing the assign operation in python ("foo = bar") and the
-"augmented" assign ("foo += bar").
+A node representing the assign operation in python (:file:`foo = bar`) and the
+"augmented" assign (:file:`foo += bar`).
 
 .. ipython:: python
 
@@ -108,18 +108,18 @@ A node representing a class definition.
 
 .. ipython:: python
 
-    RedBaron("class SomeAwsomeName(A, B, C): pass")[0].help(deep=True, with_formatting=True)
+    RedBaron("class SomeAwesomeName(A, B, C): pass")[0].help(deep=True, with_formatting=True)
 
 SetAttr
 -------
 
-ClassNode is a CodeBlockNode whichs means its value attribute accept a wide
+ClassNode is a CodeBlockNode which means its value attribute accepts a wide
 range of values, see :ref:`CodeBlockNode` for more informations. Most other
-attributes works as expected:
+attributes work as expected:
 
 .. ipython:: python
 
-    red = RedBaron("class SomeAwsomeName(A, B, C): pass")
+    red = RedBaron("class SomeAwesomeName(A, B, C): pass")
     red[0].name = "AnotherAwesomeName"
     red
     red[0].inherit_from = "object"
@@ -129,7 +129,7 @@ Helpers
 -------
 
 ClassNode comes with one helper to add another item at the end of the value
-of the node without having to think about formating. It is documented here:
+of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
@@ -146,7 +146,7 @@ Helpers
 -------
 
 DictNode comes with one helper to add another item at the end of the value of
-the node without having to think about formating. It is documented here:
+the node without having to think about formatting. It is documented here:
 :ref:`append_value`. **Warning**: :file:`append_value` of DictNode has a
 different signature than the append_value of other nodes: it expects 2
 arguments: one of the key and one of the value.
@@ -174,9 +174,9 @@ The ElifNode, like the :ref:`IfNode` or the :ref:`ElseNode` are stored in a :ref
 SetAttr
 -------
 
-ElifNode is a CodeBlockNode whichs means its value attribute accept a wide range
+ElifNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations. Other attributes
-works as expected:
+work as expected:
 
 .. ipython:: python
 
@@ -199,7 +199,7 @@ EndlNode
 A node for the end line ('\n', '\r\n') component.
 
 **This node is responsible for holding the indentation AFTER itself**. This
-node also handle formatting around it, CommentNode **before** an EndlNode will
+node also handles formatting around it, CommentNode **before** an EndlNode will
 end up in the formatting key of an EndlNode 99% of the time (the exception is
 if the CommentNode is the last node of the file).
 
@@ -221,9 +221,9 @@ A node representing a for loop.
 SetAttr
 -------
 
-ForNode is a CodeBlockNode whichs means its value attribute accept a wide range
+ForNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations. Other attributes
-works as expected:
+work as expected:
 
 .. ipython:: python
 
@@ -238,7 +238,7 @@ Helpers
 -------
 
 ForNode comes with one helper to add another item at the end of the value
-of the node without having to think about formating. It is documented here:
+of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
@@ -254,7 +254,7 @@ A node representing a function definition.
 SetAttr
 -------
 
-FuncdefNode is a CodeBlockNode whichs means its value attribute accept a wide
+FuncdefNode is a CodeBlockNode which means its value attribute accepts a wide
 range of values, see :ref:`CodeBlockNode` for more informations. Most other
 attributes works as expected:
 
@@ -282,7 +282,7 @@ Helpers
 -------
 
 FuncdefNode comes with one helper to add another item at the end of the value
-of the node without having to think about formating. It is documented here:
+of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 .. _IfNode:
@@ -292,7 +292,7 @@ IfNode
 
 A node representing an if statement.
 
-The IfNode, like the :ref:`ElifNode` or the :ref:`ElseNode` are stored in a :ref:`IfelseblockNode`.
+The IfNode, like the :ref:`ElifNode` or the :ref:`ElseNode`, is stored in an :ref:`IfelseblockNode`.
 
 .. ipython:: python
 
@@ -301,9 +301,9 @@ The IfNode, like the :ref:`ElifNode` or the :ref:`ElseNode` are stored in a :ref
 SetAttr
 -------
 
-IfNode is a CodeBlockNode whichs means its value attribute accept a wide range
+IfNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations. Other attributes
-works as expected:
+work as expected:
 
 .. ipython:: python
 
@@ -316,7 +316,7 @@ Helpers
 -------
 
 IfNode comes with one helper to add another item at the end of the value of the
-node without having to think about formating. It is documented here:
+node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
@@ -380,7 +380,7 @@ Helpers
 -------
 
 ListNode comes with one helper to add another item at the end of the value of
-the node without having to think about formating. It is documented here:
+the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
@@ -397,7 +397,7 @@ Helpers
 -------
 
 SetNode comes with one helper to add another item at the end of the value of
-the node without having to think about formating. It is documented here:
+the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
@@ -424,7 +424,7 @@ SpaceNode
 A formatting node representing a space. You'll probably never have to deal with
 it except if you play with the way the file is rendered.
 
-**Those nodes will be hidden in formatting keys 99% of the time** (the only exception is if it's the last node fo the file).
+**Those nodes will be hidden in formatting keys 99% of the time** (the only exception is if it's the last node of the file).
 
 .. ipython:: python
 
@@ -461,9 +461,9 @@ A node representing a while loop.
 SetAttr
 -------
 
-WhileNode is a CodeBlockNode whichs means its value attribute accept a wide range
+WhileNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations. Other attributes
-works as expected:
+work as expected:
 
 .. ipython:: python
 
@@ -476,7 +476,7 @@ Helpers
 -------
 
 WhileNode comes with one helper to add another item at the end of the value
-of the node without having to think about formating. It is documented here:
+of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
@@ -507,14 +507,14 @@ Helpers
 -------
 
 WithContextItemNode comes with one helper to add another item at the end of the
-value of the node without having to think about formating. It is documented
+value of the node without having to think about formatting. It is documented
 here: :ref:`append_value`.
 
 
 WithNode
 ========
 
-A node representing a while loop.
+A node representing a with statement.
 
 .. ipython:: python
 
@@ -523,9 +523,9 @@ A node representing a while loop.
 SetAttr
 -------
 
-WithNode is a CodeBlockNode whichs means its value attribute accept a wide range
+WithNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations. Other attributes
-works as expected:
+work as expected:
 
 .. ipython:: python
 
@@ -538,5 +538,5 @@ Helpers
 -------
 
 WithNode comes with one helper to add another item at the end of the value
-of the node without having to think about formating. It is documented here:
+of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
