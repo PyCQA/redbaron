@@ -101,6 +101,25 @@ For the operator part, expected input should work:
     red
 
 
+CallNode
+========
+
+A node representing a call (eg: :file:`a()`, here :file:`a` is called with no
+arguments). It is always stored in an :ref:`AtomtrailersNode` or a
+:ref:`DecoratorNode`.
+
+.. ipython:: python
+
+    RedBaron("a(b, c=d)")[0].value[1].help(deep=True, with_formatting=True)
+
+Helpers
+-------
+
+CallNode comes with one helper to add another item at the end of the value of
+the node without having to think about formatting. It is documented here:
+:ref:`append_value`.
+
+
 ClassNode
 =========
 
