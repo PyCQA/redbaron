@@ -112,6 +112,17 @@ arguments). It is always stored in an :ref:`AtomtrailersNode` or a
 
     RedBaron("a(b, c=d)")[0].value[1].help(deep=True, with_formatting=True)
 
+SetAttr
+-------
+
+SetAttr works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("a()")
+    red[0].value[1].value = "b, c=d, *e, **f"
+    red
+
 Helpers
 -------
 
