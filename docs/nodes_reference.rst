@@ -195,10 +195,10 @@ arguments: one of the key and one of the value.
 DotNode
 =======
 
-A node representing a dot '.', generally found in atom trailers (this kind of structure: 'variable.another_variable(call)[getitem]'), this is the kind of formatting node that you might
-have to deal with if not enough high level helpers are available.
+A node representing a dot '.', generally found in atom trailers (this kind of structure: 'variable.another_variable(call)[getitem]').
+This is the kind of formatting node that you might have to deal with if not enough high level helpers are available.
 
-The dot node is reponsible for holding the formatting arround it.
+The dot node is responsible for holding the formatting around it.
 
 .. ipython:: python
 
@@ -245,7 +245,7 @@ ElseNode
 
 A node representing an else statement.
 
-The ElseNode, like the :ref:`IfNode` or the :ref:`ElifNode` are stored in a :ref:`IfelseblockNode`.
+The ElseNode, like the :ref:`IfNode` or the :ref:`ElifNode`, is stored in a :ref:`IfelseblockNode`.
 
 .. ipython:: python
 
@@ -254,14 +254,14 @@ The ElseNode, like the :ref:`IfNode` or the :ref:`ElifNode` are stored in a :ref
 SetAttr
 -------
 
-ElifNode is a CodeBlockNode whichs means its value attribute accept a wide range
+ElifNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations.
 
 Helpers
 -------
 
 ElifNode comes with one helper to add another item at the end of the value of the
-node without having to think about formating. It is documented here:
+node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
@@ -294,9 +294,9 @@ A node representing a except statement (member of a :ref:`TryNode`).
 SetAttr
 -------
 
-ExceptNode is a CodeBlockNode whichs means its value attribute accept a wide range
+ExceptNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations. Other attributes
-works as expected:
+work as expected:
 
 .. ipython:: python
 
@@ -314,7 +314,7 @@ Helpers
 -------
 
 ExceptNode comes with one helper to add another item at the end of the value
-of the node without having to think about formating. It is documented here:
+of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 .. _FinallyNode:
@@ -331,14 +331,14 @@ A node representing a finally statement (member of a :ref:`TryNode`).
 SetAttr
 -------
 
-FinallyNode is a CodeBlockNode whichs means its value attribute accept a wide range
+FinallyNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations.
 
 Helpers
 -------
 
 FinallyNode comes with one helper to add another item at the end of the value
-of the node without having to think about formating. It is documented here:
+of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
@@ -580,7 +580,7 @@ A node representing a try statement. This node is responsible for holding the
 SetAttr
 -------
 
-TryNode is a CodeBlockNode whichs means its value attribute accept a wide range
+TryNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations.
 
 **The other attributes (excepts, finally, else) cannot be setted easily for
@@ -590,7 +590,7 @@ Helpers
 -------
 
 TryNode comes with one helper to add another item at the end of the value
-of the node without having to think about formating. It is documented here:
+of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
@@ -607,7 +607,7 @@ Helpers
 -------
 
 TupleNode comes with one helper to add another item at the end of the value of
-the node without having to think about formating. It is documented here:
+the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
