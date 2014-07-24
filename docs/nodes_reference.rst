@@ -58,6 +58,30 @@ Some for indented cases:
 Nodes
 =====
 
+AssertNode
+==========
+
+A node representing the assert statement.
+
+.. ipython:: python
+
+    RedBaron("assert test, message")[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("assert some_test")
+    red
+    red[0].value = "1 == caramba()"
+    red
+    red[0].message = "'foo bar'"
+    red
+    red[0].message = ""
+    red
+
+
 AssignmentNode
 ==============
 
