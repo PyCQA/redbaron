@@ -145,6 +145,30 @@ SetAttr
     red
 
 
+.. _AtomtrailersNode:
+
+AtomtrailersNode
+================
+
+This node represent a combination of :ref:`NameNode`, :ref:`DotNode`,
+:ref:`CallNode`, :ref:`GetitemNode` sorted in a list. For e.g.:
+:file:`a.b().c[d]`.
+
+.. ipython:: python
+
+    RedBaron("a.b().c[d]")[0].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("a.b()")
+    red
+    red[0].value = "d.be"
+    red
+
+
 .. _CallNode:
 
 CallNode
