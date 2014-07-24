@@ -124,6 +124,27 @@ For the operator part, expected input should work:
     red[0].operator = "" # equivalent to '='
     red
 
+AssociativeParenthesisNode
+==========================
+
+This node represent a statement prioritised other another by being surrounded by
+parenthesis. For e.g., the first part of this addition: :file:`(1 + 1) * 2`.
+
+.. ipython:: python
+
+    RedBaron("(foo)")[0].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("(foo)")
+    red
+    red[0].value = "1 + 1"
+    red
+
+
 .. _CallNode:
 
 CallNode
