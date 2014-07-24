@@ -100,6 +100,7 @@ For the operator part, expected input should work:
     red[0].operator = "" # equivalent to '='
     red
 
+.. _CallNode:
 
 CallNode
 ========
@@ -129,6 +130,29 @@ Helpers
 CallNode comes with one helper to add another item at the end of the value of
 the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
+
+
+CallArgumentNode
+================
+
+A node representing an argument or a named argument of a :ref:`CallNode` (other
+nodes that can be in a CallNode are :ref:`ListArgumentNode` and
+:ref:`DictArgumentNode`).
+
+.. ipython:: python
+
+    RedBaron("a(b, c=d)")[0].value[1].value[0].help(deep=True, with_formatting=True)
+    RedBaron("a(b, c=d)")[0].value[1].value[2].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("a(b)")
+    red
+    red[0].value[1].value[0] = "stuff=foo"
+    red
 
 
 ClassNode
