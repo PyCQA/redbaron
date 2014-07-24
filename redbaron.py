@@ -1263,7 +1263,7 @@ class CallNode(Node):
 
 
 class CallArgumentNode(Node):
-    def _convert_input_to_node_object(self, string, parent, on_attribute):
+    def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
             return to_node(baron.parse("a(%s)" % string)[0]["value"][1]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
 
