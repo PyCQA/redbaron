@@ -70,6 +70,12 @@ now. It should implement every expected method of a list (.sort, .extend, .remov
 - find\_name\_binding -> search assign, def (args && name), class, except, with, for ...
 - find\_identifier -> search name + everything up there ^
 
+### Wrappers
+
+It should be easy to wrap statement, expressions or various structure in other
+statements, like a statement with a block or an associative parenthesis or
+those kind of things.
+
 ### Misc
 
 * delegate .filtered on the value if the value is a NodeList? Can quickly become magic behavior
