@@ -2240,10 +2240,10 @@ def test_call_argument_setattr_name():
 # for -> else
 # try -> else
 
-# convertion from list/set/dict to comprehension version
-# convertion between binary_operator/boolean_operator/comparison
+# conversion from list/set/dict to comprehension version
+# conversion between binary_operator/boolean_operator/comparison
 
-# convertion from if/elif/else to if/elif/else (careful about the ifelseblock)
+# conversion from if/elif/else to if/elif/else (careful about the ifelseblock)
 
 # important
 
