@@ -169,6 +169,29 @@ SetAttr
     red
 
 
+BinaryOperatorNode
+==================
+
+The node represent a binary operator (an operator (e.g: :file:`+` :file:`-` :file:`/`..) applied to 2 values) with its operands. For e.g.: :file:`1 + 1`.
+
+.. ipython:: python
+
+    RedBaron("1 + 1")[0].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("1 + 1")
+    red
+    red[0].operator = "*"
+    red
+    red[0].first = "(1 + 1)"
+    red
+    red[0].second = "caramba"
+    red
+
 .. _CallNode:
 
 CallNode
