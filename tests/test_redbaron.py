@@ -2261,6 +2261,8 @@ def test_decorator_setattr_value():
 # that none works as expected, for eg, this one fails:
 #     RedBaron("a(b, c=d, *e, **f)")[0].value[1].value[0] = "**dsq"
 
+# auto add quotes for strings
+
 # important
 
 # in addition of passing empty string, allow to pass None value on setattr
