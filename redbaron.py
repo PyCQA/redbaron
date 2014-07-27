@@ -901,110 +901,18 @@ class CodeBlockNode(Node):
         return result
 
 
-class IntNode(Node):
-    def __init__(self, node, *args, **kwargs):
-        super(IntNode, self).__init__(node, *args, **kwargs)
-        self.value = int(self.value)
+class AssertNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return to_node(baron.parse("assert %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
-    def fst(self):
-        return {
-            "type": "int",
-            "value": str(self.value),
-            "section": "number",
-        }
-
-
-class EndlNode(Node):
-    def __repr__(self):
-        return repr(baron.dumps([self.fst()]))
-
-class SpaceNode(Node):
-    def __repr__(self):
-        return repr(baron.dumps([self.fst()]))
-
-
-class ImportNode(Node):
-    def modules(self):
-        "return a list of string of modules imported"
-        return [x.value.dumps()for x in self('dotted_as_name')]
-
-    def names(self):
-        "return a list of string of new names inserted in the python context"
-        return [x.target if x.target else x.value.dumps() for x in self('dotted_as_name')]
-
-    def _string_to_node_list(self, string, parent, on_attribute):
-        fst = baron.parse("import %s" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-
-class ListNode(Node):
-    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
-    def _string_to_node_list(self, string, parent, on_attribute):
-        fst = baron.parse("[%s]" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-
-class SetNode(Node):
-    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
-    def _string_to_node_list(self, string, parent, on_attribute):
-        fst = baron.parse("{%s}" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-
-class ReprNode(Node):
-    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
-    def _string_to_node_list(self, string, parent, on_attribute):
-        fst = baron.parse("`%s`" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-
-
-class TupleNode(Node):
-    def _string_to_node_list(self, string, parent, on_attribute):
-        fst = baron.parse("(%s)" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-    def append_value(self, value, trailing=False):
-        if len(self.value) == 0:
-            # a tuple of one item must have a trailing comma
-            self.value.append_comma(value, parent=self, on_attribute="value", trailing=True)
-            return
-        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
-
-class DictNode(Node):
-    def _string_to_node_list(self, string, parent, on_attribute):
-        fst = baron.parse("{%s}" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-    def append_value(self, key, value, trailing=False):
-        # XXX sucks, only accept key/value, not fst/rebaron instance
-        value = baron.parse("{%s: %s}" % (key, value))[0]["value"][0]
-        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
-
-class FuncdefNode(CodeBlockNode):
-    _other_identifiers = ["def", "def_"]
-    _default_test_value = "name"
-
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "arguments":
-            fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-        elif on_attribute == "decorators":
-            return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
+        elif on_attribute == "message":
+            if string:
+                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+                return to_node(baron.parse("assert plop, %s" % string)[0]["message"], parent=parent, on_attribute=on_attribute)
 
         else:
-            return super(FuncdefNode, self)._string_to_node_list(string, parent, on_attribute)
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
-            self.sixth_formatting = []
+            raise Exception("Unhandled case")
 
 
 class AssignmentNode(Node):
@@ -1029,257 +937,6 @@ class AssignmentNode(Node):
 
         elif on_attribute == "value":
             return to_node(baron.parse("a = %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
-
-class ForNode(CodeBlockNode):
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute == "target":
-            return to_node(baron.parse("for i in %s: pass" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
-
-        elif on_attribute == "iterator":
-            return to_node(baron.parse("for %s in i: pass" % string)[0]["iterator"], parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.fifth_formatting) == 1 and self.fifth_formatting[0].type == "space":
-            self.fifth_formatting = []
-
-
-class WhileNode(CodeBlockNode):
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute == "test":
-            return to_node(baron.parse("while %s: pass" % string)[0]["test"], parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
-            self.third_formatting = []
-
-
-class ClassNode(CodeBlockNode):
-    _default_test_value = "name"
-
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "decorators":
-            return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
-
-        elif on_attribute == "inherit_from":
-            if string:
-                self.parenthesis = True
-            else:
-                self.parenthesis = False
-
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("class a(%s): pass" % string)[0]["inherit_from"]))
-
-        else:
-            return super(ClassNode, self)._string_to_node_list(string, parent, on_attribute)
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
-            self.sixth_formatting = []
-
-
-class WithNode(CodeBlockNode):
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "contexts":
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("with %s: pass" % string)[0]["contexts"]))
-
-        else:
-            return super(WithNode, self)._string_to_node_list(string, parent, on_attribute)
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
-            self.third_formatting = []
-
-
-class WithContextItemNode(Node):
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return to_node(baron.parse("with %s: pass" % string)[0]["contexts"][0]["value"], parent=parent, on_attribute=on_attribute)
-
-        elif on_attribute == "as":
-            if string:
-                self.first_formatting = [{"type": "space", "value": " "}]
-                self.second_formatting = [{"type": "space", "value": " "}]
-                return to_node(baron.parse("with a as %s: pass" % string)[0]["contexts"][0]["as"], parent=parent, on_attribute=on_attribute)
-            else:
-                self.first_formatting = []
-                self.second_formatting = []
-                return ""
-
-        else:
-            raise Exception("Unhandled case")
-
-    def __getattr__(self, name):
-        if name == "as_":
-            return getattr(self, "as")
-
-        return super(WithContextItemNode, self).__getattr__(name)
-
-    def __setattr__(self, name, value):
-        if name == "as_":
-            name = "as"
-
-        return super(WithContextItemNode, self).__setattr__(name, value)
-
-
-class IfNode(CodeBlockNode):
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute == "test":
-            return to_node(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
-            self.third_formatting = []
-
-
-class ElifNode(CodeBlockNode):
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute == "test":
-            return to_node(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
-            self.third_formatting = []
-
-
-class ElseNode(CodeBlockNode):
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
-            self.second_formatting = []
-
-
-class TryNode(CodeBlockNode):
-    def __getattr__(self, name):
-        if name == "finally_":
-            return getattr(self, "finally")
-
-        return super(TryNode, self).__getattr__(name)
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
-            self.second_formatting = []
-
-
-class FinallyNode(CodeBlockNode):
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
-            self.second_formatting = []
-
-
-class ExceptNode(CodeBlockNode):
-    def __setattr__(self, key, value):
-        if key == "delimiter":
-            if value == ",":
-                self.second_formatting = []
-                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
-            elif value == "as":
-                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
-                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
-            elif value:
-                raise Exception("Delimiters of an except node can only be 'as' or ',' (without spaces around it).")
-
-        return super(CodeBlockNode, self).__setattr__(key, value)
-
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute == "exception":
-            if string:
-                self.first_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
-                return to_node(baron.parse("try: pass\nexcept %s: pass" % string)[0]["excepts"][0]["exception"], parent=parent, on_attribute=on_attribute)
-            else:
-                self.first_formatting = []
-                self.delimiter = ""
-                self.target = ""
-                return ""
-
-        elif on_attribute == "target":
-            if not self.exception:
-                raise Exception("Can't set a target to an exception node that doesn't have an exception set")
-
-            if string:
-                self.delimiter = "as"
-                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
-                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
-                return to_node(baron.parse("try: pass\nexcept a as %s: pass" % string)[0]["excepts"][0]["target"], parent=parent, on_attribute=on_attribute)
-
-            else:
-                self.delimiter = ""
-                self.second_formatting = []
-                self.third_formatting = []
-                return ""
-
-        else:
-            raise Exception("Unhandled case")
-
-    def append_value(self, value):
-        self.help(with_formatting=True)
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.fifth_formatting) == 1 and self.fifth_formatting[0].type == "space":
-            self.fifth_formatting = []
-
-
-class CommaNode(Node):
-    pass
-
-
-class DotNode(Node):
-    pass
-
-
-class CallNode(Node):
-    def _convert_input_to_node_object_list(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("a(%s)" % string)[0]["value"][1]["value"]))
-
-        else:
-            raise Exception("Unhandled case")
-
-    def append_value(self, value, trailing=False):
-        if isinstance(value, string_instance):
-            value = baron.parse("a(%s)" % value)[0]["value"][1]["value"][0]
-        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
-
-class CallArgumentNode(Node):
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return to_node(baron.parse("a(%s)" % string)[0]["value"][1]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
-
-class AssertNode(Node):
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return to_node(baron.parse("assert %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
-
-        elif on_attribute == "message":
-            if string:
-                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
-                return to_node(baron.parse("assert plop, %s" % string)[0]["message"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1347,6 +1004,57 @@ class BooleanOperatorNode(Node):
             raise Exception("Unhandled case")
 
 
+class CallNode(Node):
+    def _convert_input_to_node_object_list(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("a(%s)" % string)[0]["value"][1]["value"]))
+
+        else:
+            raise Exception("Unhandled case")
+
+    def append_value(self, value, trailing=False):
+        if isinstance(value, string_instance):
+            value = baron.parse("a(%s)" % value)[0]["value"][1]["value"][0]
+        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+
+class CallArgumentNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return to_node(baron.parse("a(%s)" % string)[0]["value"][1]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
+class ClassNode(CodeBlockNode):
+    _default_test_value = "name"
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "decorators":
+            return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "inherit_from":
+            if string:
+                self.parenthesis = True
+            else:
+                self.parenthesis = False
+
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("class a(%s): pass" % string)[0]["inherit_from"]))
+
+        else:
+            return super(ClassNode, self)._string_to_node_list(string, parent, on_attribute)
+
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
+            self.sixth_formatting = []
+
+
+class CommaNode(Node):
+    pass
+
+
 class ComparisonNode(Node):
     def __setattr__(self, key, value):
         if key == "value" and isinstance(value, string_instance):
@@ -1363,6 +1071,298 @@ class ComparisonNode(Node):
 
         else:
             raise Exception("Unhandled case")
+
+
+class DictNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("{%s}" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+    def append_value(self, key, value, trailing=False):
+        # XXX sucks, only accept key/value, not fst/rebaron instance
+        value = baron.parse("{%s: %s}" % (key, value))[0]["value"][0]
+        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+
+class DotNode(Node):
+    pass
+
+
+class ElifNode(CodeBlockNode):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "test":
+            return to_node(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
+            self.third_formatting = []
+
+
+class ElseNode(CodeBlockNode):
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
+            self.second_formatting = []
+
+
+class EndlNode(Node):
+    def __repr__(self):
+        return repr(baron.dumps([self.fst()]))
+
+
+class ExceptNode(CodeBlockNode):
+    def __setattr__(self, key, value):
+        if key == "delimiter":
+            if value == ",":
+                self.second_formatting = []
+                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+            elif value == "as":
+                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+            elif value:
+                raise Exception("Delimiters of an except node can only be 'as' or ',' (without spaces around it).")
+
+        return super(CodeBlockNode, self).__setattr__(key, value)
+
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "exception":
+            if string:
+                self.first_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+                return to_node(baron.parse("try: pass\nexcept %s: pass" % string)[0]["excepts"][0]["exception"], parent=parent, on_attribute=on_attribute)
+            else:
+                self.first_formatting = []
+                self.delimiter = ""
+                self.target = ""
+                return ""
+
+        elif on_attribute == "target":
+            if not self.exception:
+                raise Exception("Can't set a target to an exception node that doesn't have an exception set")
+
+            if string:
+                self.delimiter = "as"
+                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+                return to_node(baron.parse("try: pass\nexcept a as %s: pass" % string)[0]["excepts"][0]["target"], parent=parent, on_attribute=on_attribute)
+
+            else:
+                self.delimiter = ""
+                self.second_formatting = []
+                self.third_formatting = []
+                return ""
+
+        else:
+            raise Exception("Unhandled case")
+
+    def append_value(self, value):
+        self.help(with_formatting=True)
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.fifth_formatting) == 1 and self.fifth_formatting[0].type == "space":
+            self.fifth_formatting = []
+
+
+class FinallyNode(CodeBlockNode):
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
+            self.second_formatting = []
+
+
+class ForNode(CodeBlockNode):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "target":
+            return to_node(baron.parse("for i in %s: pass" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "iterator":
+            return to_node(baron.parse("for %s in i: pass" % string)[0]["iterator"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.fifth_formatting) == 1 and self.fifth_formatting[0].type == "space":
+            self.fifth_formatting = []
+
+
+class IfNode(CodeBlockNode):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "test":
+            return to_node(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
+            self.third_formatting = []
+
+
+class ImportNode(Node):
+    def modules(self):
+        "return a list of string of modules imported"
+        return [x.value.dumps()for x in self('dotted_as_name')]
+
+    def names(self):
+        "return a list of string of new names inserted in the python context"
+        return [x.target if x.target else x.value.dumps() for x in self('dotted_as_name')]
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("import %s" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+
+class IntNode(Node):
+    def __init__(self, node, *args, **kwargs):
+        super(IntNode, self).__init__(node, *args, **kwargs)
+        self.value = int(self.value)
+
+    def fst(self):
+        return {
+            "type": "int",
+            "value": str(self.value),
+            "section": "number",
+        }
+
+
+class FuncdefNode(CodeBlockNode):
+    _other_identifiers = ["def", "def_"]
+    _default_test_value = "name"
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "arguments":
+            fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+        elif on_attribute == "decorators":
+            return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
+
+        else:
+            return super(FuncdefNode, self)._string_to_node_list(string, parent, on_attribute)
+
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
+            self.sixth_formatting = []
+
+
+class ListNode(Node):
+    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("[%s]" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+
+class ReprNode(Node):
+    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("`%s`" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+
+class SetNode(Node):
+    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("{%s}" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+
+class SpaceNode(Node):
+    def __repr__(self):
+        return repr(baron.dumps([self.fst()]))
+
+
+class TryNode(CodeBlockNode):
+    def __getattr__(self, name):
+        if name == "finally_":
+            return getattr(self, "finally")
+
+        return super(TryNode, self).__getattr__(name)
+
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
+            self.second_formatting = []
+
+
+class TupleNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        fst = baron.parse("(%s)" % string)[0]["value"]
+        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+    def append_value(self, value, trailing=False):
+        if len(self.value) == 0:
+            # a tuple of one item must have a trailing comma
+            self.value.append_comma(value, parent=self, on_attribute="value", trailing=True)
+            return
+        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+
+
+class WhileNode(CodeBlockNode):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "test":
+            return to_node(baron.parse("while %s: pass" % string)[0]["test"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
+            self.third_formatting = []
+
+
+class WithContextItemNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return to_node(baron.parse("with %s: pass" % string)[0]["contexts"][0]["value"], parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "as":
+            if string:
+                self.first_formatting = [{"type": "space", "value": " "}]
+                self.second_formatting = [{"type": "space", "value": " "}]
+                return to_node(baron.parse("with a as %s: pass" % string)[0]["contexts"][0]["as"], parent=parent, on_attribute=on_attribute)
+            else:
+                self.first_formatting = []
+                self.second_formatting = []
+                return ""
+
+        else:
+            raise Exception("Unhandled case")
+
+    def __getattr__(self, name):
+        if name == "as_":
+            return getattr(self, "as")
+
+        return super(WithContextItemNode, self).__getattr__(name)
+
+    def __setattr__(self, name, value):
+        if name == "as_":
+            name = "as"
+
+        return super(WithContextItemNode, self).__setattr__(name, value)
+
+
+class WithNode(CodeBlockNode):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "contexts":
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("with %s: pass" % string)[0]["contexts"]))
+
+        else:
+            return super(WithNode, self)._string_to_node_list(string, parent, on_attribute)
+
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
+            self.third_formatting = []
 
 
 class RedBaron(NodeList):

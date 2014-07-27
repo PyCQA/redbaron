@@ -293,6 +293,29 @@ The comma node is reponsible for holding the formatting arround it.
 
     RedBaron("[1, 2, 3]")[0].value[1].help(with_formatting=True, deep=True)
 
+ComparisonNode
+==============
+
+The node represent a comparison operation, for e.g.: :file:`42 > 30`.
+
+.. ipython:: python
+
+    RedBaron("42 > 30")[0].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("42 > 30")
+    red
+    red[0].operator = "=="
+    red
+    red[0].first = "(1 + 1)"
+    red
+    red[0].second = "caramba"
+    red
+
 
 DictNode
 ========
