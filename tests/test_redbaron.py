@@ -2231,6 +2231,18 @@ def test_call_argument_setattr_name():
         red[0].value[1].value[0].value = "def a(): pass"
 
 
+def test_decorator_setattr_value():
+    red = RedBaron("@pouet\ndef a(): pass\n")
+    red[0].decorators[0].value = "a.b.c"
+    assert red.dumps() == "@a.b.c\ndef a(): pass\n"
+    assert red[0].decorators[0].value.type == "dotted_name"
+    with pytest.raises(Exception):
+        red[0].decorators[0].value = "def a(): pass"
+    with pytest.raises(Exception):
+        red[0].decorators[0].value = "a()"
+
+# decorator -> call
+
 # advanced
 
 # try -> excepts
@@ -2263,8 +2275,6 @@ def test_call_argument_setattr_name():
 # comprehension_loop -> iterator
 # comprehension_loop -> target
 # comprehension_loop -> ifs
-# decorator -> value
-# decorator -> call
 # def_argument -> name
 # def_argument -> value
 # del -> value
