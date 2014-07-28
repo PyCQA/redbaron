@@ -1078,6 +1078,9 @@ class DecoratorNode(Node):
         if on_attribute == "value":
             return to_node(baron.parse("@%s()\ndef a(): pass" % string)[0]["decorators"][0]["value"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "call":
+            return to_node(baron.parse("@a%s\ndef a(): pass" % string)[0]["decorators"][0]["call"], parent=parent, on_attribute=on_attribute)
+
         else:
             raise Exception("Unhandled case")
 

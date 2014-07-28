@@ -2241,7 +2241,15 @@ def test_decorator_setattr_value():
     with pytest.raises(Exception):
         red[0].decorators[0].value = "a()"
 
-# decorator -> call
+
+def test_decorator_setattr_call():
+    red = RedBaron("@pouet\ndef a(): pass\n")
+    red[0].decorators[0].call = "(*a)"
+    assert red.dumps() == "@pouet(*a)\ndef a(): pass\n"
+    with pytest.raises(Exception):
+        red[0].decorators[0].call = "def a(): pass"
+    with pytest.raises(Exception):
+        red[0].decorators[0].call = ".stuff"
 
 # advanced
 
