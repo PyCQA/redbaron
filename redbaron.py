@@ -1076,8 +1076,7 @@ class ComparisonNode(Node):
 class DecoratorNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            fst = baron.parse("@%s()\ndef a(): pass" % string)[0]["decorators"][0]["value"]
-            return to_node(fst, parent=parent, on_attribute=on_attribute)
+            return to_node(baron.parse("@%s()\ndef a(): pass" % string)[0]["decorators"][0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
