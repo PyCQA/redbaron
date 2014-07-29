@@ -317,6 +317,30 @@ SetAttr
     red
 
 
+DecoratorNode
+=============
+
+A node representing an individual decorator (of a function or a class).
+
+.. ipython:: python
+
+    RedBaron("@stuff.plop(*a)\ndef b(): pass")[0].decorators[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("@stuff\ndef a(): pass")
+    red
+    red[0].decorators[0].value = "a.b.c"
+    red
+    red[0].decorators[0].call = "(*args)"
+    red
+    red[0].decorators[0].call = ""
+    red
+
+
 DictNode
 ========
 
