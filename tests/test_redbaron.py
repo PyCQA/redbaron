@@ -2266,6 +2266,13 @@ def test_def_argument_setattr_value():
         red[0].arguments[0].value = "def a(): pass\n"
 
 
+def test_del_setattr_value():
+    red = RedBaron("del a")
+    red[0].value = "a, b, c"
+    assert red.dumps() == "del a, b, c"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
 # advanced
 
 # try -> excepts
@@ -2300,7 +2307,6 @@ def test_def_argument_setattr_value():
 # comprehension_loop -> iterator
 # comprehension_loop -> target
 # comprehension_loop -> ifs
-# del -> value
 # dict_argument -> value
 # dict_comprehension -> result
 # dict_comprehension -> generators
