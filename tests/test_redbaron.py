@@ -2251,6 +2251,15 @@ def test_decorator_setattr_call():
     with pytest.raises(Exception):
         red[0].decorators[0].call = ".stuff"
 
+
+def test_def_argument_setattr_value():
+    red = RedBaron("def a(b): pass")
+    red[0].arguments[0].value = "plop"
+    assert red.dumps() == "def a(b=plop): pass\n"
+    with pytest.raises(Exception):
+        red[0].arguments[0].value = "def a(): pass\n"
+
+
 # advanced
 
 # try -> excepts
@@ -2285,8 +2294,6 @@ def test_decorator_setattr_call():
 # comprehension_loop -> iterator
 # comprehension_loop -> target
 # comprehension_loop -> ifs
-# def_argument -> name
-# def_argument -> value
 # del -> value
 # dict_argument -> value
 # dict_comprehension -> result
