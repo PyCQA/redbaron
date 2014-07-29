@@ -2252,6 +2252,12 @@ def test_decorator_setattr_call():
         red[0].decorators[0].call = ".stuff"
 
 
+def test_decorator_setattr_call_none():
+    red = RedBaron("@pouet(zob)\ndef a(): pass\n")
+    red[0].decorators[0].call = ""
+    assert red.dumps() == "@pouet\ndef a(): pass\n"
+
+
 def test_def_argument_setattr_value():
     red = RedBaron("def a(b): pass")
     red[0].arguments[0].value = "plop"
