@@ -341,6 +341,27 @@ SetAttr
     red
 
 
+DelNode
+=======
+
+A node representing a :file:`del` statement.
+
+.. ipython:: python
+
+    RedBaron("del stuff")[0].help(deep=True, with_formatting=True)
+
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("del stuff")
+    red
+    red[0].value = "some, other, stuff"
+    red
+
+
 DictNode
 ========
 
