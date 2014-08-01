@@ -1118,6 +1118,9 @@ class DictitemNode(Node):
         if on_attribute == "value":
             return to_node(baron.parse("{a: %s}" % string)[0]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "key":
+            return to_node(baron.parse("{%s: a}" % string)[0]["value"][0]["key"], parent=parent, on_attribute=on_attribute)
+
         else:
             raise Exception("Unhandled case")
 

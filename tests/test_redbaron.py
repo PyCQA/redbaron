@@ -2290,7 +2290,13 @@ def test_dict_item_setattr_value():
         red[0].value[0].value = "def a(): pass\n"
 
 
-# dictitem -> key
+def test_dict_item_setattr_key():
+    red = RedBaron("{a: b}")
+    red[0].value[0].key = "plop"
+    assert red.dumps() == "{plop: b}"
+    with pytest.raises(Exception):
+        red[0].value[0].key = "def a(): pass\n"
+
 
 # advanced
 
