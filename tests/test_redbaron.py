@@ -2293,7 +2293,7 @@ def test_dict_argument_setattr_value():
 # conversion from list/set/dict to comprehension version
 # conversion between binary_operator/boolean_operator/comparison
 # conversion from if/elif/else to if/elif/else (careful about the ifelseblock)
-# conversion from call_argument to list_argument or dict_argument and vice versa
+# conversion from call_argument/def_argument to list_argument or dict_argument and vice versa
 
 # do a check on every setitem, some doesn't works as expected and I'm expected
 # that none works as expected, for eg, this one fails:
