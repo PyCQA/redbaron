@@ -362,6 +362,27 @@ SetAttr
     red
 
 
+DictArgumentNode
+================
+
+A node representing a 'kwargs' definied in a function definition arguments or
+used in a :ref:`CallNode`.
+
+.. ipython:: python
+
+    RedBaron("a(**b)")[0].value[1].value[0].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("a(**b)")
+    red
+    red[0].value[1].value[0].value = "plop"
+    red
+
+
 DictNode
 ========
 
