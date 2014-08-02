@@ -2298,6 +2298,10 @@ def test_dict_item_setattr_key():
         red[0].value[0].key = "def a(): pass\n"
 
 
+# XXX waiting for https://github.com/Psycojoker/baron/issues/50
+# dotted_as_name -> value
+# dotted_as_name -> target
+
 # advanced
 
 # try -> excepts
@@ -2334,8 +2338,6 @@ def test_dict_item_setattr_key():
 # comprehension_loop -> ifs
 # dict_comprehension -> result
 # dict_comprehension -> generators
-# dotted_as_name -> value
-# dotted_as_name -> target
 # dotted_name -> value
 # exec -> value
 # exec -> globals
