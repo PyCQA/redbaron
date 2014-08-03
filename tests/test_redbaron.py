@@ -2298,6 +2298,14 @@ def test_dict_item_setattr_key():
         red[0].value[0].key = "def a(): pass\n"
 
 
+def test_dotted_name_setattr_value():
+    red = RedBaron("import a")
+    red[0].value[0].value.value = "ab.c.d"
+    assert red.dumps() == "import ab.c.d"
+    with pytest.raises(Exception):
+        red[0].value[0].value.value = "def a(): pass\n"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2338,7 +2346,6 @@ def test_dict_item_setattr_key():
 # comprehension_loop -> ifs
 # dict_comprehension -> result
 # dict_comprehension -> generators
-# dotted_name -> value
 # exec -> value
 # exec -> globals
 # exec -> locals
