@@ -1288,6 +1288,16 @@ class FromImportNode(Node):
             raise Exception("Unhandled case")
 
 
+class GetitemNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return to_node(baron.parse("a[%s]" % string)[0]["value"][1]["value"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
+
 class IfNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":

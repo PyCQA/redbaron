@@ -2376,6 +2376,14 @@ def test_from_import_setattr_targets():
         red[0].targets = "def a(): pass\n"
 
 
+def test_getitem_setattr_value():
+    red = RedBaron("a[b]")
+    red[0].value[1].value = "a.b.c"
+    assert red.dumps() == "a[a.b.c]"
+    with pytest.raises(Exception):
+        red[0].value[1].value = "def a(): pass\n"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2418,7 +2426,6 @@ def test_from_import_setattr_targets():
 # dict_comprehension -> generators
 # generator_comprehension -> result
 # generator_comprehension -> generators
-# getitem -> value
 # global -> value
 # lambda -> arguments
 # lambda -> value
