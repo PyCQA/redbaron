@@ -2400,6 +2400,14 @@ def test_lambda_setattr_value():
         red[0].value = "def a(): pass\n"
 
 
+def test_lambda_setattr_arguments():
+    red = RedBaron("lambda: plop")
+    red[0].arguments = "a, b=c, *d, **e"
+    assert red.dumps() == "lambda a, b=c, *d, **e: plop"
+    with pytest.raises(Exception):
+        red[0].arguments = "def a(): pass\n"
+
+
 # lambda -> arguments
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
