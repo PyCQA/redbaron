@@ -2354,7 +2354,11 @@ def test_exec_setattr_locals_none():
         red[0].locals = "def a(): pass\n"
 
 
-# exec -> locals
+def test_exec_setattr_locals_no_globals_raise():
+    red = RedBaron("exec a")
+    with pytest.raises(Exception):
+        red[0].locals = "pouet"
+
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
