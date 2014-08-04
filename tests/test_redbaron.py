@@ -2313,7 +2313,14 @@ def test_exec_setattr_value():
     with pytest.raises(Exception):
         red[0].value = "def a(): pass\n"
 
-# exec -> globals
+
+def test_exec_setattr_globals():
+    red = RedBaron("exec a in b")
+    red[0].globals = "pouet"
+    assert red.dumps() == "exec a in pouet"
+    with pytest.raises(Exception):
+        red[0].globals = "def a(): pass\n"
+
 # exec -> locals
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
