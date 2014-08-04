@@ -2346,6 +2346,14 @@ def test_exec_setattr_locals():
         red[0].locals = "def a(): pass\n"
 
 
+def test_exec_setattr_locals_none():
+    red = RedBaron("exec a in b, c")
+    red[0].locals = ""
+    assert red.dumps() == "exec a in b"
+    with pytest.raises(Exception):
+        red[0].locals = "def a(): pass\n"
+
+
 # exec -> locals
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
