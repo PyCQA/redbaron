@@ -1369,7 +1369,7 @@ class FuncdefNode(CodeBlockNode):
 class LambdaNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "arguments":
-            self.first_formatting = [{"type": "space", "value": " "}]
+            self.first_formatting = [{"type": "space", "value": " "}] if string else []
             fst = baron.parse("lambda %s: x" % string)[0]["arguments"]
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
