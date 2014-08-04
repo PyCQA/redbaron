@@ -2414,6 +2414,14 @@ def test_lambda_setattr_arguments_none():
     assert red.dumps() == "lambda: plop"
 
 
+def test_list_argument_setattr_value():
+    red = RedBaron("lambda *b: plop")
+    red[0].arguments[0].value = "hop"
+    assert red.dumps() == "lambda *hop: plop"
+    with pytest.raises(Exception):
+        red[0].arguments[0].value = "def a(): pass\n"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2456,7 +2464,6 @@ def test_lambda_setattr_arguments_none():
 # dict_comprehension -> generators
 # generator_comprehension -> result
 # generator_comprehension -> generators
-# list_argument -> value
 # list_comprehension -> result
 # list_comprehension -> generators
 # name_as_name -> value
