@@ -1271,6 +1271,16 @@ class ForNode(CodeBlockNode):
             self.fifth_formatting = []
 
 
+class FromImportNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return to_node(baron.parse("from %s import b" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
+
 class IfNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":

@@ -2360,6 +2360,16 @@ def test_exec_setattr_locals_no_globals_raise():
         red[0].locals = "pouet"
 
 
+def test_from_import_setattr_value():
+    red = RedBaron("from a import b")
+    red[0].value = "a.b.c"
+    assert red.dumps() == "from a.b.c import b"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+# from_import -> targets
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2400,8 +2410,6 @@ def test_exec_setattr_locals_no_globals_raise():
 # comprehension_loop -> ifs
 # dict_comprehension -> result
 # dict_comprehension -> generators
-# from_import -> value
-# from_import -> targets
 # generator_comprehension -> result
 # generator_comprehension -> generators
 # getitem -> value
