@@ -1293,9 +1293,15 @@ class GetitemNode(Node):
         if on_attribute == "value":
             return to_node(baron.parse("a[%s]" % string)[0]["value"][1]["value"], parent=parent, on_attribute=on_attribute)
 
+
+class GlobalNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            fst = baron.parse("global %s" % string)[0]["value"]
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
         else:
             raise Exception("Unhandled case")
-
 
 
 class IfNode(CodeBlockNode):

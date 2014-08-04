@@ -2384,6 +2384,14 @@ def test_getitem_setattr_value():
         red[0].value[1].value = "def a(): pass\n"
 
 
+def test_global_setattr_value():
+    red = RedBaron("global a")
+    red[0].value = "a, b, c"
+    assert red.dumps() == "global a, b, c"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2426,7 +2434,6 @@ def test_getitem_setattr_value():
 # dict_comprehension -> generators
 # generator_comprehension -> result
 # generator_comprehension -> generators
-# global -> value
 # lambda -> arguments
 # lambda -> value
 # list_argument -> value
