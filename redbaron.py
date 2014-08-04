@@ -1232,6 +1232,10 @@ class ExecNode(Node):
             if string:
                 return to_node(baron.parse("exec a in %s" % string)[0]["globals"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "locals":
+            self.fifth_formatting = [{"type": "space", "value": " "}]
+            return to_node(baron.parse("exec a in b, %s" % string)[0]["locals"], parent=parent, on_attribute=on_attribute)
+
         else:
             raise Exception("Unhandled case")
 
