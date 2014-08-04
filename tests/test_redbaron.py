@@ -2322,6 +2322,14 @@ def test_exec_setattr_globals():
         red[0].globals = "def a(): pass\n"
 
 
+def test_exec_setattr_globals_wasnt_set():
+    red = RedBaron("exec a")
+    red[0].globals = "pouet"
+    assert red.dumps() == "exec a in pouet"
+    with pytest.raises(Exception):
+        red[0].globals = "def a(): pass\n"
+
+
 def test_exec_setattr_globals_none():
     red = RedBaron("exec a in b")
     red[0].globals = ""
