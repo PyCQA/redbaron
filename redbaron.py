@@ -1229,7 +1229,8 @@ class ExecNode(Node):
             return to_node(baron.parse("exec %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "globals":
-            return to_node(baron.parse("exec a in %s" % string)[0]["globals"], parent=parent, on_attribute=on_attribute)
+            if string:
+                return to_node(baron.parse("exec a in %s" % string)[0]["globals"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
