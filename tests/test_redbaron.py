@@ -2306,6 +2306,16 @@ def test_dotted_name_setattr_value():
         red[0].value[0].value.value = "def a(): pass\n"
 
 
+def test_exec_setattr_value():
+    red = RedBaron("exec a")
+    red[0].value = "plop"
+    assert red.dumps() == "exec plop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+# exec -> globals
+# exec -> locals
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2346,9 +2356,6 @@ def test_dotted_name_setattr_value():
 # comprehension_loop -> ifs
 # dict_comprehension -> result
 # dict_comprehension -> generators
-# exec -> value
-# exec -> globals
-# exec -> locals
 # from_import -> value
 # from_import -> targets
 # generator_comprehension -> result

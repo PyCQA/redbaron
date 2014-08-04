@@ -1223,6 +1223,16 @@ class ExceptNode(CodeBlockNode):
             self.fifth_formatting = []
 
 
+class ExecNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return to_node(baron.parse("exec %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
+
 class FinallyNode(CodeBlockNode):
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
