@@ -1279,6 +1279,13 @@ class FromImportNode(Node):
         else:
             raise Exception("Unhandled case")
 
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "targets":
+            fst = baron.parse("from a import %s" % string)[0]["targets"]
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+        else:
+            raise Exception("Unhandled case")
 
 
 class IfNode(CodeBlockNode):

@@ -2368,7 +2368,13 @@ def test_from_import_setattr_value():
         red[0].value = "def a(): pass\n"
 
 
-# from_import -> targets
+def test_from_import_setattr_targets():
+    red = RedBaron("from a import b")
+    red[0].targets = "a as plop, d as oufti"
+    assert red.dumps() == "from a import a as plop, d as oufti"
+    with pytest.raises(Exception):
+        red[0].targets = "def a(): pass\n"
+
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
