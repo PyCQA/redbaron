@@ -2392,6 +2392,16 @@ def test_global_setattr_value():
         red[0].value = "def a(): pass\n"
 
 
+def test_lambda_setattr_value():
+    red = RedBaron("lambda: plop")
+    red[0].value = "42 * 3"
+    assert red.dumps() == "lambda: 42 * 3"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+# lambda -> arguments
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2434,8 +2444,6 @@ def test_global_setattr_value():
 # dict_comprehension -> generators
 # generator_comprehension -> result
 # generator_comprehension -> generators
-# lambda -> arguments
-# lambda -> value
 # list_argument -> value
 # list_comprehension -> result
 # list_comprehension -> generators
