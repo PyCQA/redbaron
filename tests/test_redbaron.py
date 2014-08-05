@@ -2435,6 +2435,12 @@ def test_print_setattr_value_none():
     red[0].value = ""
     assert red.dumps() == "print"
 
+
+def test_print_setattr_value_none_to_not_none():
+    red = RedBaron("print")
+    red[0].value = "a"
+    assert red.dumps() == "print a"
+
 # print -> destination
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
