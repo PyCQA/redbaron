@@ -1416,7 +1416,7 @@ class PrintNode(Node):
         if on_attribute == "value":
             self.formatting = [{"type": "space", "value": " "}] if string else []
 
-            fst = baron.parse("print %s" % string)[0]["value"]
+            fst = baron.parse(("print %s" if not self.destination else "print >>a, %s") % string)[0]["value"]
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
