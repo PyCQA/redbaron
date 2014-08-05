@@ -2494,6 +2494,12 @@ def test_raise_setattr_value():
         red[0].value = "def a(): pass\n"
 
 
+def test_raise_setattr_value_none():
+    red = RedBaron("raise a")
+    red[0].value = ""
+    assert red.dumps() == "raise"
+
+
 # raise -> value
 # raise -> instance
 # raise -> traceback
