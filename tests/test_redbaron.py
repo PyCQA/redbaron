@@ -2500,6 +2500,12 @@ def test_raise_setattr_value_none():
     assert red.dumps() == "raise"
 
 
+def test_raise_setattr_value_was_none():
+    red = RedBaron("raise")
+    red[0].value = "a"
+    assert red.dumps() == "raise a"
+
+
 # raise -> value
 # raise -> instance
 # raise -> traceback
