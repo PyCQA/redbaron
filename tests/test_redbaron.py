@@ -2449,6 +2449,12 @@ def test_print_setattr_destination():
     with pytest.raises(Exception):
         red[0].destination = "def a(): pass\n"
 
+
+def test_print_setattr_destination_none():
+    red = RedBaron("print >>zop")
+    red[0].destination = ""
+    assert red.dumps() == "print"
+
 # print -> destination
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50

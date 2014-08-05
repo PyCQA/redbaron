@@ -1404,7 +1404,10 @@ class ListNode(Node):
 class PrintNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "destination":
-            return to_node(baron.parse("print >>%s" % string)[0]["destination"], parent=parent, on_attribute=on_attribute)
+            if string:
+                return to_node(baron.parse("print >>%s" % string)[0]["destination"], parent=parent, on_attribute=on_attribute)
+            else:
+                self.formatting = []
 
         else:
             raise Exception("Unhandled case")
