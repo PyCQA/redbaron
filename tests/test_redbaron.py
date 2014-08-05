@@ -2546,6 +2546,12 @@ def test_raise_setattr_traceback_none():
     assert red.dumps() == "raise a, b"
 
 
+def test_raise_setattr_traceback_was_none():
+    red = RedBaron("raise a, b")
+    red[0].traceback = "c"
+    assert red.dumps() == "raise a, b, c"
+
+
 # raise -> traceback
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50

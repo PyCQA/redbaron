@@ -1464,6 +1464,7 @@ class RaiseNode(Node):
 
         elif on_attribute == "traceback":
             if string:
+                self.fifth_formatting = [{"type": "space", "value": " "}]
                 return to_node(baron.parse("raise a, b, %s" % string)[0]["traceback"], parent=parent, on_attribute=on_attribute)
 
         else:
