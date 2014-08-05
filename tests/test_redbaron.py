@@ -2561,6 +2561,16 @@ def test_raise_setattr_traceback_raise():
         red[0].traceback = "c"
 
 
+def test_return_setattr_value():
+    red = RedBaron("return a")
+    red[0].value = "hop"
+    assert red.dumps() == "return hop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+# return -> value
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2607,7 +2617,6 @@ def test_raise_setattr_traceback_raise():
 # generator_comprehension -> generators
 # list_comprehension -> result
 # list_comprehension -> generators
-# return -> value
 # right_parenthesis -> value
 # set_comprehension -> result
 # set_comprehension -> generators
