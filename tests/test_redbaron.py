@@ -2532,6 +2532,14 @@ def test_raise_setattr_instance_no_value_raise():
         red[0].instance = "b"
 
 
+def test_raise_setattr_traceback():
+    red = RedBaron("raise a, b, c")
+    red[0].traceback = "hop"
+    assert red.dumps() == "raise a, b, hop"
+    with pytest.raises(Exception):
+        red[0].traceback = "def a(): pass\n"
+
+
 # raise -> traceback
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
