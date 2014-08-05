@@ -2422,6 +2422,15 @@ def test_list_argument_setattr_value():
         red[0].arguments[0].value = "def a(): pass\n"
 
 
+def test_print_setattr_value():
+    red = RedBaron("print a")
+    red[0].value = "hop, plop"
+    assert red.dumps() == "print hop, plop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+# print -> destination
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2468,8 +2477,6 @@ def test_list_argument_setattr_value():
 # generator_comprehension -> generators
 # list_comprehension -> result
 # list_comprehension -> generators
-# print -> destination
-# print -> value
 # raise -> value
 # raise -> instance
 # raise -> traceback
