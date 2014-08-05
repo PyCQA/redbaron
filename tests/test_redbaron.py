@@ -2506,7 +2506,14 @@ def test_raise_setattr_value_was_none():
     assert red.dumps() == "raise a"
 
 
-# raise -> value
+def test_raise_setattr_instance():
+    red = RedBaron("raise a, b")
+    red[0].instance = "hop"
+    assert red.dumps() == "raise a, hop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
 # raise -> instance
 # raise -> traceback
 

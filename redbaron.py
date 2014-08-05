@@ -1454,6 +1454,9 @@ class RaiseNode(Node):
             if string:
                 return to_node(baron.parse("raise %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "instance":
+            return to_node(baron.parse("raise a, %s" % string)[0]["instance"], parent=parent, on_attribute=on_attribute)
+
         else:
             raise Exception("Unhandled case")
 
