@@ -2425,6 +2425,8 @@ def test_list_argument_setattr_value():
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
+# name_as_name -> value
+# name_as_name -> target
 
 # advanced
 
@@ -2466,8 +2468,6 @@ def test_list_argument_setattr_value():
 # generator_comprehension -> generators
 # list_comprehension -> result
 # list_comprehension -> generators
-# name_as_name -> value
-# name_as_name -> target
 # print -> destination
 # print -> value
 # raise -> value
