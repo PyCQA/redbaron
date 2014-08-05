@@ -1456,6 +1456,7 @@ class RaiseNode(Node):
 
         elif on_attribute == "instance":
             if string:
+                self.third_formatting = [{"type": "space", "value": " "}]
                 return to_node(baron.parse("raise a, %s" % string)[0]["instance"], parent=parent, on_attribute=on_attribute)
 
         else:
