@@ -2575,7 +2575,11 @@ def test_return_setattr_value_none():
     assert red.dumps() == "return"
 
 
-# return -> value
+def test_return_setattr_value_was_none():
+    red = RedBaron("return")
+    red[0].value = "a"
+    assert red.dumps() == "return a"
+
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
