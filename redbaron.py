@@ -1404,6 +1404,9 @@ class ListNode(Node):
 class PrintNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
+            if not string:
+                self.formatting = []
+
             fst = baron.parse("print %s" % string)[0]["value"]
             return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 

@@ -2429,6 +2429,12 @@ def test_print_setattr_value():
     with pytest.raises(Exception):
         red[0].value = "def a(): pass\n"
 
+
+def test_print_setattr_value_none():
+    red = RedBaron("print a")
+    red[0].value = ""
+    assert red.dumps() == "print"
+
 # print -> destination
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
