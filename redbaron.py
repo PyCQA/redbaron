@@ -142,7 +142,13 @@ class GenericNodesUtils(object):
             value.on_attribute = on_attribute
             return [value]
 
-        if isinstance(value, list) and not isinstance(value, NodeList):
+        if isinstance(value, NodeList):
+            for i in value:
+                i.parent = parent
+                i.on_attribute = on_attribute
+            return value
+
+        if isinstance(value, list):
             # assume the user can pass a list of random stuff
             new_value = NodeList()
             for i in value:
@@ -1404,9 +1410,12 @@ class ListNode(Node):
 class PrintNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "destination":
-            self.formatting = [{"type": "space", "value": " "}] if string else []
+            self.formatting = [{"type": "space", "value": " "}] if string or self.value else []
             if string:
+                self.formatting = [{"type": "space", "value": " "}] if string else []
                 return to_node(baron.parse("print >>%s" % string)[0]["destination"], parent=parent, on_attribute=on_attribute)
+            elif self.value and self.value[0].type == "comma":
+                self.value = self.value[1:]
 
         else:
             raise Exception("Unhandled case")
