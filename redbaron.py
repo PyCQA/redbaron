@@ -1463,6 +1463,9 @@ class RaiseNode(Node):
                 return to_node(baron.parse("raise a, %s" % string)[0]["instance"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "traceback":
+            if not self.instance:
+                raise Exception("Can't set traceback if there is not instance")
+
             if string:
                 self.fifth_formatting = [{"type": "space", "value": " "}]
                 return to_node(baron.parse("raise a, b, %s" % string)[0]["traceback"], parent=parent, on_attribute=on_attribute)
