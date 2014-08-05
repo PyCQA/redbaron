@@ -2511,7 +2511,7 @@ def test_raise_setattr_instance():
     red[0].instance = "hop"
     assert red.dumps() == "raise a, hop"
     with pytest.raises(Exception):
-        red[0].value = "def a(): pass\n"
+        red[0].instance = "def a(): pass\n"
 
 
 def test_raise_setattr_instance_none():
