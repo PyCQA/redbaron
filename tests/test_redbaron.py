@@ -2569,6 +2569,12 @@ def test_return_setattr_value():
         red[0].value = "def a(): pass\n"
 
 
+def test_return_setattr_value_none():
+    red = RedBaron("return a")
+    red[0].value = ""
+    assert red.dumps() == "return"
+
+
 # return -> value
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
