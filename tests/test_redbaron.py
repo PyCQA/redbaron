@@ -2526,6 +2526,12 @@ def test_raise_setattr_instance_was_none():
     assert red.dumps() == "raise a, b"
 
 
+def test_raise_setattr_instance_no_value_raise():
+    red = RedBaron("raise")
+    with pytest.raises(Exception):
+        red[0].instance = "b"
+
+
 # raise -> traceback
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50

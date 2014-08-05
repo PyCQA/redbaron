@@ -1455,6 +1455,9 @@ class RaiseNode(Node):
                 return to_node(baron.parse("raise %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "instance":
+            if not self.value:
+                raise Exception("Can't set instance if there is not value")
+
             if string:
                 self.third_formatting = [{"type": "space", "value": " "}]
                 return to_node(baron.parse("raise a, %s" % string)[0]["instance"], parent=parent, on_attribute=on_attribute)
