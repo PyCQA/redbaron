@@ -2480,7 +2480,11 @@ def test_print_setattr_dest_none_had_value():
     assert red.dumps() == "print plop"
 
 
-# print -> destination
+def test_print_setattr_dest_was_none_had_value():
+    red = RedBaron("print zop")
+    red[0].destination = "plop"
+    assert red.dumps() == "print >>plop, zop"
+
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value

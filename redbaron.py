@@ -1410,12 +1410,23 @@ class ListNode(Node):
 class PrintNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "destination":
-            self.formatting = [{"type": "space", "value": " "}] if string or self.value else []
-            if string:
-                self.formatting = [{"type": "space", "value": " "}] if string else []
+            if string and not self.value:
+                self.formatting = [{"type": "space", "value": " "}]
                 return to_node(baron.parse("print >>%s" % string)[0]["destination"], parent=parent, on_attribute=on_attribute)
+
+            elif string and self.value:
+                self.formatting = [{"type": "space", "value": " "}]
+                result = to_node(baron.parse("print >>%s" % string)[0]["destination"], parent=parent, on_attribute=on_attribute)
+                if not self.value[0].type == "comma":
+                    self.value = NodeList([to_node({"type": "comma", "second_formatting": [{"type": "space", "value": " "}], "first_formatting": []}, parent=parent, on_attribute=on_attribute)]) + self.value
+                return result
+
             elif self.value and self.value[0].type == "comma":
+                self.formatting = [{"type": "space", "value": " "}]
                 self.value = self.value[1:]
+
+            else:
+                self.formatting = []
 
         else:
             raise Exception("Unhandled case")
