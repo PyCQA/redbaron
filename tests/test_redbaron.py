@@ -2486,6 +2486,18 @@ def test_print_setattr_dest_was_none_had_value():
     assert red.dumps() == "print >>plop, zop"
 
 
+def test_raise_setattr_value():
+    red = RedBaron("raise a")
+    red[0].value = "hop"
+    assert red.dumps() == "raise hop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+# raise -> value
+# raise -> instance
+# raise -> traceback
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2532,9 +2544,6 @@ def test_print_setattr_dest_was_none_had_value():
 # generator_comprehension -> generators
 # list_comprehension -> result
 # list_comprehension -> generators
-# raise -> value
-# raise -> instance
-# raise -> traceback
 # return -> value
 # right_parenthesis -> value
 # set_comprehension -> result
