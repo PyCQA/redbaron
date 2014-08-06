@@ -1501,6 +1501,15 @@ class SetNode(Node):
         return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
 
+class SliceNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "lower":
+            return to_node(baron.parse("a[%s:]" % string)[0]["value"][1]["value"]["lower"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class SpaceNode(Node):
     def __repr__(self):
         return repr(baron.dumps([self.fst()]))

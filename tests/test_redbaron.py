@@ -2581,6 +2581,17 @@ def test_return_setattr_value_was_none():
     assert red.dumps() == "return a"
 
 
+def test_slice_setattr_lower():
+    red = RedBaron("a[:]")
+    red[0].value[1].value.lower = "hop"
+    assert red.dumps() == "a[hop:]"
+    with pytest.raises(Exception):
+        red[0].value[1].value.lower = "def a(): pass\n"
+
+# slice -> lower
+# slice -> upper
+# slice -> step
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2630,9 +2641,6 @@ def test_return_setattr_value_was_none():
 # right_parenthesis -> value
 # set_comprehension -> result
 # set_comprehension -> generators
-# slice -> lower
-# slice -> upper
-# slice -> step
 # star -> value
 # string_chain -> value
 # ternary_operator -> first
