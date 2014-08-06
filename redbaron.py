@@ -1530,6 +1530,9 @@ class TernaryOperatorNode(Node):
         if on_attribute == "first":
             return to_node(baron.parse("%s if b else c" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "second":
+            return to_node(baron.parse("a if b else %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
+
         else:
             raise Exception("Unhandled case")
 

@@ -2631,8 +2631,15 @@ def test_ternary_operator_setattr_first():
         red[0].first = "def a(): pass\n"
 
 
+def test_ternary_operator_setattr_second():
+    red = RedBaron("a if b else c")
+    red[0].second = "hop"
+    assert red.dumps() == "a if b else hop"
+    with pytest.raises(Exception):
+        red[0].second = "def a(): pass\n"
+
+
 # ternary_operator -> value
-# ternary_operator -> second
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
