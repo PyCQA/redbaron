@@ -2647,6 +2647,14 @@ def test_ternary_operator_setattr_value():
         red[0].value = "def a(): pass\n"
 
 
+def test_unitary_operator_setattr_target():
+    red = RedBaron("-a")
+    red[0].target = "hop"
+    assert red.dumps() == "-hop"
+    with pytest.raises(Exception):
+        red[0].target = "def a(): pass\n"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2696,8 +2704,6 @@ def test_ternary_operator_setattr_value():
 # set_comprehension -> result
 # set_comprehension -> generators
 # string_chain -> value
-# unitary_operator -> value
-# unitary_operator -> target
 # yield -> value
 # yield_atom -> value
 
