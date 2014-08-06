@@ -2675,6 +2675,26 @@ def test_yield_setattr_value_was_none():
     assert red.dumps() == "yield a"
 
 
+def test_yield_atom_setattr_value():
+    red = RedBaron("(yield a)")
+    red[0].value = "hop"
+    assert red.dumps() == "(yield hop)"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_yield_atom_setattr_value_none():
+    red = RedBaron("(yield a)")
+    red[0].value = ""
+    assert red.dumps() == "(yield)"
+
+
+def test_yield_atom_setattr_value_was_none():
+    red = RedBaron("(yield)")
+    red[0].value = "a"
+    assert red.dumps() == "(yield a)"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2724,7 +2744,6 @@ def test_yield_setattr_value_was_none():
 # set_comprehension -> result
 # set_comprehension -> generators
 # string_chain -> value
-# yield_atom -> value
 
 # next TODO
 
