@@ -2595,6 +2595,14 @@ def test_slice_setattr_lower_none():
     assert red.dumps() == "a[:]"
 
 
+def test_slice_setattr_upper():
+    red = RedBaron("a[:]")
+    red[0].value[1].value.upper = "hop"
+    assert red.dumps() == "a[:hop]"
+    with pytest.raises(Exception):
+        red[0].value[1].value.upper = "def a(): pass\n"
+
+
 # slice -> upper
 # slice -> step
 
