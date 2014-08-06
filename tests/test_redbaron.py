@@ -2693,7 +2693,6 @@ def test_ternary_operator_setattr_value():
 # generator_comprehension -> generators
 # list_comprehension -> result
 # list_comprehension -> generators
-# right_parenthesis -> value
 # set_comprehension -> result
 # set_comprehension -> generators
 # string_chain -> value
