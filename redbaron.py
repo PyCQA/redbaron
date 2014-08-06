@@ -1511,6 +1511,10 @@ class SliceNode(Node):
             if string:
                 return to_node(baron.parse("a[:%s]" % string)[0]["value"][1]["value"]["upper"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "step":
+            self.has_two_colons = True
+            return to_node(baron.parse("a[::%s]" % string)[0]["value"][1]["value"]["step"], parent=parent, on_attribute=on_attribute)
+
         else:
             raise Exception("Unhandled case")
 

@@ -2609,6 +2609,14 @@ def test_slice_setattr_upper_none():
     assert red.dumps() == "a[:]"
 
 
+def test_slice_setattr_step():
+    red = RedBaron("a[:]")
+    red[0].value[1].value.step = "hop"
+    assert red.dumps() == "a[::hop]"
+    with pytest.raises(Exception):
+        red[0].value[1].value.step = "def a(): pass\n"
+
+
 # slice -> step
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
