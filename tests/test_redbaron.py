@@ -2639,7 +2639,13 @@ def test_ternary_operator_setattr_second():
         red[0].second = "def a(): pass\n"
 
 
-# ternary_operator -> value
+def test_ternary_operator_setattr_value():
+    red = RedBaron("a if b else c")
+    red[0].value = "hop"
+    assert red.dumps() == "a if hop else c"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
