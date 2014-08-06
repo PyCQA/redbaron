@@ -2669,6 +2669,12 @@ def test_yield_setattr_value_none():
     assert red.dumps() == "yield"
 
 
+def test_yield_setattr_value_was_none():
+    red = RedBaron("yield")
+    red[0].value = "a"
+    assert red.dumps() == "yield a"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
