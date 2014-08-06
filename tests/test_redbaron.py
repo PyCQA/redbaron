@@ -2588,7 +2588,13 @@ def test_slice_setattr_lower():
     with pytest.raises(Exception):
         red[0].value[1].value.lower = "def a(): pass\n"
 
-# slice -> lower
+
+def test_slice_setattr_lower_none():
+    red = RedBaron("a[a:]")
+    red[0].value[1].value.lower = ""
+    assert red.dumps() == "a[:]"
+
+
 # slice -> upper
 # slice -> step
 
