@@ -1525,6 +1525,15 @@ class SpaceNode(Node):
         return repr(baron.dumps([self.fst()]))
 
 
+class TernaryOperatorNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "first":
+            return to_node(baron.parse("%s if b else c" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class TryNode(CodeBlockNode):
     def __getattr__(self, name):
         if name == "finally_":

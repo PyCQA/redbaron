@@ -2623,6 +2623,17 @@ def test_slice_setattr_step_none():
     assert red.dumps() == "a[:]"
 
 
+def test_ternary_operator_setattr_first():
+    red = RedBaron("a if b else c")
+    red[0].first = "hop"
+    assert red.dumps() == "hop if b else c"
+    with pytest.raises(Exception):
+        red[0].first = "def a(): pass\n"
+
+
+# ternary_operator -> value
+# ternary_operator -> second
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2672,11 +2683,7 @@ def test_slice_setattr_step_none():
 # right_parenthesis -> value
 # set_comprehension -> result
 # set_comprehension -> generators
-# star -> value
 # string_chain -> value
-# ternary_operator -> first
-# ternary_operator -> value
-# ternary_operator -> second
 # unitary_operator -> value
 # unitary_operator -> target
 # yield -> value
