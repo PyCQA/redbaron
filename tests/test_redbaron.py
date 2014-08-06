@@ -2603,7 +2603,12 @@ def test_slice_setattr_upper():
         red[0].value[1].value.upper = "def a(): pass\n"
 
 
-# slice -> upper
+def test_slice_setattr_upper_none():
+    red = RedBaron("a[:hop]")
+    red[0].value[1].value.upper = ""
+    assert red.dumps() == "a[:]"
+
+
 # slice -> step
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50

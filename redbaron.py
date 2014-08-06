@@ -1508,7 +1508,8 @@ class SliceNode(Node):
                 return to_node(baron.parse("a[%s:]" % string)[0]["value"][1]["value"]["lower"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "upper":
-            return to_node(baron.parse("a[:%s]" % string)[0]["value"][1]["value"]["upper"], parent=parent, on_attribute=on_attribute)
+            if string:
+                return to_node(baron.parse("a[:%s]" % string)[0]["value"][1]["value"]["upper"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
