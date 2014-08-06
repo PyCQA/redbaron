@@ -2655,6 +2655,14 @@ def test_unitary_operator_setattr_target():
         red[0].target = "def a(): pass\n"
 
 
+def test_yield_setattr_value():
+    red = RedBaron("yield a")
+    red[0].value = "hop"
+    assert red.dumps() == "yield hop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2704,7 +2712,6 @@ def test_unitary_operator_setattr_target():
 # set_comprehension -> result
 # set_comprehension -> generators
 # string_chain -> value
-# yield -> value
 # yield_atom -> value
 
 # next TODO
