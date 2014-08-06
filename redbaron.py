@@ -1578,7 +1578,9 @@ class UnitaryOperatorNode(Node):
 class YieldNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("yield %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+            self.formatting = [{"type": "space", "value": " "}] if string else []
+            if string:
+                return to_node(baron.parse("yield %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
