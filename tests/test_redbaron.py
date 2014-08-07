@@ -2737,6 +2737,10 @@ def test_list_comprehension_set_attr_generators():
 
 # auto add quotes for strings
 
+# on comprehensions, add some kind of magic "global" attribute if the user
+# wants to change the whole body (instead of having to change result and
+# generators attributes)
+
 # important
 
 # in addition of passing empty string, allow to pass None value on setattr
