@@ -1079,6 +1079,15 @@ class ComparisonNode(Node):
             raise Exception("Unhandled case")
 
 
+class ComprehensionLoopNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "iterator":
+            return to_node(baron.parse("[x for %s in x]" % string)[0]["generators"][0]["iterator"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class DecoratorNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
