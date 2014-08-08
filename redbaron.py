@@ -1535,6 +1535,15 @@ class SetNode(Node):
         return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
 
+class SetComprehensionNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "result":
+            return to_node(baron.parse("{%s for x in x}" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class SliceNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "lower":
