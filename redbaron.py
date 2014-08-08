@@ -1142,6 +1142,15 @@ class DictNode(Node):
         self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
 
+class DictComprehensionNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "result":
+            return to_node(baron.parse("{%s for x in x}" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class DotNode(Node):
     pass
 
