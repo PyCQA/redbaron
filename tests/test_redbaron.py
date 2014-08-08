@@ -2783,7 +2783,11 @@ def test_comprehension_loop_setattr_ifs():
         red[0].generators[0].ifs = "def a(): pass\n"
 
 
-# comprehension_loop -> ifs
+def test_comprehension_loop_setattr_ifs_none():
+    red = RedBaron("{a: z for b in c if x if y if z}")
+    red[0].generators[0].ifs = ""
+    assert red.dumps() == "{a: z for b in c}"
+
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
