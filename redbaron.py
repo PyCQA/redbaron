@@ -1080,6 +1080,13 @@ class ComparisonNode(Node):
 
 
 class ComprehensionLoopNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "ifs":
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("[x for x in x %s]" % string)[0]["generators"][0]["ifs"]))
+
+        else:
+            return super(ClassNode, self)._string_to_node_list(string, parent, on_attribute)
+
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "iterator":
             return to_node(baron.parse("[x for %s in x]" % string)[0]["generators"][0]["iterator"], parent=parent, on_attribute=on_attribute)

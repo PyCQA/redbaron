@@ -2775,6 +2775,14 @@ def test_comprehension_loop_setattr_target():
         red[0].generators[0].target = "def a(): pass\n"
 
 
+def test_comprehension_loop_setattr_ifs():
+    red = RedBaron("{a: z for b in c}")
+    red[0].generators[0].ifs = "if x if y if z"
+    assert red.dumps() == "{a: z for b in c if x if y if z}"
+    with pytest.raises(Exception):
+        red[0].generators[0].ifs = "def a(): pass\n"
+
+
 # comprehension_loop -> ifs
 
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
