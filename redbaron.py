@@ -1084,6 +1084,9 @@ class ComprehensionLoopNode(Node):
         if on_attribute == "iterator":
             return to_node(baron.parse("[x for %s in x]" % string)[0]["generators"][0]["iterator"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "target":
+            return to_node(baron.parse("[x for s in %s]" % string)[0]["generators"][0]["target"], parent=parent, on_attribute=on_attribute)
+
         else:
             raise Exception("Unhandled case")
 
