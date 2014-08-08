@@ -1536,6 +1536,14 @@ class SetNode(Node):
 
 
 class SetComprehensionNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "generators":
+            fst = baron.parse("{x %s}" % string)[0]["generators"]
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+        else:
+            raise Exception("Unhandled case")
+
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "result":
             return to_node(baron.parse("{%s for x in x}" % string)[0]["result"], parent=parent, on_attribute=on_attribute)

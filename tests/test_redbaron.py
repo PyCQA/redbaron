@@ -2735,6 +2735,14 @@ def test_set_comprehension_set_attr_result():
         red[0].result = "def a(): pass\n"
 
 
+def test_set_comprehension_set_attr_generators():
+    red = RedBaron("{a for b in c}")
+    red[0].generators = "for pouet in plop if zuto"
+    assert red.dumps() == "{a for pouet in plop if zuto}"
+    with pytest.raises(Exception):
+        red[0].generators = "def a(): pass\n"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2781,7 +2789,6 @@ def test_set_comprehension_set_attr_result():
 # comprehension_loop -> ifs
 # dict_comprehension -> result
 # dict_comprehension -> generators
-# set_comprehension -> generators
 # string_chain -> value
 
 # next TODO
