@@ -2813,6 +2813,14 @@ def test_argument_generator_comprehension_set_attr_generators():
         red[0].value[1].value[0].generators = "def a(): pass\n"
 
 
+def test_string_chain_set_attr_value():
+    red = RedBaron("'a' 'b'")
+    red[0].value = "'a'     'b' 'c'"
+    assert red.dumps() == "'a'     'b' 'c'"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2851,7 +2859,6 @@ def test_argument_generator_comprehension_set_attr_generators():
 
 # complex_operator -> first
 # complex_operator -> second
-# string_chain -> value
 
 # next TODO
 
