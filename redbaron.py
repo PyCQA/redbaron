@@ -1079,6 +1079,15 @@ class ComparisonNode(Node):
             raise Exception("Unhandled case")
 
 
+class ComprehensionIfNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return to_node(baron.parse("[x for x in x if %s]" % string)[0]["generators"][0]["ifs"][0]["value"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class ComprehensionLoopNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "ifs":

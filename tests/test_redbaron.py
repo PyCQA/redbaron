@@ -2789,6 +2789,14 @@ def test_comprehension_loop_setattr_ifs_none():
     assert red.dumps() == "{a: z for b in c}"
 
 
+def test_comprehension_if_setattr_value():
+    red = RedBaron("[a for b in c if plop]")
+    red[0].generators[0].ifs[0].value = "1 + 1 == 2"
+    assert red.dumps() == "[a for b in c if 1 + 1 == 2]"
+    with pytest.raises(Exception):
+        red[0].generators[0].ifs[0].value = "def a(): pass\n"
+
+
 # XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
@@ -2829,7 +2837,6 @@ def test_comprehension_loop_setattr_ifs_none():
 # argument_generator_comprehension -> generators
 # complex_operator -> first
 # complex_operator -> second
-# comprehension_if -> value
 # string_chain -> value
 
 # next TODO
