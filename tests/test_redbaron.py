@@ -2840,6 +2840,7 @@ def test_string_chain_set_attr_value():
 # conversion between binary_operator/boolean_operator/comparison
 # conversion from if/elif/else to if/elif/else (careful about the ifelseblock)
 # conversion from call_argument/def_argument to list_argument or dict_argument and vice versa
+# conversion from string chain to string
 
 # do a check on every setitem, some doesn't works as expected and I'm expected
 # that none works as expected, for eg, this one fails:
@@ -2854,11 +2855,6 @@ def test_string_chain_set_attr_value():
 # important
 
 # in addition of passing empty string, allow to pass None value on setattr
-
-# MASTA TODO
-
-# complex_operator -> first
-# complex_operator -> second
 
 # next TODO
 
