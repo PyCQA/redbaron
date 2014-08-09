@@ -2836,6 +2836,8 @@ def test_string_chain_set_attr_value():
 # for -> else
 # try -> else
 
+# ifelseblock -> if/elif/else
+
 # conversion from list/set/dict to comprehension version
 # conversion between binary_operator/boolean_operator/comparison
 # conversion from if/elif/else to if/elif/else (careful about the ifelseblock)
