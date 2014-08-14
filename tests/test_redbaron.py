@@ -1417,7 +1417,7 @@ def position_fixture(request):
 def test_find_by_position(position_fixture):
     node, positions = position_fixture
     for position in positions:
-        assert node == fst.find_by_position(*position)
+        assert node == fst.find_by_position(position)
 
 def test_other_name_assignment():
     red = RedBaron("a = b")
