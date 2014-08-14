@@ -2821,7 +2821,6 @@ def test_string_chain_set_attr_value():
         red[0].value = "def a(): pass\n"
 
 
-# XXX waiting for https://github.com/Psycojoker/baron/issues/50
 # dotted_as_name -> value
 # dotted_as_name -> target
 # name_as_name -> value
