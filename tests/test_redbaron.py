@@ -1084,6 +1084,10 @@ def test_path_root(red):
     check_path(red, red, [])
 
 
+def test_path_none(red):
+    assert red.find_by_path([7]) is None
+
+
 def test_path_first_statement(red):
     check_path(red,
             red.funcdef,

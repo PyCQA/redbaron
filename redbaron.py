@@ -66,10 +66,13 @@ class Path(object):
             return class_(node)
 
         for key in path:
-            if isinstance(key, string_instance):
-                child = getattr(node, key)
-            else:
-                child = node[key]
+            try:
+                if isinstance(key, string_instance):
+                    child = getattr(node, key)
+                else:
+                    child = node[key]
+            except (AttributeError, IndexError):
+                return None
             if child is not None and isinstance(child, (Node, NodeList)):
                 node = child
 
@@ -96,9 +99,9 @@ class Path(object):
             return pos
 
         if isinstance(node, NodeList):
-            return next(key for (_, key, _) in parent._render() if getattr(parent, key) is node)
+            return next((key for (_, key, _) in parent._render() if getattr(parent, key) is node), None)
 
-        return next(key for (_, key, _) in parent._render() if key == node.on_attribute)
+        return next((key for (_, key, _) in parent._render() if key == node.on_attribute), None)
 
 
 class GenericNodesUtils(object):
@@ -160,7 +163,8 @@ class GenericNodesUtils(object):
         return baron.path.path_to_bounding_box(self.root.fst(), path)
 
     def find_by_position(self, position):
-        return Path.from_baron_path(self, baron.path.position_to_path(self.fst(), position)).node
+        path = Path.from_baron_path(self, baron.path.position_to_path(self.fst(), position))
+        return path.node if path else None
 
     def _string_to_node_list(self, string, parent, on_attribute):
         return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), baron.parse(string)))
@@ -250,7 +254,8 @@ class NodeList(UserList, GenericNodesUtils):
     __call__ = find_all
 
     def find_by_path(self, path):
-        return Path.from_baron_path(self, path).node
+        path = Path.from_baron_path(self, path)
+        return path.node if path else None
 
     def path(self):
         return Path(self)
@@ -672,7 +677,8 @@ class Node(GenericNodesUtils):
 
 
     def find_by_path(self, path):
-        return Path(self, path).node()
+        path = Path(self, path).node
+        return path.node if path else None
 
     def path(self):
         return Path(self)
