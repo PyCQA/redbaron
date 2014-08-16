@@ -175,6 +175,18 @@ class GenericNodesUtils(object):
 
     def parse_decorators(self, string, parent, on_attribute):
         indentation = self.indentation
+        # XXX
+        # This regex is bad because it could generate a bug in a very
+        # rare case when a '@' with space before is inside an argument
+        # of a decorator. This has extremly low chance to happen but
+        # will probably drive crazy someone one day. This is a bad.
+
+        # The way to solve this is not very simple. I think that the
+        # 'perfect' solution would be use the tokenizer and to have
+        # a mini parser that detect if the '@' is effectivly preceeded
+        # by a space and remove it (the parser have to handle situation where
+        # it is inside a call and outside to detect the good '@' since @ will
+        # probably be a new operator in python in the futur)
         string = re.sub(" *@", "@", string)
         fst = baron.parse("%s\ndef a(): pass" % string.strip())[0]["decorators"]
         fst[-1]["indent"] = indentation
