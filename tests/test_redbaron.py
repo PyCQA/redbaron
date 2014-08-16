@@ -2298,14 +2298,6 @@ def test_dict_item_setattr_key():
         red[0].value[0].key = "def a(): pass\n"
 
 
-def test_dotted_name_setattr_value():
-    red = RedBaron("import a")
-    red[0].value[0].value.value = "ab.c.d"
-    assert red.dumps() == "import ab.c.d"
-    with pytest.raises(Exception):
-        red[0].value[0].value.value = "def a(): pass\n"
-
-
 def test_exec_setattr_value():
     red = RedBaron("exec a")
     red[0].value = "plop"
