@@ -1356,6 +1356,27 @@ class FromImportNode(Node):
             raise Exception("Unhandled case")
 
 
+class FuncdefNode(CodeBlockNode):
+    _other_identifiers = ["def", "def_"]
+    _default_test_value = "name"
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "arguments":
+            fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+        elif on_attribute == "decorators":
+            return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
+
+        else:
+            return super(FuncdefNode, self)._string_to_node_list(string, parent, on_attribute)
+
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
+            self.sixth_formatting = []
+
+
 class GeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "generators":
@@ -1428,27 +1449,6 @@ class IntNode(Node):
             "value": str(self.value),
             "section": "number",
         }
-
-
-class FuncdefNode(CodeBlockNode):
-    _other_identifiers = ["def", "def_"]
-    _default_test_value = "name"
-
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "arguments":
-            fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-        elif on_attribute == "decorators":
-            return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
-
-        else:
-            return super(FuncdefNode, self)._string_to_node_list(string, parent, on_attribute)
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
-            self.sixth_formatting = []
 
 
 class LambdaNode(Node):
