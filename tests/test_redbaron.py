@@ -2813,7 +2813,14 @@ def test_string_chain_set_attr_value():
         red[0].value = "def a(): pass\n"
 
 
-# dotted_as_name -> value
+def test_dotted_as_name_setattr_value():
+    red = RedBaron("import a")
+    red[0].value[0].value = "a.b.c"
+    assert red.dumps() == "import a.b.c"
+    with pytest.raises(Exception):
+        red[0].value[0].value = "def a(): pass\n"
+
+
 # dotted_as_name -> target
 # name_as_name -> value
 # name_as_name -> target

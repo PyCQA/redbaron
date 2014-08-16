@@ -1220,6 +1220,17 @@ class DotNode(Node):
     pass
 
 
+class DottedAsNameNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            fst = baron.parse("import %s" % string)[0]["value"][0]["value"]
+            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+
+        else:
+            raise Exception("Unhandled case")
+
+
+
 class ElifNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
