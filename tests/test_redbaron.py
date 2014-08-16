@@ -2841,6 +2841,34 @@ def test_dotted_as_name_setattr_target_was_none():
     assert red.dumps() == "import a as qsd"
 
 
+def test_name_as_name_setattr_value():
+    red = RedBaron("from x import a")
+    red[0].targets[0].value = "a"
+    assert red.dumps() == "from x import a"
+    with pytest.raises(Exception):
+        red[0].targets[0].value = "def a(): pass\n"
+
+
+def test_name_as_name_setattr_target():
+    red = RedBaron("from x import a as qsd")
+    red[0].targets[0].target = "plop"
+    assert red.dumps() == "from x import a as plop"
+    with pytest.raises(Exception):
+        red[0].targets[0].target = "def a(): pass\n"
+
+
+def test_name_as_name_setattr_target_none():
+    red = RedBaron("from x import a as qsd")
+    red[0].targets[0].target = ""
+    assert red.dumps() == "from x import a"
+
+
+def test_name_as_name_setattr_target_was_none():
+    red = RedBaron("from x import a")
+    red[0].targets[0].target = "qsd"
+    assert red.dumps() == "from x import a as qsd"
+
+
 # name_as_name -> value
 # name_as_name -> target
 

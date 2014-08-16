@@ -1528,6 +1528,23 @@ class ListNode(Node):
         return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
 
 
+class NameAsNameNode(Node):
+    def __setattr__(self, key, value):
+        if key == "target":
+            if not (re.match(r'^[a-zA-Z_]\w*$', value) or value in ("", None)):
+                raise Exception("The target of a name as name node can only be a 'name' or an empty string or None")
+
+            if value:
+                self.first_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+
+        elif key == "value":
+            if not (re.match(r'^[a-zA-Z_]\w*$', value) or value in ("", None)):
+                raise Exception("The value of a name as name node can only be a 'name' or an empty string or None")
+
+        return super(NameAsNameNode, self).__setattr__(key, value)
+
+
 class PrintNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "destination":
