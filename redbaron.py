@@ -1221,6 +1221,17 @@ class DotNode(Node):
 
 
 class DottedAsNameNode(Node):
+    def __setattr__(self, key, value):
+        if key == "target":
+            if not (re.match(r'^[a-zA-Z_]\w*$', value) or value in ("", None)):
+                raise Exception("The target of a dotted as name node can only be a 'name' or an empty string or None")
+
+            if value:
+                self.first_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+
+        return super(DottedAsNameNode, self).__setattr__(key, value)
+
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
             fst = baron.parse("import %s" % string)[0]["value"][0]["value"]

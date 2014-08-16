@@ -2821,7 +2821,26 @@ def test_dotted_as_name_setattr_value():
         red[0].value[0].value = "def a(): pass\n"
 
 
-# dotted_as_name -> target
+def test_dotted_as_name_setattr_target():
+    red = RedBaron("import a as qsd")
+    red[0].value[0].target = "plop"
+    assert red.dumps() == "import a as plop"
+    with pytest.raises(Exception):
+        red[0].value[0].target = "def a(): pass\n"
+
+
+def test_dotted_as_name_setattr_target_none():
+    red = RedBaron("import a as qsd")
+    red[0].value[0].target = ""
+    assert red.dumps() == "import a"
+
+
+def test_dotted_as_name_setattr_target_was_none():
+    red = RedBaron("import a")
+    red[0].value[0].target = "qsd"
+    assert red.dumps() == "import a as qsd"
+
+
 # name_as_name -> value
 # name_as_name -> target
 
