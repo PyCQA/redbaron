@@ -2869,9 +2869,6 @@ def test_name_as_name_setattr_target_was_none():
     assert red.dumps() == "from x import a as qsd"
 
 
-# name_as_name -> value
-# name_as_name -> target
-
 # advanced
 
 # try -> excepts
