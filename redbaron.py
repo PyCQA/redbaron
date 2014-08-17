@@ -1280,7 +1280,7 @@ class ExceptNode(CodeBlockNode):
             elif value:
                 raise Exception("Delimiters of an except node can only be 'as' or ',' (without spaces around it).")
 
-        return super(CodeBlockNode, self).__setattr__(key, value)
+        return super(ExceptNode, self).__setattr__(key, value)
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "exception":
