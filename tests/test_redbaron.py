@@ -2874,6 +2874,12 @@ def test_while_else_simple():
     red[0].else_ = "else:\n    pass\n"
     assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n"
 
+
+def test_while_else_no_prefix():
+    red = RedBaron("while a:\n    pass\n")
+    red[0].else_ = "pass"
+    assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n"
+
 # advanced
 
 # try -> excepts

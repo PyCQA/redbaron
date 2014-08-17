@@ -922,7 +922,10 @@ class CodeBlockNode(Node):
 class ElseAttributeNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "else":
-            return to_node(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
+            if string.startswith("else"):
+                return to_node(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
+
+            return to_node(baron.parse("while s: pass\n%s" % "else:\n    " + string)[0]["else"], parent=parent, on_attribute=on_attribute)
 
     def __setattr__(self, name, value):
         if name == "else_":
