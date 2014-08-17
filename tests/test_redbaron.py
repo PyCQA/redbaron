@@ -2880,6 +2880,43 @@ def test_while_else_no_prefix():
     red[0].else_ = "pass"
     assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n"
 
+
+# TODO
+# consider: with and without starting with 'else'
+# variation of indentation (meaning: the whole white is indented and followed
+# by another statement
+
+"plop"
+"    plop"
+"\nplop"
+"  \nplop"
+"  \n   plop"
+"                          plop"
+"\n                          plop"
+"  \n                        plop"
+"plop\nplouf"
+"\nplop\nplouf"
+"    plop\n    plouf"
+"\n    plop\n    plouf"
+"    \n    plop\n    plouf"
+" plop\n plouf"
+"\n plop\n plouf"
+" \n plop\n plouf"
+"            plop\n            plouf"
+"\n            plop\n            plouf"
+"            \n            plop\n            plouf"
+"plop\nif a:\n    pass\n"
+"return 42"
+"return 42\n"
+"return 42\n\n"
+"return 42"
+"return 42\n"
+"return 42"
+"return 42\n"
+"return 42\n\n"
+"return 42"
+"return 42\n"
+
 # advanced
 
 # try -> excepts
