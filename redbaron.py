@@ -1763,9 +1763,18 @@ class YieldAtomNode(Node):
 
 
 class WhileNode(CodeBlockNode):
+    def __setattr__(self, name, value):
+        if name == "else_":
+            name = "else"
+
+        return super(WhileNode, self).__setattr__(name, value)
+
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
             return to_node(baron.parse("while %s: pass" % string)[0]["test"], parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "else":
+            return to_node(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")

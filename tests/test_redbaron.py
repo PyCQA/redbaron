@@ -2869,6 +2869,11 @@ def test_name_as_name_setattr_target_was_none():
     assert red.dumps() == "from x import a as qsd"
 
 
+def test_while_else_simple():
+    red = RedBaron("while a:\n    pass\n")
+    red[0].else_ = "else:\n    pass\n"
+    assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n"
+
 # advanced
 
 # try -> excepts
