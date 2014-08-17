@@ -919,6 +919,18 @@ class CodeBlockNode(Node):
         return result
 
 
+class ElseAttributeNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "else":
+            return to_node(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
+
+    def __setattr__(self, name, value):
+        if name == "else_":
+            name = "else"
+
+        return super(ElseAttributeNode, self).__setattr__(name, value)
+
+
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "generators":
@@ -1762,22 +1774,13 @@ class YieldAtomNode(Node):
             raise Exception("Unhandled case")
 
 
-class WhileNode(CodeBlockNode):
-    def __setattr__(self, name, value):
-        if name == "else_":
-            name = "else"
-
-        return super(WhileNode, self).__setattr__(name, value)
-
+class WhileNode(CodeBlockNode, ElseAttributeNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
             return to_node(baron.parse("while %s: pass" % string)[0]["test"], parent=parent, on_attribute=on_attribute)
 
-        elif on_attribute == "else":
-            return to_node(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
-
         else:
-            raise Exception("Unhandled case")
+            return super(WhileNode, self)._string_to_node(string, parent, on_attribute)
 
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
