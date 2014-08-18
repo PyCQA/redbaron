@@ -250,7 +250,7 @@ class NodeList(UserList, GenericNodesUtils):
         if os.isatty(sys.stdout.fileno()):
             return self.__str__()
 
-        return "%s %s, \"%s\" %s" % (
+        return "<%s %s, \"%s\" %s>" % (
                 self.__class__.__name__,
                 self.path().to_baron_path(),
                 self.dumps().replace("\n", "\\n"),
@@ -737,7 +737,7 @@ class Node(GenericNodesUtils):
         if os.isatty(sys.stdout.fileno()):
             return self.__str__()
 
-        return "%s %s, \"%s\" %s" % (
+        return "<%s %s, \"%s\" %s>" % (
                 self.__class__.__name__,
                 self.path().to_baron_path(),
                 self.dumps().replace("\n", "\\n"),
