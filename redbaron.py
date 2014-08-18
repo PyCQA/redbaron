@@ -249,7 +249,13 @@ class NodeList(UserList, GenericNodesUtils):
     def __repr__(self):
         if os.isatty(sys.stdout.fileno()):
             return self.__str__()
-        return "{'class':'ListNode', 'value':" + repr(list(self.data)) + "}"
+
+        return "%s %s, \"%s\" %s" % (
+                self.__class__.__name__,
+                self.path().to_baron_path(),
+                self.dumps().replace("\n", "\\n"),
+                id(self)
+            )
 
     def __str__(self):
         to_return = ""
@@ -730,8 +736,13 @@ class Node(GenericNodesUtils):
     def __repr__(self):
         if os.isatty(sys.stdout.fileno()):
             return self.__str__()
-        return "{'class':Node, 'type':'%s', 'on_attribute':'%s', 'parent_type':'%s', 'path':'%s', 'value':'%s'}" % \
-                    (self.__class__.__name__, self.on_attribute, self.parent.__class__.__name__, self.path().to_baron_path(), self.dumps())
+
+        return "%s %s, \"%s\" %s" % (
+                self.__class__.__name__,
+                self.path().to_baron_path(),
+                self.dumps().replace("\n", "\\n"),
+                id(self)
+            )
 
     def __str__(self):
         if runned_from_ipython():
