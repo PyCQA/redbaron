@@ -21,21 +21,21 @@ An example on how you can do that by hand without the helper is provided
 everytime to teach you the general underlying of (Red)Baron. Expect this to be
 quite low level.
 
-.. _to_node:
+.. _Node.from_fst:
 
-to_node()
----------
+Node.from_fst()
+---------------
 
-:file:`to_node()` is an helper function that takes a FST node and return a
+:file:`Node.from_fst()` is an helper class method that takes a FST node and return a
 RedBaron node instance. Except if you need to go down at a low level or that
 RedBaron doesn't provide the helper you need, you shouldn't use it.
 
 .. ipython:: python
 
-    from redbaron import to_node
-    to_node({"type": "name", "value": "a"})
+    from redbaron import Node
+    Node.from_fst({"type": "name", "value": "a"})
 
-:file:`to_node()` takes 2 optional keywords arguments: :file:`parent` and
+:file:`Node.from_fst()` takes 2 optional keywords arguments: :file:`parent` and
 :file:`on_attribute` that should respectively be RedBaron node instance (the
 parent node) and a string (the attribute of the parent node on which this node
 is stored). See :ref:`parent` doc for a better understanding of those 2
@@ -44,7 +44,7 @@ parameters.
 .. ipython:: python
 
     red = RedBaron("[1,]")
-    new_name = to_node({"type": "name", "value": "a"}, parent=red[0], on_attribute="value")
+    new_name = Node.from_fst({"type": "name", "value": "a"}, parent=red[0], on_attribute="value")
     red[0].value.append(new_name)
 
 .. _append_value:
@@ -114,7 +114,7 @@ By hand
 ~~~~~~~
 
 Not really a very funny thing to do. You have 2 strategies: add nodes by
-writting FST and using :ref:`to_node` (but I don't expect anyone to really have
+writting FST and using :ref:`Node.from_fst` (but I don't expect anyone to really have
 to remember the FST from head) by hand or using :file:`.copy()` if nodes
 already exist (please note that I'm not going to cover all the cases possible
 you can encounter, :file:`.append_value()` does that, you can read its code if
@@ -136,8 +136,8 @@ With FST:
     red = RedBaron("[1, 2, 3]")
 
     list_node_value = red[0]
-    comma = to_node({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=list_node_value, on_attribute="value")
-    new_name = to_node({"type": "name", "value": "a"}, parent=list_node_value, on_attribute="value")
+    comma = Node.from_fst({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=list_node_value, on_attribute="value")
+    new_name = Node.from_fst({"type": "name", "value": "a"}, parent=list_node_value, on_attribute="value")
     list_node_value.value.append(comma)
     list_node_value.value.append(new_name)
     list_node_value
