@@ -12,6 +12,16 @@
 - .at() return the first item starting at line X
 - .rename() (name -> value, def/class -> name)
 
+- there is a global problem of some node having some attributes that are keyword in python, eg: trynode.finally, WithContextItemNode.as How to handle that in general? For now I use allow to use $KEYWORD + "\_" but that breaks that completion and probably other things
+
+- to_node -> Node.from_fst, same for NodeList.from_fst
+- generate default constructors for nodes using nodes_rendering_order
+- if possible try to keep a coherent signature with possibles attributes, set correctly default attributes
+- examples:
+    * SpaceNode(" ")
+    * CommaNode()
+    * CommaNode(first_formatting=[" "]) # allow to pass strings again
+
 ### Find/Find\_All (comparison)
 
 Magic stuff like:
@@ -60,6 +70,15 @@ now. It should implement every expected method of a list (.sort, .extend, .remov
 - find\_name\_binding -> search assign, def (args && name), class, except, with, for ...
 - find\_identifier -> search name + everything up there ^
 
+### Wrappers
+
+It should be easy to wrap statement, expressions or various structure in other
+statements, like a statement with a block or an associative parenthesis or
+those kind of things.
+
 ### Misc
 
 * delegate .filtered on the value if the value is a NodeList? Can quickly become magic behavior
+
+- node.to_python return an instance in python of the node (in a "safe" eval), for eg RedBaron("42")[0].to_python() -> 42 as an int instance
+- to_python car accept an argument context which is a context dict to pass to it

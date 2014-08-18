@@ -63,6 +63,14 @@ Table of content
    modifying_helpers
    other
 
+Reference
+---------
+
+.. toctree::
+   :maxdepth: 2
+
+   nodes_reference
+
 
 Indices and tables
 ==================

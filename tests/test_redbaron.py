@@ -1510,6 +1510,1361 @@ def test_set_attr_funcdef_value_simple():
     assert red[0].value.dumps() == "\n    plop\n"
 
 
+def test_set_attr_funcdef_value_simple_indented():
+    red = RedBaron("def a(): pass")
+    red[0].value = "    plop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_simple_endl():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\nplop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_simple_space_endl():
+    red = RedBaron("def a(): pass")
+    red[0].value = "  \nplop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_simple_space_endl_space():
+    red = RedBaron("def a(): pass")
+    red[0].value = "  \n   plop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_simple_too_much_space():
+    red = RedBaron("def a(): pass")
+    red[0].value = "                          plop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_simple_endl_too_much_space():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\n                          plop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_simple_space_endl_too_much_space():
+    red = RedBaron("def a(): pass")
+    red[0].value = "  \n                        plop"
+    assert red[0].value.dumps() == "\n    plop\n"
+
+
+def test_set_attr_funcdef_value_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "plop\nplouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_value_endl_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\nplop\nplouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_value_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "    plop\n    plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_value_endl_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\n    plop\n    plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_value_space_endl_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "    \n    plop\n    plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_too_small_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = " plop\n plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_endl_too_small_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\n plop\n plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_space_endl_too_small_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = " \n plop\n plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_too_much_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "            plop\n            plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_endl_too_much_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "\n            plop\n            plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_space_endl_too_much_indent_complex():
+    red = RedBaron("def a(): pass")
+    red[0].value = "            \n            plop\n            plouf"
+    assert red[0].value.dumps() == "\n    plop\n    plouf\n"
+
+
+def test_set_attr_funcdef_space_complex_with_more_complex_indent():
+    red = RedBaron("def a(): pass")
+    red[0].value = "plop\nif a:\n    pass\n"
+    assert red[0].value.dumps() == "\n    plop\n    if a:\n        pass\n"
+
+
+code_for_block_setattr = """
+class A():
+    def a():
+        pass
+
+    def b():
+        pass
+
+
+def c():
+    def zomg():
+        pass
+    plop
+
+
+def d():
+    pass
+"""
+
+def test_set_attr_funcdef_advanced_dont_break_next_block_indent():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="c").value = "return 42"
+    assert len(red.find("def", name="c")("endl")) == 4
+    assert red.find("def", name="c").value[-1].indent == ""
+
+
+def test_set_attr_funcdef_advanced_dont_break_next_block_indent_one_endl():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="c").value = "return 42\n"
+    assert len(red.find("def", name="c")("endl")) == 4
+    assert red.find("def", name="c").value[-1].indent == ""
+
+
+def test_set_attr_funcdef_advanced_dont_break_next_block_indent_two_endl():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="c").value = "return 42\n\n"
+    assert len(red.find("def", name="c")("endl")) == 4
+    assert red.find("def", name="c").value[-1].indent == ""
+
+
+def test_set_attr_funcdef_advanced_in_class_dont_break_next_block_indent():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="a").value = "return 42"
+    assert len(red.find("def", name="a")("endl")) == 3
+    assert red.find("def", name="a").value[-1].indent == "    "
+
+
+def test_set_attr_funcdef_advanced_in_class_dont_break_next_block_indent_one_endl():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="a").value = "return 42\n"
+    assert len(red.find("def", name="a")("endl")) == 3
+    assert red.find("def", name="a").value[-1].indent == "    "
+
+
+def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="b").value = "return 42"
+    assert len(red.find("def", name="b")("endl")) == 4
+    assert red.find("def", name="b").value[-1].indent == ""
+
+
+def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent_one_endl():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="b").value = "return 42\n"
+    assert len(red.find("def", name="b")("endl")) == 4
+    assert red.find("def", name="b").value[-1].indent == ""
+
+
+def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent_two_endl():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="b").value = "return 42\n\n"
+    assert len(red.find("def", name="b")("endl")) == 4
+    assert red.find("def", name="b").value[-1].indent == ""
+
+
+def test_set_attr_funcdef_advanced_inline_dont_break_next_block_indent():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="zomg").value = "return 42"
+    assert len(red.find("def", name="zomg")("endl")) == 3
+    assert red.find("def", name="zomg").value[-1].indent == "    "
+
+
+def test_set_attr_funcdef_advanced_inline_dont_break_next_block_indent_one_endl():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", name="zomg").value = "return 42\n"
+    assert len(red.find("def", name="zomg")("endl")) == 3
+    assert red.find("def", name="zomg").value[-1].indent == "    "
+
+
+def test_set_decorator_funcdef():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "@decorator"
+    assert len(red[0].decorators) == 2
+    assert red[0].decorators.dumps() == "@decorator\n"
+
+
+def test_set_decorator_funcdef_endl():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "@decorator\n"
+    assert len(red[0].decorators) == 2
+    assert red[0].decorators.dumps() == "@decorator\n"
+
+
+def test_set_decorator_funcdef_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "    @decorator"
+    assert len(red[0].decorators) == 2
+    assert red[0].decorators.dumps() == "@decorator\n"
+
+
+def test_set_decorator_funcdef_indent_endl():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "    @decorator\n"
+    assert len(red[0].decorators) == 2
+    assert red[0].decorators.dumps() == "@decorator\n"
+
+
+def test_set_decorator_funcdef_too_small_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = " @decorator"
+    assert len(red[0].decorators) == 2
+    assert red[0].decorators.dumps() == "@decorator\n"
+
+
+def test_set_decorator_funcdef_too_small_indent_endl():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = " @decorator\n"
+    assert len(red[0].decorators) == 2
+    assert red[0].decorators.dumps() == "@decorator\n"
+
+
+def test_set_decorator_funcdef_too_big_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "       @decorator"
+    assert len(red[0].decorators) == 2
+    assert red[0].decorators.dumps() == "@decorator\n"
+
+
+def test_set_decorator_funcdef_too_big_indent_endl():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "       @decorator\n"
+    assert len(red[0].decorators) == 2
+    assert red[0].decorators.dumps() == "@decorator\n"
+
+
+def test_set_decorator_funcdef_complex():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "@plop\n@plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "    @plop\n    @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_endl_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "\n    @plop\n    @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_space_endl_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "      \n    @plop\n    @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_too_small_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = " @plop\n @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_endl_too_small_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "\n @plop\n @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_space_endl_too_small_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = " \n @plop\n @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_too_big_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "     @plop\n     @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_endl_too_big_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = "\n     @plop\n     @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_funcdef_complex_space_endl_too_big_indent():
+    red = RedBaron("def a(): pass")
+    red[0].decorators = " \n     @plop\n     @plouf"
+    assert len(red[0].decorators) == 4
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_set_decorator_indented_funcdef():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", "b").decorators = "@pouet"
+    assert len(red.find("def", "b").decorators) == 2
+    assert red.find("def", "b").decorators[-1].indent == "    "
+
+
+def test_set_decoratorS_indented_funcdef():
+    red = RedBaron(code_for_block_setattr)
+    red.find("def", "b").decorators = "@pouet\n@plop"
+    assert len(red.find("def", "b").decorators) == 4
+    assert red.find("def", "b").decorators[-1].indent == "    "
+    assert red.find("def", "b").decorators[-3].indent == "    "
+
+
+def test_assign_node_setattr_target():
+    red = RedBaron("a = b")
+    red[0].target = "plop"
+    assert red.dumps() == "plop = b"
+    with pytest.raises(Exception):
+        red[0].target = "raise"
+
+
+def test_assign_node_setattr_value():
+    red = RedBaron("a = b")
+    red[0].value = "plop"
+    assert red.dumps() == "a = plop"
+    with pytest.raises(Exception):
+        red[0].value = "raise"
+
+
+def test_assign_node_setattr_operator():
+    red = RedBaron("a = b")
+    red[0].operator = '+'
+    assert red.dumps() == "a += b"
+    red[0].operator = '+='
+    assert red.dumps() == "a += b"
+    red[0].operator = '='
+    assert red.dumps() == "a = b"
+    red[0].operator = '-'
+    assert red.dumps() == "a -= b"
+    red[0].operator = ''
+    assert red.dumps() == "a = b"
+    with pytest.raises(Exception):
+        red[0].operator = "raise"
+
+
+def test_for_setattr_value():
+    red = RedBaron("for i in a: pass")
+    red[0].value = "continue"
+    assert red[0].value.dumps() == "\n    continue\n"
+
+
+def test_for_setattr_target():
+    red = RedBaron("for i in a: pass")
+    red[0].target = "caramba"
+    assert red.dumps() == "for i in caramba: pass\n"
+    assert red[0].target.type == "name"
+    with pytest.raises(Exception):
+        red[0].target = "raise"
+
+
+def test_for_setattr_iterator():
+    red = RedBaron("for i in a: pass")
+    red[0].iterator = "caramba"
+    assert red.dumps() == "for caramba in a: pass\n"
+    assert red[0].iterator.type == "name"
+    with pytest.raises(Exception):
+        red[0].iterator = "raise"
+
+
+def test_while_setattr_value():
+    red = RedBaron("while a: pass")
+    red[0].value = "continue"
+    assert red[0].value.dumps() == "\n    continue\n"
+
+
+def test_while_setattr_test():
+    red = RedBaron("while a: pass")
+    red[0].test = "caramba"
+    assert red.dumps() == "while caramba: pass\n"
+    assert red[0].test.type == "name"
+    with pytest.raises(Exception):
+        red[0].test = "raise"
+
+
+def test_class_setattr_value():
+    red = RedBaron("class a: pass")
+    red[0].value = "def z(): pass"
+    assert red[0].value.dumps() == "\n    def z(): pass\n"
+
+
+def test_class_setattr_decorators():
+    red = RedBaron("class a: pass")
+    red[0].decorators = "@plop\n@plouf"
+    assert red[0].decorators.dumps() == "@plop\n@plouf\n"
+
+
+def test_class_setattr_inherit_from():
+    red = RedBaron("class a: pass")
+    red[0].inherit_from = "A"
+    assert red[0].dumps() == "class a(A): pass\n"
+
+
+def test_with_setattr_value():
+    red = RedBaron("with a: pass")
+    red[0].value = "def z(): pass"
+    assert red[0].value.dumps() == "\n    def z(): pass\n"
+
+
+def test_with_setattr_context():
+    red = RedBaron("with a: pass")
+    red[0].contexts = "a as b, b as c"
+    assert red[0].dumps() == "with a as b, b as c: pass\n"
+
+
+def test_with_context_item_value():
+    red = RedBaron("with a: pass")
+    red[0].contexts[0].value = "plop"
+    assert red[0].dumps() == "with plop: pass\n"
+
+
+def test_with_context_item_as():
+    red = RedBaron("with a: pass")
+    red[0].contexts[0].as_ = "plop"
+    assert red[0].contexts[0].as_ != ""
+    assert red[0].dumps() == "with a as plop: pass\n"
+
+
+def test_with_context_item_as_empty_string():
+    red = RedBaron("with a as b: pass")
+    red[0].contexts[0].as_ = ""
+    assert red[0].contexts[0].as_ is ""
+    assert red[0].dumps() == "with a: pass\n"
+
+
+def test_if_setattr_value():
+    red = RedBaron("if a: pass")
+    red[0].value[0].value = "continue"
+    assert red[0].value[0].value.dumps() == "\n    continue\n"
+
+
+def test_setattr_if_test():
+    red = RedBaron("if a: pass")
+    red[0].value[0].test = "caramba"
+    assert red.dumps() == "if caramba: pass\n"
+    assert red[0].value[0].test.type == "name"
+    with pytest.raises(Exception):
+        red[0].value[0].test = "raise"
+
+
+def test_elif_setattr_value():
+    red = RedBaron("if a: pass\nelif b: pass")
+    red[0].value[1].value = "continue"
+    assert red[0].value[1].value.dumps() == "\n    continue\n"
+
+
+def test_setattr_elif_test():
+    red = RedBaron("if a: pass\nelif b: pass")
+    red[0].value[1].test = "caramba"
+    assert red.dumps() == "if a: pass\nelif caramba: pass\n"
+    assert red[0].value[1].test.type == "name"
+    with pytest.raises(Exception):
+        red[0].value[1].test = "raise"
+
+
+def test_else_setattr_value():
+    red = RedBaron("if a: pass\nelse: pass")
+    red[0].value[1].value = "continue"
+    assert red[0].value[1].value.dumps() == "\n    continue\n"
+
+
+def test_try_setattr_value():
+    red = RedBaron("try: pass\nexcept: pass\n")
+    red[0].value = "continue"
+    assert red[0].value.dumps() == "\n    continue\n"
+
+
+def test_finally_setattr_value():
+    red = RedBaron("try: pass\nfinally: pass\n")
+    red[0].finally_.value = "continue"
+    assert red[0].finally_.value.dumps() == "\n    continue\n"
+
+
+def test_finally_getattr_on_try():
+    red = RedBaron("try: pass\nfinally: pass\n")
+    assert red[0].finally_ is getattr(red[0], "finally")
+
+
+def test_except_setattr_value():
+    red = RedBaron("try: pass\nexcept: pass\n")
+    red[0].excepts[0].value = "continue"
+    assert red[0].excepts[0].value.dumps() == "\n    continue\n"
+
+
+def test_except_setattr_exception():
+    red = RedBaron("try: pass\nexcept: pass\n")
+    red[0].excepts[0].exception = "Plop"
+    assert red[0].excepts[0].dumps() == "except Plop: pass\n"
+
+
+def test_except_setattr_exception_none():
+    red = RedBaron("try: pass\nexcept Pouet: pass\n")
+    red[0].excepts[0].exception = ""
+    assert red[0].excepts[0].dumps() == "except: pass\n"
+
+
+def test_except_setattr_exception_none_with_target():
+    red = RedBaron("try: pass\nexcept Pouet as plop: pass\n")
+    red[0].excepts[0].exception = ""
+    assert red[0].excepts[0].dumps() == "except: pass\n"
+
+
+def test_except_setattr_target():
+    red = RedBaron("try: pass\nexcept Pouet: pass\n")
+    red[0].excepts[0].target = "plop"
+    assert red[0].excepts[0].dumps() == "except Pouet as plop: pass\n"
+
+
+def test_except_setattr_target_raise_no_exception():
+    red = RedBaron("try: pass\nexcept: pass\n")
+    with pytest.raises(Exception):
+        red[0].excepts[0].target = "plop"
+
+
+def test_except_setattr_target_none():
+    red = RedBaron("try: pass\nexcept Pouet as plop: pass\n")
+    red[0].excepts[0].target = ""
+    assert red[0].excepts[0].delimiter == ""
+    assert red[0].excepts[0].dumps() == "except Pouet: pass\n"
+
+
+def test_except_setattr_delimiter_comma():
+    red = RedBaron("try: pass\nexcept Pouet as plop: pass\n")
+    red[0].excepts[0].delimiter = ","
+    assert red[0].excepts[0].delimiter == ","
+    assert red[0].excepts[0].dumps() == "except Pouet, plop: pass\n"
+
+
+def test_except_setattr_delimiter_as():
+    red = RedBaron("try: pass\nexcept Pouet, plop: pass\n")
+    red[0].excepts[0].delimiter = "as"
+    assert red[0].excepts[0].delimiter == "as"
+    assert red[0].excepts[0].dumps() == "except Pouet as plop: pass\n"
+
+
+def test_except_setattr_delimiter_bad():
+    red = RedBaron("try: pass\nexcept Pouet, plop: pass\n")
+    with pytest.raises(Exception):
+        red[0].excepts[0].delimiter = "pouet"
+
+
+def test_call_setattr_value():
+    red = RedBaron("a()")
+    red[0].value[1].value = "b=2, *pouet"
+    assert red.dumps() == "a(b=2, *pouet)"
+
+
+def test_assert_setattr_value():
+    red = RedBaron("assert a")
+    red[0].value = "42 + pouet"
+    assert red.dumps() == "assert 42 + pouet"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass"
+
+
+def test_assert_setattr_message():
+    red = RedBaron("assert a")
+    red[0].message = "plop"
+    assert red.dumps() == "assert a, plop"
+
+
+def test_assert_setattr_message_none():
+    red = RedBaron("assert a, plop")
+    red[0].message = ""
+    assert red.dumps() == "assert a"
+
+
+def test_associative_parenthesis_setattr_value():
+    red = RedBaron("(plop)")
+    red[0].value = "1 + 43"
+    assert red.dumps() == "(1 + 43)"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass"
+
+
+def test_atom_trailers_setattr_value():
+    red = RedBaron("a(plop)")
+    red[0].value = "a.plop[2](42)"
+    assert red.dumps() == "a.plop[2](42)"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass"
+
+
+def test_binary_setattr_value():
+    red = RedBaron("0b101001")
+    red[0].value = "0b1100"
+    assert red.dumps() == "0b1100"
+    with pytest.raises(Exception):
+        red[0].value = "not_binary"
+
+
+def test_binary_operator_setattr_value():
+    red = RedBaron("a - b")
+    red[0].value = "+"
+    assert red.dumps() == "a + b"
+    with pytest.raises(Exception):
+        red[0].value = "some illegal stuff"
+
+
+def test_binary_operator_setattr_first():
+    red = RedBaron("a + b")
+    red[0].first = "caramba"
+    assert red.dumps() == "caramba + b"
+    with pytest.raises(Exception):
+        red[0].first = "def a(): pass"
+
+
+def test_binary_operator_setattr_second():
+    red = RedBaron("a + b")
+    red[0].second = "caramba"
+    assert red.dumps() == "a + caramba"
+    with pytest.raises(Exception):
+        red[0].second = "def a(): pass"
+
+
+def test_boolean_operator_setattr_value():
+    red = RedBaron("a and b")
+    red[0].value = "or"
+    assert red.dumps() == "a or b"
+    with pytest.raises(Exception):
+        red[0].value = "some illegal stuff"
+
+
+def test_boolean_operator_setattr_first():
+    red = RedBaron("a and b")
+    red[0].first = "caramba"
+    assert red.dumps() == "caramba and b"
+    with pytest.raises(Exception):
+        red[0].first = "def a(): pass"
+
+
+def test_boolean_operator_setattr_second():
+    red = RedBaron("a and b")
+    red[0].second = "caramba"
+    assert red.dumps() == "a and caramba"
+    with pytest.raises(Exception):
+        red[0].second = "def a(): pass"
+
+
+def test_comparison_setattr_value():
+    red = RedBaron("a > b")
+    red[0].value = "<"
+    assert red.dumps() == "a < b"
+    with pytest.raises(Exception):
+        red[0].value = "some illegal stuff"
+
+
+def test_comparison_setattr_first():
+    red = RedBaron("a > b")
+    red[0].first = "caramba"
+    assert red.dumps() == "caramba > b"
+    with pytest.raises(Exception):
+        red[0].first = "def a(): pass"
+
+
+def test_comparison_setattr_second():
+    red = RedBaron("a > b")
+    red[0].second = "caramba"
+    assert red.dumps() == "a > caramba"
+    with pytest.raises(Exception):
+        red[0].second = "def a(): pass"
+
+
+def test_call_argument_setattr_value():
+    red = RedBaron("a(b)")
+    red[0].value[1].value[0].value = "caramba"
+    assert red.dumps() == "a(caramba)"
+    with pytest.raises(Exception):
+        red[0].value[1].value[0].value = "def a(): pass"
+
+
+def test_call_argument_setattr_name():
+    red = RedBaron("a(b)")
+    red[0].value[1].value[0].name = "caramba"
+    assert red.dumps() == "a(caramba=b)"
+    red[0].value[1].value[0].name = ""
+    assert red.dumps() == "a(b)"
+    with pytest.raises(Exception):
+        red[0].value[1].value[0].value = "def a(): pass"
+
+
+def test_decorator_setattr_value():
+    red = RedBaron("@pouet\ndef a(): pass\n")
+    red[0].decorators[0].value = "a.b.c"
+    assert red.dumps() == "@a.b.c\ndef a(): pass\n"
+    assert red[0].decorators[0].value.type == "dotted_name"
+    with pytest.raises(Exception):
+        red[0].decorators[0].value = "def a(): pass"
+    with pytest.raises(Exception):
+        red[0].decorators[0].value = "a()"
+
+
+def test_decorator_setattr_call():
+    red = RedBaron("@pouet\ndef a(): pass\n")
+    red[0].decorators[0].call = "(*a)"
+    assert red.dumps() == "@pouet(*a)\ndef a(): pass\n"
+    with pytest.raises(Exception):
+        red[0].decorators[0].call = "def a(): pass"
+    with pytest.raises(Exception):
+        red[0].decorators[0].call = ".stuff"
+
+
+def test_decorator_setattr_call_none():
+    red = RedBaron("@pouet(zob)\ndef a(): pass\n")
+    red[0].decorators[0].call = ""
+    assert red.dumps() == "@pouet\ndef a(): pass\n"
+
+
+def test_def_argument_setattr_value():
+    red = RedBaron("def a(b): pass")
+    red[0].arguments[0].value = "plop"
+    assert red.dumps() == "def a(b=plop): pass\n"
+    with pytest.raises(Exception):
+        red[0].arguments[0].value = "def a(): pass\n"
+
+
+def test_del_setattr_value():
+    red = RedBaron("del a")
+    red[0].value = "a, b, c"
+    assert red.dumps() == "del a, b, c"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_dict_argument_setattr_value():
+    red = RedBaron("a(**b)")
+    red[0].value[1].value[0].value = "plop"
+    assert red.dumps() == "a(**plop)"
+    with pytest.raises(Exception):
+        red[0].value[1].value[0].value = "def a(): pass\n"
+
+
+def test_dict_item_setattr_value():
+    red = RedBaron("{a: b}")
+    red[0].value[0].value = "plop"
+    assert red.dumps() == "{a: plop}"
+    with pytest.raises(Exception):
+        red[0].value[0].value = "def a(): pass\n"
+
+
+def test_dict_item_setattr_key():
+    red = RedBaron("{a: b}")
+    red[0].value[0].key = "plop"
+    assert red.dumps() == "{plop: b}"
+    with pytest.raises(Exception):
+        red[0].value[0].key = "def a(): pass\n"
+
+
+def test_dotted_name_setattr_value():
+    red = RedBaron("import a")
+    red[0].value[0].value.value = "ab.c.d"
+    assert red.dumps() == "import ab.c.d"
+    with pytest.raises(Exception):
+        red[0].value[0].value.value = "def a(): pass\n"
+
+
+def test_exec_setattr_value():
+    red = RedBaron("exec a")
+    red[0].value = "plop"
+    assert red.dumps() == "exec plop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_exec_setattr_globals():
+    red = RedBaron("exec a in b")
+    red[0].globals = "pouet"
+    assert red.dumps() == "exec a in pouet"
+    with pytest.raises(Exception):
+        red[0].globals = "def a(): pass\n"
+
+
+def test_exec_setattr_globals_wasnt_set():
+    red = RedBaron("exec a")
+    red[0].globals = "pouet"
+    assert red.dumps() == "exec a in pouet"
+    with pytest.raises(Exception):
+        red[0].globals = "def a(): pass\n"
+
+
+def test_exec_setattr_globals_none():
+    red = RedBaron("exec a in b")
+    red[0].globals = ""
+    assert red.dumps() == "exec a"
+    with pytest.raises(Exception):
+        red[0].globals = "def a(): pass\n"
+
+
+def test_exec_setattr_locals():
+    red = RedBaron("exec a in b")
+    red[0].locals = "pouet"
+    assert red.dumps() == "exec a in b, pouet"
+    with pytest.raises(Exception):
+        red[0].locals = "def a(): pass\n"
+
+
+def test_exec_setattr_locals_none():
+    red = RedBaron("exec a in b, c")
+    red[0].locals = ""
+    assert red.dumps() == "exec a in b"
+    with pytest.raises(Exception):
+        red[0].locals = "def a(): pass\n"
+
+
+def test_exec_setattr_locals_no_globals_raise():
+    red = RedBaron("exec a")
+    with pytest.raises(Exception):
+        red[0].locals = "pouet"
+
+
+def test_from_import_setattr_value():
+    red = RedBaron("from a import b")
+    red[0].value = "a.b.c"
+    assert red.dumps() == "from a.b.c import b"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_from_import_setattr_targets():
+    red = RedBaron("from a import b")
+    red[0].targets = "a as plop, d as oufti"
+    assert red.dumps() == "from a import a as plop, d as oufti"
+    with pytest.raises(Exception):
+        red[0].targets = "def a(): pass\n"
+
+
+def test_getitem_setattr_value():
+    red = RedBaron("a[b]")
+    red[0].value[1].value = "a.b.c"
+    assert red.dumps() == "a[a.b.c]"
+    with pytest.raises(Exception):
+        red[0].value[1].value = "def a(): pass\n"
+
+
+def test_global_setattr_value():
+    red = RedBaron("global a")
+    red[0].value = "a, b, c"
+    assert red.dumps() == "global a, b, c"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_lambda_setattr_value():
+    red = RedBaron("lambda: plop")
+    red[0].value = "42 * 3"
+    assert red.dumps() == "lambda: 42 * 3"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_lambda_setattr_arguments():
+    red = RedBaron("lambda: plop")
+    red[0].arguments = "a, b=c, *d, **e"
+    assert red.dumps() == "lambda a, b=c, *d, **e: plop"
+    with pytest.raises(Exception):
+        red[0].arguments = "def a(): pass\n"
+
+
+def test_lambda_setattr_arguments_none():
+    red = RedBaron("lambda a, b=c, *d, **e: plop")
+    red[0].arguments = ""
+    assert red.dumps() == "lambda: plop"
+
+
+def test_list_argument_setattr_value():
+    red = RedBaron("lambda *b: plop")
+    red[0].arguments[0].value = "hop"
+    assert red.dumps() == "lambda *hop: plop"
+    with pytest.raises(Exception):
+        red[0].arguments[0].value = "def a(): pass\n"
+
+
+def test_print_setattr_value():
+    red = RedBaron("print a")
+    red[0].value = "hop, plop"
+    assert red.dumps() == "print hop, plop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_print_setattr_value_none():
+    red = RedBaron("print a")
+    red[0].value = ""
+    assert red.dumps() == "print"
+
+
+def test_print_setattr_value_none_to_not_none():
+    red = RedBaron("print")
+    red[0].value = "a"
+    assert red.dumps() == "print a"
+
+
+def test_print_setattr_destination():
+    red = RedBaron("print >>zop")
+    red[0].destination = "hop"
+    assert red.dumps() == "print >>hop"
+    with pytest.raises(Exception):
+        red[0].destination = "def a(): pass\n"
+
+
+def test_print_setattr_destination_none():
+    red = RedBaron("print >>zop")
+    red[0].destination = ""
+    assert red.dumps() == "print"
+
+
+def test_print_setattr_destination_none_to_not_none():
+    red = RedBaron("print")
+    red[0].destination = "hop"
+    assert red.dumps() == "print >>hop"
+
+
+def test_print_setattr_value_was_none_and_had_destination():
+    red = RedBaron("print >>zop")
+    red[0].value = "plop"
+    assert red.dumps() == "print >>zop, plop"
+
+
+def test_print_setattr_value_none_had_destination():
+    red = RedBaron("print >>zop, plop")
+    red[0].value = ""
+    assert red.dumps() == "print >>zop"
+
+
+def test_print_setattr_dest_none_had_value():
+    red = RedBaron("print >>zop, plop")
+    red[0].destination = ""
+    assert red.dumps() == "print plop"
+
+
+def test_print_setattr_dest_was_none_had_value():
+    red = RedBaron("print zop")
+    red[0].destination = "plop"
+    assert red.dumps() == "print >>plop, zop"
+
+
+def test_raise_setattr_value():
+    red = RedBaron("raise a")
+    red[0].value = "hop"
+    assert red.dumps() == "raise hop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_raise_setattr_value_none():
+    red = RedBaron("raise a")
+    red[0].value = ""
+    assert red.dumps() == "raise"
+
+
+def test_raise_setattr_value_was_none():
+    red = RedBaron("raise")
+    red[0].value = "a"
+    assert red.dumps() == "raise a"
+
+
+def test_raise_setattr_instance():
+    red = RedBaron("raise a, b")
+    red[0].instance = "hop"
+    assert red.dumps() == "raise a, hop"
+    with pytest.raises(Exception):
+        red[0].instance = "def a(): pass\n"
+
+
+def test_raise_setattr_instance_none():
+    red = RedBaron("raise a, b")
+    red[0].instance = ""
+    assert red.dumps() == "raise a"
+
+
+def test_raise_setattr_instance_was_none():
+    red = RedBaron("raise a")
+    red[0].instance = "b"
+    assert red.dumps() == "raise a, b"
+
+
+def test_raise_setattr_instance_no_value_raise():
+    red = RedBaron("raise")
+    with pytest.raises(Exception):
+        red[0].instance = "b"
+
+
+def test_raise_setattr_traceback():
+    red = RedBaron("raise a, b, c")
+    red[0].traceback = "hop"
+    assert red.dumps() == "raise a, b, hop"
+    with pytest.raises(Exception):
+        red[0].traceback = "def a(): pass\n"
+
+
+def test_raise_setattr_traceback_none():
+    red = RedBaron("raise a, b, c")
+    red[0].traceback = ""
+    assert red.dumps() == "raise a, b"
+
+
+def test_raise_setattr_traceback_was_none():
+    red = RedBaron("raise a, b")
+    red[0].traceback = "c"
+    assert red.dumps() == "raise a, b, c"
+
+
+def test_raise_setattr_traceback_raise():
+    red = RedBaron("raise")
+    with pytest.raises(Exception):
+        red[0].traceback = "c"
+    red = RedBaron("raise a")
+    with pytest.raises(Exception):
+        red[0].traceback = "c"
+
+
+def test_return_setattr_value():
+    red = RedBaron("return a")
+    red[0].value = "hop"
+    assert red.dumps() == "return hop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_return_setattr_value_none():
+    red = RedBaron("return a")
+    red[0].value = ""
+    assert red.dumps() == "return"
+
+
+def test_return_setattr_value_was_none():
+    red = RedBaron("return")
+    red[0].value = "a"
+    assert red.dumps() == "return a"
+
+
+def test_slice_setattr_lower():
+    red = RedBaron("a[:]")
+    red[0].value[1].value.lower = "hop"
+    assert red.dumps() == "a[hop:]"
+    with pytest.raises(Exception):
+        red[0].value[1].value.lower = "def a(): pass\n"
+
+
+def test_slice_setattr_lower_none():
+    red = RedBaron("a[a:]")
+    red[0].value[1].value.lower = ""
+    assert red.dumps() == "a[:]"
+
+
+def test_slice_setattr_upper():
+    red = RedBaron("a[:]")
+    red[0].value[1].value.upper = "hop"
+    assert red.dumps() == "a[:hop]"
+    with pytest.raises(Exception):
+        red[0].value[1].value.upper = "def a(): pass\n"
+
+
+def test_slice_setattr_upper_none():
+    red = RedBaron("a[:hop]")
+    red[0].value[1].value.upper = ""
+    assert red.dumps() == "a[:]"
+
+
+def test_slice_setattr_step():
+    red = RedBaron("a[:]")
+    red[0].value[1].value.step = "hop"
+    assert red.dumps() == "a[::hop]"
+    with pytest.raises(Exception):
+        red[0].value[1].value.step = "def a(): pass\n"
+
+
+def test_slice_setattr_step_none():
+    red = RedBaron("a[::hop]")
+    red[0].value[1].value.step = ""
+    assert red.dumps() == "a[:]"
+
+
+def test_ternary_operator_setattr_first():
+    red = RedBaron("a if b else c")
+    red[0].first = "hop"
+    assert red.dumps() == "hop if b else c"
+    with pytest.raises(Exception):
+        red[0].first = "def a(): pass\n"
+
+
+def test_ternary_operator_setattr_second():
+    red = RedBaron("a if b else c")
+    red[0].second = "hop"
+    assert red.dumps() == "a if b else hop"
+    with pytest.raises(Exception):
+        red[0].second = "def a(): pass\n"
+
+
+def test_ternary_operator_setattr_value():
+    red = RedBaron("a if b else c")
+    red[0].value = "hop"
+    assert red.dumps() == "a if hop else c"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_unitary_operator_setattr_target():
+    red = RedBaron("-a")
+    red[0].target = "hop"
+    assert red.dumps() == "-hop"
+    with pytest.raises(Exception):
+        red[0].target = "def a(): pass\n"
+
+
+def test_yield_setattr_value():
+    red = RedBaron("yield a")
+    red[0].value = "hop"
+    assert red.dumps() == "yield hop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_yield_setattr_value_none():
+    red = RedBaron("yield a")
+    red[0].value = ""
+    assert red.dumps() == "yield"
+
+
+def test_yield_setattr_value_was_none():
+    red = RedBaron("yield")
+    red[0].value = "a"
+    assert red.dumps() == "yield a"
+
+
+def test_yield_atom_setattr_value():
+    red = RedBaron("(yield a)")
+    red[0].value = "hop"
+    assert red.dumps() == "(yield hop)"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+def test_yield_atom_setattr_value_none():
+    red = RedBaron("(yield a)")
+    red[0].value = ""
+    assert red.dumps() == "(yield)"
+
+
+def test_yield_atom_setattr_value_was_none():
+    red = RedBaron("(yield)")
+    red[0].value = "a"
+    assert red.dumps() == "(yield a)"
+
+
+def test_list_comprehension_set_attr_result():
+    red = RedBaron("[a for b in c]")
+    red[0].result = "hop"
+    assert red.dumps() == "[hop for b in c]"
+    with pytest.raises(Exception):
+        red[0].result = "def a(): pass\n"
+
+
+def test_list_comprehension_set_attr_generators():
+    red = RedBaron("[a for b in c]")
+    red[0].generators = "for pouet in plop if zuto"
+    assert red.dumps() == "[a for pouet in plop if zuto]"
+    with pytest.raises(Exception):
+        red[0].generators = "def a(): pass\n"
+
+
+def test_generator_comprehension_set_attr_result():
+    red = RedBaron("(a for b in c)")
+    red[0].result = "hop"
+    assert red.dumps() == "(hop for b in c)"
+    with pytest.raises(Exception):
+        red[0].result = "def a(): pass\n"
+
+
+def test_generator_comprehension_set_attr_generators():
+    red = RedBaron("(a for b in c)")
+    red[0].generators = "for pouet in plop if zuto"
+    assert red.dumps() == "(a for pouet in plop if zuto)"
+    with pytest.raises(Exception):
+        red[0].generators = "def a(): pass\n"
+
+
+def test_set_comprehension_set_attr_result():
+    red = RedBaron("{a for b in c}")
+    red[0].result = "hop"
+    assert red.dumps() == "{hop for b in c}"
+    with pytest.raises(Exception):
+        red[0].result = "def a(): pass\n"
+
+
+def test_set_comprehension_set_attr_generators():
+    red = RedBaron("{a for b in c}")
+    red[0].generators = "for pouet in plop if zuto"
+    assert red.dumps() == "{a for pouet in plop if zuto}"
+    with pytest.raises(Exception):
+        red[0].generators = "def a(): pass\n"
+
+
+def test_dict_comprehension_set_attr_result():
+    red = RedBaron("{a: z for b in c}")
+    red[0].result = "hop: pop"
+    assert red.dumps() == "{hop: pop for b in c}"
+    with pytest.raises(Exception):
+        red[0].result = "def a(): pass\n"
+
+
+def test_dict_comprehension_set_attr_generators():
+    red = RedBaron("{a: z for b in c}")
+    red[0].generators = "for pouet in plop if zuto"
+    assert red.dumps() == "{a: z for pouet in plop if zuto}"
+    with pytest.raises(Exception):
+        red[0].generators = "def a(): pass\n"
+
+
+def test_comprehension_loop_setattr_iterator():
+    red = RedBaron("{a: z for b in c}")
+    red[0].generators[0].iterator = "plop"
+    assert red.dumps() == "{a: z for plop in c}"
+    with pytest.raises(Exception):
+        red[0].generators[0].iterator = "def a(): pass\n"
+
+
+def test_comprehension_loop_setattr_target():
+    red = RedBaron("{a: z for b in c}")
+    red[0].generators[0].target = "plop"
+    assert red.dumps() == "{a: z for b in plop}"
+    with pytest.raises(Exception):
+        red[0].generators[0].target = "def a(): pass\n"
+
+
+def test_comprehension_loop_setattr_ifs():
+    red = RedBaron("{a: z for b in c}")
+    red[0].generators[0].ifs = "if x if y if z"
+    assert red.dumps() == "{a: z for b in c if x if y if z}"
+    with pytest.raises(Exception):
+        red[0].generators[0].ifs = "def a(): pass\n"
+
+
+def test_comprehension_loop_setattr_ifs_none():
+    red = RedBaron("{a: z for b in c if x if y if z}")
+    red[0].generators[0].ifs = ""
+    assert red.dumps() == "{a: z for b in c}"
+
+
+def test_comprehension_if_setattr_value():
+    red = RedBaron("[a for b in c if plop]")
+    red[0].generators[0].ifs[0].value = "1 + 1 == 2"
+    assert red.dumps() == "[a for b in c if 1 + 1 == 2]"
+    with pytest.raises(Exception):
+        red[0].generators[0].ifs[0].value = "def a(): pass\n"
+
+
+def test_argument_generator_comprehension_set_attr_result():
+    red = RedBaron("a(a for b in c)")
+    red[0].value[1].value[0].result = "hop"
+    assert red.dumps() == "a(hop for b in c)"
+    with pytest.raises(Exception):
+        red[0].value[1].value[0].result = "def a(): pass\n"
+
+
+def test_argument_generator_comprehension_set_attr_generators():
+    red = RedBaron("a(a for b in c)")
+    red[0].value[1].value[0].generators = "for pouet in plop if zuto"
+    assert red.dumps() == "a(a for pouet in plop if zuto)"
+    with pytest.raises(Exception):
+        red[0].value[1].value[0].generators = "def a(): pass\n"
+
+
+def test_string_chain_set_attr_value():
+    red = RedBaron("'a' 'b'")
+    red[0].value = "'a'     'b' 'c'"
+    assert red.dumps() == "'a'     'b' 'c'"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
+# XXX waiting for https://github.com/Psycojoker/baron/issues/50
+# dotted_as_name -> value
+# dotted_as_name -> target
+# name_as_name -> value
+# name_as_name -> target
+
+# advanced
+
+# try -> excepts
+# try -> finally
+
+# while -> else
+# for -> else
+# try -> else
+
+# ifelseblock -> if/elif/else
+
+# conversion from list/set/dict to comprehension version
+# conversion between binary_operator/boolean_operator/comparison
+# conversion from if/elif/else to if/elif/else (careful about the ifelseblock)
+# conversion from call_argument/def_argument to list_argument or dict_argument and vice versa
+# conversion from string chain to string
+
+# do a check on every setitem, some doesn't works as expected and I'm expected
+# that none works as expected, for eg, this one fails:
+#     RedBaron("a(b, c=d, *e, **f)")[0].value[1].value[0] = "**dsq"
+
+# auto add quotes for strings
+
+# on comprehensions, add some kind of magic "global" attribute if the user
+# wants to change the whole body (instead of having to change result and
+# generators attributes)
+
+# important
+
+# in addition of passing empty string, allow to pass None value on setattr
+
+# next TODO
+
+# on setattr with FST and RedBaron NODES
+# fix indent and next/previous endl nodes on:
+# * function/while/other body
+# * decorators
+
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
     assert red[0].value.value[2].index == 2
@@ -1544,6 +2899,7 @@ def test_previous_rendered():
 
 test_indent_code = """
 def a():
+    # plop
     1 + 2
     if caramba:
         plop
@@ -1553,7 +2909,7 @@ def a():
 
 def test_next_rendered_trapped():
     red = RedBaron(test_indent_code)
-    assert red("endl")[4].next_rendered is red.find("name", "pouf")
+    assert red("endl")[5].next_rendered is red.find("name", "pouf")
 
 
 def test_increase_indentation():

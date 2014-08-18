@@ -47,6 +47,8 @@ parameters.
     new_name = to_node({"type": "name", "value": "a"}, parent=red[0], on_attribute="value")
     red[0].value.append(new_name)
 
+.. _append_value:
+
 .append_value()
 ---------------
 
