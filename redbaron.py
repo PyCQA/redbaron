@@ -28,14 +28,6 @@ def indent(line, indentation):
     return "\n".join(map(lambda x: indentation + x, line.split("\n")))
 
 
-def to_node(node, parent=None, on_attribute=None):
-    class_name = "".join(map(lambda x: x.capitalize(), node["type"].split("_"))) + "Node"
-    if class_name in globals():
-        return globals()[class_name](node, parent=parent, on_attribute=on_attribute)
-    else:
-        return type(class_name, (Node,), {})(node, parent=parent, on_attribute=on_attribute)
-
-
 class Path(object):
     """Holds the path to a FST node
 
@@ -114,11 +106,11 @@ class GenericNodesUtils(object):
     def _convert_input_to_node_object(self, value, parent, on_attribute, generic=False):
         if isinstance(value, string_instance):
             if generic:
-                return to_node(baron.parse(value)[0], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse(value)[0], parent=parent, on_attribute=on_attribute)
             else:
                 return self._string_to_node(value, parent=parent, on_attribute=on_attribute)
         elif isinstance(value, dict):
-            return to_node(value, parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(value, parent=parent, on_attribute=on_attribute)
         elif isinstance(value, Node):
             value.parent = parent
             value.on_attribute = on_attribute
@@ -127,7 +119,7 @@ class GenericNodesUtils(object):
         raise NotImplemented
 
     def _string_to_node(self, string, parent, on_attribute):
-        return to_node(baron.parse(string)[0], parent=parent, on_attribute=on_attribute)
+        return Node.from_fst(baron.parse(string)[0], parent=parent, on_attribute=on_attribute)
 
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
         if isinstance(value, string_instance):
@@ -135,7 +127,7 @@ class GenericNodesUtils(object):
 
         if isinstance(value, dict):  # assuming that we got some fst
                                      # also assuming the user do strange things
-            return NodeList([to_node(value, parent=parent, on_attribute=on_attribute)])
+            return NodeList([Node.from_fst(value, parent=parent, on_attribute=on_attribute)])
 
         if isinstance(value, Node):
             value.parent = parent
@@ -171,14 +163,26 @@ class GenericNodesUtils(object):
         return Path.from_baron_path(self, baron.path.position_to_path(self.fst(), line, column)).node
 
     def _string_to_node_list(self, string, parent, on_attribute):
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse(string)))
+        return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), baron.parse(string)))
 
     def parse_decorators(self, string, parent, on_attribute):
         indentation = self.indentation
+        # XXX
+        # This regex is bad because it could generate a bug in a very
+        # rare case when a '@' with space before is inside an argument
+        # of a decorator. This has extremly low chance to happen but
+        # will probably drive crazy someone one day. This is a bad.
+
+        # The way to solve this is not very simple. I think that the
+        # 'perfect' solution would be use the tokenizer and to have
+        # a mini parser that detect if the '@' is effectivly preceeded
+        # by a space and remove it (the parser have to handle situation where
+        # it is inside a call and outside to detect the good '@' since @ will
+        # probably be a new operator in python in the futur)
         string = re.sub(" *@", "@", string)
         fst = baron.parse("%s\ndef a(): pass" % string.strip())[0]["decorators"]
         fst[-1]["indent"] = indentation
-        result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        result = NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
         if indentation:
             # with re.sub they don't have indentation
             for i in filter(lambda x: x.type == "endl", result[1:-1]):
@@ -286,7 +290,7 @@ class NodeList(UserList, GenericNodesUtils):
 
     def copy(self):
         # XXX not very optimised but at least very simple
-        return NodeList(map(to_node, self.fst()))
+        return NodeList(map(Node.from_fst, self.fst()))
 
     def next_generator(self):
         # similary, NodeList will never have next items
@@ -327,18 +331,18 @@ class NodeList(UserList, GenericNodesUtils):
             self.data[-1].second_formatting = {"type": "space", "value": " "}
 
         elif len(self.data) != 0:
-            self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=parent, on_attribute=on_attribute))
+            self.data.append(Node.from_fst({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=parent, on_attribute=on_attribute))
 
         self.data.append(self._convert_input_to_node_object(value, parent, on_attribute))
 
         if trailing:
-            self.data.append(to_node({"type": "comma", "first_formatting": [], "second_formatting": []}, parent=parent, on_attribute=on_attribute))
+            self.data.append(Node.from_fst({"type": "comma", "first_formatting": [], "second_formatting": []}, parent=parent, on_attribute=on_attribute))
 
     def append_endl(self, value, parent, on_attribute):
         "Generic function to append a value in a separated by endl list"
         if self.filtered()[-1].indentation_node_is_direct() is False:
             # we are in this kind of case: while a: pass
-            self.data.insert(0, to_node({
+            self.data.insert(0, Node.from_fst({
                 "indent": self.filtered()[-1].indentation + "    ",
                 "formatting": [],
                 "type": "endl",
@@ -404,7 +408,7 @@ class Node(GenericNodesUtils):
         for kind, key, _ in filter(lambda x: x[0] != "constant", self._render()):
             if kind == "key" and isinstance(node[key], (dict, type(None))):
                 if node[key]:
-                    setattr(self, key, to_node(node[key], parent=self, on_attribute=key))
+                    setattr(self, key, Node.from_fst(node[key], parent=self, on_attribute=key))
                 else:
                     setattr(self, key, None)
                 self._dict_keys.append(key)
@@ -414,13 +418,22 @@ class Node(GenericNodesUtils):
                 self._str_keys.append(key)
 
             elif kind in ("list", "formatting"):
-                setattr(self, key, NodeList(map(lambda x: to_node(x, parent=self, on_attribute=key), node[key]), parent=self, on_attribute=key))
+                setattr(self, key, NodeList(map(lambda x: Node.from_fst(x, parent=self, on_attribute=key), node[key]), parent=self, on_attribute=key))
                 self._list_keys.append(key)
 
             else:
                 raise Exception(str((node["type"], kind, key)))
 
         self.init = False
+
+    @classmethod
+    def from_fst(klass, node, parent=None, on_attribute=None):
+        class_name = "".join(map(lambda x: x.capitalize(), node["type"].split("_"))) + "Node"
+        if class_name in globals():
+            return globals()[class_name](node, parent=parent, on_attribute=on_attribute)
+        else:
+            return type(class_name, (Node,), {})(node, parent=parent, on_attribute=on_attribute)
+
 
     @property
     def next(self):
@@ -708,6 +721,7 @@ class Node(GenericNodesUtils):
             'find_by_position',
             'parse_code_block',
             'parse_decorators',
+            'from_fst',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -787,7 +801,7 @@ class Node(GenericNodesUtils):
 
     def copy(self):
         # XXX not very optimised but at least very simple
-        return to_node(self.fst())
+        return Node.from_fst(self.fst())
 
     def __setattr__(self, name, value):
         if name == "init" or self.init:
@@ -894,7 +908,7 @@ class CodeBlockNode(Node):
 
         fst = baron.parse("def a():\n%s\n" % clean_string)[0]["value"]
 
-        result = NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        result = NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
         # set indentation to the correct level
         indentation = len(result[0].indent)
@@ -903,7 +917,7 @@ class CodeBlockNode(Node):
         elif indentation < target_indentation:
             result.increase_indentation(target_indentation - indentation)
 
-        endl_base_node = to_node({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'}, on_attribute=on_attribute, parent=parent)
+        endl_base_node = Node.from_fst({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'}, on_attribute=on_attribute, parent=parent)
 
         if (self.on_attribute == "root" and self.next) or (not self.next and self.parent.next):
             # I need to finish with 3 endl nodes
@@ -929,18 +943,50 @@ class CodeBlockNode(Node):
         return result
 
 
+class ElseAttributeNode(CodeBlockNode):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "else":
+            if string.startswith("else"):
+                return Node.from_fst(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
+
+            # XXX quite hackish way of doing this
+            fst = {'first_formatting': [],
+                   'second_formatting': [],
+                   'type': 'else',
+                   'value': [{'type': 'pass'},
+                             {'formatting': [],
+                              'indent': '',
+                              'type': 'endl',
+                              'value': '\n'}]
+                  }
+
+            else_node = Node.from_fst(fst, parent=parent, on_attribute=on_attribute)
+            else_node.value = self.parse_code_block(string=string, parent=parent, on_attribute=on_attribute)
+
+            return else_node
+
+        else:
+            raise Exception("Unhandled case")
+
+    def __setattr__(self, name, value):
+        if name == "else_":
+            name = "else"
+
+        return super(ElseAttributeNode, self).__setattr__(name, value)
+
+
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "generators":
             fst = baron.parse("(x %s)" % string)[0]["generators"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
             raise Exception("Unhandled case")
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "result":
-            return to_node(baron.parse("(%s for x in x)" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("(%s for x in x)" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -949,12 +995,12 @@ class ArgumentGeneratorComprehensionNode(Node):
 class AssertNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("assert %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("assert %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "message":
             if string:
-                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
-                return to_node(baron.parse("assert plop, %s" % string)[0]["message"], parent=parent, on_attribute=on_attribute)
+                self.third_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+                return Node.from_fst(baron.parse("assert plop, %s" % string)[0]["message"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -978,10 +1024,10 @@ class AssignmentNode(Node):
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "target":
-            return to_node(baron.parse("%s = a" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("%s = a" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "value":
-            return to_node(baron.parse("a = %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("a = %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -990,7 +1036,7 @@ class AssignmentNode(Node):
 class AssociativeParenthesisNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("(%s)" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("(%s)" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -999,7 +1045,7 @@ class AssociativeParenthesisNode(Node):
 class AtomtrailersNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("(%s)" % string)[0]["value"]["value"]))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), baron.parse("(%s)" % string)[0]["value"]["value"]))
 
         else:
             raise Exception("Unhandled case")
@@ -1022,10 +1068,10 @@ class BinaryOperatorNode(Node):
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "first":
-            return to_node(baron.parse("%s + b" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("%s + b" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "second":
-            return to_node(baron.parse("bb + %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("bb + %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1040,10 +1086,10 @@ class BooleanOperatorNode(Node):
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "first":
-            return to_node(baron.parse("%s and b" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("%s and b" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "second":
-            return to_node(baron.parse("bb and %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("bb and %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1052,7 +1098,7 @@ class BooleanOperatorNode(Node):
 class CallNode(Node):
     def _convert_input_to_node_object_list(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("a(%s)" % string)[0]["value"][1]["value"]))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), baron.parse("a(%s)" % string)[0]["value"][1]["value"]))
 
         else:
             raise Exception("Unhandled case")
@@ -1066,7 +1112,7 @@ class CallNode(Node):
 class CallArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("a(%s)" % string)[0]["value"][1]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("a(%s)" % string)[0]["value"][1]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1085,7 +1131,7 @@ class ClassNode(CodeBlockNode):
             else:
                 self.parenthesis = False
 
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("class a(%s): pass" % string)[0]["inherit_from"]))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), baron.parse("class a(%s): pass" % string)[0]["inherit_from"]))
 
         else:
             return super(ClassNode, self)._string_to_node_list(string, parent, on_attribute)
@@ -1109,10 +1155,10 @@ class ComparisonNode(Node):
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "first":
-            return to_node(baron.parse("%s > b" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("%s > b" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "second":
-            return to_node(baron.parse("bb > %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("bb > %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1121,7 +1167,7 @@ class ComparisonNode(Node):
 class ComprehensionIfNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("[x for x in x if %s]" % string)[0]["generators"][0]["ifs"][0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("[x for x in x if %s]" % string)[0]["generators"][0]["ifs"][0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1130,17 +1176,17 @@ class ComprehensionIfNode(Node):
 class ComprehensionLoopNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "ifs":
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("[x for x in x %s]" % string)[0]["generators"][0]["ifs"]))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), baron.parse("[x for x in x %s]" % string)[0]["generators"][0]["ifs"]))
 
         else:
             return super(ClassNode, self)._string_to_node_list(string, parent, on_attribute)
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "iterator":
-            return to_node(baron.parse("[x for %s in x]" % string)[0]["generators"][0]["iterator"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("[x for %s in x]" % string)[0]["generators"][0]["iterator"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "target":
-            return to_node(baron.parse("[x for s in %s]" % string)[0]["generators"][0]["target"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("[x for s in %s]" % string)[0]["generators"][0]["target"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1149,11 +1195,11 @@ class ComprehensionLoopNode(Node):
 class DecoratorNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("@%s()\ndef a(): pass" % string)[0]["decorators"][0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("@%s()\ndef a(): pass" % string)[0]["decorators"][0]["value"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "call":
             if string:
-                return to_node(baron.parse("@a%s\ndef a(): pass" % string)[0]["decorators"][0]["call"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("@a%s\ndef a(): pass" % string)[0]["decorators"][0]["call"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1162,7 +1208,7 @@ class DecoratorNode(Node):
 class DefArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("def a(b=%s): pass" % string)[0]["arguments"][0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("def a(b=%s): pass" % string)[0]["arguments"][0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1171,7 +1217,7 @@ class DefArgumentNode(Node):
 class DelNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("del %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("del %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1180,7 +1226,7 @@ class DelNode(Node):
 class DictArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("a(**%s)" % string)[0]["value"][1]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("a(**%s)" % string)[0]["value"][1]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1189,10 +1235,10 @@ class DictArgumentNode(Node):
 class DictitemNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("{a: %s}" % string)[0]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("{a: %s}" % string)[0]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "key":
-            return to_node(baron.parse("{%s: a}" % string)[0]["value"][0]["key"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("{%s: a}" % string)[0]["value"][0]["key"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1201,7 +1247,7 @@ class DictitemNode(Node):
 class DictNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("{%s}" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
     def append_value(self, key, value, trailing=False):
         # XXX sucks, only accept key/value, not fst/rebaron instance
@@ -1213,14 +1259,14 @@ class DictComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "generators":
             fst = baron.parse("{x %s}" % string)[0]["generators"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
             raise Exception("Unhandled case")
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "result":
-            return to_node(baron.parse("{%s for x in x}" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("{%s for x in x}" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1230,16 +1276,32 @@ class DotNode(Node):
     pass
 
 
-class DottedNameNode(Node):
+class DottedAsNameNode(Node):
+    def __setattr__(self, key, value):
+        if key == "target":
+            if not (re.match(r'^[a-zA-Z_]\w*$', value) or value in ("", None)):
+                raise Exception("The target of a dotted as name node can only be a 'name' or an empty string or None")
+
+            if value:
+                self.first_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+                self.second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+
+        return super(DottedAsNameNode, self).__setattr__(key, value)
+
     def _string_to_node_list(self, string, parent, on_attribute):
-        fst = baron.parse("import %s" % string)[0]["value"][0]["value"]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        if on_attribute == "value":
+            fst = baron.parse("import %s" % string)[0]["value"][0]["value"]
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
+
+        else:
+            raise Exception("Unhandled case")
+
 
 
 class ElifNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
-            return to_node(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1267,20 +1329,20 @@ class ExceptNode(CodeBlockNode):
         if key == "delimiter":
             if value == ",":
                 self.second_formatting = []
-                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+                self.third_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
             elif value == "as":
-                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
-                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+                self.second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+                self.third_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
             elif value:
                 raise Exception("Delimiters of an except node can only be 'as' or ',' (without spaces around it).")
 
-        return super(CodeBlockNode, self).__setattr__(key, value)
+        return super(ExceptNode, self).__setattr__(key, value)
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "exception":
             if string:
-                self.first_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
-                return to_node(baron.parse("try: pass\nexcept %s: pass" % string)[0]["excepts"][0]["exception"], parent=parent, on_attribute=on_attribute)
+                self.first_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+                return Node.from_fst(baron.parse("try: pass\nexcept %s: pass" % string)[0]["excepts"][0]["exception"], parent=parent, on_attribute=on_attribute)
             else:
                 self.first_formatting = []
                 self.delimiter = ""
@@ -1293,9 +1355,9 @@ class ExceptNode(CodeBlockNode):
 
             if string:
                 self.delimiter = "as"
-                self.second_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
-                self.third_formatting = [to_node({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
-                return to_node(baron.parse("try: pass\nexcept a as %s: pass" % string)[0]["excepts"][0]["target"], parent=parent, on_attribute=on_attribute)
+                self.second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+                self.third_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute=on_attribute, parent=parent)]
+                return Node.from_fst(baron.parse("try: pass\nexcept a as %s: pass" % string)[0]["excepts"][0]["target"], parent=parent, on_attribute=on_attribute)
 
             else:
                 self.delimiter = ""
@@ -1316,13 +1378,13 @@ class ExceptNode(CodeBlockNode):
 class ExecNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("exec %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("exec %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "globals":
             if string:
                 self.second_formatting = [{"type": "space", "value": " "}]
                 self.third_formatting = [{"type": "space", "value": " "}]
-                return to_node(baron.parse("exec a in %s" % string)[0]["globals"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("exec a in %s" % string)[0]["globals"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "locals":
             if not self.globals:
@@ -1330,7 +1392,7 @@ class ExecNode(Node):
 
             if string:
                 self.fifth_formatting = [{"type": "space", "value": " "}]
-                return to_node(baron.parse("exec a in b, %s" % string)[0]["locals"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("exec a in b, %s" % string)[0]["locals"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1347,10 +1409,10 @@ class FinallyNode(CodeBlockNode):
 class ForNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "target":
-            return to_node(baron.parse("for i in %s: pass" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("for i in %s: pass" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "iterator":
-            return to_node(baron.parse("for %s in i: pass" % string)[0]["iterator"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("for %s in i: pass" % string)[0]["iterator"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1362,34 +1424,52 @@ class ForNode(CodeBlockNode):
 
 
 class FromImportNode(Node):
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute == "value":
-            return to_node(baron.parse("from %s import b" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
-
-        else:
-            raise Exception("Unhandled case")
-
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "targets":
             fst = baron.parse("from a import %s" % string)[0]["targets"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
+
+        if on_attribute == "value":
+            fst = baron.parse("from %s import s" % string)[0]["value"]
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
             raise Exception("Unhandled case")
+
+
+class FuncdefNode(CodeBlockNode):
+    _other_identifiers = ["def", "def_"]
+    _default_test_value = "name"
+
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute == "arguments":
+            fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
+
+        elif on_attribute == "decorators":
+            return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
+
+        else:
+            return super(FuncdefNode, self)._string_to_node_list(string, parent, on_attribute)
+
+    def append_value(self, value):
+        self.value.append_endl(value, parent=self, on_attribute="value")
+        if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
+            self.sixth_formatting = []
 
 
 class GeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "generators":
             fst = baron.parse("(x %s)" % string)[0]["generators"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
             raise Exception("Unhandled case")
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "result":
-            return to_node(baron.parse("(%s for x in x)" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("(%s for x in x)" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1398,14 +1478,14 @@ class GeneratorComprehensionNode(Node):
 class GetitemNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("a[%s]" % string)[0]["value"][1]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("a[%s]" % string)[0]["value"][1]["value"], parent=parent, on_attribute=on_attribute)
 
 
 class GlobalNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
             fst = baron.parse("global %s" % string)[0]["value"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
             raise Exception("Unhandled case")
@@ -1414,7 +1494,7 @@ class GlobalNode(Node):
 class IfNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
-            return to_node(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1436,7 +1516,7 @@ class ImportNode(Node):
 
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("import %s" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
 
 class IntNode(Node):
@@ -1452,40 +1532,19 @@ class IntNode(Node):
         }
 
 
-class FuncdefNode(CodeBlockNode):
-    _other_identifiers = ["def", "def_"]
-    _default_test_value = "name"
-
-    def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "arguments":
-            fst = baron.parse("def a(%s): pass" % string)[0]["arguments"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
-
-        elif on_attribute == "decorators":
-            return self.parse_decorators(string, parent=parent, on_attribute=on_attribute)
-
-        else:
-            return super(FuncdefNode, self)._string_to_node_list(string, parent, on_attribute)
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
-            self.sixth_formatting = []
-
-
 class LambdaNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "arguments":
             self.first_formatting = [{"type": "space", "value": " "}] if string else []
             fst = baron.parse("lambda %s: x" % string)[0]["arguments"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
             return super(FuncdefNode, self)._string_to_node_list(string, parent, on_attribute)
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("lambda: %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("lambda: %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1494,7 +1553,7 @@ class LambdaNode(Node):
 class ListArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("lambda *%s: x" % string)[0]["arguments"][0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("lambda *%s: x" % string)[0]["arguments"][0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1504,14 +1563,14 @@ class ListComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "generators":
             fst = baron.parse("[x %s]" % string)[0]["generators"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
             raise Exception("Unhandled case")
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "result":
-            return to_node(baron.parse("[%s for x in x]" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("[%s for x in x]" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1522,7 +1581,24 @@ class ListNode(Node):
 
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("[%s]" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
+
+
+class NameAsNameNode(Node):
+    def __setattr__(self, key, value):
+        if key == "target":
+            if not (re.match(r'^[a-zA-Z_]\w*$', value) or value in ("", None)):
+                raise Exception("The target of a name as name node can only be a 'name' or an empty string or None")
+
+            if value:
+                self.first_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+                self.second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
+
+        elif key == "value":
+            if not (re.match(r'^[a-zA-Z_]\w*$', value) or value in ("", None)):
+                raise Exception("The value of a name as name node can only be a 'name' or an empty string or None")
+
+        return super(NameAsNameNode, self).__setattr__(key, value)
 
 
 class PrintNode(Node):
@@ -1530,13 +1606,13 @@ class PrintNode(Node):
         if on_attribute == "destination":
             if string and not self.value:
                 self.formatting = [{"type": "space", "value": " "}]
-                return to_node(baron.parse("print >>%s" % string)[0]["destination"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("print >>%s" % string)[0]["destination"], parent=parent, on_attribute=on_attribute)
 
             elif string and self.value:
                 self.formatting = [{"type": "space", "value": " "}]
-                result = to_node(baron.parse("print >>%s" % string)[0]["destination"], parent=parent, on_attribute=on_attribute)
+                result = Node.from_fst(baron.parse("print >>%s" % string)[0]["destination"], parent=parent, on_attribute=on_attribute)
                 if not self.value[0].type == "comma":
-                    self.value = NodeList([to_node({"type": "comma", "second_formatting": [{"type": "space", "value": " "}], "first_formatting": []}, parent=parent, on_attribute=on_attribute)]) + self.value
+                    self.value = NodeList([Node.from_fst({"type": "comma", "second_formatting": [{"type": "space", "value": " "}], "first_formatting": []}, parent=parent, on_attribute=on_attribute)]) + self.value
                 return result
 
             elif self.value and self.value[0].type == "comma":
@@ -1556,7 +1632,7 @@ class PrintNode(Node):
                 self.formatting = [{"type": "space", "value": " "}]
 
                 fst = baron.parse(("print %s" if not self.destination else "print >>a, %s") % string)[0]["value"]
-                return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+                return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
             else:
                 self.formatting = [] if not string and not self.destination else [{"type": "space", "value": " "}]
                 return NodeList()
@@ -1570,7 +1646,7 @@ class RaiseNode(Node):
         if on_attribute == "value":
             self.first_formatting = [{"type": "space", "value": " "}] if string else []
             if string:
-                return to_node(baron.parse("raise %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("raise %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "instance":
             if not self.value:
@@ -1578,7 +1654,7 @@ class RaiseNode(Node):
 
             if string:
                 self.third_formatting = [{"type": "space", "value": " "}]
-                return to_node(baron.parse("raise a, %s" % string)[0]["instance"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("raise a, %s" % string)[0]["instance"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "traceback":
             if not self.instance:
@@ -1586,7 +1662,7 @@ class RaiseNode(Node):
 
             if string:
                 self.fifth_formatting = [{"type": "space", "value": " "}]
-                return to_node(baron.parse("raise a, b, %s" % string)[0]["traceback"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("raise a, b, %s" % string)[0]["traceback"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1597,7 +1673,7 @@ class ReprNode(Node):
 
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("`%s`" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
 
 class ReturnNode(Node):
@@ -1605,7 +1681,7 @@ class ReturnNode(Node):
         if on_attribute == "value":
             self.formatting = [{"type": "space", "value": " "}] if string else []
             if string:
-                return to_node(baron.parse("return %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("return %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1616,21 +1692,21 @@ class SetNode(Node):
 
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("{%s}" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
 
 class SetComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "generators":
             fst = baron.parse("{x %s}" % string)[0]["generators"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
             raise Exception("Unhandled case")
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "result":
-            return to_node(baron.parse("{%s for x in x}" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("{%s for x in x}" % string)[0]["result"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1640,16 +1716,16 @@ class SliceNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "lower":
             if string:
-                return to_node(baron.parse("a[%s:]" % string)[0]["value"][1]["value"]["lower"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("a[%s:]" % string)[0]["value"][1]["value"]["lower"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "upper":
             if string:
-                return to_node(baron.parse("a[:%s]" % string)[0]["value"][1]["value"]["upper"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("a[:%s]" % string)[0]["value"][1]["value"]["upper"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "step":
             self.has_two_colons = bool(string)
             if string:
-                return to_node(baron.parse("a[::%s]" % string)[0]["value"][1]["value"]["step"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("a[::%s]" % string)[0]["value"][1]["value"]["step"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1664,7 +1740,7 @@ class StringChainNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
             fst = baron.parse("a = %s" % string)[0]["value"]["value"]
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
         else:
             raise Exception("Unhandled case")
@@ -1673,13 +1749,13 @@ class StringChainNode(Node):
 class TernaryOperatorNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "first":
-            return to_node(baron.parse("%s if b else c" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("%s if b else c" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "second":
-            return to_node(baron.parse("a if b else %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("a if b else %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "value":
-            return to_node(baron.parse("a if %s else s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("a if %s else s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1701,7 +1777,7 @@ class TryNode(CodeBlockNode):
 class TupleNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("(%s)" % string)[0]["value"]
-        return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), fst))
+        return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), fst))
 
     def append_value(self, value, trailing=False):
         if len(self.value) == 0:
@@ -1714,7 +1790,7 @@ class TupleNode(Node):
 class UnitaryOperatorNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "target":
-            return to_node(baron.parse("-%s" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("-%s" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1725,7 +1801,7 @@ class YieldNode(Node):
         if on_attribute == "value":
             self.formatting = [{"type": "space", "value": " "}] if string else []
             if string:
-                return to_node(baron.parse("yield %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("yield %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
@@ -1736,19 +1812,19 @@ class YieldAtomNode(Node):
         if on_attribute == "value":
             self.second_formatting = [{"type": "space", "value": " "}] if string else []
             if string:
-                return to_node(baron.parse("yield %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("yield %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")
 
 
-class WhileNode(CodeBlockNode):
+class WhileNode(ElseAttributeNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
-            return to_node(baron.parse("while %s: pass" % string)[0]["test"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("while %s: pass" % string)[0]["test"], parent=parent, on_attribute=on_attribute)
 
         else:
-            raise Exception("Unhandled case")
+            return super(WhileNode, self)._string_to_node(string, parent, on_attribute)
 
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")
@@ -1759,13 +1835,13 @@ class WhileNode(CodeBlockNode):
 class WithContextItemNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return to_node(baron.parse("with %s: pass" % string)[0]["contexts"][0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("with %s: pass" % string)[0]["contexts"][0]["value"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "as":
             if string:
                 self.first_formatting = [{"type": "space", "value": " "}]
                 self.second_formatting = [{"type": "space", "value": " "}]
-                return to_node(baron.parse("with a as %s: pass" % string)[0]["contexts"][0]["as"], parent=parent, on_attribute=on_attribute)
+                return Node.from_fst(baron.parse("with a as %s: pass" % string)[0]["contexts"][0]["as"], parent=parent, on_attribute=on_attribute)
             else:
                 self.first_formatting = []
                 self.second_formatting = []
@@ -1790,7 +1866,7 @@ class WithContextItemNode(Node):
 class WithNode(CodeBlockNode):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "contexts":
-            return NodeList(map(lambda x: to_node(x, parent=parent, on_attribute=on_attribute), baron.parse("with %s: pass" % string)[0]["contexts"]))
+            return NodeList(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), baron.parse("with %s: pass" % string)[0]["contexts"]))
 
         else:
             return super(WithNode, self)._string_to_node_list(string, parent, on_attribute)
@@ -1804,7 +1880,7 @@ class WithNode(CodeBlockNode):
 class RedBaron(NodeList):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):
-            self.data = [to_node(x, parent=self, on_attribute="root") for x in baron.parse(source_code)]
+            self.data = [Node.from_fst(x, parent=self, on_attribute="root") for x in baron.parse(source_code)]
         else:
             # Might be init from same object, or slice
             super(RedBaron, self).__init__(source_code)

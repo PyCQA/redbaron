@@ -2298,14 +2298,6 @@ def test_dict_item_setattr_key():
         red[0].value[0].key = "def a(): pass\n"
 
 
-def test_dotted_name_setattr_value():
-    red = RedBaron("import a")
-    red[0].value[0].value.value = "ab.c.d"
-    assert red.dumps() == "import ab.c.d"
-    with pytest.raises(Exception):
-        red[0].value[0].value.value = "def a(): pass\n"
-
-
 def test_exec_setattr_value():
     red = RedBaron("exec a")
     red[0].value = "plop"
@@ -2821,11 +2813,127 @@ def test_string_chain_set_attr_value():
         red[0].value = "def a(): pass\n"
 
 
-# XXX waiting for https://github.com/Psycojoker/baron/issues/50
-# dotted_as_name -> value
-# dotted_as_name -> target
-# name_as_name -> value
-# name_as_name -> target
+def test_dotted_as_name_setattr_value():
+    red = RedBaron("import a")
+    red[0].value[0].value = "a.b.c"
+    assert red.dumps() == "import a.b.c"
+    with pytest.raises(Exception):
+        red[0].value[0].value = "def a(): pass\n"
+
+
+def test_dotted_as_name_setattr_target():
+    red = RedBaron("import a as qsd")
+    red[0].value[0].target = "plop"
+    assert red.dumps() == "import a as plop"
+    with pytest.raises(Exception):
+        red[0].value[0].target = "def a(): pass\n"
+
+
+def test_dotted_as_name_setattr_target_none():
+    red = RedBaron("import a as qsd")
+    red[0].value[0].target = ""
+    assert red.dumps() == "import a"
+
+
+def test_dotted_as_name_setattr_target_was_none():
+    red = RedBaron("import a")
+    red[0].value[0].target = "qsd"
+    assert red.dumps() == "import a as qsd"
+
+
+def test_name_as_name_setattr_value():
+    red = RedBaron("from x import a")
+    red[0].targets[0].value = "a"
+    assert red.dumps() == "from x import a"
+    with pytest.raises(Exception):
+        red[0].targets[0].value = "def a(): pass\n"
+
+
+def test_name_as_name_setattr_target():
+    red = RedBaron("from x import a as qsd")
+    red[0].targets[0].target = "plop"
+    assert red.dumps() == "from x import a as plop"
+    with pytest.raises(Exception):
+        red[0].targets[0].target = "def a(): pass\n"
+
+
+def test_name_as_name_setattr_target_none():
+    red = RedBaron("from x import a as qsd")
+    red[0].targets[0].target = ""
+    assert red.dumps() == "from x import a"
+
+
+def test_name_as_name_setattr_target_was_none():
+    red = RedBaron("from x import a")
+    red[0].targets[0].target = "qsd"
+    assert red.dumps() == "from x import a as qsd"
+
+
+def test_while_else_simple():
+    red = RedBaron("while a:\n    pass\n")
+    red[0].else_ = "else:\n    pass\n"
+    assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n"
+
+simple_body = ["plop",
+"    plop",
+"\nplop",
+"  \nplop",
+"  \n   plop",
+"                          plop",
+"\n                          plop",
+"  \n                        plop"]
+
+@pytest.fixture(params=simple_body)
+def else_simple_body(request):
+    return request.param
+
+
+def test_while_else(else_simple_body):
+    red = RedBaron("while a:\n    pass\n")
+    red[0].else_ = else_simple_body
+    assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n"
+
+
+two_lines_body = ["plop\nplouf",
+"\nplop\nplouf",
+"    plop\n    plouf",
+"\n    plop\n    plouf",
+"    \n    plop\n    plouf",
+" plop\n plouf",
+"\n plop\n plouf",
+" \n plop\n plouf",
+"            plop\n            plouf",
+"\n            plop\n            plouf",
+"            \n            plop\n            plouf"]
+
+@pytest.fixture(params=two_lines_body)
+def else_two_line_body(request):
+    return request.param
+
+
+def test_while_else_two_line_body(else_two_line_body):
+    red = RedBaron("while a:\n    pass\n")
+    red[0].else_ = else_two_line_body
+    assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n    plouf\n"
+
+
+# TODO
+# consider: with and without starting with 'else'
+# variation of indentation (meaning: the whole white is indented and followed
+# by another statement
+
+"plop\nif a:\n    pass\n",
+
+"return 42",
+"return 42\n",
+"return 42\n\n",
+"return 42",
+"return 42\n",
+"return 42",
+"return 42\n",
+"return 42\n\n",
+"return 42",
+"return 42\n",
 
 # advanced
 

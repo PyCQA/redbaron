@@ -20,6 +20,7 @@ Changelog
 - new method to handle indentation: .increase_indentation and .decrease_indentation https://redbaron.readthedocs.org/en/latest/other.html#increase-indentation-and-decrease-indentation
 - various small bugfix
 - we have one new contributor \o/ https://github.com/ze42
+- to_node has been move to a class method of Node: Node.from_fst
 - pretty print of nodes when using redbaron in a script
 
 0.1 (2014-06-13)
