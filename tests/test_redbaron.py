@@ -2894,12 +2894,7 @@ def test_while_else(else_simple_body):
     assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n"
 
 
-# TODO
-# consider: with and without starting with 'else'
-# variation of indentation (meaning: the whole white is indented and followed
-# by another statement
-
-"plop\nplouf",
+two_lines_body = ["plop\nplouf",
 "\nplop\nplouf",
 "    plop\n    plouf",
 "\n    plop\n    plouf",
@@ -2909,7 +2904,23 @@ def test_while_else(else_simple_body):
 " \n plop\n plouf",
 "            plop\n            plouf",
 "\n            plop\n            plouf",
-"            \n            plop\n            plouf",
+"            \n            plop\n            plouf"]
+
+@pytest.fixture(params=two_lines_body)
+def else_two_line_body(request):
+    return request.param
+
+
+def test_while_else_two_line_body(else_two_line_body):
+    red = RedBaron("while a:\n    pass\n")
+    red[0].else_ = else_two_line_body
+    assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n    plouf\n"
+
+
+# TODO
+# consider: with and without starting with 'else'
+# variation of indentation (meaning: the whole white is indented and followed
+# by another statement
 
 "plop\nif a:\n    pass\n",
 
