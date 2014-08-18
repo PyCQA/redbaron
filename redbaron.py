@@ -919,13 +919,30 @@ class CodeBlockNode(Node):
         return result
 
 
-class ElseAttributeNode(Node):
+class ElseAttributeNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "else":
             if string.startswith("else"):
                 return to_node(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
 
-            return to_node(baron.parse("while s: pass\n%s" % "else:\n    " + string)[0]["else"], parent=parent, on_attribute=on_attribute)
+            # XXX quite hackish way of doing this
+            fst = {'first_formatting': [],
+                   'second_formatting': [],
+                   'type': 'else',
+                   'value': [{'type': 'pass'},
+                             {'formatting': [],
+                              'indent': '',
+                              'type': 'endl',
+                              'value': '\n'}]
+                  }
+
+            else_node = to_node(fst, parent=parent, on_attribute=on_attribute)
+            else_node.value = self.parse_code_block(string=string, parent=parent, on_attribute=on_attribute)
+
+            return else_node
+
+        else:
+            raise Exception("Unhandled case")
 
     def __setattr__(self, name, value):
         if name == "else_":
@@ -1777,7 +1794,7 @@ class YieldAtomNode(Node):
             raise Exception("Unhandled case")
 
 
-class WhileNode(CodeBlockNode, ElseAttributeNode):
+class WhileNode(ElseAttributeNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
             return to_node(baron.parse("while %s: pass" % string)[0]["test"], parent=parent, on_attribute=on_attribute)

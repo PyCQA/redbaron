@@ -2874,11 +2874,24 @@ def test_while_else_simple():
     red[0].else_ = "else:\n    pass\n"
     assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n"
 
+simple_body = ["plop",
+"    plop",
+"\nplop",
+"  \nplop",
+"  \n   plop",
+"                          plop",
+"\n                          plop",
+"  \n                        plop"]
 
-def test_while_else_no_prefix():
+@pytest.fixture(params=simple_body)
+def else_simple_body(request):
+    return request.param
+
+
+def test_while_else(else_simple_body):
     red = RedBaron("while a:\n    pass\n")
-    red[0].else_ = "pass"
-    assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n"
+    red[0].else_ = else_simple_body
+    assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n"
 
 
 # TODO
@@ -2886,36 +2899,30 @@ def test_while_else_no_prefix():
 # variation of indentation (meaning: the whole white is indented and followed
 # by another statement
 
-"plop"
-"    plop"
-"\nplop"
-"  \nplop"
-"  \n   plop"
-"                          plop"
-"\n                          plop"
-"  \n                        plop"
-"plop\nplouf"
-"\nplop\nplouf"
-"    plop\n    plouf"
-"\n    plop\n    plouf"
-"    \n    plop\n    plouf"
-" plop\n plouf"
-"\n plop\n plouf"
-" \n plop\n plouf"
-"            plop\n            plouf"
-"\n            plop\n            plouf"
-"            \n            plop\n            plouf"
-"plop\nif a:\n    pass\n"
-"return 42"
-"return 42\n"
-"return 42\n\n"
-"return 42"
-"return 42\n"
-"return 42"
-"return 42\n"
-"return 42\n\n"
-"return 42"
-"return 42\n"
+"plop\nplouf",
+"\nplop\nplouf",
+"    plop\n    plouf",
+"\n    plop\n    plouf",
+"    \n    plop\n    plouf",
+" plop\n plouf",
+"\n plop\n plouf",
+" \n plop\n plouf",
+"            plop\n            plouf",
+"\n            plop\n            plouf",
+"            \n            plop\n            plouf",
+
+"plop\nif a:\n    pass\n",
+
+"return 42",
+"return 42\n",
+"return 42\n\n",
+"return 42",
+"return 42\n",
+"return 42",
+"return 42\n",
+"return 42\n\n",
+"return 42",
+"return 42\n",
 
 # advanced
 
