@@ -21,6 +21,8 @@
     * CommaNode()
     * CommaNode(first_formatting=[" "]) # allow to pass strings again
 
+- auto merging behavior for Atomtrailer: "a.b.c".value[0].replace("x.y.z") should not include one Atomtrailer in the current one but flatten both. Same for getitem.
+
 ### Find/Find\_All (comparison)
 
 Magic stuff like:
