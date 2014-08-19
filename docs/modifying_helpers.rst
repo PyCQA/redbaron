@@ -47,6 +47,19 @@ parameters.
     new_name = Node.from_fst({"type": "name", "value": "a"}, parent=red[0], on_attribute="value")
     red[0].value.append(new_name)
 
+NodeList.from_fst()
+-------------------
+
+Similary than :file:`Node.from_fst()`, :file:`NodeList.from_fst()` is an helper
+class method that takes a FST node **list** and return a RedBaron node **list**
+instance. Similary, you probably don't need to go so low level.
+
+
+.. ipython:: python
+
+    from redbaron import NodeList
+    NodeList.from_fst([{"type": "name", "value": "a"}, {'first_formatting': [], 'type': 'comma', 'second_formatting': [{'type': 'space', 'value': ' '}]}, {"type": "name", "value": "b"}])
+
 .. _append_value:
 
 .append_value()
