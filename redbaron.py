@@ -265,11 +265,13 @@ class NodeList(UserList, GenericNodesUtils):
         if os.isatty(sys.stdout.fileno()):
             return self.__str__()
 
-        return "<%s %s, \"%s\" %s>" % (
+        return "<%s %s, \"%s\" %s, on %s %s>" % (
                 self.__class__.__name__,
                 self.path().to_baron_path(),
                 truncate(self.dumps().replace("\n", "\\n"), 20),
-                id(self)
+                id(self),
+                self.parent.__class__.__name__,
+                id(self.parent)
             )
 
     def __str__(self):
@@ -784,11 +786,13 @@ class Node(GenericNodesUtils):
         if os.isatty(sys.stdout.fileno()):
             return self.__str__()
 
-        return "<%s %s, \"%s\" %s>" % (
+        return "<%s %s, \"%s\" %s, on %s %s>" % (
                 self.__class__.__name__,
                 self.path().to_baron_path(),
                 truncate(self.dumps().replace("\n", "\\n"), 20),
-                id(self)
+                id(self),
+                self.parent.__class__.__name__,
+                id(self.parent)
             )
 
     def __str__(self):
