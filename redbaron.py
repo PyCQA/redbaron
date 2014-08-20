@@ -66,13 +66,14 @@ class Path(object):
             return class_(node)
 
         for key in path:
-            try:
-                if isinstance(key, string_instance):
-                    child = getattr(node, key)
-                else:
-                    child = node[key]
-            except (AttributeError, IndexError):
-                return None
+            if isinstance(key, string_instance):
+                if not hasattr(node, key):
+                    return None
+                child = getattr(node, key)
+            else:
+                if key >= len(node):
+                    return None
+                child = node[key]
             if child is not None and isinstance(child, (Node, NodeList)):
                 node = child
 
