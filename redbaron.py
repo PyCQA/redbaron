@@ -268,7 +268,7 @@ class NodeList(UserList, GenericNodesUtils):
         return "<%s %s, \"%s\" %s>" % (
                 self.__class__.__name__,
                 self.path().to_baron_path(),
-                self.dumps().replace("\n", "\\n"),
+                truncate(self.dumps().replace("\n", "\\n"), 20),
                 id(self)
             )
 
@@ -787,7 +787,7 @@ class Node(GenericNodesUtils):
         return "<%s %s, \"%s\" %s>" % (
                 self.__class__.__name__,
                 self.path().to_baron_path(),
-                self.dumps().replace("\n", "\\n"),
+                truncate(self.dumps().replace("\n", "\\n"), 20),
                 id(self)
             )
 
@@ -1920,3 +1920,14 @@ class HelpLexer(RegexLexer):
             (r'\s+', Text),
         ]
     }
+
+
+def truncate(text, n):
+    if n < 5 or len(text) <= n:
+        return text
+
+    truncated = list(text)
+    truncated[-3:-1] = ['.', '.', '.']
+    del truncated[n-4 : -4]
+    return "".join(truncated)
+

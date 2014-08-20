@@ -7,7 +7,7 @@ import baron
 import pytest
 from baron.utils import string_instance
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
-                      PassNode, NodeList, CommaNode, DotNode, CallNode)
+                      PassNode, NodeList, CommaNode, DotNode, CallNode, truncate)
 
 
 def test_empty():
@@ -3037,3 +3037,11 @@ def test_decrease_indentation():
 def test_regression_find_all_recursive():
     red = RedBaron("a.b()")
     assert red[0].value("name", recursive=False) == [red.name, red("name")[1]]
+
+
+def test_truncate():
+    assert "1234" == truncate("1234", 2)
+    assert "12345" == truncate("12345", 4)
+    assert "1...6" == truncate("123456", 5)
+    assert "123456...0" == truncate("12345678901234567890", 10)
+
