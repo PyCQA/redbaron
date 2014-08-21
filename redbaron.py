@@ -273,6 +273,19 @@ class NodeList(UserList, GenericNodesUtils):
         return baron.dumps(self.fst())
 
     def __repr__(self):
+        if os.isatty(sys.stdout.fileno()):
+            return self.__str__()
+
+        return "<%s %s, \"%s\" %s, on %s %s>" % (
+                self.__class__.__name__,
+                self.path().to_baron_path(),
+                truncate(self.dumps().replace("\n", "\\n"), 20),
+                id(self),
+                self.parent.__class__.__name__,
+                id(self.parent)
+            )
+
+    def __str__(self):
         to_return = ""
         for number, value in enumerate(self.data):
             to_return += ("%-3s " % number) + "\n    ".join(value.__repr__().split("\n"))
@@ -782,6 +795,19 @@ class Node(GenericNodesUtils):
         return "\n  ".join(to_join)
 
     def __repr__(self):
+        if os.isatty(sys.stdout.fileno()):
+            return self.__str__()
+
+        return "<%s %s, \"%s\" %s, on %s %s>" % (
+                self.__class__.__name__,
+                self.path().to_baron_path(),
+                truncate(self.dumps().replace("\n", "\\n"), 20),
+                id(self),
+                self.parent.__class__.__name__,
+                id(self.parent)
+            )
+
+    def __str__(self):
         if runned_from_ipython():
             return highlight(self.dumps(), PythonLexer(encoding="Utf-8"),
                              Terminal256Formatter(style='monokai',
@@ -1910,3 +1936,14 @@ class HelpLexer(RegexLexer):
             (r'\s+', Text),
         ]
     }
+
+
+def truncate(text, n):
+    if n < 5 or len(text) <= n:
+        return text
+
+    truncated = list(text)
+    truncated[-3:-1] = ['.', '.', '.']
+    del truncated[n-4 : -4]
+    return "".join(truncated)
+
