@@ -913,6 +913,7 @@ class CodeBlockNode(Node):
             raise Exception("Unhandled case")
 
     def parse_code_block(self, string, parent, on_attribute):
+        # remove heading blanks lines
         clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
         indentation = len(re.search("^ *", clean_string).group())
         target_indentation = len(self.indentation) + 4
