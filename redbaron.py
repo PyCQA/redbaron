@@ -988,6 +988,9 @@ class ElseAttributeNode(CodeBlockNode):
             else_node = Node.from_fst(fst, parent=parent, on_attribute=on_attribute)
             else_node.value = self.parse_code_block(string=string, parent=parent, on_attribute=on_attribute)
 
+            if self.next:
+                self.value.pop()
+                self.value.pop()
             return else_node
 
         else:

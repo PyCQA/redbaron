@@ -2883,6 +2883,12 @@ def test_while_else_simple(else_simple_body_starting_with_else):
     assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n"
 
 
+def test_while_else_simple_root_level(else_simple_body):
+    red = RedBaron("while a:\n    pass\n\n\ndef other_stuff(): pass\n")
+    red[0].else_ = else_simple_body
+    assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n\n\ndef other_stuff(): pass\n"
+
+
 simple_body = ["plop",
 "    plop",
 "\nplop",
