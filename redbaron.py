@@ -963,7 +963,15 @@ class CodeBlockNode(Node):
 class ElseAttributeNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "else":
-            if string.startswith("else"):
+            if re.match("^\s*else", string):
+
+                # we've got indented text, let's deindent it
+                if string.startswith((" ", "	")):
+                    # assuming that the first spaces are the indentation
+                    indentation = len(re.search("^ +", string).group())
+                    string = re.sub("(\r?\n)%s" % (" " * indentation), "\\1", string)
+                    string = string.lstrip()
+
                 return Node.from_fst(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
 
             # XXX quite hackish way of doing this
