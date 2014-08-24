@@ -2888,6 +2888,10 @@ def test_while_else_simple_root_level(else_simple_body):
     red[0].else_ = else_simple_body
     assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n\n\ndef other_stuff(): pass\n"
 
+# TODO
+# red = RedBaron("while a:\n    pass\n\ndef other_stuff(): pass\n")
+# red = RedBaron("while a:\n    pass\ndef other_stuff(): pass\n")
+# red = RedBaron("while a:\n    pass\n\n\n\n\n\ndef other_stuff(): pass\n")
 
 simple_body = ["plop",
 "    plop",
@@ -2897,6 +2901,13 @@ simple_body = ["plop",
 "                          plop",
 "\n                          plop",
 "  \n                        plop"]
+
+# TODO
+# "plop\n",
+# "plop\n\n",
+# "plop\n\n\n\n\n",
+# XXX
+# same with starting with else
 
 @pytest.fixture(params=simple_body)
 def else_simple_body(request):
