@@ -2870,6 +2870,7 @@ def test_name_as_name_setattr_target_was_none():
 simple_body_starting_with_else = [
     "else:\n    pass\n",
     "    else:\n        pass\n",
+    "else:\n    pass\n\n",
 ]
 
 @pytest.fixture(params=simple_body_starting_with_else)

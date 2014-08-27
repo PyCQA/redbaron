@@ -972,25 +972,29 @@ class ElseAttributeNode(CodeBlockNode):
                     string = re.sub("(\r?\n)%s" % (" " * indentation), "\\1", string)
                     string = string.lstrip()
 
-                return Node.from_fst(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
+                else_node = Node.from_fst(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
 
-            # XXX quite hackish way of doing this
-            fst = {'first_formatting': [],
-                   'second_formatting': [],
-                   'type': 'else',
-                   'value': [{'type': 'pass'},
-                             {'formatting': [],
-                              'indent': '',
-                              'type': 'endl',
-                              'value': '\n'}]
-                  }
+            else:
+                # XXX quite hackish way of doing this
+                fst = {'first_formatting': [],
+                       'second_formatting': [],
+                       'type': 'else',
+                       'value': [{'type': 'pass'},
+                                 {'formatting': [],
+                                  'indent': '',
+                                  'type': 'endl',
+                                  'value': '\n'}]
+                      }
 
-            else_node = Node.from_fst(fst, parent=parent, on_attribute=on_attribute)
-            else_node.value = self.parse_code_block(string=string, parent=parent, on_attribute=on_attribute)
+                else_node = Node.from_fst(fst, parent=parent, on_attribute=on_attribute)
+                else_node.value = self.parse_code_block(string=string, parent=parent, on_attribute=on_attribute)
 
             if self.next:
                 self.value.pop()
                 self.value.pop()
+            elif else_node.value[-1].type == "endl" and else_node.value[-2].type == "endl":
+                else_node.value.pop()
+
             return else_node
 
         else:
