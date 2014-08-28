@@ -973,6 +973,7 @@ class ElseAttributeNode(CodeBlockNode):
                     string = string.lstrip()
 
                 else_node = Node.from_fst(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
+                else_node.value = self.parse_code_block(else_node.value.dumps(), parent=else_node, on_attribute="value")
 
             else:
                 # XXX quite hackish way of doing this
@@ -993,9 +994,13 @@ class ElseAttributeNode(CodeBlockNode):
                 self.value.pop()
                 self.value.pop()
             elif else_node.value[-1].type == "endl" and else_node.value[-2].type == "endl":
-                else_node.value.pop()
+                previous_endl = None
+                while else_node.value[-1].type == "endl":
+                    previous_endl = else_node.value.pop()
 
-            else_node.value[-1].indent = ""
+                if previous_endl is not None:
+                    else_node.value.append(previous_endl)
+                    else_node.value[-1].indent = ""
 
             return else_node
 
