@@ -995,6 +995,8 @@ class ElseAttributeNode(CodeBlockNode):
             elif else_node.value[-1].type == "endl" and else_node.value[-2].type == "endl":
                 else_node.value.pop()
 
+            else_node.value[-1].indent = ""
+
             return else_node
 
         else:
