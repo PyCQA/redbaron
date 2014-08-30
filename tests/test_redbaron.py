@@ -2956,6 +2956,16 @@ def test_while_else_two_line_body(else_two_line_body):
 
 
 # TODO
+# BUG:
+# while_node.next should check for the while_node.else attribute
+# same for every other construction with an else: for/except/etc...
+# the else attribute should check for parent for next
+# if/elif same
+# how ifelseblock should behave?
+# trynode should also have a special behavior
+# document all of this!
+# same for .previous!
+
 # consider: with and without starting with 'else'
 # variation of indentation (meaning: the whole white is indented and followed
 # by another statement
