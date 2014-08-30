@@ -2912,14 +2912,11 @@ simple_body = ["plop",
 "  \n   plop",
 "                          plop",
 "\n                          plop",
-"  \n                        plop"]
-
-# TODO
-# "plop\n",
-# "plop\n\n",
-# "plop\n\n\n\n\n",
-# XXX
-# same with starting with else
+"  \n                        plop",
+"plop\n",
+"plop\n\n",
+"plop\n\n\n\n\n",
+]
 
 @pytest.fixture(params=simple_body)
 def else_simple_body(request):
