@@ -962,6 +962,10 @@ class CodeBlockNode(Node):
 
 class ElseAttributeNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
+        def remove_trailing_endl(node):
+            while node.value[-1].type == "endl":
+                node.value.pop()
+
         if on_attribute == "else":
             if re.match("^\s*else", string):
 
@@ -990,17 +994,17 @@ class ElseAttributeNode(CodeBlockNode):
                 else_node = Node.from_fst(fst, parent=parent, on_attribute=on_attribute)
                 else_node.value = self.parse_code_block(string=string, parent=parent, on_attribute=on_attribute)
 
+            # XXX this risk to remove comments
             if self.next:
                 self.value.pop()
                 self.value.pop()
-            elif else_node.value[-1].type == "endl" and else_node.value[-2].type == "endl":
-                previous_endl = None
-                while else_node.value[-1].type == "endl":
-                    previous_endl = else_node.value.pop()
-
-                if previous_endl is not None:
-                    else_node.value.append(previous_endl)
-                    else_node.value[-1].indent = ""
+                remove_trailing_endl(else_node)
+                else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+                else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+                else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+            else:
+                remove_trailing_endl(else_node)
+                else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
 
             return else_node
 
