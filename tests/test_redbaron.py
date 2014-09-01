@@ -2907,10 +2907,29 @@ def test_while_else_not_simple_root_level(else_simple_body_starting_with_else):
     assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n\n\ndef other_stuff(): pass\n"
 
 
-# TODO
-# red = RedBaron("while a:\n    pass\n\ndef other_stuff(): pass\n")
-# red = RedBaron("while a:\n    pass\ndef other_stuff(): pass\n")
-# red = RedBaron("while a:\n    pass\n\n\n\n\n\ndef other_stuff(): pass\n")
+def test_while_else_root_level_too_few_blanks_lines(else_simple_body):
+    red = RedBaron("while a:\n    pass\n\ndef other_stuff(): pass\n")
+    red[0].else_ = else_simple_body
+    assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n\n\ndef other_stuff(): pass\n"
+
+
+def test_while_else_root_level_too_few_blanks_lines_starting_with_else(else_simple_body_starting_with_else):
+    red = RedBaron("while a:\n    pass\n\ndef other_stuff(): pass\n")
+    red[0].else_ = else_simple_body_starting_with_else
+    assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n\n\ndef other_stuff(): pass\n"
+
+
+def test_while_else_root_level_too_much_blanks_lines(else_simple_body):
+    red = RedBaron("while a:\n    pass\n\ndef other_stuff(): pass\n")
+    red[0].else_ = else_simple_body
+    assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n\n\ndef other_stuff(): pass\n"
+
+
+def test_while_else_root_level_too_much_blanks_lines_starting_with_else(else_simple_body_starting_with_else):
+    red = RedBaron("while a:\n    pass\n\ndef other_stuff(): pass\n")
+    red[0].else_ = else_simple_body_starting_with_else
+    assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n\n\ndef other_stuff(): pass\n"
+
 
 simple_body = ["plop",
 "    plop",
