@@ -1006,6 +1006,8 @@ class ElseAttributeNode(CodeBlockNode):
                 remove_trailing_endl(else_node)
                 else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
 
+            self.value[-1].indent = self.indentation
+
             return else_node
 
         else:
