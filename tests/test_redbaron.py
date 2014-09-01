@@ -2998,6 +2998,7 @@ def pouet():
         pass
 """
 
+
 def test_while_else_setattr_one_level_simple_body(else_simple_body):
     red = RedBaron(code_else_block_setattr_one_level)
     red.find("while").else_ = else_simple_body.replace("plop", "pass")
@@ -3008,6 +3009,36 @@ def test_while_else_setattr_one_level_simple_body_start_with_else(else_simple_bo
     red = RedBaron(code_else_block_setattr_one_level)
     red.find("while").else_ = else_simple_body_starting_with_else
     assert red.dumps() == code_else_block_setattr_one_level_result
+
+
+code_else_block_setattr_one_level_followed = """
+def pouet():
+    while True:
+        pass
+
+    pass
+"""
+
+code_else_block_setattr_one_level_followed_result = """
+def pouet():
+    while True:
+        pass
+    else:
+        pass
+
+    pass
+"""
+
+def test_while_else_setattr_one_level_simple_body_followed(else_simple_body):
+    red = RedBaron(code_else_block_setattr_one_level_followed)
+    red.find("while").else_ = else_simple_body.replace("plop", "pass")
+    assert red.dumps() == code_else_block_setattr_one_level_followed_result
+
+
+def test_while_else_setattr_one_level_simple_body_start_with_else_followed(else_simple_body_starting_with_else):
+    red = RedBaron(code_else_block_setattr_one_level_followed)
+    red.find("while").else_ = else_simple_body_starting_with_else
+    assert red.dumps() == code_else_block_setattr_one_level_followed_result
 
 
 # code_else_block_setattr = """
