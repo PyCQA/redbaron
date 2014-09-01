@@ -1454,7 +1454,7 @@ class FinallyNode(CodeBlockNode):
             self.second_formatting = []
 
 
-class ForNode(CodeBlockNode):
+class ForNode(ElseAttributeNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "target":
             return Node.from_fst(baron.parse("for i in %s: pass" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
@@ -1463,7 +1463,7 @@ class ForNode(CodeBlockNode):
             return Node.from_fst(baron.parse("for %s in i: pass" % string)[0]["iterator"], parent=parent, on_attribute=on_attribute)
 
         else:
-            raise Exception("Unhandled case")
+            return super(ForNode, self)._string_to_node(string, parent, on_attribute)
 
     def append_value(self, value):
         self.value.append_endl(value, parent=self, on_attribute="value")

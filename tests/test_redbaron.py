@@ -2867,7 +2867,7 @@ def test_name_as_name_setattr_target_was_none():
     assert red.dumps() == "from x import a as qsd"
 
 
-has_else_member_list = ["while True"]
+has_else_member_list = ["while True", "for a in a"]
 
 @pytest.fixture(params=has_else_member_list)
 def has_else_member(request):
@@ -3067,8 +3067,6 @@ def test_while_else_setattr_one_level_simple_body_start_with_else_followed(else_
 
 # try -> excepts
 # try -> finally
-
-# for -> else
 # try -> else
 
 # ifelseblock -> if/elif/else
