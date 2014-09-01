@@ -2867,6 +2867,41 @@ def test_name_as_name_setattr_target_was_none():
     assert red.dumps() == "from x import a as qsd"
 
 
+simple_body = ["plop",
+"    plop",
+"\nplop",
+"  \nplop",
+"  \n   plop",
+"                          plop",
+"\n                          plop",
+"  \n                        plop",
+"plop\n",
+"plop\n\n",
+"plop\n\n\n\n\n",
+]
+
+@pytest.fixture(params=simple_body)
+def else_simple_body(request):
+    return request.param
+
+
+two_lines_body = ["plop\nplouf",
+"\nplop\nplouf",
+"    plop\n    plouf",
+"\n    plop\n    plouf",
+"    \n    plop\n    plouf",
+" plop\n plouf",
+"\n plop\n plouf",
+" \n plop\n plouf",
+"            plop\n            plouf",
+"\n            plop\n            plouf",
+"            \n            plop\n            plouf"]
+
+@pytest.fixture(params=two_lines_body)
+def else_two_line_body(request):
+    return request.param
+
+
 simple_body_starting_with_else = [
     "else:\n    pass",
     "else:\n    pass\n",
@@ -2931,45 +2966,10 @@ def test_while_else_root_level_too_much_blanks_lines_starting_with_else(else_sim
     assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n\n\ndef other_stuff(): pass\n"
 
 
-simple_body = ["plop",
-"    plop",
-"\nplop",
-"  \nplop",
-"  \n   plop",
-"                          plop",
-"\n                          plop",
-"  \n                        plop",
-"plop\n",
-"plop\n\n",
-"plop\n\n\n\n\n",
-]
-
-@pytest.fixture(params=simple_body)
-def else_simple_body(request):
-    return request.param
-
-
 def test_while_else(else_simple_body):
     red = RedBaron("while a:\n    pass\n")
     red[0].else_ = else_simple_body
     assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n"
-
-
-two_lines_body = ["plop\nplouf",
-"\nplop\nplouf",
-"    plop\n    plouf",
-"\n    plop\n    plouf",
-"    \n    plop\n    plouf",
-" plop\n plouf",
-"\n plop\n plouf",
-" \n plop\n plouf",
-"            plop\n            plouf",
-"\n            plop\n            plouf",
-"            \n            plop\n            plouf"]
-
-@pytest.fixture(params=two_lines_body)
-def else_two_line_body(request):
-    return request.param
 
 
 def test_while_else_two_line_body(else_two_line_body):
