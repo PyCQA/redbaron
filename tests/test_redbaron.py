@@ -2984,6 +2984,36 @@ def test_while_else_two_line_body(else_two_line_body):
     assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n    plouf\n"
 
 
+# code_else_block_setattr = """
+# class A():
+#     def a():
+#         while True
+#             pass
+#         pass
+#
+#     def b():
+#         while True
+#             pass
+#
+#     def c():
+#         while True
+#             pass
+#
+#
+# def c():
+#     while True
+#         pass
+#     plop
+#
+#     while True
+#         pass
+#
+#
+# def d():
+#     while True
+#         pass
+# """
+
 # TODO
 # BUG:
 # while_node.next should check for the while_node.else attribute
