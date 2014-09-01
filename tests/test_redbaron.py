@@ -2966,6 +2966,12 @@ def test_while_else_root_level_too_much_blanks_lines_starting_with_else(else_sim
     assert red.dumps() == "while a:\n    pass\nelse:\n    pass\n\n\ndef other_stuff(): pass\n"
 
 
+def test_while_else_root_level_too_much_blanks_lines_starting_two_line_body(else_two_line_body):
+    red = RedBaron("while a:\n    pass\n\ndef other_stuff(): pass\n")
+    red[0].else_ = else_two_line_body
+    assert red.dumps() == "while a:\n    pass\nelse:\n    plop\n    plouf\n\n\ndef other_stuff(): pass\n"
+
+
 def test_while_else(else_simple_body):
     red = RedBaron("while a:\n    pass\n")
     red[0].else_ = else_simple_body
