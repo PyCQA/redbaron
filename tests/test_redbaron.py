@@ -3041,36 +3041,6 @@ def test_while_else_setattr_one_level_simple_body_start_with_else_followed(else_
     assert red.dumps() == code_else_block_setattr_one_level_followed_result
 
 
-# code_else_block_setattr = """
-# class A():
-#     def a():
-#         while True
-#             pass
-#         pass
-#
-#     def b():
-#         while True
-#             pass
-#
-#     def c():
-#         while True
-#             pass
-#
-#
-# def c():
-#     while True
-#         pass
-#     plop
-#
-#     while True
-#         pass
-#
-#
-# def d():
-#     while True
-#         pass
-# """
-
 # TODO
 # BUG:
 # while_node.next should check for the while_node.else attribute
@@ -3086,25 +3056,11 @@ def test_while_else_setattr_one_level_simple_body_start_with_else_followed(else_
 # variation of indentation (meaning: the whole white is indented and followed
 # by another statement
 
-"plop\nif a:\n    pass\n",
-
-"return 42",
-"return 42\n",
-"return 42\n\n",
-"return 42",
-"return 42\n",
-"return 42",
-"return 42\n",
-"return 42\n\n",
-"return 42",
-"return 42\n",
-
 # advanced
 
 # try -> excepts
 # try -> finally
 
-# while -> else
 # for -> else
 # try -> else
 
