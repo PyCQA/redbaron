@@ -1809,7 +1809,7 @@ class TernaryOperatorNode(Node):
             raise Exception("Unhandled case")
 
 
-class TryNode(CodeBlockNode):
+class TryNode(ElseAttributeNode):
     def __getattr__(self, name):
         if name == "finally_":
             return getattr(self, "finally")
