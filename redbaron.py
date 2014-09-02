@@ -961,6 +961,9 @@ class CodeBlockNode(Node):
 
 
 class ElseAttributeNode(CodeBlockNode):
+    def _get_last_member_to_clean(self):
+        return self
+
     def _string_to_node(self, string, parent, on_attribute):
         def remove_trailing_endl(node):
             while node.value[-1].type == "endl":
@@ -996,8 +999,10 @@ class ElseAttributeNode(CodeBlockNode):
 
             # XXX this risk to remove comments
             if self.next:
-                remove_trailing_endl(self)
-                self.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+                last_member = self._get_last_member_to_clean()
+                remove_trailing_endl(last_member)
+                last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+
                 remove_trailing_endl(else_node)
                 else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
                 if self.indentation:
@@ -1810,6 +1815,10 @@ class TernaryOperatorNode(Node):
 
 
 class TryNode(ElseAttributeNode):
+    def _get_last_member_to_clean(self):
+        # XXX
+        return self.excepts[-1]
+
     def __getattr__(self, name):
         if name == "finally_":
             return getattr(self, "finally")
