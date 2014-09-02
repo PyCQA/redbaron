@@ -2943,69 +2943,68 @@ def test_while_else_simple_root_level(else_simple_body, has_else_member):
 
 
 def test_while_else_not_simple_root_level(else_simple_body_starting_with_else, has_else_member):
-    red = RedBaron("%s:\n    pass\n\n\ndef other_stuff(): pass\n" % has_else_member)
+    red = RedBaron("%s\n\ndef other_stuff(): pass\n" % has_else_member)
     red[0].else_ = else_simple_body_starting_with_else
-    assert red.dumps() == "%s:\n    pass\nelse:\n    pass\n\n\ndef other_stuff(): pass\n" % has_else_member
+    assert red.dumps() == "%selse:\n    pass\n\n\ndef other_stuff(): pass\n" % has_else_member
 
 
 def test_while_else_root_level_too_few_blanks_lines(else_simple_body, has_else_member):
-    red = RedBaron("%s:\n    pass\n\ndef other_stuff(): pass\n" % has_else_member)
+    red = RedBaron("%s\ndef other_stuff(): pass\n" % has_else_member)
     red[0].else_ = else_simple_body
-    assert red.dumps() == "%s:\n    pass\nelse:\n    plop\n\n\ndef other_stuff(): pass\n" % has_else_member
+    assert red.dumps() == "%selse:\n    plop\n\n\ndef other_stuff(): pass\n" % has_else_member
 
 
 def test_while_else_root_level_too_few_blanks_lines_starting_with_else(else_simple_body_starting_with_else, has_else_member):
-    red = RedBaron("%s:\n    pass\n\ndef other_stuff(): pass\n" % has_else_member)
+    red = RedBaron("%s\ndef other_stuff(): pass\n" % has_else_member)
     red[0].else_ = else_simple_body_starting_with_else
-    assert red.dumps() == "%s:\n    pass\nelse:\n    pass\n\n\ndef other_stuff(): pass\n" % has_else_member
+    assert red.dumps() == "%selse:\n    pass\n\n\ndef other_stuff(): pass\n" % has_else_member
 
 
 def test_while_else_root_level_too_much_blanks_lines(else_simple_body, has_else_member):
-    red = RedBaron("%s:\n    pass\n\ndef other_stuff(): pass\n" % has_else_member)
+    red = RedBaron("%s\ndef other_stuff(): pass\n" % has_else_member)
     red[0].else_ = else_simple_body
-    assert red.dumps() == "%s:\n    pass\nelse:\n    plop\n\n\ndef other_stuff(): pass\n" % has_else_member
+    assert red.dumps() == "%selse:\n    plop\n\n\ndef other_stuff(): pass\n" % has_else_member
 
 
 def test_while_else_root_level_too_much_blanks_lines_starting_with_else(else_simple_body_starting_with_else, has_else_member):
-    red = RedBaron("%s:\n    pass\n\ndef other_stuff(): pass\n" % has_else_member)
+    red = RedBaron("%s\ndef other_stuff(): pass\n" % has_else_member)
     red[0].else_ = else_simple_body_starting_with_else
-    assert red.dumps() == "%s:\n    pass\nelse:\n    pass\n\n\ndef other_stuff(): pass\n" % has_else_member
+    assert red.dumps() == "%selse:\n    pass\n\n\ndef other_stuff(): pass\n" % has_else_member
 
 
 def test_while_else_root_level_too_much_blanks_lines_starting_two_line_body(else_two_line_body, has_else_member):
-    red = RedBaron("%s:\n    pass\n\ndef other_stuff(): pass\n" % has_else_member)
+    red = RedBaron("%s\ndef other_stuff(): pass\n" % has_else_member)
     red[0].else_ = else_two_line_body
-    assert red.dumps() == "%s:\n    pass\nelse:\n    plop\n    plouf\n\n\ndef other_stuff(): pass\n" % has_else_member
+    assert red.dumps() == "%selse:\n    plop\n    plouf\n\n\ndef other_stuff(): pass\n" % has_else_member
 
 
 def test_while_else(else_simple_body, has_else_member):
-    red = RedBaron("%s:\n    pass\n" % has_else_member)
+    red = RedBaron("%s" % has_else_member)
     red[0].else_ = else_simple_body
-    assert red.dumps() == "%s:\n    pass\nelse:\n    plop\n" % has_else_member
+    assert red.dumps() == "%selse:\n    plop\n" % has_else_member
 
 
 def test_while_else_two_line_body(else_two_line_body, has_else_member):
-    red = RedBaron("%s:\n    pass\n" % has_else_member)
+    red = RedBaron("%s" % has_else_member)
     red[0].else_ = else_two_line_body
-    assert red.dumps() == "%s:\n    pass\nelse:\n    plop\n    plouf\n" % has_else_member
+    assert red.dumps() == "%selse:\n    plop\n    plouf\n" % has_else_member
 
 
 code_else_block_setattr_one_level = """\
 def pouet():
-    %s:
-        pass
+    %s
 """
 
 code_else_block_setattr_one_level_result = """\
 def pouet():
-    %s:
-        pass
+    %s
     else:
         pass
 """
 
 
 def test_while_else_setattr_one_level_simple_body(else_simple_body, has_else_member):
+    has_else_member = "\n    ".join(has_else_member.split("\n"))
     red = RedBaron(code_else_block_setattr_one_level % has_else_member)
     red[0].value[1].else_ = else_simple_body.replace("plop", "pass")
     assert red.dumps() == code_else_block_setattr_one_level_result % has_else_member
