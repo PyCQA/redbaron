@@ -3067,7 +3067,6 @@ def test_while_else_setattr_one_level_simple_body_start_with_else_followed(else_
 
 # try -> excepts
 # try -> finally
-# try -> else
 
 # ifelseblock -> if/elif/else
 
