@@ -3011,6 +3011,7 @@ def test_while_else_setattr_one_level_simple_body(else_simple_body, has_else_mem
 
 
 def test_while_else_setattr_one_level_simple_body_start_with_else(else_simple_body_starting_with_else, has_else_member):
+    has_else_member = "\n    ".join(has_else_member.split("\n"))
     red = RedBaron(code_else_block_setattr_one_level % has_else_member)
     red[0].value[1].else_ = else_simple_body_starting_with_else
     assert red.dumps() == code_else_block_setattr_one_level_result % has_else_member
