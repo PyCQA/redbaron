@@ -2867,7 +2867,7 @@ def test_name_as_name_setattr_target_was_none():
     assert red.dumps() == "from x import a as qsd"
 
 
-has_else_member_list = ["while True", "for a in a"]
+has_else_member_list = ["while True:\n    pass\n", "for a in a:\n    pass\n", "try:\n    pass\nexcept:\n    pass\n"]
 
 @pytest.fixture(params=has_else_member_list)
 def has_else_member(request):
@@ -2931,15 +2931,15 @@ def else_simple_body_starting_with_else(request):
 
 
 def test_while_else_simple(else_simple_body_starting_with_else, has_else_member):
-    red = RedBaron("%s:\n    pass\n" % has_else_member)
+    red = RedBaron(has_else_member)
     red[0].else_ = else_simple_body_starting_with_else
-    assert red.dumps() == "%s:\n    pass\nelse:\n    pass\n" % has_else_member
+    assert red.dumps() == "%selse:\n    pass\n" % has_else_member
 
 
 def test_while_else_simple_root_level(else_simple_body, has_else_member):
-    red = RedBaron("%s:\n    pass\n\n\ndef other_stuff(): pass\n" % has_else_member)
+    red = RedBaron("%s\n\ndef other_stuff(): pass\n" % has_else_member)
     red[0].else_ = else_simple_body
-    assert red.dumps() == "%s:\n    pass\nelse:\n    plop\n\n\ndef other_stuff(): pass\n" % has_else_member
+    assert red.dumps() == "%selse:\n    plop\n\n\ndef other_stuff(): pass\n" % has_else_member
 
 
 def test_while_else_not_simple_root_level(else_simple_body_starting_with_else, has_else_member):
@@ -3019,16 +3019,14 @@ def test_while_else_setattr_one_level_simple_body_start_with_else(else_simple_bo
 
 code_else_block_setattr_one_level_followed = """\
 def pouet():
-    %s:
-        pass
+    %s
 
     pass
 """
 
 code_else_block_setattr_one_level_followed_result = """\
 def pouet():
-    %s:
-        pass
+    %s
     else:
         pass
 
