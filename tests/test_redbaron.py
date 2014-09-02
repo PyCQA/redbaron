@@ -3004,14 +3004,14 @@ def pouet():
 
 
 def test_while_else_setattr_one_level_simple_body(else_simple_body, has_else_member):
-    has_else_member = "\n    ".join(has_else_member.split("\n"))
+    has_else_member = "\n    ".join(has_else_member.split("\n")).rstrip()
     red = RedBaron(code_else_block_setattr_one_level % has_else_member)
     red[0].value[1].else_ = else_simple_body.replace("plop", "pass")
     assert red.dumps() == code_else_block_setattr_one_level_result % has_else_member
 
 
 def test_while_else_setattr_one_level_simple_body_start_with_else(else_simple_body_starting_with_else, has_else_member):
-    has_else_member = "\n    ".join(has_else_member.split("\n"))
+    has_else_member = "\n    ".join(has_else_member.split("\n")).rstrip()
     red = RedBaron(code_else_block_setattr_one_level % has_else_member)
     red[0].value[1].else_ = else_simple_body_starting_with_else
     assert red.dumps() == code_else_block_setattr_one_level_result % has_else_member
@@ -3035,12 +3035,14 @@ def pouet():
 
 
 def test_while_else_setattr_one_level_simple_body_followed(else_simple_body, has_else_member):
+    has_else_member = "\n    ".join(has_else_member.split("\n")).rstrip()
     red = RedBaron(code_else_block_setattr_one_level_followed % has_else_member)
     red[0].value[1].else_ = else_simple_body.replace("plop", "pass")
     assert red.dumps() == code_else_block_setattr_one_level_followed_result % has_else_member
 
 
 def test_while_else_setattr_one_level_simple_body_start_with_else_followed(else_simple_body_starting_with_else, has_else_member):
+    has_else_member = "\n    ".join(has_else_member.split("\n")).rstrip()
     red = RedBaron(code_else_block_setattr_one_level_followed % has_else_member)
     red[0].value[1].else_ = else_simple_body_starting_with_else
     assert red.dumps() == code_else_block_setattr_one_level_followed_result % has_else_member
