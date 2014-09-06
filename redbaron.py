@@ -210,10 +210,11 @@ class GenericNodesUtils(object):
         for kind, key, display in node._render():
             if kind == "constant":
                 yield node
-            elif kind == "key":
+            elif kind == "string":
                 if isinstance(getattr(node, key), string_instance):
                     yield node
                     continue
+            elif kind == "key":
                 for i in self._iter_in_rendering_order(getattr(node, key)):
                     yield i
             elif kind in ("list", "formatting"):
@@ -419,14 +420,14 @@ class Node(GenericNodesUtils):
         self._dict_keys = []
         self.type = node["type"]
         for kind, key, _ in filter(lambda x: x[0] != "constant", self._render()):
-            if kind == "key" and isinstance(node[key], (dict, type(None))):
+            if kind == "key":
                 if node[key]:
                     setattr(self, key, Node.from_fst(node[key], parent=self, on_attribute=key))
                 else:
                     setattr(self, key, None)
                 self._dict_keys.append(key)
 
-            elif kind == "bool" or (kind == "key" and isinstance(node[key], string_instance)):
+            elif kind in ("bool", "string"):
                 setattr(self, key, node[key])
                 self._str_keys.append(key)
 
@@ -572,7 +573,7 @@ class Node(GenericNodesUtils):
         if not recursive:
             return None
 
-        for kind, key, _ in filter(lambda x: x[0] == "list" or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
+        for kind, key, _ in filter(lambda x: x[0] in ("list", "key"), self._render()):
             if kind == "key":
                 i = getattr(self, key)
                 if not i:
