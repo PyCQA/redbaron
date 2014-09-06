@@ -1278,6 +1278,9 @@ class ComparisonNode(Node):
         if on_attribute == "first":
             return Node.from_fst(baron.parse("%s > b" % string)[0]["first"], parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute == "value":
+            return Node.from_fst(baron.parse("a %s b" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
         elif on_attribute == "second":
             return Node.from_fst(baron.parse("bb > %s" % string)[0]["second"], parent=parent, on_attribute=on_attribute)
 
