@@ -3063,15 +3063,14 @@ def test_while_else_setattr_one_level_simple_body_start_with_else_followed(else_
 # document all of this!
 # same for .previous!
 
-# consider: with and without starting with 'else'
-# variation of indentation (meaning: the whole white is indented and followed
-# by another statement
-
 # advanced
 
-# try -> excepts
-# try -> finally
+# test remove of else and of finally
+# also test _get_last_member_to_clean better (like on try)
 
+# try -> excepts
+
+# XXX ifelseblock is a list, can't be done the same way than while@else
 # ifelseblock -> if/elif/else
 
 # conversion from list/set/dict to comprehension version
