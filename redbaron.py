@@ -1887,7 +1887,8 @@ class TernaryOperatorNode(Node):
 
 class TryNode(FinallyAttributeNode):
     def _get_last_member_to_clean(self):
-        # XXX
+        if self.else_:
+            return self.else_
         return self.excepts[-1]
 
     def __getattr__(self, name):
