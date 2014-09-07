@@ -3106,7 +3106,7 @@ def test_get_last_member_to_clean_try_finally_only():
 # advanced
 
 # test remove of else and of finally
-# also test _get_last_member_to_clean better (like on try)
+# overload of else/finally/other will probably break on the cleaning of _get_last_member_to_clean
 
 # try -> excepts
 
