@@ -3052,6 +3052,16 @@ def test_while_else_setattr_one_level_simple_body_start_with_else_followed(else_
     assert red.dumps() == code_else_block_setattr_one_level_followed_result % (has_else_member, result_keyword)
 
 
+def test_get_last_member_to_clean_while():
+    red = RedBaron("while True: pass")
+    assert red[0]._get_last_member_to_clean() is red[0]
+
+
+def test_get_last_member_to_clean_for():
+    red = RedBaron("for a in a: pass")
+    assert red[0]._get_last_member_to_clean() is red[0]
+
+
 # TODO
 # BUG:
 # while_node.next should check for the while_node.else attribute
