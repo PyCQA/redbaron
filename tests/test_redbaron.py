@@ -3077,6 +3077,11 @@ def test_get_last_member_to_clean_try_else():
     assert red[0]._get_last_member_to_clean() is red[0].else_
 
 
+def test_get_last_member_to_clean_try_finally():
+    red = RedBaron("try: pass\nexcept: pass\nfinally: pass")
+    assert red[0]._get_last_member_to_clean() is red[0].finally_
+
+
 # TODO
 # BUG:
 # while_node.next should check for the while_node.else attribute
