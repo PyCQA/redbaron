@@ -1013,7 +1013,7 @@ class ElseAttributeNode(CodeBlockNode):
 
             if self.indentation:
                 else_node.value.append(EndlNode({"type": "endl", "indent": self.indentation, "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
-            else:
+            else:  # we are on root level and followed: we need 2 blanks lines after the else node
                 else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
                 else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
 
