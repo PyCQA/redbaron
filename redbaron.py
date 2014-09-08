@@ -1000,6 +1000,10 @@ class ElseAttributeNode(CodeBlockNode):
             else_node = Node.from_fst(fst, parent=parent, on_attribute=on_attribute)
             else_node.value = self.parse_code_block(string=string, parent=parent, on_attribute=on_attribute)
 
+        # ensure that the else_node ends with only one endl token, we'll add more later if needed
+        remove_trailing_endl(else_node)
+        else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+
         last_member = self._get_last_member_to_clean()
 
         # XXX this risk to remove comments
@@ -1007,16 +1011,11 @@ class ElseAttributeNode(CodeBlockNode):
             remove_trailing_endl(last_member)
             last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
 
-            remove_trailing_endl(else_node)
-            else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
             if self.indentation:
                 else_node.value.append(EndlNode({"type": "endl", "indent": self.indentation, "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
             else:
                 else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
                 else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
-        else:
-            remove_trailing_endl(else_node)
-            else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
 
         last_member.value[-1].indent = self.indentation
 
