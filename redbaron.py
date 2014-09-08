@@ -966,62 +966,61 @@ class ElseAttributeNode(CodeBlockNode):
         return self
 
     def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute != "else":
+            raise Exception("Unhandled case")
+
         def remove_trailing_endl(node):
             while node.value[-1].type == "endl":
                 node.value.pop()
 
-        if on_attribute == "else":
-            if re.match("^\s*else", string):
+        if re.match("^\s*else", string):
 
-                # we've got indented text, let's deindent it
-                if string.startswith((" ", "	")):
-                    # assuming that the first spaces are the indentation
-                    indentation = len(re.search("^ +", string).group())
-                    string = re.sub("(\r?\n)%s" % (" " * indentation), "\\1", string)
-                    string = string.lstrip()
+            # we've got indented text, let's deindent it
+            if string.startswith((" ", "	")):
+                # assuming that the first spaces are the indentation
+                indentation = len(re.search("^ +", string).group())
+                string = re.sub("(\r?\n)%s" % (" " * indentation), "\\1", string)
+                string = string.lstrip()
 
-                else_node = Node.from_fst(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
-                else_node.value = self.parse_code_block(else_node.value.dumps(), parent=else_node, on_attribute="value")
-
-            else:
-                # XXX quite hackish way of doing this
-                fst = {'first_formatting': [],
-                       'second_formatting': [],
-                       'type': 'else',
-                       'value': [{'type': 'pass'},
-                                 {'formatting': [],
-                                  'indent': '',
-                                  'type': 'endl',
-                                  'value': '\n'}]
-                      }
-
-                else_node = Node.from_fst(fst, parent=parent, on_attribute=on_attribute)
-                else_node.value = self.parse_code_block(string=string, parent=parent, on_attribute=on_attribute)
-
-            last_member = self._get_last_member_to_clean()
-
-            # XXX this risk to remove comments
-            if self.next:
-                remove_trailing_endl(last_member)
-                last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
-
-                remove_trailing_endl(else_node)
-                else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
-                if self.indentation:
-                    else_node.value.append(EndlNode({"type": "endl", "indent": self.indentation, "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
-                else:
-                    else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
-                    else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
-            else:
-                remove_trailing_endl(else_node)
-                else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
-
-            last_member.value[-1].indent = self.indentation
-
-            return else_node
+            else_node = Node.from_fst(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
+            else_node.value = self.parse_code_block(else_node.value.dumps(), parent=else_node, on_attribute="value")
 
         else:
-            raise Exception("Unhandled case")
+            # XXX quite hackish way of doing this
+            fst = {'first_formatting': [],
+                   'second_formatting': [],
+                   'type': 'else',
+                   'value': [{'type': 'pass'},
+                             {'formatting': [],
+                              'indent': '',
+                              'type': 'endl',
+                              'value': '\n'}]
+                  }
+
+            else_node = Node.from_fst(fst, parent=parent, on_attribute=on_attribute)
+            else_node.value = self.parse_code_block(string=string, parent=parent, on_attribute=on_attribute)
+
+        last_member = self._get_last_member_to_clean()
+
+        # XXX this risk to remove comments
+        if self.next:
+            remove_trailing_endl(last_member)
+            last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+
+            remove_trailing_endl(else_node)
+            else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+            if self.indentation:
+                else_node.value.append(EndlNode({"type": "endl", "indent": self.indentation, "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+            else:
+                else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+                else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+        else:
+            remove_trailing_endl(else_node)
+            else_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+
+        last_member.value[-1].indent = self.indentation
+
+        return else_node
 
     def __setattr__(self, name, value):
         if name == "else_":
