@@ -1012,7 +1012,7 @@ class ElseAttributeNode(CodeBlockNode):
         # XXX this risk to remove comments
         if self.next:
             remove_trailing_endl(last_member)
-            last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
+            last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=last_member, on_attribute="value"))
 
             if self.indentation:
                 else_node.value.append(EndlNode({"type": "endl", "indent": self.indentation, "formatting": [], "value": "\n"}, parent=else_node, on_attribute="value"))
