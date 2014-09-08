@@ -3110,6 +3110,12 @@ def test_remove_else_setattr_indented():
     assert red.dumps() == "def a():\n    while True: pass\n"
 
 
+def test_remove_else_setattr_indented_followed():
+    red = RedBaron("def a():\n    while True: pass\n    else: pass\n\n\n    stuff\n")
+    red.while_.else_ = ""
+    assert red.dumps() == "def a():\n    while True: pass\n\n\n    stuff\n"
+
+
 # TODO
 # BUG:
 # while_node.next should check for the while_node.else attribute
