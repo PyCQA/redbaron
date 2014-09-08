@@ -969,6 +969,9 @@ class ElseAttributeNode(CodeBlockNode):
         if on_attribute != "else":
             raise Exception("Unhandled case")
 
+        if not string:
+            return ""
+
         def remove_trailing_endl(node):
             while node.value[-1].type == "endl":
                 node.value.pop()
