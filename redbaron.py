@@ -969,12 +969,15 @@ class ElseAttributeNode(CodeBlockNode):
         if on_attribute != "else":
             raise Exception("Unhandled case")
 
-        if not string:
-            return ""
-
         def remove_trailing_endl(node):
             while node.value[-1].type == "endl":
                 node.value.pop()
+
+        if not string:
+            last_member = self  # XXX
+            remove_trailing_endl(last_member)
+            last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=last_member, on_attribute="value"))
+            return ""
 
         if re.match("^\s*else", string):
 
