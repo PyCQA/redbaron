@@ -3097,6 +3097,12 @@ def test_remove_else_setattr():
     red[0].else_ = ""
     assert red.dumps() == "while True: pass\n"
 
+
+def test_remove_else_setattr_followed():
+    red = RedBaron("while True: pass\nelse: pass\n\n\nstuff")
+    red[0].else_ = ""
+    assert red.dumps() == "while True: pass\n\n\nstuff"
+
 # TODO
 # BUG:
 # while_node.next should check for the while_node.else attribute
