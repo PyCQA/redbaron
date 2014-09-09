@@ -3156,6 +3156,8 @@ def test_remove_else_setattr_indented_followed():
 # important
 
 # in addition of passing empty string, allow to pass None value on setattr
+# this needs to be done in "_convert_input_to_node_object" and it's possible
+# now since we have string type in nodes_rendering_order
 
 # next TODO
 
