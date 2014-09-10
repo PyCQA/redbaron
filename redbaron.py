@@ -985,7 +985,7 @@ class ElseAttributeNode(CodeBlockNode):
                 string = re.sub("(\r?\n)%s" % (" " * indentation), "\\1", string)
                 string = string.lstrip()
 
-            node = Node.from_fst(baron.parse("while s: pass\n%s" % string)[0]["else"], parent=parent, on_attribute=on_attribute)
+            node = Node.from_fst(baron.parse("try: pass\nexcept: pass\n%s" % string)[0][indented_name], parent=parent, on_attribute=on_attribute)
             node.value = self.parse_code_block(node.value.dumps(), parent=node, on_attribute="value")
 
         else:
@@ -1044,54 +1044,7 @@ class FinallyAttributeNode(ElseAttributeNode):
                 node.value.pop()
 
         if on_attribute == "finally":
-            if re.match("^\s*finally", string):
-
-                # we've got indented text, let's deindent it
-                if string.startswith((" ", "	")):
-                    # assuming that the first spaces are the indentation
-                    indentation = len(re.search("^ +", string).group())
-                    string = re.sub("(\r?\n)%s" % (" " * indentation), "\\1", string)
-                    string = string.lstrip()
-
-                finally_node = Node.from_fst(baron.parse("try: pass\n%s" % string)[0]["finally"], parent=parent, on_attribute=on_attribute)
-                finally_node.value = self.parse_code_block(finally_node.value.dumps(), parent=finally_node, on_attribute="value")
-
-            else:
-                # XXX quite hackish way of doing this
-                fst = {'first_formatting': [],
-                       'second_formatting': [],
-                       'type': 'finally',
-                       'value': [{'type': 'pass'},
-                                 {'formatting': [],
-                                  'indent': '',
-                                  'type': 'endl',
-                                  'value': '\n'}]
-                      }
-
-                finally_node = Node.from_fst(fst, parent=parent, on_attribute=on_attribute)
-                finally_node.value = self.parse_code_block(string=string, parent=parent, on_attribute=on_attribute)
-
-            last_member = self._get_last_member_to_clean()
-
-            # XXX this risk to remove comments
-            if self.next:
-                remove_trailing_endl(last_member)
-                last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=finally_node, on_attribute="value"))
-
-                remove_trailing_endl(finally_node)
-                finally_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=finally_node, on_attribute="value"))
-                if self.indentation:
-                    finally_node.value.append(EndlNode({"type": "endl", "indent": self.indentation, "formatting": [], "value": "\n"}, parent=finally_node, on_attribute="value"))
-                else:
-                    finally_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=finally_node, on_attribute="value"))
-                    finally_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=finally_node, on_attribute="value"))
-            else:
-                remove_trailing_endl(finally_node)
-                finally_node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=finally_node, on_attribute="value"))
-
-            last_member.value[-1].indent = self.indentation
-
-            return finally_node
+            return self._convert_input_to_one_indented_member("finally", string, parent, on_attribute)
 
         else:
             return super(FinallyAttributeNode, self)._string_to_node(string, parent=parent, on_attribute=on_attribute)
