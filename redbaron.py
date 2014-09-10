@@ -965,10 +965,7 @@ class ElseAttributeNode(CodeBlockNode):
     def _get_last_member_to_clean(self):
         return self
 
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute != "else":
-            raise Exception("Unhandled case")
-
+    def _convert_input_to_one_indented_member(self, indented_name, string, parent, on_attribute):
         def remove_trailing_endl(node):
             while node.value[-1].type == "endl":
                 node.value.pop()
@@ -1026,6 +1023,12 @@ class ElseAttributeNode(CodeBlockNode):
         last_member.value[-1].indent = self.indentation
 
         return else_node
+
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute != "else":
+            raise Exception("Unhandled case")
+
+        return self._convert_input_to_one_indented_member("else", string, parent, on_attribute)
 
     def __setattr__(self, name, value):
         if name == "else_":
