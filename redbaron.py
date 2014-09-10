@@ -965,7 +965,7 @@ class ElseAttributeNode(CodeBlockNode):
     def _get_last_member_to_clean(self):
         return self
 
-    def _convert_input_to_one_indented_member(self, indented_name, string, parent, on_attribute):
+    def _convert_input_to_one_indented_member(self, indented_type, string, parent, on_attribute):
         def remove_trailing_endl(node):
             while node.value[-1].type == "endl":
                 node.value.pop()
@@ -976,7 +976,7 @@ class ElseAttributeNode(CodeBlockNode):
             last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=last_member, on_attribute="value"))
             return ""
 
-        if re.match("^\s*%s" % indented_name, string):
+        if re.match("^\s*%s" % indented_type, string):
 
             # we've got indented text, let's deindent it
             if string.startswith((" ", "	")):
@@ -985,14 +985,14 @@ class ElseAttributeNode(CodeBlockNode):
                 string = re.sub("(\r?\n)%s" % (" " * indentation), "\\1", string)
                 string = string.lstrip()
 
-            node = Node.from_fst(baron.parse("try: pass\nexcept: pass\n%s" % string)[0][indented_name], parent=parent, on_attribute=on_attribute)
+            node = Node.from_fst(baron.parse("try: pass\nexcept: pass\n%s" % string)[0][indented_type], parent=parent, on_attribute=on_attribute)
             node.value = self.parse_code_block(node.value.dumps(), parent=node, on_attribute="value")
 
         else:
             # XXX quite hackish way of doing this
             fst = {'first_formatting': [],
                    'second_formatting': [],
-                   'type': indented_name,
+                   'type': indented_type,
                    'value': [{'type': 'pass'},
                              {'formatting': [],
                               'indent': '',
