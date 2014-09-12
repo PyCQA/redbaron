@@ -1037,25 +1037,6 @@ class ElseAttributeNode(CodeBlockNode):
         return super(ElseAttributeNode, self).__setattr__(name, value)
 
 
-class FinallyAttributeNode(ElseAttributeNode):
-    def _string_to_node(self, string, parent, on_attribute):
-        def remove_trailing_endl(node):
-            while node.value[-1].type == "endl":
-                node.value.pop()
-
-        if on_attribute == "finally":
-            return self._convert_input_to_one_indented_member("finally", string, parent, on_attribute)
-
-        else:
-            return super(FinallyAttributeNode, self)._string_to_node(string, parent=parent, on_attribute=on_attribute)
-
-    def __setattr__(self, name, value):
-        if name == "finally_":
-            name = "finally"
-
-        return super(FinallyAttributeNode, self).__setattr__(name, value)
-
-
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "generators":
@@ -1845,7 +1826,20 @@ class TernaryOperatorNode(Node):
             raise Exception("Unhandled case")
 
 
-class TryNode(FinallyAttributeNode):
+class TryNode(ElseAttributeNode):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "finally":
+            return self._convert_input_to_one_indented_member("finally", string, parent, on_attribute)
+
+        else:
+            return super(TryNode, self)._string_to_node(string, parent=parent, on_attribute=on_attribute)
+
+    def __setattr__(self, name, value):
+        if name == "finally_":
+            name = "finally"
+
+        return super(TryNode, self).__setattr__(name, value)
+
     def _get_last_member_to_clean(self):
         if self.finally_:
             return self.finally_
