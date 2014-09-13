@@ -1831,6 +1831,12 @@ class TryNode(ElseAttributeNode):
         if on_attribute != "excepts":
             return super(TryNode, self)._string_to_node_list(string, parent=parent, on_attribute=on_attribute)
 
+        clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
+        indentation = len(re.search("^ *", clean_string).group())
+
+        if indentation:
+            string = "\n".join(map(lambda x: x[indentation:], string.split("\n")))
+
         return NodeList.from_fst(baron.parse("try:\n pass\n%sfinally:\n pass" % string)[0]["excepts"], parent=parent, on_attribute=on_attribute)
 
     def _string_to_node(self, string, parent, on_attribute):
