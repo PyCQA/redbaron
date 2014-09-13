@@ -3122,6 +3122,12 @@ def test_try_setattr_excepts():
     assert red.dumps() == "try:\n    pass\nexcept:\n    pass\nfinally:\n    pass\n"
 
 
+def test_try_setattr_excepts_replace():
+    red = RedBaron("try:\n    pass\nexcept:\n    pouet\n")
+    red[0].excepts = "except:\n    pass\n"
+    assert red.dumps() == "try:\n    pass\nexcept:\n    pass\n"
+
+
 # TODO
 # BUG:
 # while_node.next should check for the while_node.else attribute
