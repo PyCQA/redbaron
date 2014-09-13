@@ -3140,6 +3140,24 @@ def test_try_setattr_excepts_indented_input():
     assert red.dumps() == "try:\n    pass\nexcept:\n    pass\nfinally:\n    pass\n"
 
 
+def test_try_setattr_excepts_replace_followed():
+    red = RedBaron("try:\n    pass\nexcept:\n    pouet\n\n\nplop\n")
+    red[0].excepts = "except:\n    pass\n"
+    assert red.dumps() == "try:\n    pass\nexcept:\n    pass\n\n\nplop\n"
+
+
+def test_try_setattr_excepts_replace_followed_strip():
+    red = RedBaron("try:\n    pass\nexcept:\n    pouet\n\n\nplop\n")
+    red[0].excepts = "except:\n    pass\n\n\n\n"
+    assert red.dumps() == "try:\n    pass\nexcept:\n    pass\n\n\nplop\n"
+
+
+def test_try_setattr_excepts_replace_strip():
+    red = RedBaron("try:\n    pass\nexcept:\n    pouet\n")
+    red[0].excepts = "except:\n    pass\n\n\n\n"
+    assert red.dumps() == "try:\n    pass\nexcept:\n    pass\n"
+
+
 # TODO
 # BUG:
 # while_node.next should check for the while_node.else attribute

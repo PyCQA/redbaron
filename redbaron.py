@@ -1837,6 +1837,12 @@ class TryNode(ElseAttributeNode):
         if indentation:
             string = "\n".join(map(lambda x: x[indentation:], string.split("\n")))
 
+        string = string.rstrip()
+        string += "\n"
+
+        if self.next:
+            string += "\n\n"
+
         return NodeList.from_fst(baron.parse("try:\n pass\n%sfinally:\n pass" % string)[0]["excepts"], parent=parent, on_attribute=on_attribute)
 
     def _string_to_node(self, string, parent, on_attribute):
