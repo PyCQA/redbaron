@@ -1828,11 +1828,10 @@ class TernaryOperatorNode(Node):
 
 class TryNode(ElseAttributeNode):
     def _string_to_node_list(self, string, parent, on_attribute):
-        if on_attribute == "excepts":
-            return NodeList.from_fst(baron.parse("try:\n pass\n%sfinally:\n pass" % string)[0]["excepts"], parent=parent, on_attribute=on_attribute)
-
-        else:
+        if on_attribute != "excepts":
             return super(TryNode, self)._string_to_node_list(string, parent=parent, on_attribute=on_attribute)
+
+        return NodeList.from_fst(baron.parse("try:\n pass\n%sfinally:\n pass" % string)[0]["excepts"], parent=parent, on_attribute=on_attribute)
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "finally":
