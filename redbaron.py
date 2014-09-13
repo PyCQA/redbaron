@@ -1847,8 +1847,9 @@ class TryNode(ElseAttributeNode):
 
         if self.indentation:
             result.increase_indentation(len(self.indentation))
-            # assume that this is an endl node, this might break
-            result[-1].value[-1].indent = self.indentation
+            if self._get_last_member_to_clean().type != "except":
+                # assume that this is an endl node, this might break
+                result[-1].value[-1].indent = self.indentation
 
         return result
 
