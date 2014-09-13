@@ -1843,7 +1843,14 @@ class TryNode(ElseAttributeNode):
         if self.next:
             string += "\n\n"
 
-        return NodeList.from_fst(baron.parse("try:\n pass\n%sfinally:\n pass" % string)[0]["excepts"], parent=parent, on_attribute=on_attribute)
+        result = NodeList.from_fst(baron.parse("try:\n pass\n%sfinally:\n pass" % string)[0]["excepts"], parent=parent, on_attribute=on_attribute)
+
+        if self.indentation:
+            result.increase_indentation(len(self.indentation))
+            # assume that this is an endl node, this might break
+            result[-1].value[-1].indent = self.indentation
+
+        return result
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "finally":
