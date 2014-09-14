@@ -3192,9 +3192,6 @@ def test_try_setattr_excepts_indented_replace_followed():
 # test remove of else and of finally
 # overload of else/finally/other will probably break on the cleaning of _get_last_member_to_clean
 
-# try -> excepts
-
-# XXX ifelseblock is a list, can't be done the same way than while@else
 # ifelseblock -> if/elif/else
 
 # conversion from list/set/dict to comprehension version
