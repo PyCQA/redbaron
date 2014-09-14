@@ -1575,6 +1575,9 @@ class IfelseblockNode(Node):
         if on_attribute != "value":
             return super(IfelseblockNode, self)._string_to_node_list(string, parent=parent, on_attribute=on_attribute)
 
+        string = string.rstrip()
+        string += "\n"
+
         clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
         indentation = len(re.search("^ *", clean_string).group())
 
