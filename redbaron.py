@@ -1840,8 +1840,10 @@ class TryNode(ElseAttributeNode):
         string = string.rstrip()
         string += "\n"
 
-        if self.next:
+        if self.next and self.on_attribute == "root":
             string += "\n\n"
+        elif self.next:
+            string += "\n"
 
         result = NodeList.from_fst(baron.parse("try:\n pass\n%sfinally:\n pass" % string)[0]["excepts"], parent=parent, on_attribute=on_attribute)
 
@@ -1849,6 +1851,8 @@ class TryNode(ElseAttributeNode):
             result.increase_indentation(len(self.indentation))
             if self._get_last_member_to_clean().type != "except":
                 # assume that this is an endl node, this might break
+                result[-1].value[-1].indent = self.indentation
+            elif self.next:
                 result[-1].value[-1].indent = self.indentation
 
         return result

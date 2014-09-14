@@ -3170,6 +3170,12 @@ def test_try_setattr_excepts_indented_replace():
     assert red.dumps() == "def a():\n    try:\n        pass\n    except:\n        pass\n"
 
 
+def test_try_setattr_excepts_indented_replace_followed():
+    red = RedBaron("def a():\n    try:\n        pass\n    except:\n        pouet\n\n    plop\n")
+    red.try_.excepts = "    except:\n        pass\n"
+    assert red.dumps() == "def a():\n    try:\n        pass\n    except:\n        pass\n\n    plop\n"
+
+
 # TODO
 # BUG:
 # while_node.next should check for the while_node.else attribute
