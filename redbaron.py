@@ -1578,6 +1578,9 @@ class IfelseblockNode(Node):
         string = string.rstrip()
         string += "\n"
 
+        if self.next:
+            string += "\n\n"
+
         clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
         indentation = len(re.search("^ *", clean_string).group())
 
