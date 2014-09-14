@@ -1570,6 +1570,20 @@ class IfNode(CodeBlockNode):
             self.third_formatting = []
 
 
+class IfelseblockNode(Node):
+    def _string_to_node_list(self, string, parent, on_attribute):
+        if on_attribute != "value":
+            return super(IfelseblockNode, self)._string_to_node_list(string, parent=parent, on_attribute=on_attribute)
+
+        clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
+        indentation = len(re.search("^ *", clean_string).group())
+
+        if indentation:
+            string = "\n".join(map(lambda x: x[indentation:], string.split("\n")))
+
+        return NodeList.from_fst(baron.parse(string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
+
 class ImportNode(Node):
     def modules(self):
         "return a list of string of modules imported"
