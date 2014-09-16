@@ -3229,13 +3229,6 @@ def test_ifelseblock_setattr_indented_followed():
 # document all of this!
 # same for .previous!
 
-# advanced
-
-# test remove of else and of finally
-# overload of else/finally/other will probably break on the cleaning of _get_last_member_to_clean
-
-# ifelseblock -> if/elif/else
-
 # conversion from list/set/dict to comprehension version
 # conversion between binary_operator/boolean_operator/comparison
 # conversion from if/elif/else to if/elif/else (careful about the ifelseblock)
