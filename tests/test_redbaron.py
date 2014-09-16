@@ -3202,13 +3202,13 @@ def test_ifelseblock_setattr_followed():
 
 def test_ifelseblock_setattr_indented():
     red = RedBaron("def a():\n    if a:\n        pass\n")
-    red[0].value = "if 1 + 1:\n    qsd\n"
+    red[0].value[1].value = "if 1 + 1:\n    qsd\n"
     assert red.dumps() == "def a():\n    if 1 + 1:\n        qsd\n"
 
 
 def test_ifelseblock_setattr_indented_trailing():
     red = RedBaron("def a():\n    if a:\n        pass\n")
-    red[0].value = "if 1 + 1:\n    qsd\n\n\n\n"
+    red[0].value[1].value = "if 1 + 1:\n    qsd\n\n\n\n"
     assert red.dumps() == "def a():\n    if 1 + 1:\n        qsd\n"
 
 

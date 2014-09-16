@@ -1587,7 +1587,12 @@ class IfelseblockNode(Node):
         if indentation:
             string = "\n".join(map(lambda x: x[indentation:], string.split("\n")))
 
-        return NodeList.from_fst(baron.parse(string)[0]["value"], parent=parent, on_attribute=on_attribute)
+        result = NodeList.from_fst(baron.parse(string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
+        if self.indentation:
+            result.increase_indentation(len(self.indentation))
+
+        return result
 
 
 class ImportNode(Node):
