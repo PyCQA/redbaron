@@ -1578,8 +1578,10 @@ class IfelseblockNode(Node):
         string = string.rstrip()
         string += "\n"
 
-        if self.next:
+        if self.next and self.on_attribute == "root":
             string += "\n\n"
+        elif self.next:
+            string += "\n"
 
         clean_string = re.sub("^ *\n", "", string) if "\n" in string else string
         indentation = len(re.search("^ *", clean_string).group())
@@ -1591,6 +1593,8 @@ class IfelseblockNode(Node):
 
         if self.indentation:
             result.increase_indentation(len(self.indentation))
+            if self.next:
+                result[-1].value[-1].indent = self.indentation
 
         return result
 

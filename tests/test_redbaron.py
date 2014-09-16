@@ -3212,6 +3212,12 @@ def test_ifelseblock_setattr_indented_trailing():
     assert red.dumps() == "def a():\n    if 1 + 1:\n        qsd\n"
 
 
+def test_ifelseblock_setattr_indented_followed():
+    red = RedBaron("def a():\n    if a:\n        pass\n\n\n    pouet\n")
+    red[0].value[1].value = "if 1 + 1:\n    qsd\n"
+    assert red.dumps() == "def a():\n    if 1 + 1:\n        qsd\n\n    pouet\n"
+
+
 # TODO
 # BUG:
 # while_node.next should check for the while_node.else attribute
