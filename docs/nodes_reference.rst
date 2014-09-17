@@ -191,6 +191,15 @@ SetAttr
     red
 
 
+BinaryNode
+==========
+
+The node represent a binary number value.
+
+.. ipython:: python
+
+    RedBaron("0b10101")[0].help(with_formatting=True, deep=True)
+
 BinaryOperatorNode
 ==================
 
