@@ -5,6 +5,7 @@ import inspect
 import itertools
 
 from fnmatch import fnmatch
+from StringIO import StringIO
 
 from pygments import highlight
 from pygments.token import Comment, Text, String, Keyword, Name, Operator
@@ -274,7 +275,8 @@ class NodeList(UserList, GenericNodesUtils):
         return baron.dumps(self.fst())
 
     def __repr__(self):
-        if os.isatty(sys.stdout.fileno()):
+        # the isinstance here is for building sphinx doc
+        if isinstance(sys.stdout, StringIO) or os.isatty(sys.stdout.fileno()):
             return self.__str__()
 
         return "<%s %s, \"%s\" %s, on %s %s>" % (
@@ -796,7 +798,8 @@ class Node(GenericNodesUtils):
         return "\n  ".join(to_join)
 
     def __repr__(self):
-        if os.isatty(sys.stdout.fileno()):
+        # the isinstance here is for building sphinx doc
+        if isinstance(sys.stdout, StringIO) or os.isatty(sys.stdout.fileno()):
             return self.__str__()
 
         return "<%s %s, \"%s\" %s, on %s %s>" % (
