@@ -321,6 +321,6 @@ You can find which node is located at a given line and column:
 .. ipython:: python
 
     red = RedBaron("def a(): return 42")
-    red.find_by_position(1, 5)
-    red.find_by_position(1, 6) # '(' is not a redbaron node
+    red.find_by_position((1, 5))
+    red.find_by_position((1, 6)) # '(' is not a redbaron node
 
