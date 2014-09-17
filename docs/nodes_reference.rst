@@ -58,6 +58,28 @@ Some for indented cases:
 Nodes
 =====
 
+ArgumentGeneratorComprehensionNode
+==================================
+
+A node representing generator passed as an argument during a function call.
+
+.. ipython:: python
+
+    RedBaron("a(x for y in z)")[0].value[1].value[0].help(deep=True, with_formatting=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("a(x for y in z)")
+    red
+    red[0].value[1].value[0].result = "pouet"
+    red
+    red[0].value[1].value[0].generators = "for artichaut in courgette"
+    red
+
+
 AssertNode
 ==========
 
