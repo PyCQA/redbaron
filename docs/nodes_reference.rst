@@ -223,6 +223,30 @@ SetAttr
     red[0].second = "caramba"
     red
 
+
+BooleanOperatorNode
+===================
+
+The node represent a boolean operator (an operator (e.g: :file:`and` :file:`or`) applied to 2 values) with its operands. For e.g.: :file:`x and y`.
+
+.. ipython:: python
+
+    RedBaron("x and y")[0].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("x and y")
+    red
+    red[0].value = "or"
+    red
+    red[0].first = "plop"
+    red
+    red[0].second = "oupsi"
+    red
+
 .. _CallNode:
 
 CallNode
