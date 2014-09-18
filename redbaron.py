@@ -5,7 +5,6 @@ import inspect
 import itertools
 
 from fnmatch import fnmatch
-from StringIO import StringIO
 
 from pygments import highlight
 from pygments.token import Comment, Text, String, Keyword, Name, Operator
@@ -21,8 +20,10 @@ from baron.render import nodes_rendering_order
 
 if python_version == 3:
     from collections import UserList
+    from io import StringIO
 else:
     from UserList import UserList
+    from StringIO import StringIO
 
 
 def indent(line, indentation):
