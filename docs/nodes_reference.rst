@@ -216,7 +216,7 @@ SetAttr
 
     red = RedBaron("1 + 1")
     red
-    red[0].operator = "*"
+    red[0].value = "*"
     red
     red[0].first = "(1 + 1)"
     red
