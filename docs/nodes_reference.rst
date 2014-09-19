@@ -393,6 +393,32 @@ SetAttr
     red
 
 
+.. _ComprehensionLoopNode:
+
+ComprehensionLoopNode
+=====================
+
+The node represent the loop part of a comprehension structure.
+
+.. ipython:: python
+
+    RedBaron("[x for y in z]")[0].generators[0].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("[x for y in z]")
+    red
+    red[0].generators[0].target = "plop"
+    red
+    red[0].generators[0].iterator = "iter"
+    red
+    red[0].generators[0].ifs = "if a if b"
+    red
+
+
 DecoratorNode
 =============
 
