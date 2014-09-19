@@ -486,6 +486,8 @@ SetAttr
     red
 
 
+.. _DictArgumentNode:
+
 DictArgumentNode
 ================
 
