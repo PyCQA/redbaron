@@ -419,6 +419,8 @@ SetAttr
     red
 
 
+.. _DecoratorNode:
+
 DecoratorNode
 =============
 
