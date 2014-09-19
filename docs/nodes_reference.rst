@@ -65,7 +65,7 @@ A node representing generator passed as an argument during a function call.
 
 .. ipython:: python
 
-    RedBaron("a(x for y in z)")[0].value[1].value[0].help(deep=True, with_formatting=True)
+    RedBaron("a(x for y in z)")[0].value[1].value[0].help(deep=True)
 
 SetAttr
 -------
@@ -87,7 +87,7 @@ A node representing the assert statement.
 
 .. ipython:: python
 
-    RedBaron("assert test, message")[0].help(deep=True, with_formatting=True)
+    RedBaron("assert test, message")[0].help(deep=True)
 
 SetAttr
 -------
@@ -112,8 +112,8 @@ A node representing the assign operation in python (:file:`foo = bar`) and the
 
 .. ipython:: python
 
-    RedBaron("a = b")[0].help(deep=True, with_formatting=True)
-    RedBaron("a += b")[0].help(deep=True, with_formatting=True)
+    RedBaron("a = b")[0].help(deep=True)
+    RedBaron("a += b")[0].help(deep=True)
 
 SetAttr
 -------
@@ -154,7 +154,7 @@ parenthesis. For e.g., the first part of this addition: :file:`(1 + 1) * 2`.
 
 .. ipython:: python
 
-    RedBaron("(foo)")[0].help(with_formatting=True, deep=True)
+    RedBaron("(foo)")[0].help(deep=True)
 
 SetAttr
 -------
@@ -178,7 +178,7 @@ This node represent a combination of :ref:`NameNode`, :ref:`DotNode`,
 
 .. ipython:: python
 
-    RedBaron("a.b().c[d]")[0].help(with_formatting=True, deep=True)
+    RedBaron("a.b().c[d]")[0].help(deep=True)
 
 SetAttr
 -------
@@ -198,7 +198,7 @@ The node represent a binary number value.
 
 .. ipython:: python
 
-    RedBaron("0b10101")[0].help(with_formatting=True, deep=True)
+    RedBaron("0b10101")[0].help(deep=True)
 
 BinaryOperatorNode
 ==================
@@ -207,7 +207,7 @@ The node represent a binary operator (an operator (e.g: :file:`+` :file:`-` :fil
 
 .. ipython:: python
 
-    RedBaron("1 + 1")[0].help(with_formatting=True, deep=True)
+    RedBaron("1 + 1")[0].help(deep=True)
 
 SetAttr
 -------
@@ -231,7 +231,7 @@ The node represent a boolean operator (an operator (e.g: :file:`and` :file:`or`)
 
 .. ipython:: python
 
-    RedBaron("x and y")[0].help(with_formatting=True, deep=True)
+    RedBaron("x and y")[0].help(deep=True)
 
 SetAttr
 -------
@@ -258,7 +258,7 @@ arguments). It is always stored in an :ref:`AtomtrailersNode` or a
 
 .. ipython:: python
 
-    RedBaron("a(b, c=d)")[0].value[1].help(deep=True, with_formatting=True)
+    RedBaron("a(b, c=d)")[0].value[1].help(deep=True)
 
 SetAttr
 -------
@@ -288,8 +288,8 @@ nodes that can be in a CallNode are :ref:`ListArgumentNode` and
 
 .. ipython:: python
 
-    RedBaron("a(b, c=d)")[0].value[1].value[0].help(deep=True, with_formatting=True)
-    RedBaron("a(b, c=d)")[0].value[1].value[2].help(deep=True, with_formatting=True)
+    RedBaron("a(b, c=d)")[0].value[1].value[0].help(deep=True)
+    RedBaron("a(b, c=d)")[0].value[1].value[2].help(deep=True)
 
 SetAttr
 -------
@@ -309,7 +309,7 @@ A node representing a class definition.
 
 .. ipython:: python
 
-    RedBaron("class SomeAwesomeName(A, B, C): pass")[0].help(deep=True, with_formatting=True)
+    RedBaron("class SomeAwesomeName(A, B, C): pass")[0].help(deep=True)
 
 SetAttr
 -------
@@ -346,7 +346,7 @@ The comma node is reponsible for holding the formatting arround it.
 
 .. ipython:: python
 
-    RedBaron("[1, 2, 3]")[0].value[1].help(with_formatting=True, deep=True)
+    RedBaron("[1, 2, 3]")[0].value[1].help(deep=True)
 
 ComparisonNode
 ==============
@@ -355,7 +355,7 @@ The node represent a comparison operation, for e.g.: :file:`42 > 30`.
 
 .. ipython:: python
 
-    RedBaron("42 > 30")[0].help(with_formatting=True, deep=True)
+    RedBaron("42 > 30")[0].help(deep=True)
 
 SetAttr
 -------
@@ -380,7 +380,7 @@ member of a :ref:`ComprehensionLoopNode`.
 
 .. ipython:: python
 
-    RedBaron("[x for x in x if condition]")[0].generators[0].ifs[0].help(with_formatting=True, deep=True)
+    RedBaron("[x for x in x if condition]")[0].generators[0].ifs[0].help(deep=True)
 
 SetAttr
 -------
@@ -402,7 +402,7 @@ The node represent the loop part of a comprehension structure.
 
 .. ipython:: python
 
-    RedBaron("[x for y in z]")[0].generators[0].help(with_formatting=True, deep=True)
+    RedBaron("[x for y in z]")[0].generators[0].help(deep=True)
 
 SetAttr
 -------
@@ -426,7 +426,7 @@ A node representing an individual decorator (of a function or a class).
 
 .. ipython:: python
 
-    RedBaron("@stuff.plop(*a)\ndef b(): pass")[0].decorators[0].help(deep=True, with_formatting=True)
+    RedBaron("@stuff.plop(*a)\ndef b(): pass")[0].decorators[0].help(deep=True)
 
 SetAttr
 -------
@@ -450,7 +450,7 @@ A node representing a :file:`del` statement.
 
 .. ipython:: python
 
-    RedBaron("del stuff")[0].help(deep=True, with_formatting=True)
+    RedBaron("del stuff")[0].help(deep=True)
 
 
 SetAttr
@@ -472,7 +472,7 @@ used in a :ref:`CallNode`.
 
 .. ipython:: python
 
-    RedBaron("a(**b)")[0].value[1].value[0].help(with_formatting=True, deep=True)
+    RedBaron("a(**b)")[0].value[1].value[0].help(deep=True)
 
 SetAttr
 -------
@@ -492,7 +492,7 @@ A node representing python sugar syntaxic notation for dict.
 
 .. ipython:: python
 
-    RedBaron("{'a': 1, 'b': 2, 'c': 3}")[0].help(deep=True, with_formatting=True)
+    RedBaron("{'a': 1, 'b': 2, 'c': 3}")[0].help(deep=True)
 
 Helpers
 -------
@@ -520,7 +520,7 @@ The dot node is responsible for holding the formatting around it.
 
 .. ipython:: python
 
-    RedBaron("a.b")[0].value[1].help(with_formatting=True, deep=True)
+    RedBaron("a.b")[0].value[1].help(deep=True)
 
 .. _ElifNode:
 
@@ -533,7 +533,7 @@ The ElifNode, like the :ref:`IfNode` or the :ref:`ElseNode` are stored in a :ref
 
 .. ipython:: python
 
-    RedBaron("if a: pass\nelif b: pass")[0].value[1].help(with_formatting=True, deep=True)
+    RedBaron("if a: pass\nelif b: pass")[0].value[1].help(deep=True)
 
 SetAttr
 -------
@@ -567,7 +567,7 @@ The ElseNode, like the :ref:`IfNode` or the :ref:`ElifNode`, is stored in a :ref
 
 .. ipython:: python
 
-    RedBaron("if a: pass\nelse: pass")[0].value[1].help(with_formatting=True, deep=True)
+    RedBaron("if a: pass\nelse: pass")[0].value[1].help(deep=True)
 
 SetAttr
 -------
@@ -595,8 +595,8 @@ if the CommentNode is the last node of the file).
 
 .. ipython:: python
 
-    RedBaron("suff\n")[1].help(with_formatting=True)
-    RedBaron("# first node of the file\n# last node of the file").help(with_formatting=True)
+    RedBaron("suff\n")[1].help()
+    RedBaron("# first node of the file\n# last node of the file").help()
 
 .. _ExceptNode:
 
@@ -607,7 +607,7 @@ A node representing a except statement (member of a :ref:`TryNode`).
 
 .. ipython:: python
 
-    RedBaron("try: pass\nexcept FooBar: pass\nexcept Exception: pass\nelse: pass\nfinally: pass\n")[0].excepts[0].help(deep=True, with_formatting=True)
+    RedBaron("try: pass\nexcept FooBar: pass\nexcept Exception: pass\nelse: pass\nfinally: pass\n")[0].excepts[0].help(deep=True)
 
 SetAttr
 -------
@@ -644,7 +644,7 @@ A node representing a finally statement (member of a :ref:`TryNode`).
 
 .. ipython:: python
 
-    RedBaron("try: pass\nexcept FooBar: pass\nexcept Exception: pass\nelse: pass\nfinally: pass\n").finally_.help(deep=True, with_formatting=True)
+    RedBaron("try: pass\nexcept FooBar: pass\nexcept Exception: pass\nelse: pass\nfinally: pass\n").finally_.help(deep=True)
 
 SetAttr
 -------
@@ -667,7 +667,7 @@ A node representing a for loop.
 
 .. ipython:: python
 
-    RedBaron("for i in b:\n    pass")[0].help(deep=True, with_formatting=True)
+    RedBaron("for i in b:\n    pass")[0].help(deep=True)
 
 SetAttr
 -------
@@ -700,7 +700,7 @@ A node representing a function definition.
 
 .. ipython:: python
 
-    RedBaron("def stuff():\n    pass\n")[0].help(deep=True, with_formatting=True)
+    RedBaron("def stuff():\n    pass\n")[0].help(deep=True)
 
 SetAttr
 -------
@@ -747,7 +747,7 @@ The IfNode, like the :ref:`ElifNode` or the :ref:`ElseNode`, is stored in an :re
 
 .. ipython:: python
 
-    RedBaron("if a: pass")[0].value[0].help(with_formatting=True, deep=True)
+    RedBaron("if a: pass")[0].value[0].help(deep=True)
 
 SetAttr
 -------
@@ -781,8 +781,8 @@ expect*.
 
 .. ipython:: python
 
-    RedBaron("import foo")[0].help(with_formatting=True, deep=True)
-    RedBaron("import foo.bar.baz as stuff, another_thing.plop")[0].help(with_formatting=True, deep=True)
+    RedBaron("import foo")[0].help(deep=True)
+    RedBaron("import foo.bar.baz as stuff, another_thing.plop")[0].help(deep=True)
 
 SetAttr
 -------
@@ -815,7 +815,7 @@ A python integer.
 
 .. ipython:: python
 
-    RedBaron("42")[0].help(with_formatting=True)
+    RedBaron("42")[0].help()
 
 
 ListNode
@@ -825,7 +825,7 @@ A node representing python sugar syntaxic notation for list.
 
 .. ipython:: python
 
-    RedBaron("[1, 2, 3]")[0].help(deep=True, with_formatting=True)
+    RedBaron("[1, 2, 3]")[0].help(deep=True)
 
 Helpers
 -------
@@ -842,7 +842,7 @@ A node representing python sugar syntaxic notation for repr.
 
 .. ipython:: python
 
-    RedBaron("`pouet`")[0].help(deep=True, with_formatting=True)
+    RedBaron("`pouet`")[0].help(deep=True)
 
 Helpers
 -------
@@ -859,7 +859,7 @@ A node representing python sugar syntaxic notation for set.
 
 .. ipython:: python
 
-    RedBaron("{1, 2, 3}")[0].help(deep=True, with_formatting=True)
+    RedBaron("{1, 2, 3}")[0].help(deep=True)
 
 Helpers
 -------
@@ -879,8 +879,8 @@ it except if you play with the way the file is rendered.
 
 .. ipython:: python
 
-    RedBaron("1 + 1")[0].first_formatting[0].help(with_formatting=True)
-    RedBaron("1 + 1").help(with_formatting=True)
+    RedBaron("1 + 1")[0].first_formatting[0].help()
+    RedBaron("1 + 1").help()
 
 
 .. _TryNode:
@@ -893,7 +893,7 @@ A node representing a try statement. This node is responsible for holding the
 
 .. ipython:: python
 
-    RedBaron("try: pass\nexcept FooBar: pass\nexcept Exception: pass\nelse: pass\nfinally: pass\n")[0].help(deep=True, with_formatting=True)
+    RedBaron("try: pass\nexcept FooBar: pass\nexcept Exception: pass\nelse: pass\nfinally: pass\n")[0].help(deep=True)
 
 SetAttr
 -------
@@ -919,7 +919,7 @@ A node representing python sugar syntaxic notation for tuple.
 
 .. ipython:: python
 
-    RedBaron("(1, 2, 3)")[0].help(deep=True, with_formatting=True)
+    RedBaron("(1, 2, 3)")[0].help(deep=True)
 
 Helpers
 -------
@@ -936,7 +936,7 @@ A node representing a while loop.
 
 .. ipython:: python
 
-    RedBaron("while condition:\n    pass")[0].help(deep=True, with_formatting=True)
+    RedBaron("while condition:\n    pass")[0].help(deep=True)
 
 SetAttr
 -------
@@ -966,7 +966,7 @@ A node representing a while loop.
 
 .. ipython:: python
 
-    RedBaron("with a as b: pass")[0].contexts[0].help(deep=True, with_formatting=True)
+    RedBaron("with a as b: pass")[0].contexts[0].help(deep=True)
 
 SetAttr
 -------
@@ -997,7 +997,7 @@ A node representing a with statement.
 
 .. ipython:: python
 
-    RedBaron("with a as b, c: pass")[0].help(deep=True, with_formatting=True)
+    RedBaron("with a as b, c: pass")[0].help(deep=True)
 
 SetAttr
 -------
