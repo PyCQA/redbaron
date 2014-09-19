@@ -443,6 +443,28 @@ SetAttr
     red
 
 
+DefArgumentNode
+===============
+
+A node a argument in a function definition.
+
+.. ipython:: python
+
+    RedBaron("def a(b, c=d): pass")[0].arguments.help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("def a(b): pass")
+    red
+    red[0].arguments[0].name = "plop"
+    red
+    red[0].arguments[0].value = "1 + 1"
+    red
+
+
 DelNode
 =======
 
