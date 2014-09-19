@@ -554,6 +554,8 @@ SetAttr
     red
 
 
+.. _DotNode:
+
 DotNode
 =======
 
