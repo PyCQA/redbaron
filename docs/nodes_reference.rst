@@ -372,6 +372,27 @@ SetAttr
     red
 
 
+ComprehensionIfNode
+===================
+
+The node represent "if" condition in a comprehension loop. It is always a
+member of a :ref:`ComprehensionLoopNode`.
+
+.. ipython:: python
+
+    RedBaron("[x for x in x if condition]")[0].generators[0].ifs[0].help(with_formatting=True, deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("[x for x in x if condition]")
+    red
+    red[0].generators[0].ifs[0].value = "True"
+    red
+
+
 DecoratorNode
 =============
 
