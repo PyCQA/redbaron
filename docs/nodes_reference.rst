@@ -532,6 +532,28 @@ arguments: one of the key and one of the value.
     red
 
 
+DictComprehensionNode
+=====================
+
+A node representing dictionary comprehension node.
+
+.. ipython:: python
+
+    RedBaron("{a: b for c in d}")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("{a: b for c in d}")
+    red
+    red[0].result = "plop: poulpe"
+    red
+    red[0].generators = "for zomg in wtf"
+    red
+
+
 DotNode
 =======
 
