@@ -1150,6 +1150,32 @@ SetAttr
     red
 
 
+PrintNode
+=========
+
+A node representing a print statement
+
+.. ipython:: python
+
+    RedBaron("print stuff")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("print stuff")
+    red
+    red[0].destination = "some_file"
+    red
+    red[0].value = "a, b, c"
+    red
+    red[0].destination = ""
+    red
+    red[0].value = ""
+    red
+
+
 ReprNode
 ========
 
