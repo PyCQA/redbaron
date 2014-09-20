@@ -1179,7 +1179,7 @@ SetAttr
 RaiseNode
 =========
 
-A node representing a raise statement
+A node representing a raise statement.
 
 .. ipython:: python
 
@@ -1218,7 +1218,7 @@ the node without having to think about formatting. It is documented here:
 
 
 SetNode
-========
+=======
 
 A node representing python sugar syntaxic notation for set.
 
