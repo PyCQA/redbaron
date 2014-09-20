@@ -894,6 +894,25 @@ SetAttr
     red[0].value[1].value = "1 + 1"
     red
 
+GlobalNode
+==========
+
+A node representing a global statement.
+
+.. ipython:: python
+
+    RedBaron("global a")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("global a")
+    red
+    red[0].value = "stuff, plop"
+    red
+
 .. _IfNode:
 
 IfNode
