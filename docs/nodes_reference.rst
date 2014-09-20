@@ -788,6 +788,27 @@ ForNode comes with one helper to add another item at the end of the value
 of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
+FromImportNode
+==============
+
+A node representing a "from import" statement.
+
+.. ipython:: python
+
+    RedBaron("from a import b")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("from a import b")
+    red
+    red[0].value = "some.module"
+    red
+    red[0].targets = "a as b, c as d, e"
+    red
+
 
 FuncdefNode
 ===========
