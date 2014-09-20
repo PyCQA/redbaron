@@ -1039,6 +1039,30 @@ A python integer.
     RedBaron("42")[0].help()
 
 
+LambdaNode
+==========
+
+A node representing a lambda statement.
+
+.. ipython:: python
+
+    RedBaron("lambda x: y")[0].help(deep=True)
+
+SetAttr
+-------
+
+Works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("lambda x: y")
+    red
+    red[0].arguments = "a, b=c, *d, **f"
+    red
+    red[0].value = "plop"
+    red
+
+
 ListNode
 ========
 
