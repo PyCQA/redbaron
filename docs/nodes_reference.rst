@@ -1085,6 +1085,27 @@ Works as expected:
     red
 
 
+ListComprehensionNode
+=====================
+
+A node representing a list comprehension node.
+
+.. ipython:: python
+
+    RedBaron("[x for y in z]")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("[x for y in z]")
+    red
+    red[0].result = "pouet"
+    red
+    red[0].generators = "for artichaut in courgette"
+    red
+
 ListNode
 ========
 
@@ -1100,6 +1121,27 @@ Helpers
 ListNode comes with one helper to add another item at the end of the value of
 the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
+
+NameAsNameNode
+==============
+
+A node representing a argument to the from import statement.
+
+.. ipython:: python
+
+    RedBaron("from x import a as d")[0].targets[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("from x import a as d")
+    red
+    red[0].targets[0].value = "some_random_module"
+    red
+    red[0].targets[0].target = "stuff"
+    red
 
 
 ReprNode
