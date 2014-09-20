@@ -874,6 +874,8 @@ SetAttr
     red[0].generators = "for artichaut in courgette"
     red
 
+.. _GetitemNode:
+
 GetitemNode
 ===========
 
