@@ -1277,6 +1277,32 @@ SetAttr
     red[0].generators = "for artichaut in courgette"
     red
 
+SliceNode
+=========
+
+A node representing a slice, the "1:2:3" that can be found in a
+:ref:`GetitemNode`.
+
+.. ipython:: python
+
+    RedBaron("a[1:-1:2]")[0].value[1].value.help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("a[1:-1:2]")
+    red
+    red[0].value[1].value.lower = "a"
+    red
+    red[0].value[1].value.upper = "b"
+    red
+    red[0].value[1].value.step = "stuff"
+    red
+    red[0].value[1].value.step = ""
+    red
+
 SpaceNode
 =========
 
