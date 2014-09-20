@@ -1063,6 +1063,28 @@ Works as expected:
     red
 
 
+ListArgumentNode
+================
+
+A node representing a "start argument" in a function call **or** definition.
+
+.. ipython:: python
+
+    RedBaron("def a(*b): pass")[0].arguments[0].help(deep=True)
+
+SetAttr
+-------
+
+Works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("def a(*b): pass")
+    red
+    red[0].arguments[0].value = "plop"
+    red
+
+
 ListNode
 ========
 
