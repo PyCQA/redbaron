@@ -1067,6 +1067,8 @@ Works as expected:
     red
 
 
+.. _ListArgumentNode:
+
 ListArgumentNode
 ================
 
