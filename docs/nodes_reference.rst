@@ -1176,6 +1176,30 @@ SetAttr
     red
 
 
+RaiseNode
+=========
+
+A node representing a raise statement
+
+.. ipython:: python
+
+    RedBaron("raise Exception(), foo, bar")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("raise stuff")
+    red
+    red[0].value = "foo"
+    red
+    red[0].instance = "bar"
+    red
+    red[0].traceback = "baz"
+    red
+
+
 ReprNode
 ========
 
