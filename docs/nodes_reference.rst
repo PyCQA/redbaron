@@ -948,6 +948,50 @@ node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
+IfelseblockNode
+===============
+
+A node representing the conditional block composed of at least one if statement,
+zero or more elif statements and, at the end, an optional else statement. All
+those statements are stored in a list.
+
+.. ipython:: python
+
+    RedBaron("if a: pass\nelif b: pass\nelse: pass\n")[0].help(deep=True)
+
+SetAttr
+-------
+
+Works as expected and is very flexible on its input:
+
+* the input is automatically put at the correct indentation
+* the input is automatically right strip
+* if the statement is followed, the correct number of blanks lines are added: 2 when at the root of the file, 1 when indented
+
+.. ipython:: python
+
+    red = RedBaron("if a: pass\n")
+    red
+    red[0].value = "if a:\n    pass\nelif b:\n    pass\n\n\n"
+    red
+    red[0].value = "    if a:\n        pass"
+    red
+
+.. ipython:: python
+
+    red = RedBaron("if a:\n    pass\n\n\nplop")
+    red
+    red[0].value = "    if a:\n        pass"
+    red
+
+.. ipython:: python
+
+    red = RedBaron("while True:\n    if plop:\n        break\n\n    stuff")
+    red
+    red[0].value[1].value = "if a:\n    pass\nelif b:\n    pass\n\n\n"
+    red
+
+
 ImportNode
 ==========
 
