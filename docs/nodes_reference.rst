@@ -950,6 +950,8 @@ node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
+.. _IfelseblockNode:
+
 IfelseblockNode
 ===============
 
