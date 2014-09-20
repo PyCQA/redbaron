@@ -874,6 +874,26 @@ SetAttr
     red[0].generators = "for artichaut in courgette"
     red
 
+GetitemNode
+===========
+
+A node representing a 'get item' access on a python object, in other words the
+'[stuff]' in 'some_object[stuff]'.
+
+.. ipython:: python
+
+    RedBaron("a[b]")[0].value[1].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("a[b]")
+    red
+    red[0].value[1].value = "1 + 1"
+    red
+
 .. _IfNode:
 
 IfNode
