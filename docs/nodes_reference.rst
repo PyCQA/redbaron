@@ -707,6 +707,30 @@ ExceptNode comes with one helper to add another item at the end of the value
 of the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
+ExecNode
+========
+
+A node representing a excec statement.
+
+.. ipython:: python
+
+    RedBaron("exec '1 + 1' in a, b")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("exec 'stuff'")
+    red
+    red[0].value = 'some_code'
+    red
+    red[0].globals = 'x'
+    red
+    red[0].locals = 'y'
+    red
+
+
 .. _FinallyNode:
 
 FinallyNode
