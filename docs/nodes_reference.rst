@@ -1217,6 +1217,28 @@ the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
+ReturnNode
+==========
+
+A node representing a return statement.
+
+.. ipython:: python
+
+    RedBaron("return stuff")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("return stuff")
+    red
+    red[0].value = "1 + 1"
+    red
+    red[0].value = ""
+    red
+
+
 SetNode
 =======
 
