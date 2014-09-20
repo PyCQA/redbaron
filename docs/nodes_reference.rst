@@ -558,6 +558,28 @@ SetAttr
     red
 
 
+DottedAsNameNode
+================
+
+A node representing a argument to the import node.
+
+.. ipython:: python
+
+    RedBaron("import a.b.c as d")[0].value[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("import a.b.c as d")
+    red
+    red[0].value[0].value = "some.random.module"
+    red
+    red[0].value[0].target = "stuff"
+    red
+
+
 .. _DotNode:
 
 DotNode
