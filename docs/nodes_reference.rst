@@ -1339,6 +1339,29 @@ SetAttr
     red[0].value = "'plip' 'plop'"
     red
 
+TernaryOperatorNode
+===================
+
+A node representing the ternary operator expression.
+
+.. ipython:: python
+
+    RedBaron("a if b else c")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("a if b else c")
+    red
+    red[0].value = "some_test"
+    red
+    red[0].first = "a_value"
+    red
+    red[0].second = "another_value"
+    red
+
 .. _TryNode:
 
 TryNode
