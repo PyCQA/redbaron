@@ -1317,6 +1317,28 @@ it except if you play with the way the file is rendered.
     RedBaron("1 + 1").help()
 
 
+StringChainNode
+===============
+
+This is a special node that handle a particular way of writing a single string in
+python by putting several strings one after the other while only separated by
+spaces of endls.
+
+.. ipython:: python
+
+    RedBaron("'a' r'b' b'c'")[0].help(deep=True)
+
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("'a' r'b' b'c'")
+    red
+    red[0].value = "'plip' 'plop'"
+    red
+
 .. _TryNode:
 
 TryNode
