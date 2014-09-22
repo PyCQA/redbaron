@@ -1378,10 +1378,37 @@ SetAttr
 -------
 
 TryNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations.
+of values, see :ref:`CodeBlockNode` for more informations. For the :file:`else`
+and the :file:`finally` and the :file:`excepts` attributes, TryNode is very
+flexible on the range of inputs it can get, like for a CodeBlockNode value's
+attribute.
 
-**The other attributes (excepts, finally, else) cannot be setted easily for
-now**. It is planned to fix this in a near future.
+**Important**: Since :file:`else` and :file:`finally` are reserved keywords in python, you
+need to append a :file:`_` to those attributes name to access/modify them:
+:file:`node.else_` and :file:`node.finally_`.
+
+.. ipython:: python
+
+    red = RedBaron("try:\n    pass\nexcept:\n    pass\n")
+    red
+    red[0].else_ = "do_stuff"
+    red
+    red[0].else_ = "else: foobar"
+    red
+    red[0].else_ = "    else:\n        badly_indented_and_trailing\n\n\n\n"
+    red
+    # input management of finally_ works the same way than for else_
+    red[0].finally_ = "close_some_stuff"
+    red
+    red[0].else_ = ""
+    red
+    red[0].finally_ = ""
+    red
+    red[0].excepts = "except A as b:\n    pass"
+    red
+    red[0].excepts = "except X:\n    pass\nexcept Y:\n    pass"
+    red
+    # You **CAN'T** do this red[0].excepts = "foobar"
 
 Helpers
 -------
