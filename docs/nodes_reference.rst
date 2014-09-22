@@ -1435,6 +1435,28 @@ the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
+UnitaryOperatorNode
+===================
+
+A node representing a number sign modification operator like :file:`-2` or :file:`+42`.
+
+.. ipython:: python
+
+    RedBaron("-1")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("-1")
+    red
+    red[0].target = "42"
+    red
+    red[0].value = "+"
+    red
+
+
 WhileNode
 =========
 
