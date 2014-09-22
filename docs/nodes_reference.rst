@@ -1479,6 +1479,27 @@ SetAttr
     red
 
 
+YieldAtomNode
+=============
+
+A node representing a yield statement surrounded by parenthesis.
+
+.. ipython:: python
+
+    RedBaron("(yield 42)")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("(yield 42)")
+    red
+    red[0].value = "stuff"
+    red
+    red[0].value = ""
+    red
+
 WhileNode
 =========
 
