@@ -13,8 +13,6 @@
 This is the reference page for every node type encountered in RedBaron and
 their specificities.
 
-**This page is still a WIP**.
-
 ========
 TopClass
 ========
