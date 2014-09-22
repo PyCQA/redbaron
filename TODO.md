@@ -2,17 +2,8 @@
 
 ### Important
 
-- __setattr__ should work as expected when possible (will be a long list of stuff to do for that)
-  for eg: RedBaron("{a: 1}")[0].value[0] = "b: c" fails now
-- automatic reindentation when attribute a NodeList to an attribute (like adding a new body to a function)
-- when dealing with a block, ensure you don't break the indentation of the
-  block after you (like when playing with a method, be carreful with the next
-  method)
-- when set a function/other body block, ensure that it starts with a "\n" + correct indentation
 - .at() return the first item starting at line X
 - .rename() (name -> value, def/class -> name)
-
-- there is a global problem of some node having some attributes that are keyword in python, eg: trynode.finally, WithContextItemNode.as How to handle that in general? For now I use allow to use $KEYWORD + "\_" but that breaks that completion and probably other things
 
 - generate default constructors for nodes using nodes_rendering_order
 - if possible try to keep a coherent signature with possibles attributes, set correctly default attributes
