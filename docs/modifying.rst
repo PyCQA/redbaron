@@ -57,7 +57,7 @@ __setattr__ to allow you to write things like:
 
     In [67]: red[0]
 
-Yep, if you assigns a string to a node attribute, RedBaron will
+If you assigns a string to a node attribute, RedBaron will
 automatically parse it with RedBaron and put the result in the
 previous node.
 
@@ -153,24 +153,16 @@ a :file:`fst node`, an instance of a node or a node list.
 
 The same is done for :file:`.on_attribute`.
 
-Limitations
------------
+Full Documentation
+------------------
 
-As of today, this magical parsing on string has a **big** limitation: it is
-expecting something parsable by Baron which only parse a **valid Python
-program**. That means that a string passed in a :file:`__setattr__` case has to be an
-entire valid Python program that the command :file:`python` can execute. This
-mean that you wouldn't have been able to write something like this in the
-previous example:
+After an horribly long and boring work, every RedBaron nodes have advenced and
+powerfull automatic behavior on the string :file:`__setattr__` magic to
+evaluate the given string in the correct context and even automatically doing
+annoying work like, for example, fixing the indentation of an input for a
+function body.
 
-.. ipython::
-
-    In [105]: red[0].value = ["a", ", ", "b"]
-
-As you can guess :file:`","` is not a valid python program.
-
-This will be fixed in the future but it will require quite a lot of work to be
-done correctly and other things are more urgent.
+The whole documentation per nodes can be found on this page: :doc:`nodes_reference`.
 
 Next
 ~~~~
