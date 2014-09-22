@@ -340,7 +340,7 @@ CommaNode
 A node representing a comma, this is the kind of formatting node that you might
 have to deal with if not enough high level helpers are available. They are
 generally present in call, function arguments definition and data structure
-sugar syntaxic notation.
+sugar syntactic notation.
 
 The comma node is reponsible for holding the formatting arround it.
 
@@ -514,7 +514,7 @@ SetAttr
 DictNode
 ========
 
-A node representing python sugar syntaxic notation for dict.
+A node representing python sugar syntactic notation for dict.
 
 .. ipython:: python
 
@@ -1115,7 +1115,7 @@ SetAttr
 ListNode
 ========
 
-A node representing python sugar syntaxic notation for list.
+A node representing python sugar syntactic notation for list.
 
 .. ipython:: python
 
@@ -1203,7 +1203,7 @@ SetAttr
 ReprNode
 ========
 
-A node representing python sugar syntaxic notation for repr.
+A node representing python sugar syntactic notation for repr.
 
 .. ipython:: python
 
@@ -1242,7 +1242,7 @@ SetAttr
 SetNode
 =======
 
-A node representing python sugar syntaxic notation for set.
+A node representing python sugar syntactic notation for set.
 
 .. ipython:: python
 
@@ -1421,7 +1421,7 @@ of the node without having to think about formatting. It is documented here:
 TupleNode
 =========
 
-A node representing python sugar syntaxic notation for tuple.
+A node representing python sugar syntactic notation for tuple.
 
 .. ipython:: python
 
