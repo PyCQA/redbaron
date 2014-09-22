@@ -4,6 +4,9 @@ Changelog
 0.2 (unreleased)
 ----------------
 
+- for EVERY NODE in RedBaron, the automagic behavior when passing a string to
+  modify an attribute has been done, this is HUGE improvment
+  https://redbaron.readthedocs.org/en/latest/modifying.html#full-documentations
 - it's now possible to use regex, globs, list/tuple  and lambda (callable) in .find and
   .find_all, see https://redbaron.readthedocs.org/en/latest/querying.html#advanced-querying
 - new method on node: .replace() to replace in place a node
