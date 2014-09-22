@@ -4,7 +4,7 @@
 from setuptools import setup
 
 setup(name='redbaron',
-      version='0.1',
+      version='0.2',
       description='Abstraction on top of baron, a FST for python to make writing refactoring code a realistic task',
       author='Laurent Peuch',
       long_description=open("README.md", "r").read(),
