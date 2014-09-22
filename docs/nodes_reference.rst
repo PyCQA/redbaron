@@ -769,8 +769,10 @@ SetAttr
 -------
 
 ForNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations. Other attributes
-work as expected:
+of values, see :ref:`CodeBlockNode` for more informations. The else attributes
+accept a great ranges of inputs, since :file:`else` is a reserved python
+keyword, you need to access it using the :file:`else_` attribute. Other
+attributes work as expected:
 
 .. ipython:: python
 
@@ -779,6 +781,12 @@ work as expected:
     red[0].iterator = "i, j, k"
     red
     red[0].target = "[x for x in stuff if condition]"
+    red
+    red[0].else_ = "do_stuff"
+    red
+    red[0].else_ = "else: foobar"
+    red
+    red[0].else_ = "    else:\n        badly_indented_and_trailing\n\n\n\n"
     red
 
 Helpers
@@ -1512,15 +1520,23 @@ A node representing a while loop.
 SetAttr
 -------
 
-WhileNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations. Other attributes
-work as expected:
+WhileNode is a CodeBlockNode which means its value attribute accepts a wide
+range of values, see :ref:`CodeBlockNode` for more informations. The else
+attributes accept a great ranges of inputs, since :file:`else` is a reserved
+python keyword, you need to access it using the :file:`else_` attribute. Other
+attributes work as expected:
 
 .. ipython:: python
 
     red = RedBaron("while condition: pass")
     red
     red[0].test = "a is not None"
+    red
+    red[0].else_ = "do_stuff"
+    red
+    red[0].else_ = "else: foobar"
+    red
+    red[0].else_ = "    else:\n        badly_indented_and_trailing\n\n\n\n"
     red
 
 Helpers
