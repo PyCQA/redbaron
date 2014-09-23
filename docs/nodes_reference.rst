@@ -151,7 +151,7 @@ For the operator part, expected input should work:
 AssociativeParenthesisNode
 ==========================
 
-This node represents a statement prioritised on an another by being surrounded by
+This node represents a statement prioritised on another by being surrounded by
 parenthesis. For e.g., the first part of this addition: :file:`(1 + 1) * 2`.
 
 .. ipython:: python
