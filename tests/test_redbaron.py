@@ -3218,46 +3218,6 @@ def test_ifelseblock_setattr_indented_followed():
     assert red.dumps() == "def a():\n    if 1 + 1:\n        qsd\n\n    pouet\n"
 
 
-# TODO
-# BUG:
-# while_node.next should check for the while_node.else attribute
-# same for every other construction with an else: for/except/etc...
-# the else attribute should check for parent for next
-# if/elif same
-# how ifelseblock should behave?
-# trynode should also have a special behavior
-# document all of this!
-# same for .previous!
-
-# conversion from list/set/dict to comprehension version
-# conversion between binary_operator/boolean_operator/comparison
-# conversion from if/elif/else to if/elif/else (careful about the ifelseblock)
-# conversion from call_argument/def_argument to list_argument or dict_argument and vice versa
-# conversion from string chain to string
-
-# do a check on every setitem, some doesn't works as expected and I'm expected
-# that none works as expected, for eg, this one fails:
-#     RedBaron("a(b, c=d, *e, **f)")[0].value[1].value[0] = "**dsq"
-
-# auto add quotes for strings
-
-# on comprehensions, add some kind of magic "global" attribute if the user
-# wants to change the whole body (instead of having to change result and
-# generators attributes)
-
-# important
-
-# in addition of passing empty string, allow to pass None value on setattr
-# this needs to be done in "_convert_input_to_node_object" and it's possible
-# now since we have string type in nodes_rendering_order
-
-# next TODO
-
-# on setattr with FST and RedBaron NODES
-# fix indent and next/previous endl nodes on:
-# * function/while/other body
-# * decorators
-
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
     assert red[0].value.value[2].index == 2
