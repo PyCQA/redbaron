@@ -151,7 +151,7 @@ For the operator part, expected input should work:
 AssociativeParenthesisNode
 ==========================
 
-This node represent a statement prioritised other another by being surrounded by
+This node represents a statement prioritised on an another by being surrounded by
 parenthesis. For e.g., the first part of this addition: :file:`(1 + 1) * 2`.
 
 .. ipython:: python
@@ -174,7 +174,7 @@ SetAttr
 AtomtrailersNode
 ================
 
-This node represent a combination of :ref:`NameNode`, :ref:`DotNode`,
+This node represents a combination of :ref:`NameNode`, :ref:`DotNode`,
 :ref:`CallNode`, :ref:`GetitemNode` sorted in a list. For e.g.:
 :file:`a.b().c[d]`.
 
@@ -196,7 +196,7 @@ SetAttr
 BinaryNode
 ==========
 
-The node represent a binary number value.
+The node represents a binary number value.
 
 .. ipython:: python
 
@@ -205,7 +205,7 @@ The node represent a binary number value.
 BinaryOperatorNode
 ==================
 
-The node represent a binary operator (an operator (e.g: :file:`+` :file:`-` :file:`/`..) applied to 2 values) with its operands. For e.g.: :file:`1 + 1`.
+The node represents a binary operator (an operator (e.g: :file:`+` :file:`-` :file:`/`..) applied to 2 values) with its operands. For e.g.: :file:`1 + 1`.
 
 .. ipython:: python
 
@@ -229,7 +229,7 @@ SetAttr
 BooleanOperatorNode
 ===================
 
-The node represent a boolean operator (an operator (e.g: :file:`and` :file:`or`) applied to 2 values) with its operands. For e.g.: :file:`x and y`.
+The node represents a boolean operator (an operator (e.g: :file:`and` :file:`or`) applied to 2 values) with its operands. For e.g.: :file:`x and y`.
 
 .. ipython:: python
 
@@ -344,7 +344,7 @@ have to deal with if not enough high level helpers are available. They are
 generally present in call, function arguments definition and data structure
 sugar syntactic notation.
 
-The comma node is reponsible for holding the formatting arround it.
+The comma node is responsible for holding the formatting around it.
 
 .. ipython:: python
 
@@ -353,7 +353,7 @@ The comma node is reponsible for holding the formatting arround it.
 ComparisonNode
 ==============
 
-The node represent a comparison operation, for e.g.: :file:`42 > 30`.
+The node represents a comparison operation, for e.g.: :file:`42 > 30`.
 
 .. ipython:: python
 
@@ -377,7 +377,7 @@ SetAttr
 ComprehensionIfNode
 ===================
 
-The node represent "if" condition in a comprehension loop. It is always a
+The node represents "if" condition in a comprehension loop. It is always a
 member of a :ref:`ComprehensionLoopNode`.
 
 .. ipython:: python
@@ -400,7 +400,7 @@ SetAttr
 ComprehensionLoopNode
 =====================
 
-The node represent the loop part of a comprehension structure.
+The node represents the loop part of a comprehension structure.
 
 .. ipython:: python
 
@@ -450,7 +450,7 @@ SetAttr
 DefArgumentNode
 ===============
 
-A node a argument in a function definition.
+A node representing an argument in a function definition.
 
 .. ipython:: python
 
@@ -495,7 +495,7 @@ SetAttr
 DictArgumentNode
 ================
 
-A node representing a 'kwargs' definied in a function definition arguments or
+A node representing a 'kwargs' defined in a function definition argument or
 used in a :ref:`CallNode`.
 
 .. ipython:: python
@@ -563,7 +563,7 @@ SetAttr
 DottedAsNameNode
 ================
 
-A node representing a argument to the import node.
+A node representing an argument to the import node.
 
 .. ipython:: python
 
@@ -677,7 +677,7 @@ if the CommentNode is the last node of the file).
 ExceptNode
 ==========
 
-A node representing a except statement (member of a :ref:`TryNode`).
+A node representing an except statement (member of a :ref:`TryNode`).
 
 .. ipython:: python
 
@@ -712,7 +712,7 @@ of the node without having to think about formatting. It is documented here:
 ExecNode
 ========
 
-A node representing a excec statement.
+A node representing a exec statement.
 
 .. ipython:: python
 
@@ -1141,7 +1141,7 @@ the node without having to think about formatting. It is documented here:
 NameAsNameNode
 ==============
 
-A node representing a argument to the from import statement.
+A node representing an argument to the from import statement.
 
 .. ipython:: python
 
@@ -1163,7 +1163,7 @@ SetAttr
 PrintNode
 =========
 
-A node representing a print statement
+A node representing a print statement.
 
 .. ipython:: python
 
@@ -1262,7 +1262,7 @@ Helpers
 -------
 
 SetNode comes with one helper to add another item at the end of the value of
-the node without having to think about formating. It is documented here:
+the node without having to think about formatting. It is documented here:
 :ref:`append_value`.
 
 
@@ -1332,7 +1332,7 @@ StringChainNode
 
 This is a special node that handle a particular way of writing a single string in
 python by putting several strings one after the other while only separated by
-spaces of endls.
+spaces or endls.
 
 .. ipython:: python
 
