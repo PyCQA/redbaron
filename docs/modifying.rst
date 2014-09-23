@@ -57,7 +57,7 @@ __setattr__ to allow you to write things like:
 
     In [67]: red[0]
 
-If you assigns a string to a node attribute, RedBaron will
+If you assign a string to a node attribute, RedBaron will
 automatically parse it with RedBaron and put the result in the
 previous node.
 
@@ -156,7 +156,7 @@ The same is done for :file:`.on_attribute`.
 Full Documentation
 ------------------
 
-After an horribly long and boring work, every RedBaron nodes have advenced and
+After an horribly long and boring work, every RedBaron node has advanced and
 powerfull automatic behavior on the string :file:`__setattr__` magic to
 evaluate the given string in the correct context and even automatically doing
 annoying work like, for example, fixing the indentation of an input for a
