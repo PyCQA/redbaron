@@ -1041,8 +1041,12 @@ class ElseAttributeNode(CodeBlockNode):
         return super(ElseAttributeNode, self).__setattr__(name, value)
 
 
-class CommaProxyList(UserList):
-    pass
+class CommaProxyList(object):
+    def __init__(self, node_list):
+        self.node_list = node_list
+
+    def __len__(self):
+        return len(self.node_list.filtered())
 
 
 class ArgumentGeneratorComprehensionNode(Node):

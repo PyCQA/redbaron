@@ -3296,3 +3296,9 @@ def test_comma_proxy_list_len_empty():
     red = RedBaron("[]")
     comma_proxy_list = CommaProxyList(red[0].value)
     assert len(comma_proxy_list) == 0
+
+
+def test_comma_proxy_list_len_not_empty():
+    red = RedBaron("[1, 2, 3]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    assert len(comma_proxy_list) == 3
