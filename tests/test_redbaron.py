@@ -7,7 +7,8 @@ import baron
 import pytest
 from baron.utils import string_instance
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
-                      PassNode, NodeList, CommaNode, DotNode, CallNode, truncate)
+                      PassNode, NodeList, CommaNode, DotNode, CallNode,
+                      truncate, CommaProxyList)
 
 
 def test_empty():
@@ -3290,3 +3291,8 @@ def test_truncate():
     assert "1...6" == truncate("123456", 5)
     assert "123456...0" == truncate("12345678901234567890", 10)
 
+
+def test_comma_proxy_list_len_empty():
+    red = RedBaron("[]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    assert len(comma_proxy_list) == 0

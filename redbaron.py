@@ -1041,6 +1041,10 @@ class ElseAttributeNode(CodeBlockNode):
         return super(ElseAttributeNode, self).__setattr__(name, value)
 
 
+class CommaProxyList(UserList):
+    pass
+
+
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "generators":
