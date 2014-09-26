@@ -1048,6 +1048,9 @@ class CommaProxyList(object):
     def __len__(self):
         return len(self.node_list.filtered())
 
+    def insert(self, index, object):
+        self.node_list.parent.append_value(object)
+
 
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
