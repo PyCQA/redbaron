@@ -1126,12 +1126,14 @@ class CommaProxyList(object):
     def __iter__(self):
         return self.data.__iter__()
 
+    def count(self, value):
+        return self.data.count(value)
+
     # TODO
     # __delslice__
     # __getslice__
     # __setitem__
     # __setslice__
-    # count
 
 
 class ArgumentGeneratorComprehensionNode(Node):
