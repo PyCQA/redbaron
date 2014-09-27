@@ -1173,6 +1173,9 @@ class CommaProxyList(object):
     def dumps(self):
         return self.node_list.dumps()
 
+    def help(self, *args, **kwargs):
+        return self.node_list.help(*args, **kwargs)
+
 
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
