@@ -3330,3 +3330,24 @@ def test_comma_proxy_list_insert_2_middle():
     comma_proxy_list = CommaProxyList(red[0].value)
     comma_proxy_list.insert(1, "2")
     assert red.dumps() == "[1, 2, 3]"
+
+
+def test_comma_proxy_list_append():
+    red = RedBaron("[]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list.append("1")
+    assert red.dumps() == "[1]"
+
+
+def test_comma_proxy_list_append_2():
+    red = RedBaron("[1]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list.append("2")
+    assert red.dumps() == "[1, 2]"
+
+
+def test_comma_proxy_list_append_3():
+    red = RedBaron("[1, 2]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list.append("3")
+    assert red.dumps() == "[1, 2, 3]"

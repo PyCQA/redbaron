@@ -1093,6 +1093,9 @@ class CommaProxyList(object):
         self.data.insert(index, value)
         self._diff_augmented_list()
 
+    def append(self, value):
+        self.insert(len(self), value)
+
 
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
