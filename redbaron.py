@@ -1111,6 +1111,9 @@ class CommaProxyList(object):
         self.data.pop(index)
         self._diff_reduced_list()
 
+    def remove(self, value):
+        self.pop(self.index(value))
+
     def __delitem__(self, index):
         self.pop(index)
 
