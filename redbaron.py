@@ -803,7 +803,7 @@ class Node(GenericNodesUtils):
         if isinstance(sys.stdout, StringIO) or os.isatty(sys.stdout.fileno()):
             return self.__str__()
 
-        return "<%s %s, \"%s\" %s, on %s %s>" % (
+        return "<%s path=%s, \"%s\" %s, on %s %s>" % (
                 self.__class__.__name__,
                 self.path().to_baron_path(),
                 truncate(self.dumps().replace("\n", "\\n"), 20),
