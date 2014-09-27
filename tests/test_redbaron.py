@@ -3460,3 +3460,12 @@ def test_comma_proxy_list_delslice():
     comma_proxy_list = CommaProxyList(red[0].value)
     del comma_proxy_list[1:4]
     assert red.dumps() == "[1, 5, 6]"
+
+
+def test_comma_proxy_list_getslice():
+    red = RedBaron("[1, 2, 3, 4, 5, 6]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    result = comma_proxy_list[1:2]
+    expected_result = CommaProxyList(NodeList([comma_proxy_list[1]]))
+    assert len(result) == len(expected_result)
+    assert result[0] == expected_result[0]

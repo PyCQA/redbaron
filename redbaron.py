@@ -1141,8 +1141,9 @@ class CommaProxyList(object):
         self.data.__delslice__(i, j)
         self._diff_reduced_list()
 
-    # TODO
-    # __getslice__
+    def __getslice__(self, i, j):
+        to_return = self.data.__getslice__(i, j)
+        return self.__class__(NodeList(to_return))
 
 
 class ArgumentGeneratorComprehensionNode(Node):
