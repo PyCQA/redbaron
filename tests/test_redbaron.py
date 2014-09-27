@@ -3379,3 +3379,31 @@ def test_comma_proxy_list_pop_2_middle():
     comma_proxy_list = CommaProxyList(red[0].value)
     comma_proxy_list.pop(1)
     assert red.dumps() == "[1, 3]"
+
+
+def test_comma_proxy_list_del():
+    red = RedBaron("[1]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    del comma_proxy_list[0]
+    assert red.dumps() == "[]"
+
+
+def test_comma_proxy_list_del_2_at_top():
+    red = RedBaron("[2, 1]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    del comma_proxy_list[0]
+    assert red.dumps() == "[1]"
+
+
+def test_comma_proxy_list_del_2():
+    red = RedBaron("[1, 2]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    del comma_proxy_list[1]
+    assert red.dumps() == "[1]"
+
+
+def test_comma_proxy_list_del_2_middle():
+    red = RedBaron("[1, 2, 3]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    del comma_proxy_list[1]
+    assert red.dumps() == "[1, 3]"

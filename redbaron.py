@@ -1113,6 +1113,9 @@ class CommaProxyList(object):
         self.data.pop(index)
         self._diff_reduced_list()
 
+    def __delitem__(self, index):
+        self.pop(index)
+
 
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
