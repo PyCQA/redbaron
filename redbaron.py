@@ -1073,15 +1073,9 @@ class CommaProxyList(object):
             if i >= len(self.node_list):
                 self.node_list.insert(i + 1, expected_list[i])
 
-            # type is equal, check for formatting nodes
-            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == "comma":
-                pass
-
-            # that's the same node, continue
-            elif self.node_list[i] is expected_list[i]:
-                pass
-
-            else:
+            elif self.node_list[i] is not expected_list[i] and\
+                    not (self.node_list[i].type == expected_list[i].type and\
+                         self.node_list[i].type == "comma"):
                 self.node_list.insert(i, expected_list[i])
 
     def _diff_reduced_list(self):
