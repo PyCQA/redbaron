@@ -1048,8 +1048,6 @@ class CommaProxyList(object):
         self.middle_separator = CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
 
     # TODO
-    # "__delitem__",
-    # "pop",
     # "remove",
 
     def _generate_expected_list(self):
