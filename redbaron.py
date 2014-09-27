@@ -1123,10 +1123,12 @@ class CommaProxyList(object):
     def __contains__(self, *args, **kwargs):
         return self.data.__contains__(*args, **kwargs)
 
+    def __iter__(self):
+        return self.data.__iter__()
+
     # TODO
     # __delslice__
     # __getslice__
-    # __iter__
     # __setitem__
     # __setslice__
     # count
