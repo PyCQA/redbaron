@@ -3435,3 +3435,14 @@ def test_comma_proxy_list_remove_2_middle():
     comma_proxy_list = CommaProxyList(red[0].value)
     comma_proxy_list.remove(comma_proxy_list[1])
     assert red.dumps() == "[1, 3]"
+
+
+def test_comma_proxy_list_set_item():
+    red = RedBaron("[1]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list[0] = "42"
+    assert comma_proxy_list[0].type == "int"
+    assert comma_proxy_list[0].value == 42
+    comma_proxy_list[0] = "plop"
+    assert comma_proxy_list[0].type == "name"
+    assert comma_proxy_list[0].value == "plop"

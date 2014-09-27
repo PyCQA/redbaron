@@ -1129,7 +1129,6 @@ class CommaProxyList(object):
     def count(self, value):
         return self.data.count(value)
 
-    # TODO write tests
     def __setitem__(self, key, value):
         return self.data.__setitem__(key, self.node_list._convert_input_to_node_object(value, parent=self.node_list, on_attribute="value"))
 
