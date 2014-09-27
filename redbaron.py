@@ -1047,28 +1047,17 @@ class CommaProxyList(object):
         self.data = list(node_list.filtered())
         self.middle_separator = CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
 
-    def _wrap_modifier(name):
-        def wrapped_modifier(self, *args, **kwargs):
-            # I don't want to return here for now
-            getattr(self.data, name)(*args, **kwargs)
-            self._diff_augmented_list()
-
-        return wrapped_modifier
-
-    _modifiers_to_wrap = [
-        "__delitem__",
-        "__delslice__",
-        "__iadd__",
-        "__setslice__",
-        "append",
-        "extend",
-        "insert",
-        "pop",
-        "remove",
-    ]
-
-    for i in _modifiers_to_wrap:
-        locals()[i] = _wrap_modifier(i)
+    # _modifiers_to_wrap = [
+    #     "__delitem__",
+    #     "__delslice__",
+    #     "__iadd__",
+    #     "__setslice__",
+    #     "append",
+    #     "extend",
+    #     "insert",
+    #     "pop",
+    #     "remove",
+    # ]
 
     def _diff_augmented_list(self):
         expected_list = []
@@ -1098,6 +1087,10 @@ class CommaProxyList(object):
 
     def __len__(self):
         return len(self.node_list.filtered())
+
+    def insert(self, index, value):
+        self.data.insert(index, value)
+        self._diff_augmented_list()
 
 
 class ArgumentGeneratorComprehensionNode(Node):
