@@ -1047,17 +1047,10 @@ class CommaProxyList(object):
         self.data = list(node_list.filtered())
         self.middle_separator = CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
 
-    # _modifiers_to_wrap = [
-    #     "__delitem__",
-    #     "__delslice__",
-    #     "__iadd__",
-    #     "__setslice__",
-    #     "append",
-    #     "extend",
-    #     "insert",
-    #     "pop",
-    #     "remove",
-    # ]
+    # TODO
+    # "__delitem__",
+    # "pop",
+    # "remove",
 
     def _diff_augmented_list(self):
         expected_list = []
