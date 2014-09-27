@@ -1114,6 +1114,9 @@ class CommaProxyList(object):
     def __delitem__(self, index):
         self.pop(index)
 
+    def index(self, value, *args):
+        return self.data.index(value, *args)
+
 
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
