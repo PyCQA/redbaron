@@ -1145,6 +1145,28 @@ class CommaProxyList(object):
         to_return = self.data.__getslice__(i, j)
         return self.__class__(NodeList(to_return))
 
+    def __repr__(self):
+        # the isinstance here is for building sphinx doc
+        if isinstance(sys.stdout, StringIO) or os.isatty(sys.stdout.fileno()):
+            return self.__str__()
+
+        return "<%s %s, \"%s\" %s, on %s %s>" % (
+                self.__class__.__name__,
+                self.path().to_baron_path(),
+                truncate(self.dumps().replace("\n", "\\n"), 20),
+                id(self),
+                self.parent.__class__.__name__,
+                id(self.parent)
+            )
+
+    def __str__(self):
+        to_return = ""
+        for number, value in enumerate(self.data):
+            to_return += ("%-3s " % number) + "\n    ".join(value.__repr__().split("\n"))
+            to_return += "\n"
+        return to_return
+        return "%s" % [x.__repr__() for x in self.data]
+
 
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
