@@ -3453,3 +3453,10 @@ def test_comma_proxy_list_set_slice():
     comma_proxy_list = CommaProxyList(red[0].value)
     comma_proxy_list[1:2] = ["42", "31", "23"]
     assert red.dumps() == "[1, 42, 31, 23, 3]"
+
+
+def test_comma_proxy_list_delslice():
+    red = RedBaron("[1, 2, 3, 4, 5, 6]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    del comma_proxy_list[1:4]
+    assert red.dumps() == "[1, 5, 6]"

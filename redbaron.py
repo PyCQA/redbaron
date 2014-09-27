@@ -1137,8 +1137,11 @@ class CommaProxyList(object):
         self._diff_reduced_list()
         self._diff_augmented_list()
 
+    def __delslice__(self, i, j):
+        self.data.__delslice__(i, j)
+        self._diff_reduced_list()
+
     # TODO
-    # __delslice__
     # __getslice__
 
 
