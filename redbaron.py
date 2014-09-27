@@ -1078,6 +1078,35 @@ class CommaProxyList(object):
             else:
                 self.node_list.insert(i, expected_list[i])
 
+    def _diff_reduced_list(self):
+        expected_list = []
+        for i in self.data:
+            expected_list.append(i)
+            separator = self.middle_separator.copy()
+            separator.parent = self.node_list
+            separator.on_attribute = "value"
+            expected_list.append(separator)
+
+        if expected_list:
+            expected_list.pop()  # don't do that if trailing is desired
+
+        i = 0
+
+        while i < len(self.node_list):
+            if i >= len(expected_list):
+                self.node_list.pop(i)
+
+            # type is equal, check for formatting nodes
+            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == "comma":
+                i += 1
+
+            # that's the same node, continue
+            elif self.node_list[i] is expected_list[i]:
+                i += 1
+
+            else:
+                self.node_list.pop(i)
+
     def __len__(self):
         return len(self.node_list.filtered())
 
@@ -1088,6 +1117,10 @@ class CommaProxyList(object):
 
     def append(self, value):
         self.insert(len(self), value)
+
+    def pop(self, index=None):
+        self.data.pop(index)
+        self._diff_reduced_list()
 
 
 class ArgumentGeneratorComprehensionNode(Node):
