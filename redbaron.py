@@ -1167,6 +1167,9 @@ class CommaProxyList(object):
         return to_return
         return "%s" % [x.__repr__() for x in self.data]
 
+    def fst(self):
+        return self.node_list.fst()
+
 
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
