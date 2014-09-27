@@ -1047,9 +1047,6 @@ class CommaProxyList(object):
         self.data = list(node_list.filtered())
         self.middle_separator = CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
 
-    # TODO
-    # "remove",
-
     def _generate_expected_list(self):
         expected_list = []
         for i in self.data:
