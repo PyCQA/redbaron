@@ -1044,12 +1044,60 @@ class ElseAttributeNode(CodeBlockNode):
 class CommaProxyList(object):
     def __init__(self, node_list):
         self.node_list = node_list
+        self.data = list(node_list.filtered())
+        self.middle_separator = CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
+
+    def _wrap_modifier(name):
+        def wrapped_modifier(self, *args, **kwargs):
+            # I don't want to return here for now
+            getattr(self.data, name)(*args, **kwargs)
+            self._diff_augmented_list()
+
+        return wrapped_modifier
+
+    _modifiers_to_wrap = [
+        "__delitem__",
+        "__delslice__",
+        "__iadd__",
+        "__setslice__",
+        "append",
+        "extend",
+        "insert",
+        "pop",
+        "remove",
+    ]
+
+    for i in _modifiers_to_wrap:
+        locals()[i] = _wrap_modifier(i)
+
+    def _diff_augmented_list(self):
+        expected_list = []
+        for i in self.data:
+            expected_list.append(i)
+            separator = self.middle_separator.copy()
+            separator.parent = self.node_list
+            separator.on_attribute = "value"
+            expected_list.append(separator)
+
+        expected_list.pop()  # don't do that if trailing is desired
+
+        for i in range(len(expected_list)):
+            if i >= len(self.node_list):
+                self.node_list.insert(i + 1, expected_list[i])
+
+            # type is equal, check for formatting nodes
+            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == "comma":
+                pass
+
+            # that's the same node, continue
+            elif self.node_list[i] is expected_list[i]:
+                pass
+
+            else:
+                self.node_list.insert(i, expected_list[i])
 
     def __len__(self):
         return len(self.node_list.filtered())
-
-    def insert(self, index, object):
-        self.node_list.parent.append_value(object)
 
 
 class ArgumentGeneratorComprehensionNode(Node):

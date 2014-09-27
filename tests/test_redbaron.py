@@ -3307,5 +3307,26 @@ def test_comma_proxy_list_len_not_empty():
 def test_comma_proxy_list_insert():
     red = RedBaron("[]")
     comma_proxy_list = CommaProxyList(red[0].value)
-    comma_proxy_list.insert(0, "1")
+    comma_proxy_list.insert(0, IntNode({"type": "int", "value": "1"}))
     assert red.dumps() == "[1]"
+
+
+def test_comma_proxy_list_insert_2_at_top():
+    red = RedBaron("[1]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list.insert(0, IntNode({"type": "int", "value": "2"}))
+    assert red.dumps() == "[2, 1]"
+
+
+def test_comma_proxy_list_insert_2():
+    red = RedBaron("[1]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list.insert(1, IntNode({"type": "int", "value": "2"}))
+    assert red.dumps() == "[1, 2]"
+
+
+def test_comma_proxy_list_insert_2_middle():
+    red = RedBaron("[1, 3]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list.insert(1, IntNode({"type": "int", "value": "2"}))
+    assert red.dumps() == "[1, 2, 3]"
