@@ -1052,7 +1052,7 @@ class CommaProxyList(object):
     # "pop",
     # "remove",
 
-    def _diff_augmented_list(self):
+    def _generate_expected_list(self):
         expected_list = []
         for i in self.data:
             expected_list.append(i)
@@ -1061,7 +1061,13 @@ class CommaProxyList(object):
             separator.on_attribute = "value"
             expected_list.append(separator)
 
-        expected_list.pop()  # don't do that if trailing is desired
+        if expected_list:
+            expected_list.pop()  # don't do that if trailing is desired
+
+        return expected_list
+
+    def _diff_augmented_list(self):
+        expected_list = self._generate_expected_list()
 
         for i in range(len(expected_list)):
             if i >= len(self.node_list):
@@ -1079,16 +1085,7 @@ class CommaProxyList(object):
                 self.node_list.insert(i, expected_list[i])
 
     def _diff_reduced_list(self):
-        expected_list = []
-        for i in self.data:
-            expected_list.append(i)
-            separator = self.middle_separator.copy()
-            separator.parent = self.node_list
-            separator.on_attribute = "value"
-            expected_list.append(separator)
-
-        if expected_list:
-            expected_list.pop()  # don't do that if trailing is desired
+        expected_list = self._generate_expected_list()
 
         i = 0
 
