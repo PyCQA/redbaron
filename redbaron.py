@@ -1171,6 +1171,26 @@ class CommaProxyList(object):
         return getattr(self.node_list, key)
 
 
+# TODO
+# make on_attribute changeable at the constructor level
+# implement .extend and __add__ and __iadd__
+# put comma list on a list_node for example to test
+# proxify __getattr__ of list_node to comma_proxy_list
+# put on other nodes
+# do this proxification for every case where on_attribute == "value"
+# start to do the AtomtrailersProxyList (could also be called "DotPRoxyList)
+# ^ here, the special case is "not dot before a CallNode"
+# need to make most of CommaProxyList methods generic in a top class
+# I think than mostly, only _diff_augmented_list and _diff_reduced_list needs to be overloaded
+# then, it might be cool to have a SpaceProxyList for StringChainNode
+# but way more important: EndlProxyList or BodyProxyList
+
+# other TODO
+# "change formatting style" for CommaProxyList
+
+# remove the now useless .append_value
+
+
 class ArgumentGeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "generators":
