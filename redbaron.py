@@ -1094,7 +1094,7 @@ class CommaProxyList(object):
                 self.node_list.pop(i)
 
     def __len__(self):
-        return len(self.node_list.filtered())
+        return len(self.data)
 
     def insert(self, index, value):
         value = self.node_list._convert_input_to_node_object(value, parent=self.node_list, on_attribute="value")
