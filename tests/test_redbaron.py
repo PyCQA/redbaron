@@ -3469,3 +3469,22 @@ def test_comma_proxy_list_getslice():
     expected_result = CommaProxyList(NodeList([comma_proxy_list[1]]))
     assert len(result) == len(expected_result)
     assert result[0] == expected_result[0]
+
+
+def test_comma_proxy_list_on_attribute_default_on_value():
+    # this is only for testing, the correct on_attribute is "value"
+    red = RedBaron("[]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list.append("1")
+    assert comma_proxy_list[0].on_attribute == "value"
+
+
+def test_comma_proxy_list_on_attribute():
+    # this is only for testing, the correct on_attribute is "value"
+    red = RedBaron("[]")
+    comma_proxy_list = CommaProxyList(red[0].value, on_attribute="plop")
+    comma_proxy_list.append("1")
+    comma_proxy_list.append("1")
+    assert comma_proxy_list[0].on_attribute == "plop"
+    assert comma_proxy_list[1].on_attribute == "plop"
+    assert comma_proxy_list.node_list[1].on_attribute == "plop"

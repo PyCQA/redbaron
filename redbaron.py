@@ -1042,10 +1042,11 @@ class ElseAttributeNode(CodeBlockNode):
 
 
 class CommaProxyList(object):
-    def __init__(self, node_list):
+    def __init__(self, node_list, on_attribute="value"):
         self.node_list = node_list
         self.data = list(node_list.filtered())
         self.middle_separator = CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
+        self.on_attribute = on_attribute
 
     def _generate_expected_list(self):
         expected_list = []
@@ -1053,7 +1054,7 @@ class CommaProxyList(object):
             expected_list.append(i)
             separator = self.middle_separator.copy()
             separator.parent = self.node_list
-            separator.on_attribute = "value"
+            separator.on_attribute = self.on_attribute
             expected_list.append(separator)
 
         if expected_list:
@@ -1097,9 +1098,10 @@ class CommaProxyList(object):
         return len(self.data)
 
     def insert(self, index, value):
-        value = self.node_list._convert_input_to_node_object(value, parent=self.node_list, on_attribute="value")
+        value = self.node_list._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute)
         self.data.insert(index, value)
         self._diff_augmented_list()
+
 
     def append(self, value):
         self.insert(len(self), value)
@@ -1130,10 +1132,10 @@ class CommaProxyList(object):
         return self.data.count(value)
 
     def __setitem__(self, key, value):
-        return self.data.__setitem__(key, self.node_list._convert_input_to_node_object(value, parent=self.node_list, on_attribute="value"))
+        return self.data.__setitem__(key, self.node_list._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute))
 
     def __setslice__(self, i, j, value):
-        self.data.__setslice__(i, j, self.node_list._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute="value"))
+        self.data.__setslice__(i, j, self.node_list._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute=self.on_attribute))
         self._diff_reduced_list()
         self._diff_augmented_list()
 
@@ -1172,7 +1174,6 @@ class CommaProxyList(object):
 
 
 # TODO
-# make on_attribute changeable at the constructor level
 # implement .extend and __add__ and __iadd__
 # put comma list on a list_node for example to test
 # proxify __getattr__ of list_node to comma_proxy_list
