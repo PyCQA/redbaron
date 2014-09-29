@@ -154,6 +154,9 @@ class GenericNodesUtils(object):
 
             return new_value
 
+        if isinstance(value, CommaProxyList):
+            return value
+
         raise NotImplemented
 
     @property
@@ -556,6 +559,9 @@ class Node(GenericNodesUtils):
         else:
             in_list = getattr(self.parent, self.on_attribute)
 
+        if isinstance(in_list, CommaProxyList):
+            return in_list.node_list
+
         if not isinstance(in_list, NodeList):
             return None
 
@@ -748,7 +754,11 @@ class Node(GenericNodesUtils):
         for key in self._str_keys:
             to_return[key] = getattr(self, key)
         for key in self._list_keys:
-            to_return[key] = [node.fst() for node in getattr(self, key)]
+            # Proxy Lists overload __iter__ for a better user interface
+            if isinstance(getattr(self, key), CommaProxyList):
+                to_return[key] = [node.fst() for node in getattr(self, key).node_list]
+            else:
+                to_return[key] = [node.fst() for node in getattr(self, key)]
         for key in self._dict_keys:
             if getattr(self, key):
                 to_return[key] = getattr(self, key).fst()
@@ -877,7 +887,7 @@ class Node(GenericNodesUtils):
         if not self.parent:
             return None
 
-        if not isinstance(getattr(self.parent, self.on_attribute), NodeList):
+        if not isinstance(getattr(self.parent, self.on_attribute), (NodeList, CommaProxyList)):
             return None
 
         return getattr(self.parent, self.on_attribute).index(self)
@@ -1193,6 +1203,11 @@ class CommaProxyList(object):
 # "change formatting style" for CommaProxyList
 
 # remove the now useless .append_value
+
+# XXX
+# should .next and .previous behavior should be changed to drop formatting
+# nodes? I guess so if I consider that with enough abstraction the user will
+# never have to play with formatting node unless he wants to
 
 
 class ArgumentGeneratorComprehensionNode(Node):
@@ -1829,12 +1844,17 @@ class ListComprehensionNode(Node):
 
 
 class ListNode(Node):
-    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
+    append_value = lambda self, value, trailing=False: self.value.node_list.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("[%s]" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
 
+    def __setattr__(self, key, value):
+        super(ListNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, CommaProxyList):
+            setattr(self, "value", CommaProxyList(self.value))
 
 class NameAsNameNode(Node):
     def __setattr__(self, key, value):
