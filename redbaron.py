@@ -1188,7 +1188,7 @@ class CommaProxyList(object):
 
 
 # TODO
-# put comma list on a list_node for example to test
+# put comma proxy list on other needed places
 # proxify __getattr__ of list_node to comma_proxy_list
 # put on other nodes
 # do this proxification for every case where on_attribute == "value"
