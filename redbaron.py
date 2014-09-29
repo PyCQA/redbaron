@@ -339,44 +339,6 @@ class NodeList(UserList, GenericNodesUtils):
     def filtered(self):
         return tuple([x for x in self.data if not isinstance(x, (EndlNode, CommaNode, DotNode))])
 
-    def append_comma(self, value, parent, on_attribute, trailing):
-        "Generic function to append a value in a separated by comma list"
-        if self.find("comma", recursive=False) and self.data[-1].type != "comma":
-            comma = self.comma.copy()
-            comma.parent = parent
-            comma.on_attribute = on_attribute
-            self.data.append(comma)
-
-        elif self.find("comma", recursive=False) and self.data[-1].type == "comma":
-            self.data[-1].second_formatting = {"type": "space", "value": " "}
-
-        elif len(self.data) != 0:
-            self.data.append(Node.from_fst({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]}, parent=parent, on_attribute=on_attribute))
-
-        self.data.append(self._convert_input_to_node_object(value, parent, on_attribute))
-
-        if trailing:
-            self.data.append(Node.from_fst({"type": "comma", "first_formatting": [], "second_formatting": []}, parent=parent, on_attribute=on_attribute))
-
-    def append_endl(self, value, parent, on_attribute):
-        "Generic function to append a value in a separated by endl list"
-        if self.filtered()[-1].indentation_node_is_direct() is False:
-            # we are in this kind of case: while a: pass
-            self.data.insert(0, Node.from_fst({
-                "indent": self.filtered()[-1].indentation + "    ",
-                "formatting": [],
-                "type": "endl",
-                "value": "\n",
-            }, parent=parent, on_attribute=on_attribute))
-
-        if not (self.data[-2].type == "endl" and self.data[-2].indent == self.filtered()[-1].get_indentation_node().indent):
-            new_endl_node = self.filtered()[-1].get_indentation_node().copy()
-            new_endl_node.parent = parent
-            new_endl_node.on_attribute = on_attribute
-            self.data.insert(-1, new_endl_node)
-
-        self.data.insert(-1, self._convert_input_to_node_object(value, parent=parent, on_attribute=on_attribute))
-
     def _generate_nodes_in_rendering_order(self):
         previous = None
         for i in self:
@@ -1202,8 +1164,6 @@ class CommaProxyList(object):
 # other TODO
 # "change formatting style" for CommaProxyList
 
-# remove the now useless .append_value
-
 # XXX
 # should .next and .previous behavior should be changed to drop formatting
 # nodes? I guess so if I consider that with enough abstraction the user will
@@ -1338,11 +1298,6 @@ class CallNode(Node):
         else:
             raise Exception("Unhandled case")
 
-    def append_value(self, value, trailing=False):
-        if isinstance(value, string_instance):
-            value = baron.parse("a(%s)" % value)[0]["value"][1]["value"][0]
-        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
 
 class CallArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
@@ -1370,11 +1325,6 @@ class ClassNode(CodeBlockNode):
 
         else:
             return super(ClassNode, self)._string_to_node_list(string, parent, on_attribute)
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
-            self.sixth_formatting = []
 
 
 class CommaNode(Node):
@@ -1487,11 +1437,6 @@ class DictNode(Node):
         fst = baron.parse("{%s}" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
 
-    def append_value(self, key, value, trailing=False):
-        # XXX sucks, only accept key/value, not fst/rebaron instance
-        value = baron.parse("{%s: %s}" % (key, value))[0]["value"][0]
-        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
 
 class DictComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
@@ -1544,17 +1489,9 @@ class ElifNode(CodeBlockNode):
         else:
             raise Exception("Unhandled case")
 
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
-            self.third_formatting = []
-
 
 class ElseNode(CodeBlockNode):
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
-            self.second_formatting = []
+    pass
 
 
 class EndlNode(Node):
@@ -1606,11 +1543,6 @@ class ExceptNode(CodeBlockNode):
         else:
             raise Exception("Unhandled case")
 
-    def append_value(self, value):
-        self.help(with_formatting=True)
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.fifth_formatting) == 1 and self.fifth_formatting[0].type == "space":
-            self.fifth_formatting = []
 
 
 class ExecNode(Node):
@@ -1638,10 +1570,7 @@ class ExecNode(Node):
 
 
 class FinallyNode(CodeBlockNode):
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
-            self.second_formatting = []
+    pass
 
 
 class ForNode(ElseAttributeNode):
@@ -1654,11 +1583,6 @@ class ForNode(ElseAttributeNode):
 
         else:
             return super(ForNode, self)._string_to_node(string, parent, on_attribute)
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.fifth_formatting) == 1 and self.fifth_formatting[0].type == "space":
-            self.fifth_formatting = []
 
 
 class FromImportNode(Node):
@@ -1689,11 +1613,6 @@ class FuncdefNode(CodeBlockNode):
 
         else:
             return super(FuncdefNode, self)._string_to_node_list(string, parent, on_attribute)
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.sixth_formatting) == 1 and self.sixth_formatting[0].type == "space":
-            self.sixth_formatting = []
 
 
 class GeneratorComprehensionNode(Node):
@@ -1736,11 +1655,6 @@ class IfNode(CodeBlockNode):
 
         else:
             raise Exception("Unhandled case")
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
-            self.third_formatting = []
 
 
 class IfelseblockNode(Node):
@@ -1844,8 +1758,6 @@ class ListComprehensionNode(Node):
 
 
 class ListNode(Node):
-    append_value = lambda self, value, trailing=False: self.value.node_list.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("[%s]" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
@@ -1941,8 +1853,6 @@ class RaiseNode(Node):
 
 
 class ReprNode(Node):
-    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("`%s`" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
@@ -1960,8 +1870,6 @@ class ReturnNode(Node):
 
 
 class SetNode(Node):
-    append_value = lambda self, value, trailing=False: self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
-
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("{%s}" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
@@ -2090,23 +1998,11 @@ class TryNode(ElseAttributeNode):
 
         return super(TryNode, self).__getattr__(name)
 
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.second_formatting) == 1 and self.second_formatting[0].type == "space":
-            self.second_formatting = []
-
 
 class TupleNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("(%s)" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
-
-    def append_value(self, value, trailing=False):
-        if len(self.value) == 0:
-            # a tuple of one item must have a trailing comma
-            self.value.append_comma(value, parent=self, on_attribute="value", trailing=True)
-            return
-        self.value.append_comma(value, parent=self, on_attribute="value", trailing=trailing)
 
 
 class UnitaryOperatorNode(Node):
@@ -2148,11 +2044,6 @@ class WhileNode(ElseAttributeNode):
         else:
             return super(WhileNode, self)._string_to_node(string, parent, on_attribute)
 
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
-            self.third_formatting = []
-
 
 class WithContextItemNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
@@ -2192,11 +2083,6 @@ class WithNode(CodeBlockNode):
 
         else:
             return super(WithNode, self)._string_to_node_list(string, parent, on_attribute)
-
-    def append_value(self, value):
-        self.value.append_endl(value, parent=self, on_attribute="value")
-        if len(self.third_formatting) == 1 and self.third_formatting[0].type == "space":
-            self.third_formatting = []
 
 
 class RedBaron(NodeList):
