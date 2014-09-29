@@ -1,7 +1,12 @@
 Changelog
 =========
 
-0.2 (2013-09-23)
+0.3 (2014-09-29)
+----------------
+
+- .append_value is no more since it is useless now due to proxy lists
+
+0.2 (2014-09-23)
 ----------------
 
 - for EVERY NODE in RedBaron, the automagic behavior when passing a string to
