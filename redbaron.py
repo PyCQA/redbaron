@@ -1161,6 +1161,8 @@ class CommaProxyList(object):
 # then, it might be cool to have a SpaceProxyList for StringChainNode
 # but way more important: EndlProxyList or BodyProxyList
 
+# FIXME: doc others.rst line 244
+
 # other TODO
 # "change formatting style" for CommaProxyList
 

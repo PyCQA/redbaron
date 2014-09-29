@@ -240,10 +240,12 @@ RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :fil
 
     red = RedBaron("a()\nb()\nc(x=y)")
     red('call')
-    red('call').map(lambda x: x.append_value("answer=42"))
+    # FIXME
+    # red('call').map(lambda x: x.append_value("answer=42"))
     red('call')
     red = RedBaron("a()\nb()\nc(x=y)")
-    red('call').apply(lambda x: x.append_value("answer=42"))
+    # FIXME
+    # red('call').apply(lambda x: x.append_value("answer=42"))
 
 .replace()
 ----------

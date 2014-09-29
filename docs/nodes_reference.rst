@@ -273,14 +273,6 @@ SetAttr works as expected:
     red[0].value[1].value = "b, c=d, *e, **f"
     red
 
-Helpers
--------
-
-CallNode comes with one helper to add another item at the end of the value of
-the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
-
 CallArgumentNode
 ================
 
@@ -327,14 +319,6 @@ attributes work as expected:
     red
     red[0].inherit_from = "object"
     red
-
-Helpers
--------
-
-ClassNode comes with one helper to add another item at the end of the value
-of the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
 
 CommaNode
 =========
@@ -522,22 +506,6 @@ A node representing python sugar syntactic notation for dict.
 
     RedBaron("{'a': 1, 'b': 2, 'c': 3}")[0].help(deep=True)
 
-Helpers
--------
-
-DictNode comes with one helper to add another item at the end of the value of
-the node without having to think about formatting. It is documented here:
-:ref:`append_value`. **Warning**: :file:`append_value` of DictNode has a
-different signature than the append_value of other nodes: it expects 2
-arguments: one of the key and one of the value.
-
-.. ipython:: python
-
-    red = RedBaron("{}")
-    red[0].append_value(key="'a'", value="42")
-    red
-
-
 DictComprehensionNode
 =====================
 
@@ -623,13 +591,6 @@ work as expected:
     red[0].value[1].test = "1 + 1 == 11"
     red
 
-Helpers
--------
-
-ElifNode comes with one helper to add another item at the end of the value of the
-node without having to think about formating. It is documented here:
-:ref:`append_value`.
-
 .. _ElseNode:
 
 ElseNode
@@ -648,14 +609,6 @@ SetAttr
 
 ElifNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations.
-
-Helpers
--------
-
-ElifNode comes with one helper to add another item at the end of the value of the
-node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
 
 EndlNode
 ========
@@ -702,13 +655,6 @@ work as expected:
     red
     # red[0].excepts[0].target = "stuff" <- would raise without a target
 
-Helpers
--------
-
-ExceptNode comes with one helper to add another item at the end of the value
-of the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
 ExecNode
 ========
 
@@ -750,14 +696,6 @@ SetAttr
 FinallyNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more informations.
 
-Helpers
--------
-
-FinallyNode comes with one helper to add another item at the end of the value
-of the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
-
 ForNode
 =======
 
@@ -790,13 +728,6 @@ attributes work as expected:
     red
     red[0].else_ = "    else:\n        badly_indented_and_trailing\n\n\n\n"
     red
-
-Helpers
--------
-
-ForNode comes with one helper to add another item at the end of the value
-of the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
 
 FromImportNode
 ==============
@@ -855,13 +786,6 @@ Decorators might be a bit less intuitive:
     red
     red[0].decorators = "    @pouet"  # SetAttr will take care of reindenting everything as expected
     red
-
-Helpers
--------
-
-FuncdefNode comes with one helper to add another item at the end of the value
-of the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
 
 GeneratorComprehensionNode
 ==========================
@@ -951,14 +875,6 @@ work as expected:
     red
     red[0].value[0].test = "1 + 1 == 11"
     red
-
-Helpers
--------
-
-IfNode comes with one helper to add another item at the end of the value of the
-node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
 
 .. _IfelseblockNode:
 
@@ -1131,13 +1047,6 @@ A node representing python sugar syntactic notation for list.
 
     RedBaron("[1, 2, 3]")[0].help(deep=True)
 
-Helpers
--------
-
-ListNode comes with one helper to add another item at the end of the value of
-the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
 NameAsNameNode
 ==============
 
@@ -1219,14 +1128,6 @@ A node representing python sugar syntactic notation for repr.
 
     RedBaron("`pouet`")[0].help(deep=True)
 
-Helpers
--------
-
-SetNode comes with one helper to add another item at the end of the value of
-the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
-
 ReturnNode
 ==========
 
@@ -1257,14 +1158,6 @@ A node representing python sugar syntactic notation for set.
 .. ipython:: python
 
     RedBaron("{1, 2, 3}")[0].help(deep=True)
-
-Helpers
--------
-
-SetNode comes with one helper to add another item at the end of the value of
-the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
 
 SetComprehensionNode
 ====================
@@ -1420,14 +1313,6 @@ need to append a :file:`_` to those attributes name to access/modify them:
     red
     # You **CAN'T** do this red[0].excepts = "foobar"
 
-Helpers
--------
-
-TryNode comes with one helper to add another item at the end of the value
-of the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
-
 TupleNode
 =========
 
@@ -1436,14 +1321,6 @@ A node representing python sugar syntactic notation for tuple.
 .. ipython:: python
 
     RedBaron("(1, 2, 3)")[0].help(deep=True)
-
-Helpers
--------
-
-TupleNode comes with one helper to add another item at the end of the value of
-the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
 
 UnitaryOperatorNode
 ===================
@@ -1541,13 +1418,6 @@ attributes work as expected:
     red[0].else_ = "    else:\n        badly_indented_and_trailing\n\n\n\n"
     red
 
-Helpers
--------
-
-WhileNode comes with one helper to add another item at the end of the value
-of the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
-
 WithContextItemNode
 ===================
 
@@ -1571,14 +1441,6 @@ SetAttr
     red[0].contexts[0].as_ = ""
     red
 
-Helpers
--------
-
-WithContextItemNode comes with one helper to add another item at the end of the
-value of the node without having to think about formatting. It is documented
-here: :ref:`append_value`.
-
-
 WithNode
 ========
 
@@ -1601,10 +1463,3 @@ work as expected:
     red
     red[0].contexts = "b as plop, stuff()"
     red
-
-Helpers
--------
-
-WithNode comes with one helper to add another item at the end of the value
-of the node without having to think about formatting. It is documented here:
-:ref:`append_value`.
