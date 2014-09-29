@@ -138,7 +138,7 @@ class GenericNodesUtils(object):
         if isinstance(value, Node):
             value.parent = parent
             value.on_attribute = on_attribute
-            return [value]
+            return NodeList([value])
 
         if isinstance(value, NodeList):
             for i in value:

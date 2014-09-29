@@ -225,6 +225,7 @@ def test_parent_assign():
     assert [x.parent for x in red[0].value] == [red[0]]
     assert [x.on_attribute for x in red[0].value] == ["value"]
     red[0].value = NameNode({"type": "name", "value": "pouet"})
+    assert isinstance(red[0].value, NodeList)
     assert [x.parent for x in red[0].value] == [red[0]]
     assert [x.on_attribute for x in red[0].value] == ["value"]
     red[0].value = [NameNode({"type": "name", "value": "pouet"})]
