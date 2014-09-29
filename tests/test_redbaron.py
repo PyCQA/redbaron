@@ -3488,3 +3488,24 @@ def test_comma_proxy_list_on_attribute():
     assert comma_proxy_list[0].on_attribute == "plop"
     assert comma_proxy_list[1].on_attribute == "plop"
     assert comma_proxy_list.node_list[1].on_attribute == "plop"
+
+
+def test_comma_proxy_list_extend():
+    red = RedBaron("[]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list.extend(["1"])
+    assert red.dumps() == "[1]"
+
+
+def test_comma_proxy_list_extend_2():
+    red = RedBaron("[1]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list.extend(["2", "plop", "42"])
+    assert red.dumps() == "[1, 2, plop, 42]"
+
+
+def test_comma_proxy_list_extend_3():
+    red = RedBaron("[1, 2]")
+    comma_proxy_list = CommaProxyList(red[0].value)
+    comma_proxy_list.extend(["3"])
+    assert red.dumps() == "[1, 2, 3]"

@@ -1106,6 +1106,10 @@ class CommaProxyList(object):
     def append(self, value):
         self.insert(len(self), value)
 
+    def extend(self, values):
+        self.data.extend(self.node_list._convert_input_to_node_object_list(values, parent=self.node_list, on_attribute=self.on_attribute))
+        self._diff_augmented_list()
+
     def pop(self, index=None):
         self.data.pop(index)
         self._diff_reduced_list()
@@ -1174,7 +1178,6 @@ class CommaProxyList(object):
 
 
 # TODO
-# implement .extend and __add__ and __iadd__
 # put comma list on a list_node for example to test
 # proxify __getattr__ of list_node to comma_proxy_list
 # put on other nodes
