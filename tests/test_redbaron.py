@@ -2991,3 +2991,9 @@ def test_comma_proxy_list_extend_3():
     comma_proxy_list = red[0].value
     comma_proxy_list.extend(["3"])
     assert red.dumps() == "[1, 2, 3]"
+
+
+def test_comma_proxy_list_dictionary():
+    red = RedBaron("{1: 2}")
+    # no assert, will fail if parsing is not good
+    red[0].value.append("3: 4")
