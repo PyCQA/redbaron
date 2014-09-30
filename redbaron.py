@@ -1020,6 +1020,12 @@ class CommaProxyList(object):
         self.middle_separator = CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
         self.on_attribute = on_attribute
 
+    def _convert_input_to_node_object(self, value, parent, on_attribute):
+        return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute)[0]
+
+    def _convert_input_to_node_object_list(self, value, parent, on_attribute):
+        return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute)
+
     def _generate_expected_list(self):
         expected_list = []
         for i in self.data:
@@ -1070,7 +1076,7 @@ class CommaProxyList(object):
         return len(self.data)
 
     def insert(self, index, value):
-        value = self.node_list._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute)
+        value = self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute)
         self.data.insert(index, value)
         self._diff_augmented_list()
 
@@ -1079,7 +1085,7 @@ class CommaProxyList(object):
         self.insert(len(self), value)
 
     def extend(self, values):
-        self.data.extend(self.node_list._convert_input_to_node_object_list(values, parent=self.node_list, on_attribute=self.on_attribute))
+        self.data.extend(self._convert_input_to_node_object_list(values, parent=self.node_list, on_attribute=self.on_attribute))
         self._diff_augmented_list()
 
     def pop(self, index=None):
@@ -1108,10 +1114,10 @@ class CommaProxyList(object):
         return self.data.count(value)
 
     def __setitem__(self, key, value):
-        return self.data.__setitem__(key, self.node_list._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute))
+        return self.data.__setitem__(key, self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute))
 
     def __setslice__(self, i, j, value):
-        self.data.__setslice__(i, j, self.node_list._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute=self.on_attribute))
+        self.data.__setslice__(i, j, self._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute=self.on_attribute))
         self._diff_reduced_list()
         self._diff_augmented_list()
 
