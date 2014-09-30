@@ -1021,7 +1021,7 @@ class CommaProxyList(object):
         self.on_attribute = on_attribute
 
     def _convert_input_to_node_object(self, value, parent, on_attribute):
-        return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute)[0]
+        return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute).filtered()[0]
 
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
         return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute)
@@ -1339,6 +1339,12 @@ class ClassNode(CodeBlockNode):
 
         else:
             return super(ClassNode, self)._string_to_node_list(string, parent, on_attribute)
+
+    def __setattr__(self, key, value):
+        super(ClassNode, self).__setattr__(key, value)
+
+        if key == "inherit_from" and not isinstance(self.inherit_from, CommaProxyList):
+            setattr(self, "inherit_from", CommaProxyList(self.inherit_from, on_attribute="inherit_from"))
 
 
 class CommaNode(Node):

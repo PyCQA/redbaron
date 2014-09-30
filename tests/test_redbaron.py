@@ -3003,3 +3003,9 @@ def test_comma_proxy_list_call():
     red = RedBaron("a(b)")
     red[0].value[1].value.append("**kwargs")
     assert red.dumps() == "a(b, **kwargs)"
+
+
+def test_comma_proxy_list_class_inherit():
+    red = RedBaron("class A(): pass")
+    red[0].inherit_from.append("plop")
+    assert red.dumps() == "class A(plop): pass\n"
