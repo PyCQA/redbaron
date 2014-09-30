@@ -47,7 +47,7 @@ class Path(object):
     def __init__(self, node):
         self.path = None
         self.node = None
-        self.set_node(node)
+        self.set_node(node)  # TODO merge in initializer
 
     def set_node(self, node):
         self.node = node
