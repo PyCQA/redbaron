@@ -2997,3 +2997,9 @@ def test_comma_proxy_list_dictionary():
     red = RedBaron("{1: 2}")
     # no assert, will fail if parsing is not good
     red[0].value.append("3: 4")
+
+
+def test_comma_proxy_list_call():
+    red = RedBaron("a(b)")
+    red[0].value[1].value.append("**kwargs")
+    assert red.dumps() == "a(b, **kwargs)"
