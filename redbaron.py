@@ -1624,6 +1624,13 @@ class FromImportNode(Node):
         else:
             raise Exception("Unhandled case")
 
+    def __setattr__(self, key, value):
+        super(FromImportNode, self).__setattr__(key, value)
+
+        if key == "targets" and not isinstance(self.targets, CommaProxyList):
+            setattr(self, "targets", CommaProxyList(self.targets, on_attribute="targets"))
+
+
 
 class FuncdefNode(CodeBlockNode):
     _other_identifiers = ["def", "def_"]

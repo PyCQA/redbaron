@@ -3009,3 +3009,10 @@ def test_comma_proxy_list_class_inherit():
     red = RedBaron("class A(): pass")
     red[0].inherit_from.append("plop")
     assert red.dumps() == "class A(plop): pass\n"
+
+
+def test_comma_proxy_list_from_import_targets():
+    red = RedBaron("from a.b import c as d")
+    red[0].targets.append("e")
+    red[0].targets.append("f as g")
+    assert red.dumps() == "from a.b import c as d, e, f as g"
