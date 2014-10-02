@@ -73,11 +73,17 @@ class Path(object):
                     return None
                 child = getattr(node, key)
             else:
+                if isinstance(node, CommaProxyList):
+                    node = node.node_list
+
                 if key >= len(node):
                     return None
                 child = node[key]
-            if child is not None and isinstance(child, (Node, NodeList)):
+            if child is not None and isinstance(child, (Node, NodeList, CommaProxyList)):
                 node = child
+
+        if isinstance(node, CommaProxyList):
+            node = node.node_list
 
         return class_(node)
 
@@ -87,8 +93,13 @@ class Path(object):
     @classmethod
     def get_holder(class_, node):
         if node.on_attribute is not None and isinstance(node.parent, Node):
-            if getattr(node.parent, node.on_attribute) is not node:
-                return getattr(node.parent, node.on_attribute)
+            possible_parent = getattr(node.parent, node.on_attribute)
+            if isinstance(possible_parent, CommaProxyList):
+                if possible_parent.node_list is not node:
+                    return possible_parent.node_list
+            else:
+                if possible_parent is not node:
+                    return possible_parent
         return node.parent
 
     @classmethod
@@ -98,13 +109,14 @@ class Path(object):
             return None
 
         if isinstance(parent, NodeList):
-            pos = parent.index(node)
+            pos = parent.index(node.node_list if isinstance(node, CommaProxyList) else node)
             return pos
 
         if isinstance(node, NodeList):
-            return next((key for (_, key, _) in parent._render() if getattr(parent, key) is node), None)
+            return next((key for (_, key, _) in parent._render() if getattr(parent, key) is node or getattr(getattr(parent, key), "node_list", None) is node), None)
 
-        return next((key for (_, key, _) in parent._render() if key == node.on_attribute), None)
+        to_return = next((key for (_, key, _) in parent._render() if key == node.on_attribute), None)
+        return to_return
 
 
 class GenericNodesUtils(object):
@@ -140,7 +152,7 @@ class GenericNodesUtils(object):
             value.on_attribute = on_attribute
             return NodeList([value])
 
-        if isinstance(value, NodeList):
+        if isinstance(value, (NodeList, CommaProxyList)):
             for i in value:
                 i.parent = parent
                 i.on_attribute = on_attribute
