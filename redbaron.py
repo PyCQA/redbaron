@@ -1932,6 +1932,12 @@ class ReprNode(Node):
         fst = baron.parse("`%s`" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
 
+    def __setattr__(self, key, value):
+        super(ReprNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, CommaProxyList):
+            setattr(self, "value", CommaProxyList(self.value))
+
 
 class ReturnNode(Node):
     def _string_to_node(self, string, parent, on_attribute):

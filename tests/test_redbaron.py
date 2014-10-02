@@ -3046,3 +3046,9 @@ def test_comma_proxy_list_print_value():
     red = RedBaron("print a")
     red[0].value.append("plop")
     assert red.dumps() == "print a, plop"
+
+
+def test_comma_proxy_list_repr_value():
+    red = RedBaron("`a`")
+    red[0].value.append("plop")
+    assert red.dumps() == "`a, plop`"
