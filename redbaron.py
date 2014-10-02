@@ -1793,6 +1793,12 @@ class LambdaNode(Node):
         else:
             raise Exception("Unhandled case")
 
+    def __setattr__(self, key, value):
+        super(LambdaNode, self).__setattr__(key, value)
+
+        if key == "arguments" and not isinstance(self.arguments, CommaProxyList):
+            setattr(self, "arguments", CommaProxyList(self.arguments, on_attribute="arguments"))
+
 
 class ListArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):

@@ -3034,3 +3034,9 @@ def test_comma_proxy_list_import_value():
     red = RedBaron("import a")
     red[0].value.append("b.c.d as e")
     assert red.dumps() == "import a, b.c.d as e"
+
+
+def test_comma_proxy_list_lambda_arguments():
+    red = RedBaron("lambda x: 1 + 1")
+    red[0].arguments.append("**kwargs")
+    assert red.dumps() == "lambda x, **kwargs: 1 + 1"
