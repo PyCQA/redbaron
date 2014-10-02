@@ -3052,3 +3052,9 @@ def test_comma_proxy_list_repr_value():
     red = RedBaron("`a`")
     red[0].value.append("plop")
     assert red.dumps() == "`a, plop`"
+
+
+def test_comma_proxy_list_with_contexts():
+    red = RedBaron("with a: pass")
+    red[0].contexts.append("b as c")
+    assert red.dumps() == "with a, b as c: pass\n"

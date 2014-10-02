@@ -2177,6 +2177,12 @@ class WithNode(CodeBlockNode):
         else:
             return super(WithNode, self)._string_to_node_list(string, parent, on_attribute)
 
+    def __setattr__(self, key, value):
+        super(WithNode, self).__setattr__(key, value)
+
+        if key == "contexts" and not isinstance(self.contexts, CommaProxyList):
+            setattr(self, "contexts", CommaProxyList(self.contexts, on_attribute="contexts"))
+
 
 class RedBaron(NodeList):
     def __init__(self, source_code):
