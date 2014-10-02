@@ -1698,6 +1698,12 @@ class GlobalNode(Node):
         else:
             raise Exception("Unhandled case")
 
+    def __setattr__(self, key, value):
+        super(GlobalNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, CommaProxyList):
+            setattr(self, "value", CommaProxyList(self.value, on_attribute="value"))
+
 
 class IfNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):

@@ -3022,3 +3022,9 @@ def test_comma_proxy_list_def_arguments():
     red = RedBaron("def a(b): pass")
     red[0].arguments.append("**kwargs")
     assert red.dumps() == "def a(b, **kwargs): pass\n"
+
+
+def test_comma_proxy_list_global_value():
+    red = RedBaron("global a")
+    red[0].value.append("b")
+    assert red.dumps() == "global a, b"
