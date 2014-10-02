@@ -650,28 +650,28 @@ def test_path_third_formatting(red):
 
 def test_path_arguments(red):
     check_path(red,
-            red.funcdef.arguments,
+            red.funcdef.arguments.node_list,
             [0, "arguments"]
         )
 
 
 def test_path_arguments_first(red):
     check_path(red,
-            red.funcdef.arguments[0],
+            red.funcdef.arguments.node_list[0],
             [0, "arguments", 0]
         )
 
 
 def test_path_arguments_comma(red):
     check_path(red,
-            red.funcdef.arguments[1],
+            red.funcdef.arguments.node_list[1],
             [0, "arguments", 1]
         )
 
 
 def test_path_arguments_second(red):
     check_path(red,
-            red.funcdef.arguments[2],
+            red.funcdef.arguments.node_list[2],
             [0, "arguments", 2]
         )
 
@@ -767,9 +767,9 @@ def test_root(red):
         red.funcdef.second_formatting,
         red.funcdef.third_formatting,
         red.funcdef.arguments,
-        red.funcdef.arguments[0],
-        red.funcdef.arguments[1],
-        red.funcdef.arguments[2],
+        red.funcdef.arguments.node_list[0],
+        red.funcdef.arguments.node_list[1],
+        red.funcdef.arguments.node_list[2],
         red.funcdef.fourth_formatting,
         red.funcdef.fifth_formatting,
         red.funcdef.sixth_formatting,
@@ -802,9 +802,9 @@ bounding_boxes = [
     (((2, 6),  (2, 5)),  ((1, 1), (1, 0)), fst.funcdef.second_formatting),
     (((2, 7),  (2, 6)),  ((1, 1), (1, 0)), fst.funcdef.third_formatting),
     (((2, 7),  (2, 10)), ((1, 1), (1, 4)), fst.funcdef.arguments),
-    (((2, 7),  (2, 7)),  ((1, 1), (1, 1)), fst.funcdef.arguments[0]),
-    (((2, 8),  (2, 9)),  ((1, 1), (1, 2)), fst.funcdef.arguments[1]),
-    (((2, 10), (2, 10)), ((1, 1), (1, 1)), fst.funcdef.arguments[2]),
+    (((2, 7),  (2, 7)),  ((1, 1), (1, 1)), fst.funcdef.arguments.node_list[0]),
+    (((2, 8),  (2, 9)),  ((1, 1), (1, 2)), fst.funcdef.arguments.node_list[1]),
+    (((2, 10), (2, 10)), ((1, 1), (1, 1)), fst.funcdef.arguments.node_list[2]),
     (((2, 11), (2, 10)), ((1, 1), (1, 0)), fst.funcdef.fourth_formatting),
     (((2, 12), (2, 11)), ((1, 1), (1, 0)), fst.funcdef.fifth_formatting),
     (((2, 13), (2, 12)), ((1, 1), (1, 0)), fst.funcdef.sixth_formatting),
@@ -865,10 +865,10 @@ positions = [
     (fst.funcdef,                                     [(3, 1), (3, 2), (3, 3)]),
     (fst.funcdef.first_formatting[0],                 [(3, 4)]),
     (fst.funcdef,                                     [(3, 5), (3, 6)]),
-    (fst.funcdef.arguments[0],                        [(3, 7)]),
-    (fst.funcdef.arguments[1],                        [(3, 8)]),
-    (fst.funcdef.arguments[1].second_formatting[0],   [(3, 9)]),
-    (fst.funcdef.arguments[2],                        [(3, 10)]),
+    (fst.funcdef.arguments.node_list[0],                        [(3, 7)]),
+    (fst.funcdef.arguments.node_list[1],                        [(3, 8)]),
+    (fst.funcdef.arguments.node_list[1].second_formatting[0],   [(3, 9)]),
+    (fst.funcdef.arguments.node_list[2],                        [(3, 10)]),
     (fst.funcdef,                                     [(3, 11), (3, 12)]),
     (fst.funcdef.value[0],                            [(4, 1), (4, 2), (4, 3), (4, 4)]),
     (fst.funcdef.value[1].target,                     [(4, 5)]),
@@ -3016,3 +3016,9 @@ def test_comma_proxy_list_from_import_targets():
     red[0].targets.append("e")
     red[0].targets.append("f as g")
     assert red.dumps() == "from a.b import c as d, e, f as g"
+
+
+def test_comma_proxy_list_def_arguments():
+    red = RedBaron("def a(b): pass")
+    red[0].arguments.append("**kwargs")
+    assert red.dumps() == "def a(b, **kwargs): pass\n"
