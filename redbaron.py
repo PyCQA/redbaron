@@ -1756,6 +1756,12 @@ class ImportNode(Node):
         fst = baron.parse("import %s" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
 
+    def __setattr__(self, key, value):
+        super(ImportNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, CommaProxyList):
+            setattr(self, "value", CommaProxyList(self.value, on_attribute="value"))
+
 
 class IntNode(Node):
     def __init__(self, node, *args, **kwargs):

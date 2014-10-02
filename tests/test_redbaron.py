@@ -3028,3 +3028,9 @@ def test_comma_proxy_list_global_value():
     red = RedBaron("global a")
     red[0].value.append("b")
     assert red.dumps() == "global a, b"
+
+
+def test_comma_proxy_list_import_value():
+    red = RedBaron("import a")
+    red[0].value.append("b.c.d as e")
+    assert red.dumps() == "import a, b.c.d as e"
