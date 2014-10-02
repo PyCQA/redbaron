@@ -1126,7 +1126,9 @@ class CommaProxyList(object):
         return self.data.count(value)
 
     def __setitem__(self, key, value):
-        return self.data.__setitem__(key, self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute))
+        self.data.__setitem__(key, self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute))
+        self._diff_reduced_list()
+        self._diff_augmented_list()
 
     def __setslice__(self, i, j, value):
         self.data.__setslice__(i, j, self._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute=self.on_attribute))

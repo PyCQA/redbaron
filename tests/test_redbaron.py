@@ -2928,6 +2928,7 @@ def test_comma_proxy_list_set_item():
     comma_proxy_list[0] = "plop"
     assert comma_proxy_list[0].type == "name"
     assert comma_proxy_list[0].value == "plop"
+    assert red.dumps() == "[plop]"
 
 
 def test_comma_proxy_list_set_slice():
