@@ -1101,7 +1101,10 @@ class CommaProxyList(object):
         self._diff_augmented_list()
 
     def pop(self, index=None):
-        self.data.pop(index)
+        if index is not None:
+            self.data.pop(index)
+        else:
+            self.data.pop()
         self._diff_reduced_list()
 
     def remove(self, value):

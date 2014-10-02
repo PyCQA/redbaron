@@ -2863,6 +2863,13 @@ def test_comma_proxy_list_pop_2_middle():
     assert red.dumps() == "[1, 3]"
 
 
+def test_comma_proxy_list_pop_no_index():
+    red = RedBaron("[1, 2, 3]")
+    comma_proxy_list = red[0].value
+    comma_proxy_list.pop()
+    assert red.dumps() == "[1, 2]"
+
+
 def test_comma_proxy_list_del():
     red = RedBaron("[1]")
     comma_proxy_list = red[0].value
