@@ -1869,9 +1869,9 @@ class PrintNode(Node):
                     self.value = NodeList([Node.from_fst({"type": "comma", "second_formatting": [{"type": "space", "value": " "}], "first_formatting": []}, parent=parent, on_attribute=on_attribute)]) + self.value
                 return result
 
-            elif self.value and self.value[0].type == "comma":
+            elif self.value and self.value.node_list[0].type == "comma":
                 self.formatting = [{"type": "space", "value": " "}]
-                self.value = self.value[1:]
+                self.value = self.value.node_list[1:]
 
             else:
                 self.formatting = []
