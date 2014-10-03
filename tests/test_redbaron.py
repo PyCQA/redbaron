@@ -8,7 +8,7 @@ import pytest
 from baron.utils import string_instance
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                       PassNode, NodeList, CommaNode, DotNode, CallNode,
-                      truncate, CommaProxyList)
+                      truncate, CommaProxyList, DotProxyList)
 
 
 def test_empty():
@@ -3238,3 +3238,11 @@ def test_dot_proxy_list_delslice():
     red = RedBaron("a.b.c.d.e.f")
     del red[0].value[1:4]
     assert red.dumps() == "a.e.f"
+
+
+def test_dot_proxy_list_getslice():
+    red = RedBaron("a.b.c.d")
+    result = red[0].value[1:3]
+    expected_result = DotProxyList(NodeList([red[0].value[1], red[0].value[2]]))
+    assert len(result) == len(expected_result)
+    assert result[0] == expected_result[0]
