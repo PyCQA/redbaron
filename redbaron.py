@@ -581,6 +581,12 @@ class Node(GenericNodesUtils):
 
         return self.find(key)
 
+    def __getitem__(self, key):
+        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+            return self.value[key]
+
+        raise TypeError("'%s' object does not support indexing" % self.__class__)
+
     def find_all(self, identifier, *args, **kwargs):
         to_return = NodeList([])
         if "recursive" in kwargs:
