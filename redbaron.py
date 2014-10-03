@@ -607,6 +607,13 @@ class Node(GenericNodesUtils):
         else:
             raise AttributeError("__delitem__")
 
+    def __delslice__(self, i, j):
+        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+            self.value.__delslice__(i, j)
+
+        else:
+            raise AttributeError("__delitem__")
+
     def find_all(self, identifier, *args, **kwargs):
         to_return = NodeList([])
         if "recursive" in kwargs:
