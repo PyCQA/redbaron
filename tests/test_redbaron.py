@@ -3066,3 +3066,10 @@ def test_comma_proxy_list_with_contexts():
     red = RedBaron("with a: pass")
     red[0].contexts.append("b as c")
     assert red.dumps() == "with a, b as c: pass\n"
+
+
+def test_comma_proxy_list_delegation_from_parent_node_on_value():
+    red = RedBaron("{1: 2}")
+    # you don't need to do a .value here!
+    red[0].append("3: 4")
+    assert red.dumps() == "{1: 2, 3: 4}"

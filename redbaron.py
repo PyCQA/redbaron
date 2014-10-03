@@ -576,6 +576,9 @@ class Node(GenericNodesUtils):
                 raise Exception()
 
     def __getattr__(self, key):
+        if key != "value" and hasattr(self, "value") and isinstance(self.value, CommaProxyList) and hasattr(self.value, key):
+            return getattr(self.value, key)
+
         return self.find(key)
 
     def find_all(self, identifier, *args, **kwargs):
