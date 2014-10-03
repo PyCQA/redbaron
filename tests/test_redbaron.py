@@ -3079,3 +3079,11 @@ def test_comma_proxy_list_delegation_from_parent_node_on_value_getitem():
     red = RedBaron("{1: 2}")
     # you don't need to do a .value here!
     red[0][0]
+
+
+def test_comma_proxy_list_delegation_from_parent_node_on_value_setitem():
+    red = RedBaron("{1: 2}")
+    # you don't need to do a .value here!
+    red[0].append("3: 4")
+    red[0][1] = "42: plop"
+    assert red.dumps() == "{1: 2, 42: plop}"
