@@ -1074,7 +1074,7 @@ class ElseAttributeNode(CodeBlockNode):
         return super(ElseAttributeNode, self).__setattr__(name, value)
 
 
-class CommaProxyList(object):
+class ProxyList(object):
     def __init__(self, node_list, on_attribute="value"):
         self.node_list = node_list
         self.data = list(node_list.filtered())
@@ -1088,18 +1088,7 @@ class CommaProxyList(object):
         return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute)
 
     def _generate_expected_list(self):
-        expected_list = []
-        for i in self.data:
-            expected_list.append(i)
-            separator = self.middle_separator.copy()
-            separator.parent = self.node_list
-            separator.on_attribute = self.on_attribute
-            expected_list.append(separator)
-
-        if expected_list:
-            expected_list.pop()  # don't do that if trailing is desired
-
-        return expected_list
+        raise NotImplemented()
 
     def _diff_augmented_list(self):
         expected_list = self._generate_expected_list()
@@ -1219,6 +1208,22 @@ class CommaProxyList(object):
 
     def __getattr__(self, key):
         return getattr(self.node_list, key)
+
+
+class CommaProxyList(ProxyList):
+    def _generate_expected_list(self):
+        expected_list = []
+        for i in self.data:
+            expected_list.append(i)
+            separator = self.middle_separator.copy()
+            separator.parent = self.node_list
+            separator.on_attribute = self.on_attribute
+            expected_list.append(separator)
+
+        if expected_list:
+            expected_list.pop()  # don't do that if trailing is desired
+
+        return expected_list
 
 
 # TODO
