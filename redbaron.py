@@ -1598,7 +1598,10 @@ class DottedAsNameNode(Node):
                 self.first_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
                 self.second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="delimiter", parent=self)]
 
-        return super(DottedAsNameNode, self).__setattr__(key, value)
+        super(DottedAsNameNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, DotProxyList):
+            setattr(self, "value", DotProxyList(self.value))
 
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":

@@ -3264,3 +3264,9 @@ def test_dot_proxy_list_append_call():
     red = RedBaron("a.b")
     red[0].value.append("()")
     assert red.dumps() == "a.b()"
+
+
+def test_dot_proxy_list_dotted_name_as_name():
+    red = RedBaron("import a.b as c")
+    red[0][0].append("plop")
+    assert red.dumps() == "import a.b.plop as c"
