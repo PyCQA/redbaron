@@ -593,6 +593,13 @@ class Node(GenericNodesUtils):
 
         raise AttributeError("__getslice__")
 
+    def __setitem__(self, key, value):
+        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+            self.value[key] = value
+
+        else:
+            raise TypeError("'%s' object does not support item assignment" % self.__class__)
+
     def __setslice__(self, i, j, value):
         if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
             return self.value.__setslice__(i, j, value)
