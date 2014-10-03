@@ -3092,3 +3092,8 @@ def test_comma_proxy_list_delegation_from_parent_node_on_value_setitem():
 def test_comma_proxy_list_delegation_from_parent_node_on_value_insert():
     red = RedBaron("[]")
     red[0].insert(0, "caramba")
+
+
+def test_comma_proxy_list_delegation_from_parent_node_on_value_extend():
+    red = RedBaron("[]")
+    red[0].extend(["3", "42"])
