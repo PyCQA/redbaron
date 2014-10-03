@@ -1733,9 +1733,11 @@ class FromImportNode(Node):
     def __setattr__(self, key, value):
         super(FromImportNode, self).__setattr__(key, value)
 
+        if key == "value" and not isinstance(self.value, DotProxyList):
+            setattr(self, "value", DotProxyList(self.value, on_attribute="value"))
+
         if key == "targets" and not isinstance(self.targets, CommaProxyList):
             setattr(self, "targets", CommaProxyList(self.targets, on_attribute="targets"))
-
 
 
 class FuncdefNode(CodeBlockNode):
