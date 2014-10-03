@@ -3232,3 +3232,9 @@ def test_dot_proxy_list_set_slice():
     red = RedBaron("a.b.c")
     red[0].value[1:2] = ["caramba", "compote"]
     assert red.dumps() == "a.caramba.compote.c"
+
+
+def test_dot_proxy_list_delslice():
+    red = RedBaron("a.b.c.d.e.f")
+    del red[0].value[1:4]
+    assert red.dumps() == "a.e.f"
