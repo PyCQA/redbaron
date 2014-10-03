@@ -1236,7 +1236,7 @@ class DotProxyList(ProxyList):
     def _generate_expected_list(self):
         expected_list = []
         for i in self.data:
-            if expected_list and i.type == "call":
+            if expected_list and i.type in ("call", "getitem"):
                 expected_list.pop()
 
             expected_list.append(i)
@@ -1251,7 +1251,7 @@ class DotProxyList(ProxyList):
         return expected_list
 
     def _convert_input_to_node_object(self, value, parent, on_attribute):
-        if value.startswith("("):
+        if value.startswith(("(", "[")):
             value = "a%s" % value
         else:
             value = "a.%s" % value

@@ -3276,3 +3276,9 @@ def test_dot_proxy_list_from_import_node():
     red = RedBaron("from a.b.c import d")
     red[0].append("plop")
     assert red.dumps() == "from a.b.c.plop import d"
+
+
+def test_dot_proxy_list_append_getitem():
+    red = RedBaron("a.b")
+    red[0].value.append("[stuff]")
+    assert red.dumps() == "a.b[stuff]"
