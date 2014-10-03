@@ -3117,3 +3117,9 @@ def test_comma_proxy_list_delegation_from_parent_node_on_value_index():
 def test_comma_proxy_list_delegation_from_parent_node_on_value_len():
     red = RedBaron("[pouf]")
     assert len(red[0]) == 1
+
+
+def test_comma_proxy_list_delegation_from_parent_node_on_value_del():
+    red = RedBaron("[abc, zop]")
+    del red[0][0]
+    assert len(red[0]) == 1

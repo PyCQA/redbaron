@@ -594,6 +594,13 @@ class Node(GenericNodesUtils):
         # XXX bad, because __len__ exists, if will called to check if this object is True
         return True
 
+    def __delitem__(self, key):
+        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+            del self.value[key]
+
+        else:
+            raise AttributeError("__delitem__")
+
     def find_all(self, identifier, *args, **kwargs):
         to_return = NodeList([])
         if "recursive" in kwargs:
