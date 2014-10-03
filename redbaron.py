@@ -1260,8 +1260,7 @@ class DotProxyList(ProxyList):
 
 
 # TODO
-# start to do the AtomtrailersProxyList (could also be called "DotProxyList)
-# ^ here, the special case is "not dot before a CallNode"
+# put DotProxyList everywhere
 # then, it might be cool to have a SpaceProxyList for StringChainNode
 # but way more important: EndlProxyList or BodyProxyList
 
