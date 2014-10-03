@@ -3164,3 +3164,15 @@ def test_dot_proxy_list_insert():
     red = RedBaron("a.b")
     red[0].value.insert(0, "c")
     assert red.dumps() == "c.a.b"
+
+
+def test_dot_proxy_list_insert_2_at_top():
+    red = RedBaron("a.b")
+    red[0].value.insert(2, "c")
+    assert red.dumps() == "a.b.c"
+
+
+def test_dot_proxy_list_append():
+    red = RedBaron("a.b")
+    red[0].value.append("c")
+    assert red.dumps() == "a.b.c"
