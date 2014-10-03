@@ -3218,3 +3218,11 @@ def test_dot_proxy_list_remove_2():
     red = RedBaron("a.b.c")
     red[0].value.remove(red[0].value[1])
     assert red.dumps() == "a.c"
+
+
+def test_dot_proxy_list_set_item():
+    red = RedBaron("a.b.c")
+    red[0].value[0] = "plop"
+    assert red[0].value[0].type == "name"
+    assert red[0].value[0].value == "plop"
+    assert red.dumps() == "plop.b.c"
