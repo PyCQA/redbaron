@@ -1222,9 +1222,6 @@ class CommaProxyList(object):
 
 
 # TODO
-# proxify __getattr__ of list_node to comma_proxy_list
-# put on other nodes
-# do this proxification for every case where on_attribute == "value"
 # start to do the AtomtrailersProxyList (could also be called "DotPRoxyList)
 # ^ here, the special case is "not dot before a CallNode"
 # need to make most of CommaProxyList methods generic in a top class
