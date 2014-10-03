@@ -3194,3 +3194,15 @@ def test_dot_proxy_list_pop_no_index():
     red = RedBaron("a.b.c")
     red[0].value.pop()
     assert red.dumps() == "a.b"
+
+
+def test_dot_proxy_list_del():
+    red = RedBaron("a.b.c")
+    del red[0].value[0]
+    assert red.dumps() == "b.c"
+
+
+def test_dot_proxy_list_del_2():
+    red = RedBaron("a.b.c")
+    del red[0].value[1]
+    assert red.dumps() == "a.c"
