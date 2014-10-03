@@ -1226,6 +1226,9 @@ class CommaProxyList(ProxyList):
         return expected_list
 
 
+class DotProxyList(ProxyList):
+    pass
+
 # TODO
 # start to do the AtomtrailersProxyList (could also be called "DotPRoxyList)
 # ^ here, the special case is "not dot before a CallNode"
@@ -1317,6 +1320,12 @@ class AtomtrailersNode(Node):
 
         else:
             raise Exception("Unhandled case")
+
+    def __setattr__(self, key, value):
+        super(AtomtrailersNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, DotProxyList):
+            setattr(self, "value", DotProxyList(self.value))
 
 
 class BinaryNode(Node):
