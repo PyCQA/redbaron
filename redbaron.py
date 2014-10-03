@@ -587,6 +587,12 @@ class Node(GenericNodesUtils):
 
         raise TypeError("'%s' object does not support indexing" % self.__class__)
 
+    def __getslice__(self, i, j):
+        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+            return self.value.__getslice__(i, j)
+
+        raise AttributeError("__getslice__")
+
     def __setslice__(self, i, j, value):
         if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
             return self.value.__setslice__(i, j, value)
