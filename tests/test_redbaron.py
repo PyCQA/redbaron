@@ -3123,3 +3123,8 @@ def test_comma_proxy_list_delegation_from_parent_node_on_value_del():
     red = RedBaron("[abc, zop]")
     del red[0][0]
     assert len(red[0]) == 1
+
+
+def test_comma_proxy_list_delegation_from_parent_node_on_value_contains():
+    red = RedBaron("[a, b, c]")
+    assert red[0][0] in red[0]
