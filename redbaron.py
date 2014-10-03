@@ -73,16 +73,16 @@ class Path(object):
                     return None
                 child = getattr(node, key)
             else:
-                if isinstance(node, CommaProxyList):
+                if isinstance(node, ProxyList):
                     node = node.node_list
 
                 if key >= len(node):
                     return None
                 child = node[key]
-            if child is not None and isinstance(child, (Node, NodeList, CommaProxyList)):
+            if child is not None and isinstance(child, (Node, NodeList, ProxyList)):
                 node = child
 
-        if isinstance(node, CommaProxyList):
+        if isinstance(node, ProxyList):
             node = node.node_list
 
         return class_(node)
@@ -94,7 +94,7 @@ class Path(object):
     def get_holder(class_, node):
         if node.on_attribute is not None and isinstance(node.parent, Node):
             possible_parent = getattr(node.parent, node.on_attribute)
-            if isinstance(possible_parent, CommaProxyList):
+            if isinstance(possible_parent, ProxyList):
                 if possible_parent.node_list is not node:
                     return possible_parent.node_list
             else:
@@ -109,7 +109,7 @@ class Path(object):
             return None
 
         if isinstance(parent, NodeList):
-            pos = parent.index(node.node_list if isinstance(node, CommaProxyList) else node)
+            pos = parent.index(node.node_list if isinstance(node, ProxyList) else node)
             return pos
 
         if isinstance(node, NodeList):
@@ -152,7 +152,7 @@ class GenericNodesUtils(object):
             value.on_attribute = on_attribute
             return NodeList([value])
 
-        if isinstance(value, (NodeList, CommaProxyList)):
+        if isinstance(value, (NodeList, ProxyList)):
             for i in value:
                 i.parent = parent
                 i.on_attribute = on_attribute
@@ -166,7 +166,7 @@ class GenericNodesUtils(object):
 
             return new_value
 
-        if isinstance(value, CommaProxyList):
+        if isinstance(value, ProxyList):
             return value
 
         raise NotImplemented
@@ -533,7 +533,7 @@ class Node(GenericNodesUtils):
         else:
             in_list = getattr(self.parent, self.on_attribute)
 
-        if isinstance(in_list, CommaProxyList):
+        if isinstance(in_list, ProxyList):
             return in_list.node_list
 
         if not isinstance(in_list, NodeList):
@@ -576,52 +576,52 @@ class Node(GenericNodesUtils):
                 raise Exception()
 
     def __getattr__(self, key):
-        if key != "value" and hasattr(self, "value") and isinstance(self.value, CommaProxyList) and hasattr(self.value, key):
+        if key != "value" and hasattr(self, "value") and isinstance(self.value, ProxyList) and hasattr(self.value, key):
             return getattr(self.value, key)
 
         return self.find(key)
 
     def __getitem__(self, key):
-        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+        if hasattr(self, "value") and isinstance(self.value, ProxyList):
             return self.value[key]
 
         raise TypeError("'%s' object does not support indexing" % self.__class__)
 
     def __getslice__(self, i, j):
-        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+        if hasattr(self, "value") and isinstance(self.value, ProxyList):
             return self.value.__getslice__(i, j)
 
         raise AttributeError("__getslice__")
 
     def __setitem__(self, key, value):
-        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+        if hasattr(self, "value") and isinstance(self.value, ProxyList):
             self.value[key] = value
 
         else:
             raise TypeError("'%s' object does not support item assignment" % self.__class__)
 
     def __setslice__(self, i, j, value):
-        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+        if hasattr(self, "value") and isinstance(self.value, ProxyList):
             return self.value.__setslice__(i, j, value)
 
         raise TypeError("'%s' object does not support slice setting" % self.__class__)
 
     def __len__(self):
-        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+        if hasattr(self, "value") and isinstance(self.value, ProxyList):
             return self.value.__len__()
 
         # XXX bad, because __len__ exists, if will called to check if this object is True
         return True
 
     def __delitem__(self, key):
-        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+        if hasattr(self, "value") and isinstance(self.value, ProxyList):
             del self.value[key]
 
         else:
             raise AttributeError("__delitem__")
 
     def __delslice__(self, i, j):
-        if hasattr(self, "value") and isinstance(self.value, CommaProxyList):
+        if hasattr(self, "value") and isinstance(self.value, ProxyList):
             self.value.__delslice__(i, j)
 
         else:
@@ -778,7 +778,7 @@ class Node(GenericNodesUtils):
             to_return[key] = getattr(self, key)
         for key in self._list_keys:
             # Proxy Lists overload __iter__ for a better user interface
-            if isinstance(getattr(self, key), CommaProxyList):
+            if isinstance(getattr(self, key), ProxyList):
                 to_return[key] = [node.fst() for node in getattr(self, key).node_list]
             else:
                 to_return[key] = [node.fst() for node in getattr(self, key)]
@@ -910,7 +910,7 @@ class Node(GenericNodesUtils):
         if not self.parent:
             return None
 
-        if not isinstance(getattr(self.parent, self.on_attribute), (NodeList, CommaProxyList)):
+        if not isinstance(getattr(self.parent, self.on_attribute), (NodeList, ProxyList)):
             return None
 
         return getattr(self.parent, self.on_attribute).index(self)
