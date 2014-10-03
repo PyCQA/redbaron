@@ -1233,8 +1233,29 @@ class DotProxyList(ProxyList):
         super(DotProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.middle_separator = DotNode({"type": "dot", "first_formatting": [], "second_formatting": []})
 
+    def _generate_expected_list(self):
+        expected_list = []
+        for i in self.data:
+            if expected_list and i.type == "call":
+                expected_list.pop()
+
+            expected_list.append(i)
+            separator = self.middle_separator.copy()
+            separator.parent = self.node_list
+            separator.on_attribute = self.on_attribute
+            expected_list.append(separator)
+
+        if expected_list:
+            expected_list.pop()  # don't do that if trailing is desired
+
+        return expected_list
+
     def _convert_input_to_node_object(self, value, parent, on_attribute):
-        value = "a.%s" % value
+        if value.startswith("("):
+            value = "a%s" % value
+        else:
+            value = "a.%s" % value
+
         return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute).filtered()[-1]
 
 

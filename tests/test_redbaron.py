@@ -3258,3 +3258,9 @@ def test_dot_proxy_list_extend_2():
     red = RedBaron("a.b.c")
     red[0].value.extend(["f", "plop", "ss"])
     assert red.dumps() == "a.b.c.f.plop.ss"
+
+
+def test_dot_proxy_list_append_call():
+    red = RedBaron("a.b")
+    red[0].value.append("()")
+    assert red.dumps() == "a.b()"
