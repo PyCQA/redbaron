@@ -1229,8 +1229,6 @@ class CommaProxyList(ProxyList):
 # TODO
 # start to do the AtomtrailersProxyList (could also be called "DotPRoxyList)
 # ^ here, the special case is "not dot before a CallNode"
-# need to make most of CommaProxyList methods generic in a top class
-# I think than mostly, only _diff_augmented_list and _diff_reduced_list needs to be overloaded
 # then, it might be cool to have a SpaceProxyList for StringChainNode
 # but way more important: EndlProxyList or BodyProxyList
 
