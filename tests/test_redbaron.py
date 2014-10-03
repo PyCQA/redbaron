@@ -3138,3 +3138,8 @@ def test_comma_proxy_list_delegation_from_parent_node_on_value_iter():
 def test_comma_proxy_list_delegation_from_parent_node_on_value_count():
     red = RedBaron("[pouet]")
     assert red[0].count(red[0][0]) == 1
+
+
+def test_comma_proxy_list_delegation_from_parent_node_on_value_setslice():
+    red = RedBaron("[]")
+    red[0][1:1] = ["pouet", "plop"]
