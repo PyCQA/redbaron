@@ -1081,6 +1081,9 @@ class ProxyList(object):
         self.middle_separator = CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
         self.on_attribute = on_attribute
 
+    def __call__(self, identifier, *args, **kwargs):
+        return self.node_list.find_all(identifier, *args, **kwargs)
+
     def _convert_input_to_node_object(self, value, parent, on_attribute):
         return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute).filtered()[0]
 
