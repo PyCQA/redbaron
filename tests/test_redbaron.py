@@ -2703,9 +2703,9 @@ def test_ifelseblock_setattr_indented_followed():
 
 def test_index():
     red = RedBaron("a = [1, 2, 3]")
-    assert red[0].value.value[2].index == 2
-    assert red[0].index == 0
-    assert red[0].value.index is None
+    assert red[0].value.value[2].index_on_parent == 2
+    assert red[0].index_on_parent == 0
+    assert red[0].value.index_on_parent is None
 
 
 def test_rendering_iter():

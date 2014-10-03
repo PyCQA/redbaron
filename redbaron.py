@@ -857,7 +857,7 @@ class Node(GenericNodesUtils):
             self.replace(result)
 
     @property
-    def index(self):
+    def index_on_parent(self):
         if not self.parent:
             return None
 
