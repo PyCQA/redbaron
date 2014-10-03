@@ -3107,3 +3107,8 @@ def test_comma_proxy_list_delegation_from_parent_node_on_value_pop():
 def test_comma_proxy_list_delegation_from_parent_node_on_value_remove():
     red = RedBaron("[pouet]")
     red[0].remove(red[0][0])
+
+
+def test_comma_proxy_list_delegation_from_parent_node_on_value_index():
+    red = RedBaron("[42]")
+    assert red[0].index(red[0][0]) == 0
