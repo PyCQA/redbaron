@@ -1099,7 +1099,7 @@ class ProxyList(object):
 
             elif self.node_list[i] is not expected_list[i] and\
                     not (self.node_list[i].type == expected_list[i].type and\
-                         self.node_list[i].type == "comma"):
+                         self.node_list[i].type == self.middle_separator.type):
                 self.node_list.insert(i, expected_list[i])
 
     def _diff_reduced_list(self):
@@ -1112,7 +1112,7 @@ class ProxyList(object):
                 self.node_list.pop(i)
 
             # type is equal, check for formatting nodes
-            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == "comma":
+            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == self.middle_separator.type:
                 i += 1
 
             # that's the same node, continue
