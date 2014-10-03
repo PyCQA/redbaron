@@ -1088,7 +1088,18 @@ class ProxyList(object):
         return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute)
 
     def _generate_expected_list(self):
-        raise NotImplemented()
+        expected_list = []
+        for i in self.data:
+            expected_list.append(i)
+            separator = self.middle_separator.copy()
+            separator.parent = self.node_list
+            separator.on_attribute = self.on_attribute
+            expected_list.append(separator)
+
+        if expected_list:
+            expected_list.pop()  # don't do that if trailing is desired
+
+        return expected_list
 
     def _diff_augmented_list(self):
         expected_list = self._generate_expected_list()
@@ -1211,26 +1222,21 @@ class ProxyList(object):
 
 
 class CommaProxyList(ProxyList):
-    def _generate_expected_list(self):
-        expected_list = []
-        for i in self.data:
-            expected_list.append(i)
-            separator = self.middle_separator.copy()
-            separator.parent = self.node_list
-            separator.on_attribute = self.on_attribute
-            expected_list.append(separator)
-
-        if expected_list:
-            expected_list.pop()  # don't do that if trailing is desired
-
-        return expected_list
+    pass
 
 
 class DotProxyList(ProxyList):
-    pass
+    def __init__(self, node_list, on_attribute="value"):
+        super(DotProxyList, self).__init__(node_list, on_attribute=on_attribute)
+        self.middle_separator = DotNode({"type": "dot", "first_formatting": [], "second_formatting": []})
+
+    def _convert_input_to_node_object(self, value, parent, on_attribute):
+        value = "a.%s" % value
+        return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute).filtered()[-1]
+
 
 # TODO
-# start to do the AtomtrailersProxyList (could also be called "DotPRoxyList)
+# start to do the AtomtrailersProxyList (could also be called "DotProxyList)
 # ^ here, the special case is "not dot before a CallNode"
 # then, it might be cool to have a SpaceProxyList for StringChainNode
 # but way more important: EndlProxyList or BodyProxyList

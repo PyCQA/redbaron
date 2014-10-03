@@ -3158,3 +3158,9 @@ def test_comma_proxy_list_delegation_from_parent_node_on_value_getslice():
 def test_dot_proxy_list_len():
     red = RedBaron("a.b.c")
     assert len(red[0].value) == 3
+
+
+def test_dot_proxy_list_insert():
+    red = RedBaron("a.b")
+    red[0].value.insert(0, "c")
+    assert red.dumps() == "c.a.b"
