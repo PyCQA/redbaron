@@ -3206,3 +3206,15 @@ def test_dot_proxy_list_del_2():
     red = RedBaron("a.b.c")
     del red[0].value[1]
     assert red.dumps() == "a.c"
+
+
+def test_dot_proxy_list_remove():
+    red = RedBaron("a.b.c")
+    red[0].value.remove(red[0].value[0])
+    assert red.dumps() == "b.c"
+
+
+def test_dot_proxy_list_remove_2():
+    red = RedBaron("a.b.c")
+    red[0].value.remove(red[0].value[1])
+    assert red.dumps() == "a.c"
