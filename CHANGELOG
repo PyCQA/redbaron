@@ -5,6 +5,7 @@ Changelog
 ----------------
 
 - .append_value is no more since it is useless now due to proxy lists
+- .index has been renamed to .index_on_parent to be more coherent
 
 0.2 (2014-09-23)
 ----------------
