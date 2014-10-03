@@ -3097,3 +3097,8 @@ def test_comma_proxy_list_delegation_from_parent_node_on_value_insert():
 def test_comma_proxy_list_delegation_from_parent_node_on_value_extend():
     red = RedBaron("[]")
     red[0].extend(["3", "42"])
+
+
+def test_comma_proxy_list_delegation_from_parent_node_on_value_pop():
+    red = RedBaron("[42]")
+    red[0].pop()
