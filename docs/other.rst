@@ -124,10 +124,10 @@ node in which this node is located:
     red.int_
     assert red.int_.root is red
 
-.index
-------
+.index_on_parent
+----------------
 
-Every node have the :file:`.index` attribute (property) that returns the index
+Every node have the :file:`.index_on_parent` attribute (property) that returns the index
 at which this node is store in its parent node list. If the node isn't stored
 in a node list, it returns :file:`None`.
 
@@ -136,9 +136,9 @@ in a node list, it returns :file:`None`.
     red = RedBaron("a = [1, 2, 3]")
     red[0].value.value
     red[0].value.value[2]
-    red[0].value.value[2].index
+    red[0].value.value[2].index_on_parent
     red[0].value
-    red[0].value.index
+    red[0].value.index_on_parent
 
 .filtered()
 -----------
