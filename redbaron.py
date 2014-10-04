@@ -1306,7 +1306,6 @@ class DotProxyList(ProxyList):
 
 
 # TODO
-# put DotProxyList everywhere
 # then, it might be cool to have a SpaceProxyList for StringChainNode
 # but way more important: EndlProxyList or BodyProxyList
 
