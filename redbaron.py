@@ -1233,6 +1233,26 @@ class DotProxyList(ProxyList):
         super(DotProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.middle_separator = DotNode({"type": "dot", "first_formatting": [], "second_formatting": []})
 
+    def _diff_augmented_list(self):
+        expected_list = self._generate_expected_list()
+
+        i, j = 0, 0
+
+        while j < len(self.node_list) and self.node_list[j].type == "dot":
+            j += 1
+
+        while i < len(expected_list):
+            if j >= len(self.node_list):
+                self.node_list.insert(j + 1, expected_list[i])
+
+            elif self.node_list[j] is not expected_list[i] and\
+                    not (self.node_list[j].type == expected_list[i].type and\
+                         self.node_list[j].type == self.middle_separator.type):
+                self.node_list.insert(j, expected_list[i])
+
+            i += 1
+            j += 1
+
     def _generate_expected_list(self):
         expected_list = []
         for i in self.data:
