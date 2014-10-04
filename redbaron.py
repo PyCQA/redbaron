@@ -1253,6 +1253,32 @@ class DotProxyList(ProxyList):
             i += 1
             j += 1
 
+    def _diff_reduced_list(self):
+        expected_list = self._generate_expected_list()
+
+
+        i, j = 0, 0
+
+        while j < len(self.node_list) and self.node_list[j].type == "dot":
+            j += 1
+
+        while j < len(self.node_list):
+            if i >= len(expected_list):
+                self.node_list.pop(j)
+
+            # type is equal, check for formatting nodes
+            elif self.node_list[j].type == expected_list[i].type and self.node_list[j].type == self.middle_separator.type:
+                i += 1
+                j += 1
+
+            # that's the same node, continue
+            elif self.node_list[j] is expected_list[i]:
+                i += 1
+                j += 1
+
+            else:
+                self.node_list.pop(j)
+
     def _generate_expected_list(self):
         expected_list = []
         for i in self.data:

@@ -3288,3 +3288,21 @@ def test_dot_proxy_list_dotted_name_as_name_heading_dots():
     red = RedBaron("import .a.b")
     red[0][0].append("plop")
     assert red.dumps() == "import .a.b.plop"
+
+
+def test_dot_proxy_list_dotted_name_as_name_heading_dots_remove():
+    red = RedBaron("import .a.b")
+    red[0][0].pop()
+    assert red.dumps() == "import .a"
+
+
+def test_dot_proxy_list_dotted_name_as_name_heading_two_dots_remove():
+    red = RedBaron("import ..a.b")
+    red[0][0].pop()
+    assert red.dumps() == "import ..a"
+
+
+def test_dot_proxy_list_dotted_name_as_name_heading_two_dots_remove_first():
+    red = RedBaron("import ..a.b")
+    red[0][0].pop(0)
+    assert red.dumps() == "import ..b"
