@@ -3405,18 +3405,18 @@ def test_endl_proxy_list_getslice():
     expected_result = EndlProxyList(NodeList([red[0].value[1], red[0].value[2]]))
     assert len(result) == len(expected_result)
     assert result[0] == expected_result[0]
-# 
-# 
-# def test_endl_proxy_list_extend():
-#     red = RedBaron("while a:\n    pass\n")
-#     red[0].value.extend(["zob"])
-#     assert red.dumps() == "a.b.c.zob"
-# 
-# 
-# def test_endl_proxy_list_extend_2():
-#     red = RedBaron("while a:\n    pass\n")
-#     red[0].value.extend(["f", "plop", "ss"])
-#     assert red.dumps() == "a.b.c.f.plop.ss"
+
+
+def test_endl_proxy_list_extend():
+    red = RedBaron("while a:\n    pass\n")
+    red[0].value.extend(["zob"])
+    assert red.dumps() == "while a:\n    pass\n    zob\n"
+
+
+def test_endl_proxy_list_extend_2():
+    red = RedBaron("while a:\n    pass\n")
+    red[0].value.extend(["f", "plop", "ss"])
+    assert red.dumps() == "while a:\n    pass\n    f\n    plop\n    ss\n"
 # 
 # 
 # def test_endl_proxy_list_append_call():
