@@ -1310,6 +1310,10 @@ class DotProxyList(ProxyList):
         return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute).filtered()[-1]
 
 
+class EndlProxyList(ProxyList):
+    pass
+
+
 # TODO
 # then, it might be cool to have a SpaceProxyList for StringChainNode
 # but way more important: EndlProxyList or BodyProxyList
@@ -2282,6 +2286,13 @@ class WhileNode(ElseAttributeNode):
 
         else:
             return super(WhileNode, self)._string_to_node(string, parent, on_attribute)
+
+
+    def __setattr__(self, key, value):
+        super(WhileNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, EndlProxyList):
+            setattr(self, "value", EndlProxyList(self.value, on_attribute="value"))
 
 
 class WithContextItemNode(Node):
