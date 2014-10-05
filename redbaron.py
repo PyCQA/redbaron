@@ -1353,6 +1353,28 @@ class EndlProxyList(ProxyList):
                          self.node_list[i].type == self.middle_separator.type):
                 self.node_list.insert(i, expected_list[i])
 
+    def _diff_reduced_list(self):
+        expected_list = self._generate_expected_list()
+
+        i = 0
+
+        while i < len(self.node_list):
+            if i >= len(expected_list):
+                self.node_list.pop(i)
+
+            # type is equal, check for formatting nodes
+            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == self.middle_separator.type:
+                if self.node_list[i].indent != expected_list[i].indent:
+                    self.node_list[i].indent = expected_list[i].indent
+                i += 1
+
+            # that's the same node, continue
+            elif self.node_list[i] is expected_list[i]:
+                i += 1
+
+            else:
+                self.node_list.pop(i)
+
 
 # TODO
 # then, it might be cool to have a SpaceProxyList for StringChainNode
