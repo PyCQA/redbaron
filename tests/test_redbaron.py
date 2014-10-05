@@ -3385,12 +3385,12 @@ def test_endl_proxy_list_set_item():
     assert red[0].value[0].type == "name"
     assert red[0].value[0].value == "plop"
     assert red.dumps() == "while a:\n    plop\n"
-# 
-# 
-# def test_endl_proxy_list_set_slice():
-#     red = RedBaron("while a:\n    pass\n")
-#     red[0].value[1:2] = ["caramba", "compote"]
-#     assert red.dumps() == "a.caramba.compote.c"
+
+
+def test_endl_proxy_list_set_slice():
+    red = RedBaron("while a:\n    pass\n    a\n    plop\n    z\n")
+    red[0].value[1:2] = ["caramba", "compote"]
+    assert red.dumps() == "while a:\n    pass\n    caramba\n    compote\n    plop\n    z\n"
 # 
 # 
 # def test_endl_proxy_list_delslice():
