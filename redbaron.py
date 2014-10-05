@@ -1358,6 +1358,8 @@ class EndlProxyList(ProxyList):
 # then, it might be cool to have a SpaceProxyList for StringChainNode
 # but way more important: EndlProxyList or BodyProxyList
 # EndlProxyList: test at different level of indentation
+#                handle blank lines
+#                handle comments
 
 # FIXME: doc others.rst line 244
 
