@@ -1333,10 +1333,25 @@ class EndlProxyList(ProxyList):
             expected_list.append(separator)
 
         if expected_list:
-            expected_list.pop()  # don't do that if trailing is desired
+            expected_list[-1].indent = ""
 
         return expected_list
 
+    def _diff_augmented_list(self):
+        expected_list = self._generate_expected_list()
+
+        for i in range(len(expected_list)):
+            if i >= len(self.node_list):
+                self.node_list.insert(i + 1, expected_list[i])
+
+            elif (self.node_list[i].type, expected_list[i].type) == ("endl", "endl"):
+                if self.node_list[i].indent != expected_list[i].indent:
+                    self.node_list[i].indent = expected_list[i].indent
+
+            elif self.node_list[i] is not expected_list[i] and\
+                    not (self.node_list[i].type == expected_list[i].type and\
+                         self.node_list[i].type == self.middle_separator.type):
+                self.node_list.insert(i, expected_list[i])
 
 
 # TODO
