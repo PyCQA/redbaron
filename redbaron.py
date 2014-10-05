@@ -26,13 +26,13 @@ else:
     from StringIO import StringIO
 
 
-def indent(line, indentation):
+def indent(block_of_text, indentation):
     """
     Helper function to indent a block of text.
 
     Take a block of text, an indentation string and return the indented block.
     """
-    return "\n".join(map(lambda x: indentation + x, line.split("\n")))
+    return "\n".join(map(lambda x: indentation + x, block_of_text.split("\n")))
 
 
 class Path(object):
