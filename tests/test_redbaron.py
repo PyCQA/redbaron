@@ -8,7 +8,7 @@ import pytest
 from baron.utils import string_instance
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                       PassNode, NodeList, CommaNode, DotNode, CallNode,
-                      truncate, CommaProxyList, DotProxyList)
+                      truncate, CommaProxyList, DotProxyList, EndlProxyList)
 
 
 def test_empty():
@@ -3397,14 +3397,14 @@ def test_endl_proxy_list_delslice():
     red = RedBaron("while a:\n    pass\n    caramba\n    compote\n    plop\n    z\n")
     del red[0].value[1:4]
     assert red.dumps() == "while a:\n    pass\n    z\n"
-# 
-# 
-# def test_endl_proxy_list_getslice():
-#     red = RedBaron("while a:\n    pass\n")
-#     result = red[0].value[1:3]
-#     expected_result = DotProxyList(NodeList([red[0].value[1], red[0].value[2]]))
-#     assert len(result) == len(expected_result)
-#     assert result[0] == expected_result[0]
+
+
+def test_endl_proxy_list_getslice():
+    red = RedBaron("while a:\n    pass\n    caramba\n    compote\n    plop\n    z\n")
+    result = red[0].value[1:3]
+    expected_result = EndlProxyList(NodeList([red[0].value[1], red[0].value[2]]))
+    assert len(result) == len(expected_result)
+    assert result[0] == expected_result[0]
 # 
 # 
 # def test_endl_proxy_list_extend():
