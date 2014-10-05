@@ -1382,6 +1382,7 @@ class EndlProxyList(ProxyList):
 # EndlProxyList: test at different level of indentation
 #                handle blank lines
 #                handle comments
+#                should a 'pass' be put if the list would be empty?
 
 # FIXME: doc others.rst line 244
 
