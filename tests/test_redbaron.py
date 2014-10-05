@@ -3323,6 +3323,12 @@ def test_endl_proxy_list_insert_2_at_top():
     red = RedBaron("while a:\n    pass\n")
     red[0].value.insert(1, "c")
     assert red.dumps() == "while a:\n    pass\n    c\n"
+
+
+def test_endl_proxy_list_insert_2_at_middle():
+    red = RedBaron("while a:\n    pass\n    pass\n")
+    red[0].value.insert(1, "c")
+    assert red.dumps() == "while a:\n    pass\n    c\n    pass\n"
 # 
 # 
 # def test_endl_proxy_list_append():
