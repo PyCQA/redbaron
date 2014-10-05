@@ -307,7 +307,7 @@ def test_in_while():
     red = RedBaron("while a:\n    pass\n")
     assert red[0].value.node_list[-2].indentation == "    "
     assert red[0].value.node_list[-1].indentation == ""
-    assert red[0].value.node_list[-2].get_indentation_node() is red[0].value[-3]
+    assert red[0].value.node_list[-2].get_indentation_node() is red[0].value.node_list[-3]
     assert red[0].value.node_list[-1].get_indentation_node() is None
     assert red[0].value.node_list[-3].get_indentation_node() is None
     assert red[0].value.node_list[-2].indentation_node_is_direct()
