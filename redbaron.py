@@ -27,6 +27,11 @@ else:
 
 
 def indent(line, indentation):
+    """
+    Helper function to indent a block of text.
+
+    Take a block of text, an indentation string and return the indented block.
+    """
     return "\n".join(map(lambda x: indentation + x, line.split("\n")))
 
 
