@@ -3353,18 +3353,18 @@ def test_endl_proxy_list_pop_no_index():
     red = RedBaron("while a:\n    pass\n    c\n    pass\n")
     red[0].value.pop()
     assert red.dumps() == "while a:\n    pass\n    c\n"
-# 
-# 
-# def test_endl_proxy_list_del():
-#     red = RedBaron("while a:\n    pass\n")
-#     del red[0].value[0]
-#     assert red.dumps() == "b.c"
-# 
-# 
-# def test_endl_proxy_list_del_2():
-#     red = RedBaron("while a:\n    pass\n")
-#     del red[0].value[1]
-#     assert red.dumps() == "a.c"
+
+
+def test_endl_proxy_list_del():
+    red = RedBaron("while a:\n    pass\n    c\n    pass\n")
+    del red[0].value[0]
+    assert red.dumps() == "while a:\n    c\n    pass\n"
+
+
+def test_endl_proxy_list_del_2():
+    red = RedBaron("while a:\n    pass\n    c\n    pass\n")
+    del red[0].value[2]
+    assert red.dumps() == "while a:\n    pass\n    c\n"
 # 
 # 
 # def test_endl_proxy_list_remove():
