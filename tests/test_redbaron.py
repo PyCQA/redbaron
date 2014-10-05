@@ -3311,3 +3311,9 @@ def test_dot_proxy_list_dotted_name_as_name_heading_two_dots_remove_first():
 def test_endl_proxy_list_len():
     red = RedBaron("while a:\n    pass\n")
     assert len(red[0].value) == 1
+
+
+def test_endl_proxy_list_insert():
+    red = RedBaron("while a:\n    pass\n")
+    red[0].value.insert(0, "c")
+    assert red.dumps() == "while a:\n    c\n    pass\n"

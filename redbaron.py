@@ -1311,7 +1311,32 @@ class DotProxyList(ProxyList):
 
 
 class EndlProxyList(ProxyList):
-    pass
+    def __init__(self, node_list, on_attribute="value"):
+        super(EndlProxyList, self).__init__(node_list, on_attribute=on_attribute)
+        self.middle_separator = DotNode({"type": "endl", "formatting": [], "value": "\n", "indent": "    "})
+
+    def _generate_expected_list(self):
+        expected_list = []
+        separator = self.middle_separator.copy()
+        separator.parent = self.node_list
+        separator.on_attribute = self.on_attribute
+        expected_list.append(separator)
+
+        for i in self.data:
+            if expected_list and i.type in ("call", "getitem"):
+                expected_list.pop()
+
+            expected_list.append(i)
+            separator = self.middle_separator.copy()
+            separator.parent = self.node_list
+            separator.on_attribute = self.on_attribute
+            expected_list.append(separator)
+
+        if expected_list:
+            expected_list.pop()  # don't do that if trailing is desired
+
+        return expected_list
+
 
 
 # TODO
