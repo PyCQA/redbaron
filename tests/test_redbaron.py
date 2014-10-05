@@ -3323,3 +3323,97 @@ def test_endl_proxy_list_insert_2_at_top():
     red = RedBaron("while a:\n    pass\n")
     red[0].value.insert(1, "c")
     assert red.dumps() == "while a:\n    pass\n    c\n"
+# 
+# 
+# def test_endl_proxy_list_append():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value.append("c")
+#     assert red.dumps() == "a.b.c"
+# 
+# 
+# def test_endl_proxy_list_pop():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value.pop(0)
+#     assert red.dumps() == "b.c.d"
+# 
+# 
+# def test_endl_proxy_list_pop_2():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value.pop(1)
+#     assert red.dumps() == "a.c"
+# 
+# 
+# def test_endl_proxy_list_pop_no_index():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value.pop()
+#     assert red.dumps() == "a.b"
+# 
+# 
+# def test_endl_proxy_list_del():
+#     red = RedBaron("while a:\n    pass\n")
+#     del red[0].value[0]
+#     assert red.dumps() == "b.c"
+# 
+# 
+# def test_endl_proxy_list_del_2():
+#     red = RedBaron("while a:\n    pass\n")
+#     del red[0].value[1]
+#     assert red.dumps() == "a.c"
+# 
+# 
+# def test_endl_proxy_list_remove():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value.remove(red[0].value[0])
+#     assert red.dumps() == "b.c"
+# 
+# 
+# def test_endl_proxy_list_remove_2():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value.remove(red[0].value[1])
+#     assert red.dumps() == "a.c"
+# 
+# 
+# def test_endl_proxy_list_set_item():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value[0] = "plop"
+#     assert red[0].value[0].type == "name"
+#     assert red[0].value[0].value == "plop"
+#     assert red.dumps() == "plop.b.c"
+# 
+# 
+# def test_endl_proxy_list_set_slice():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value[1:2] = ["caramba", "compote"]
+#     assert red.dumps() == "a.caramba.compote.c"
+# 
+# 
+# def test_endl_proxy_list_delslice():
+#     red = RedBaron("while a:\n    pass\n")
+#     del red[0].value[1:4]
+#     assert red.dumps() == "a.e.f"
+# 
+# 
+# def test_endl_proxy_list_getslice():
+#     red = RedBaron("while a:\n    pass\n")
+#     result = red[0].value[1:3]
+#     expected_result = DotProxyList(NodeList([red[0].value[1], red[0].value[2]]))
+#     assert len(result) == len(expected_result)
+#     assert result[0] == expected_result[0]
+# 
+# 
+# def test_endl_proxy_list_extend():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value.extend(["zob"])
+#     assert red.dumps() == "a.b.c.zob"
+# 
+# 
+# def test_endl_proxy_list_extend_2():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value.extend(["f", "plop", "ss"])
+#     assert red.dumps() == "a.b.c.f.plop.ss"
+# 
+# 
+# def test_endl_proxy_list_append_call():
+#     red = RedBaron("while a:\n    pass\n")
+#     red[0].value.append("()")
+#     assert red.dumps() == "a.b()"
