@@ -1068,7 +1068,7 @@ class ElseAttributeNode(CodeBlockNode):
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute != "else":
-            raise Exception("Unhandled case")
+            return super(ElseAttributeNode, self)._string_to_node(string, parent=parent, on_attribute=on_attribute)
 
         return self._convert_input_to_one_indented_member("else", string, parent, on_attribute)
 
