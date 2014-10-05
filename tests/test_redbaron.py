@@ -3306,3 +3306,8 @@ def test_dot_proxy_list_dotted_name_as_name_heading_two_dots_remove_first():
     red = RedBaron("import ..a.b")
     red[0][0].pop(0)
     assert red.dumps() == "import ..b"
+
+
+def test_endl_proxy_list_len():
+    red = RedBaron("while a:\n    pass\n")
+    assert len(red[0].value) == 1
