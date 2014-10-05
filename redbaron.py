@@ -240,7 +240,10 @@ class GenericNodesUtils(object):
                 for i in self._iter_in_rendering_order(getattr(node, key)):
                     yield i
             elif kind in ("list", "formatting"):
-                for i in getattr(node, key):
+                target = getattr(node, key)
+                if isinstance(target, ProxyList):
+                    target = target.node_list
+                for i in target:
                     for j in self._iter_in_rendering_order(i):
                         yield j
 
