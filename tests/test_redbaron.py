@@ -315,16 +315,16 @@ def test_in_while():
 
 def test_one_line_while():
     red = RedBaron("while a: pass\n")
-    assert red[0].value[0].indentation == ""
-    assert red[0].value[-2].get_indentation_node() is None
-    assert not red[0].value[-2].indentation_node_is_direct()
+    assert red[0].value.node_list[0].indentation == ""
+    assert red[0].value.node_list[-2].get_indentation_node() is None
+    assert not red[0].value.node_list[-2].indentation_node_is_direct()
 
 
 def test_inner_node():
     red = RedBaron("while a: pass\n")
     assert red[0].test.indentation == ""
-    assert red[0].value[-2].get_indentation_node() is None
-    assert not red[0].value[-2].indentation_node_is_direct()
+    assert red[0].value.node_list[-2].get_indentation_node() is None
+    assert not red[0].value.node_list[-2].indentation_node_is_direct()
 
 
 def test_indentation_endl():
@@ -336,7 +336,7 @@ def test_indentation_endl():
 
 def test_filtered_endl():
     red = RedBaron("while a:\n    pass\n")
-    assert red[0].value.filtered() == (red[0].value[-2],)
+    assert red[0].value.node_list.filtered() == (red[0].value.node_list[-2],)
 
 
 def test_filtered_comma():
