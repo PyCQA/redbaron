@@ -1012,13 +1012,20 @@ class ElseAttributeNode(CodeBlockNode):
 
     def _convert_input_to_one_indented_member(self, indented_type, string, parent, on_attribute):
         def remove_trailing_endl(node):
-            while node.value[-1].type == "endl":
-                node.value.pop()
+            if isinstance(node.value, ProxyList):
+                while node.value.node_list[-1].type == "endl":
+                    node.value.node_list.pop()
+            else:
+                while node.value[-1].type == "endl":
+                    node.value.pop()
 
         if not string:
-            last_member = self  # XXX
+            last_member = self
             remove_trailing_endl(last_member)
-            last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=last_member, on_attribute="value"))
+            if isinstance(last_member.value, ProxyList):
+                last_member.value.node_list.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=last_member, on_attribute="value"))
+            else:
+                last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=last_member, on_attribute="value"))
             return ""
 
         if re.match("^\s*%s" % indented_type, string):
@@ -1057,7 +1064,10 @@ class ElseAttributeNode(CodeBlockNode):
         # XXX this risk to remove comments
         if self.next:
             remove_trailing_endl(last_member)
-            last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=last_member, on_attribute="value"))
+            if isinstance(last_member.value, ProxyList):
+                last_member.value.node_list.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=last_member, on_attribute="value"))
+            else:
+                last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=last_member, on_attribute="value"))
 
             if self.indentation:
                 node.value.append(EndlNode({"type": "endl", "indent": self.indentation, "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
@@ -1065,7 +1075,10 @@ class ElseAttributeNode(CodeBlockNode):
                 node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
                 node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
 
-        last_member.value[-1].indent = self.indentation
+        if isinstance(last_member.value, ProxyList):
+            last_member.value.node_list[-1].indent = self.indentation
+        else:
+            last_member.value[-1].indent = self.indentation
 
         return node
 
