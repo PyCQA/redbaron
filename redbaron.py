@@ -1332,10 +1332,12 @@ class EndlProxyList(ProxyList):
         self.middle_separator = DotNode({"type": "endl", "formatting": [], "value": "\n", "indent": "    "})
 
     def _generate_expected_list(self):
+        indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
         expected_list = []
         separator = self.middle_separator.copy()
         separator.parent = self.node_list
         separator.on_attribute = self.on_attribute
+        separator.indent = indentation
         expected_list.append(separator)
 
         for i in self.data:
@@ -1346,6 +1348,7 @@ class EndlProxyList(ProxyList):
             separator = self.middle_separator.copy()
             separator.parent = self.node_list
             separator.on_attribute = self.on_attribute
+            separator.indent = indentation
             expected_list.append(separator)
 
         if expected_list:

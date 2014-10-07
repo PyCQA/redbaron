@@ -3417,3 +3417,9 @@ def test_endl_proxy_list_extend_2():
     red = RedBaron("while a:\n    pass\n")
     red[0].value.extend(["f", "plop", "ss"])
     assert red.dumps() == "while a:\n    pass\n    f\n    plop\n    ss\n"
+
+
+def test_endl_proxy_list_different_indentation():
+    red = RedBaron("while a:\n      pass\n")
+    red[0].value.append("c")
+    assert red.dumps() == "while a:\n      pass\n      c\n"
