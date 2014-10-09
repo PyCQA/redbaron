@@ -1352,7 +1352,10 @@ class EndlProxyList(ProxyList):
             expected_list.append(separator)
 
         if expected_list:
-            expected_list[-1].indent = ""
+            if self.parent.next:
+                expected_list[-1].indent = self.parent.indentation
+            else:
+                expected_list[-1].indent = ""
 
         return expected_list
 
