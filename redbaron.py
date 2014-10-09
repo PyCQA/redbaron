@@ -1401,8 +1401,8 @@ class EndlProxyList(ProxyList):
 # TODO
 # then, it might be cool to have a SpaceProxyList for StringChainNode
 # but way more important: EndlProxyList or BodyProxyList
-# EndlProxyList: test at different level of indentation
-#                handle blank lines
+# put EndlProxyList everywhere
+# EndlProxyList: handle blank lines
 #                handle comments
 #                should a 'pass' be put if the list would be empty?
 
