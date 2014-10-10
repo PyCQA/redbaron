@@ -1405,6 +1405,7 @@ class EndlProxyList(ProxyList):
 # EndlProxyList: handle blank lines
 #                handle comments
 #                should a 'pass' be put if the list would be empty?
+#                add blank line arround in certain cases? Like arround function at first level and second level
 
 # FIXME: doc others.rst line 244
 
