@@ -1326,9 +1326,9 @@ class DotProxyList(ProxyList):
         return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute).filtered()[-1]
 
 
-class EndlProxyList(ProxyList):
+class LineProxyList(ProxyList):
     def __init__(self, node_list, on_attribute="value"):
-        super(EndlProxyList, self).__init__(node_list, on_attribute=on_attribute)
+        super(LineProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.middle_separator = DotNode({"type": "endl", "formatting": [], "value": "\n", "indent": "    "})
 
     def _generate_expected_list(self):
@@ -1400,9 +1400,9 @@ class EndlProxyList(ProxyList):
 
 # TODO
 # then, it might be cool to have a SpaceProxyList for StringChainNode
-# but way more important: EndlProxyList or BodyProxyList
-# put EndlProxyList everywhere
-# EndlProxyList: handle blank lines
+# but way more important: LineProxyList or BodyProxyList
+# put LineProxyList everywhere
+# LineProxyList: handle blank lines
 #                handle comments
 #                should a 'pass' be put if the list would be empty?
 #                add blank line arround in certain cases? Like arround function at first level and second level
@@ -2380,8 +2380,8 @@ class WhileNode(ElseAttributeNode):
     def __setattr__(self, key, value):
         super(WhileNode, self).__setattr__(key, value)
 
-        if key == "value" and not isinstance(self.value, EndlProxyList):
-            setattr(self, "value", EndlProxyList(self.value, on_attribute="value"))
+        if key == "value" and not isinstance(self.value, LineProxyList):
+            setattr(self, "value", LineProxyList(self.value, on_attribute="value"))
 
 
 class WithContextItemNode(Node):
