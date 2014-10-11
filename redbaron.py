@@ -1331,8 +1331,10 @@ class LineProxyList(ProxyList):
         self.data = []
         previous = None
         for i in node_list:
-            if i.type != "endl" or (previous and previous.type == "endl"):
+            if i.type != "endl":
                 self.data.append(i)
+            elif previous and previous.type == "endl":
+                self.data.append(previous)
 
             previous = i
 
