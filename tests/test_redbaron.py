@@ -3448,9 +3448,9 @@ def test_line_proxy_dont_break_next_block_identation():
     assert red.dumps() == forwarded_indented_code_result
 
 
-# def test_line_proxy_with_blank_line_list_len():
-#     red = RedBaron("while a:\n    pass\n\n    plop\n")
-#     assert len(red[0].value) == 3
+def test_line_proxy_with_blank_line_list_len():
+    red = RedBaron("while a:\n    pass\n\n    plop\n")
+    assert len(red[0].value) == 3
 # 
 # 
 # def test_line_proxy_with_blank_line_list_insert():

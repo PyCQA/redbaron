@@ -1328,6 +1328,14 @@ class LineProxyList(ProxyList):
         super(LineProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.middle_separator = DotNode({"type": "endl", "formatting": [], "value": "\n", "indent": "    "})
 
+        self.data = []
+        previous = None
+        for i in node_list:
+            if i.type != "endl" or (previous and previous.type == "endl"):
+                self.data.append(i)
+
+            previous = i
+
     def _generate_expected_list(self):
         indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
         expected_list = []
