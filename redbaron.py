@@ -1337,21 +1337,20 @@ class LineProxyList(ProxyList):
             previous = i
 
     def _generate_expected_list(self):
-        indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
-        expected_list = []
-        separator = self.middle_separator.copy()
-        separator.parent = self.node_list
-        separator.on_attribute = self.on_attribute
-        separator.indent = indentation
-        expected_list.append(separator)
-
-        for i in self.data:
-            expected_list.append(i)
+        def generate_separator():
             separator = self.middle_separator.copy()
             separator.parent = self.node_list
             separator.on_attribute = self.on_attribute
             separator.indent = indentation
-            expected_list.append(separator)
+            return separator
+
+        indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
+        expected_list = []
+        expected_list.append(generate_separator())
+
+        for i in self.data:
+            expected_list.append(i)
+            expected_list.append(generate_separator())
 
         if expected_list:
             if self.parent.next:
