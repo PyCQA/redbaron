@@ -1346,9 +1346,6 @@ class LineProxyList(ProxyList):
         expected_list.append(separator)
 
         for i in self.data:
-            if expected_list and i.type in ("call", "getitem"):
-                expected_list.pop()
-
             expected_list.append(i)
             separator = self.middle_separator.copy()
             separator.parent = self.node_list
