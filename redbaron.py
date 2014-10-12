@@ -122,7 +122,9 @@ class Path(object):
 
 
 class GenericNodesUtils(object):
-    # XXX should this be an abstract class?
+    """
+    Mixen top class for Node and NodeList that contains generic methods that are used by both.
+    """
     def _convert_input_to_node_object(self, value, parent, on_attribute, generic=False):
         if isinstance(value, string_instance):
             if generic:
