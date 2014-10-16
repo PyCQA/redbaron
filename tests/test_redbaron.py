@@ -3463,12 +3463,12 @@ def test_line_proxy_with_blank_line_list_insert_2_at_middle():
     red = RedBaron("while a:\n    pass\n\n    plop\n    pass\n")
     red[0].value.insert(1, "c")
     assert red.dumps() == "while a:\n    pass\n    c\n\n    plop\n    pass\n"
-# 
-# 
-# def test_line_proxy_with_blank_line_list_append():
-#     red = RedBaron("while a:\n    pass\n\n    plop\n")
-#     red[0].value.append("c")
-#     assert red.dumps() == "while a:\n    pass\n    c\n"
+
+
+def test_line_proxy_with_blank_line_list_append():
+    red = RedBaron("while a:\n    pass\n\n")
+    red[0].value.append("c")
+    assert red.dumps() == "while a:\n    pass\n\n    c\n"
 # 
 # 
 # def test_line_proxy_with_blank_line_list_pop():
