@@ -3451,24 +3451,18 @@ def test_line_proxy_dont_break_next_block_identation():
 def test_line_proxy_with_blank_line_list_len():
     red = RedBaron("while a:\n    pass\n\n    plop\n")
     assert len(red[0].value) == 3
-# 
-# 
-# def test_line_proxy_with_blank_line_list_insert():
-#     red = RedBaron("while a:\n    pass\n\n    plop\n")
-#     red[0].value.insert(0, "c")
-#     assert red.dumps() == "while a:\n    c\n    pass\n"
-# 
-# 
-# def test_line_proxy_with_blank_line_list_insert_2_at_top():
-#     red = RedBaron("while a:\n    pass\n\n    plop\n")
-#     red[0].value.insert(1, "c")
-#     assert red.dumps() == "while a:\n    pass\n    c\n"
-# 
-# 
-# def test_line_proxy_with_blank_line_list_insert_2_at_middle():
-#     red = RedBaron("while a:\n    pass\n\n    plop\n    pass\n")
-#     red[0].value.insert(1, "c")
-#     assert red.dumps() == "while a:\n    pass\n    c\n    pass\n"
+
+
+def test_line_proxy_with_blank_line_list_insert():
+    red = RedBaron("while a:\n    pass\n\n    plop\n")
+    red[0].value.insert(1, "c")
+    assert red.dumps() == "while a:\n    pass\n    c\n\n    plop\n"
+
+
+def test_line_proxy_with_blank_line_list_insert_2_at_middle():
+    red = RedBaron("while a:\n    pass\n\n    plop\n    pass\n")
+    red[0].value.insert(1, "c")
+    assert red.dumps() == "while a:\n    pass\n    c\n\n    plop\n    pass\n"
 # 
 # 
 # def test_line_proxy_with_blank_line_list_append():
