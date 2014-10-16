@@ -1416,6 +1416,7 @@ class LineProxyList(ProxyList):
 
 # other TODO
 # "change formatting style" for CommaProxyList
+# autodetect formatting for CommaProxyList
 
 # XXX
 # should .next and .previous behavior should be changed to drop formatting
