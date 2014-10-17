@@ -3537,12 +3537,12 @@ def test_line_proxy_with_blank_line_list_extend():
     red = RedBaron("while a:\n    pass\n\n    plop\n")
     red[0].value.extend(["zob"])
     assert red.dumps() == "while a:\n    pass\n\n    plop\n    zob\n"
-# 
-# 
-# def test_line_proxy_with_blank_line_list_different_indentation():
-#     red = RedBaron("while a:\n      pass\n\n      plop\n")
-#     red[0].value.append("c")
-#     assert red.dumps() == "while a:\n      pass\n      c\n"
+
+
+def test_line_proxy_with_blank_line_list_different_indentation():
+    red = RedBaron("while a:\n        pass\n\n        plop\n")
+    red[0].value.append("c")
+    assert red.dumps() == "while a:\n        pass\n\n        plop\n        c\n"
 # 
 # 
 # forwarded_indented_code = """
