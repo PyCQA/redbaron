@@ -1416,8 +1416,7 @@ class LineProxyList(ProxyList):
 # then, it might be cool to have a SpaceProxyList for StringChainNode
 # but way more important: LineProxyList or BodyProxyList
 # put LineProxyList everywhere
-# LineProxyList: handle blank lines
-#                special syntaxe for adding blank lines ("")
+# LineProxyList: special syntaxe for adding blank lines ("")
 #                handle comments
 #                should a 'pass' be put if the list would be empty?
 #                add blank line arround in certain cases? Like arround function/class at first level and second level
