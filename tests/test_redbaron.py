@@ -3511,20 +3511,12 @@ def test_line_proxy_with_blank_line_list_remove_2():
     red = RedBaron("while a:\n    pass\n\n    plop\n    c\n    pass\n")
     red[0].value.remove(red[0].value[1])
     assert red.dumps() == "while a:\n    pass\n    plop\n    c\n    pass\n"
-# 
-# 
-# def test_line_proxy_with_blank_line_list_set_item():
-#     red = RedBaron("while a:\n    pass\n\n    plop\n")
-#     red[0].value[0] = "plop"
-#     assert red[0].value[0].type == "name"
-#     assert red[0].value[0].value == "plop"
-#     assert red.dumps() == "while a:\n    plop\n"
-# 
-# 
-# def test_line_proxy_with_blank_line_list_set_slice():
-#     red = RedBaron("while a:\n    pass\n\n    plop\n    a\n    plop\n    z\n")
-#     red[0].value[1:2] = ["caramba", "compote"]
-#     assert red.dumps() == "while a:\n    pass\n    caramba\n    compote\n    plop\n    z\n"
+
+
+def test_line_proxy_with_blank_line_list_set_slice():
+    red = RedBaron("while a:\n    pass\n\n    plop\n    a\n    plop\n    z\n")
+    red[0].value[1:2] = ["caramba", "compote"]
+    assert red.dumps() == "while a:\n    pass\n    caramba\n    compote\n    plop\n    a\n    plop\n    z\n"
 # 
 # 
 # def test_line_proxy_with_blank_line_list_delslice():
