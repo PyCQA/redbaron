@@ -3523,14 +3523,14 @@ def test_line_proxy_with_blank_line_list_delslice():
     red = RedBaron("while a:\n    pass\n\n    plop\n    caramba\n    compote\n    plop\n    z\n")
     del red[0].value[1:4]
     assert red.dumps() == "while a:\n    pass\n    compote\n    plop\n    z\n"
-# 
-# 
-# def test_line_proxy_with_blank_line_list_getslice():
-#     red = RedBaron("while a:\n    pass\n\n    plop\n    caramba\n    compote\n    plop\n    z\n")
-#     result = red[0].value[1:3]
-#     expected_result = LineProxyList(NodeList([red[0].value[1], red[0].value[2]]))
-#     assert len(result) == len(expected_result)
-#     assert result[0] == expected_result[0]
+
+
+def test_line_proxy_with_blank_line_list_getslice():
+    red = RedBaron("while a:\n    pass\n\n    plop\n    caramba\n    compote\n    plop\n    z\n")
+    result = red[0].value[1:3]
+    expected_result = LineProxyList(NodeList([red[0].value[1], red[0].value[2]]))
+    assert len(result) == len(expected_result)
+    assert result[0] == expected_result[0]
 # 
 # 
 # def test_line_proxy_with_blank_line_list_extend():
