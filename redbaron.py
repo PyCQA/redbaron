@@ -1876,7 +1876,11 @@ class ExecNode(Node):
 
 
 class FinallyNode(CodeBlockNode):
-    pass
+    def __setattr__(self, key, value):
+        super(FinallyNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, LineProxyList):
+            setattr(self, "value", LineProxyList(self.value, on_attribute="value"))
 
 
 class ForNode(ElseAttributeNode):
