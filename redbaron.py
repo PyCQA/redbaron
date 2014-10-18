@@ -1413,8 +1413,6 @@ class LineProxyList(ProxyList):
 
 
 # TODO
-# then, it might be cool to have a SpaceProxyList for StringChainNode
-# but way more important: LineProxyList or BodyProxyList
 # put LineProxyList everywhere
 # LineProxyList: special syntaxe for adding blank lines ("")
 #                handle comments
