@@ -1813,7 +1813,11 @@ class ExceptNode(CodeBlockNode):
             elif value:
                 raise Exception("Delimiters of an except node can only be 'as' or ',' (without spaces around it).")
 
-        return super(ExceptNode, self).__setattr__(key, value)
+        super(ExceptNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, LineProxyList):
+            setattr(self, "value", LineProxyList(self.value, on_attribute="value"))
+
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "exception":

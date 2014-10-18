@@ -3585,3 +3585,8 @@ def test_line_proxy_with_blank_line_elif_node():
 def test_line_proxy_with_blank_line_else_node():
     red = RedBaron("if a:\n    pass\nelse:\n    pass\n\n    plop\n")
     assert len(red[0].value[1].value) == 3
+
+
+def test_line_proxy_with_blank_line_except_node():
+    red = RedBaron("try:\n    pass\nexcept:\n    pass\n\n    plop\n")
+    assert len(red[0].excepts[0].value) == 3
