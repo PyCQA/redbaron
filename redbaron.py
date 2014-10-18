@@ -1004,6 +1004,12 @@ class CodeBlockNode(Node):
 
         return result
 
+    def __setattr__(self, key, value):
+        super(CodeBlockNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, LineProxyList):
+            setattr(self, "value", LineProxyList(self.value, on_attribute="value"))
+
 
 class ElseAttributeNode(CodeBlockNode):
     def _get_last_member_to_clean(self):
