@@ -1606,6 +1606,9 @@ class ClassNode(CodeBlockNode):
         if key == "inherit_from" and not isinstance(self.inherit_from, CommaProxyList):
             setattr(self, "inherit_from", CommaProxyList(self.inherit_from, on_attribute="inherit_from"))
 
+        elif key == "value" and not isinstance(self.value, LineProxyList):
+            setattr(self, "value", LineProxyList(self.value, on_attribute="value"))
+
 
 class CommaNode(Node):
     pass
