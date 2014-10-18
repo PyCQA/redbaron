@@ -1789,7 +1789,11 @@ class ElifNode(CodeBlockNode):
 
 
 class ElseNode(CodeBlockNode):
-    pass
+    def __setattr__(self, key, value):
+        super(ElseNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, LineProxyList):
+            setattr(self, "value", LineProxyList(self.value, on_attribute="value"))
 
 
 class EndlNode(Node):
