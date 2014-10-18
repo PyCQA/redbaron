@@ -1781,6 +1781,12 @@ class ElifNode(CodeBlockNode):
         else:
             raise Exception("Unhandled case")
 
+    def __setattr__(self, key, value):
+        super(ElifNode, self).__setattr__(key, value)
+
+        if key == "value" and not isinstance(self.value, LineProxyList):
+            setattr(self, "value", LineProxyList(self.value, on_attribute="value"))
+
 
 class ElseNode(CodeBlockNode):
     pass
