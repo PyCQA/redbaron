@@ -1419,7 +1419,6 @@ class LineProxyList(ProxyList):
 
 
 # TODO
-# put LineProxyList everywhere
 # LineProxyList: special syntaxe for adding blank lines ("")
 #                handle comments
 #                should a 'pass' be put if the list would be empty?
