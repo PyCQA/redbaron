@@ -574,7 +574,8 @@ class Node(GenericNodesUtils):
                     return found
 
             elif kind == "list":
-                for i in getattr(self, key):
+                attr = getattr(self, key).node_list if isinstance(getattr(self, key), ProxyList) else getattr(self, key)
+                for i in attr:
                     found = i.find(identifier, *args, **kwargs)
                     if found:
                         return found
@@ -583,6 +584,9 @@ class Node(GenericNodesUtils):
                 raise Exception()
 
     def __getattr__(self, key):
+        if key.endswith("_") and key[:-1] in self._dict_keys + self._list_keys + self._str_keys:
+            return getattr(self, key[:-1])
+
         if key != "value" and hasattr(self, "value") and isinstance(self.value, ProxyList) and hasattr(self.value, key):
             return getattr(self.value, key)
 
@@ -658,8 +662,12 @@ class Node(GenericNodesUtils):
                 to_return += i.find_all(identifier, *args, **kwargs)
 
             elif kind in ("list", "formatting"):
-                for i in getattr(self, key):
-                    to_return += i.find_all(identifier, *args, **kwargs)
+                if isinstance(getattr(self, key), ProxyList):
+                    for i in getattr(self, key).node_list:
+                        to_return += i.find_all(identifier, *args, **kwargs)
+                else:
+                    for i in getattr(self, key):
+                        to_return += i.find_all(identifier, *args, **kwargs)
 
             else:
                 raise Exception()
@@ -1062,7 +1070,7 @@ class ElseAttributeNode(CodeBlockNode):
 
         # ensure that the node ends with only one endl token, we'll add more later if needed
         remove_trailing_endl(node)
-        node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
+        node.value.node_list.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
 
         last_member = self._get_last_member_to_clean()
 
@@ -1075,10 +1083,10 @@ class ElseAttributeNode(CodeBlockNode):
                 last_member.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=last_member, on_attribute="value"))
 
             if self.indentation:
-                node.value.append(EndlNode({"type": "endl", "indent": self.indentation, "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
+                node.value.node_list.append(EndlNode({"type": "endl", "indent": self.indentation, "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
             else:  # we are on root level and followed: we need 2 blanks lines after the node
-                node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
-                node.value.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
+                node.value.node_list.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
+                node.value.node_list.append(EndlNode({"type": "endl", "indent": "", "formatting": [], "value": "\n"}, parent=node, on_attribute="value"))
 
         if isinstance(last_member.value, ProxyList):
             last_member.value.node_list[-1].indent = self.indentation
@@ -2000,7 +2008,7 @@ class IfelseblockNode(Node):
         if self.indentation:
             result.increase_indentation(len(self.indentation))
             if self.next:
-                result[-1].value[-1].indent = self.indentation
+                result[-1].value.node_list[-1].indent = self.indentation
 
         return result
 
@@ -2315,9 +2323,9 @@ class TryNode(ElseAttributeNode):
             result.increase_indentation(len(self.indentation))
             if self._get_last_member_to_clean().type != "except":
                 # assume that this is an endl node, this might break
-                result[-1].value[-1].indent = self.indentation
+                result[-1].value.node_list[-1].indent = self.indentation
             elif self.next:
-                result[-1].value[-1].indent = self.indentation
+                result[-1].value.node_list[-1].indent = self.indentation
 
         return result
 
@@ -2460,6 +2468,8 @@ class RedBaron(NodeList):
         else:
             # Might be init from same object, or slice
             super(RedBaron, self).__init__(source_code)
+        self.on_attribute = None
+        self.parent = None
 
 
 # to avoid to have to declare EVERY node class, dynamically create the missings

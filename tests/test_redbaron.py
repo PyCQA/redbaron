@@ -699,56 +699,56 @@ def test_path_sixth_formatting(red):
 
 def test_path_value(red):
     check_path(red,
-            red.funcdef.value,
+            red.funcdef.value.node_list,
             [0, "value"]
         )
 
 
 def test_path_value_first_endl(red):
     check_path(red,
-            red.funcdef.value[0],
+            red.funcdef.value.node_list[0],
             [0, "value", 0]
         )
 
 
 def test_path_value_assignment(red):
     check_path(red,
-            red.funcdef.value[1],
+            red.funcdef.value.node_list[1],
             [0, "value", 1]
         )
 
 
 def test_path_value_assignment_target(red):
     check_path(red,
-            red.funcdef.value[1].target,
+            red.funcdef.value.node_list[1].target,
             [0, "value", 1, "target"]
         )
 
 
 def test_path_value_assignment_value(red):
     check_path(red,
-            red.funcdef.value[1].value,
+            red.funcdef.value.node_list[1].value,
             [0, "value", 1, "value"]
         )
 
 
 def test_path_value_assignment_value_first(red):
     check_path(red,
-            red.funcdef.value[1].value.first,
+            red.funcdef.value.node_list[1].value.first,
             [0, "value", 1, "value", "first"]
         )
 
 
 def test_path_value_assignment_value_second(red):
     check_path(red,
-            red.funcdef.value[1].value.second,
+            red.funcdef.value.node_list[1].value.second,
             [0, "value", 1, "value", "second"]
         )
 
 
 def test_path_value_second_endl(red):
     check_path(red,
-            red.funcdef.value[2],
+            red.funcdef.value.node_list[2],
             [0, "value", 2]
         )
 
@@ -773,14 +773,14 @@ def test_root(red):
         red.funcdef.fourth_formatting,
         red.funcdef.fifth_formatting,
         red.funcdef.sixth_formatting,
-        red.funcdef.value,
-        red.funcdef.value[0],
-        red.funcdef.value[1],
-        red.funcdef.value[1].target,
-        red.funcdef.value[1].value,
-        red.funcdef.value[1].value.first,
-        red.funcdef.value[1].value.second,
-        red.funcdef.value[2]
+        red.funcdef.value.node_list,
+        red.funcdef.value.node_list[0],
+        red.funcdef.value.node_list[1],
+        red.funcdef.value.node_list[1].target,
+        red.funcdef.value.node_list[1].value,
+        red.funcdef.value.node_list[1].value.first,
+        red.funcdef.value.node_list[1].value.second,
+        red.funcdef.value.node_list[2]
     ]
 
     for node in nodes:
@@ -1128,70 +1128,70 @@ def test_set_attr_funcdef_advanced_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="c").value = "return 42"
     assert len(red.find("def", name="c")("endl")) == 4
-    assert red.find("def", name="c").value[-1].indent == ""
+    assert red.find("def", name="c").value.node_list[-1].indent == ""
 
 
 def test_set_attr_funcdef_advanced_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="c").value = "return 42\n"
     assert len(red.find("def", name="c")("endl")) == 4
-    assert red.find("def", name="c").value[-1].indent == ""
+    assert red.find("def", name="c").value.node_list[-1].indent == ""
 
 
 def test_set_attr_funcdef_advanced_dont_break_next_block_indent_two_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="c").value = "return 42\n\n"
     assert len(red.find("def", name="c")("endl")) == 4
-    assert red.find("def", name="c").value[-1].indent == ""
+    assert red.find("def", name="c").value.node_list[-1].indent == ""
 
 
 def test_set_attr_funcdef_advanced_in_class_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="a").value = "return 42"
     assert len(red.find("def", name="a")("endl")) == 3
-    assert red.find("def", name="a").value[-1].indent == "    "
+    assert red.find("def", name="a").value.node_list[-1].indent == "    "
 
 
 def test_set_attr_funcdef_advanced_in_class_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="a").value = "return 42\n"
     assert len(red.find("def", name="a")("endl")) == 3
-    assert red.find("def", name="a").value[-1].indent == "    "
+    assert red.find("def", name="a").value.node_list[-1].indent == "    "
 
 
 def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="b").value = "return 42"
     assert len(red.find("def", name="b")("endl")) == 4
-    assert red.find("def", name="b").value[-1].indent == ""
+    assert red.find("def", name="b").value.node_list[-1].indent == ""
 
 
 def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="b").value = "return 42\n"
     assert len(red.find("def", name="b")("endl")) == 4
-    assert red.find("def", name="b").value[-1].indent == ""
+    assert red.find("def", name="b").value.node_list[-1].indent == ""
 
 
 def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent_two_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="b").value = "return 42\n\n"
     assert len(red.find("def", name="b")("endl")) == 4
-    assert red.find("def", name="b").value[-1].indent == ""
+    assert red.find("def", name="b").value.node_list[-1].indent == ""
 
 
 def test_set_attr_funcdef_advanced_inline_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="zomg").value = "return 42"
     assert len(red.find("def", name="zomg")("endl")) == 3
-    assert red.find("def", name="zomg").value[-1].indent == "    "
+    assert red.find("def", name="zomg").value.node_list[-1].indent == "    "
 
 
 def test_set_attr_funcdef_advanced_inline_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="zomg").value = "return 42\n"
     assert len(red.find("def", name="zomg")("endl")) == 3
-    assert red.find("def", name="zomg").value[-1].indent == "    "
+    assert red.find("def", name="zomg").value.node_list[-1].indent == "    "
 
 
 def test_set_decorator_funcdef():
@@ -2490,7 +2490,7 @@ def test_while_else_setattr_one_level_simple_body(else_simple_body, has_else_mem
     result_keyword = has_else_member[1]
     has_else_member = "\n    ".join(has_else_member[0].split("\n")).rstrip()
     red = RedBaron(code_else_block_setattr_one_level % has_else_member)
-    setattr(red[0].value[1], result_keyword, else_simple_body.replace("plop", "pass"))
+    setattr(red[0].value.node_list[1], result_keyword, else_simple_body.replace("plop", "pass"))
     assert red.dumps() == code_else_block_setattr_one_level_result % (has_else_member, result_keyword)
 
 
@@ -2498,7 +2498,7 @@ def test_while_else_setattr_one_level_simple_body_start_with_else(else_simple_bo
     result_keyword = has_else_member[1]
     has_else_member = "\n    ".join(has_else_member[0].split("\n")).rstrip()
     red = RedBaron(code_else_block_setattr_one_level % has_else_member)
-    setattr(red[0].value[1], result_keyword, else_simple_body_starting_with_else % result_keyword)
+    setattr(red[0].value.node_list[1], result_keyword, else_simple_body_starting_with_else % result_keyword)
     assert red.dumps() == code_else_block_setattr_one_level_result % (has_else_member, result_keyword)
 
 
@@ -2523,7 +2523,7 @@ def test_while_else_setattr_one_level_simple_body_followed(else_simple_body, has
     result_keyword = has_else_member[1]
     has_else_member = "\n    ".join(has_else_member[0].split("\n")).rstrip()
     red = RedBaron(code_else_block_setattr_one_level_followed % has_else_member)
-    setattr(red[0].value[1], result_keyword, else_simple_body.replace("plop", "pass"))
+    setattr(red[0].value.node_list[1], result_keyword, else_simple_body.replace("plop", "pass"))
     assert red.dumps() == code_else_block_setattr_one_level_followed_result % (has_else_member, result_keyword)
 
 
@@ -2531,7 +2531,7 @@ def test_while_else_setattr_one_level_simple_body_start_with_else_followed(else_
     result_keyword = has_else_member[1]
     has_else_member = "\n    ".join(has_else_member[0].split("\n")).rstrip()
     red = RedBaron(code_else_block_setattr_one_level_followed % has_else_member)
-    setattr(red[0].value[1], result_keyword, else_simple_body_starting_with_else % result_keyword)
+    setattr(red[0].value.node_list[1], result_keyword, else_simple_body_starting_with_else % result_keyword)
     assert red.dumps() == code_else_block_setattr_one_level_followed_result % (has_else_member, result_keyword)
 
 
@@ -2685,19 +2685,19 @@ def test_ifelseblock_setattr_followed():
 
 def test_ifelseblock_setattr_indented():
     red = RedBaron("def a():\n    if a:\n        pass\n")
-    red[0].value[1].value = "if 1 + 1:\n    qsd\n"
+    red[0].value.node_list[1].value = "if 1 + 1:\n    qsd\n"
     assert red.dumps() == "def a():\n    if 1 + 1:\n        qsd\n"
 
 
 def test_ifelseblock_setattr_indented_trailing():
     red = RedBaron("def a():\n    if a:\n        pass\n")
-    red[0].value[1].value = "if 1 + 1:\n    qsd\n\n\n\n"
+    red[0].value.node_list[1].value = "if 1 + 1:\n    qsd\n\n\n\n"
     assert red.dumps() == "def a():\n    if 1 + 1:\n        qsd\n"
 
 
 def test_ifelseblock_setattr_indented_followed():
     red = RedBaron("def a():\n    if a:\n        pass\n\n\n    pouet\n")
-    red[0].value[1].value = "if 1 + 1:\n    qsd\n"
+    red[0].value.node_list[1].value = "if 1 + 1:\n    qsd\n"
     assert red.dumps() == "def a():\n    if 1 + 1:\n        qsd\n\n    pouet\n"
 
 
