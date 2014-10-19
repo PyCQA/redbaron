@@ -2134,11 +2134,11 @@ class PrintNode(Node):
             elif string and self.value:
                 self.formatting = [{"type": "space", "value": " "}]
                 result = Node.from_fst(baron.parse("print >>%s" % string)[0]["destination"], parent=parent, on_attribute=on_attribute)
-                if not self.value[0].type == "comma":
+                if len(self.value.node_list) and not self.value.node_list[0].type == "comma":
                     self.value = NodeList([Node.from_fst({"type": "comma", "second_formatting": [{"type": "space", "value": " "}], "first_formatting": []}, parent=parent, on_attribute=on_attribute)]) + self.value
                 return result
 
-            elif self.value and self.value.node_list[0].type == "comma":
+            elif self.value.node_list and self.value.node_list[0].type == "comma":
                 self.formatting = [{"type": "space", "value": " "}]
                 self.value = self.value.node_list[1:]
 
