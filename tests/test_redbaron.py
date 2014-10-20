@@ -3600,3 +3600,8 @@ def test_line_proxy_with_blank_line_finally_node():
 def test_regression_print_empty_proxy_list():
     red = RedBaron("a = {}")
     print red
+
+
+def test_regression_tuple_proxy_list_append():
+    red = RedBaron("(1, 2)")
+    red[0].append("3")
