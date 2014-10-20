@@ -1259,7 +1259,9 @@ class ProxyList(object):
 
 
 class CommaProxyList(ProxyList):
-    pass
+    def __init__(self, node_list, on_attribute="value"):
+        super(CommaProxyList, self).__init__(node_list, on_attribute=on_attribute)
+        self.style = "flat"
 
 
 class DotProxyList(ProxyList):

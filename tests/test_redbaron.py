@@ -3611,6 +3611,12 @@ def test_comma_proxy_list_indented_len_not_empty():
     red = RedBaron("[\n    1,\n    2,\n    3,\n]")
     comma_proxy_list = red[0].value
     assert len(comma_proxy_list) == 3
+
+
+def test_comma_proxy_list_detect_style():
+    red = RedBaron("[1, 2, 3]")
+    comma_proxy_list = red[0].value
+    assert comma_proxy_list.style == "flat"
 # 
 # 
 # def test_comma_proxy_list_indented_insert():
