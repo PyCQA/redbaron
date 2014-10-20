@@ -1437,6 +1437,8 @@ class LineProxyList(ProxyList):
 #                expected behavior on append when blank lines at the end of the block (-> append before blank lines)
 
 # FIXME: doc others.rst line 244
+# FIXME: .help() seems broken
+# FIXME: __setattr__ is broken on formatting
 
 # other TODO
 # "change formatting style" for CommaProxyList

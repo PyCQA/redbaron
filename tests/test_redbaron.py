@@ -3838,3 +3838,5 @@ def test_comma_proxy_list_indented_detect_style():
 #     comma_proxy_list = red[0].value
 #     comma_proxy_list.extend(["3"])
 #     assert red.dumps() == "[1, 2, 3]"
+#
+# test indented case
