@@ -3605,3 +3605,230 @@ def test_regression_print_empty_proxy_list():
 def test_regression_tuple_proxy_list_append():
     red = RedBaron("(1, 2)")
     red[0].append("3")
+
+
+# def test_comma_proxy_list_indented_len_empty():
+#     red = RedBaron("[]")
+#     comma_proxy_list = red[0].value
+#     assert len(comma_proxy_list) == 0
+# 
+# 
+# def test_comma_proxy_list_indented_len_not_empty():
+#     red = RedBaron("[1, 2, 3]")
+#     comma_proxy_list = red[0].value
+#     assert len(comma_proxy_list) == 3
+# 
+# 
+# def test_comma_proxy_list_indented_insert():
+#     red = RedBaron("[]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.insert(0, "1")
+#     assert red.dumps() == "[1]"
+# 
+# 
+# def test_comma_proxy_list_indented_insert_2_at_top():
+#     red = RedBaron("[1]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.insert(0, "2")
+#     assert red.dumps() == "[2, 1]"
+# 
+# 
+# def test_comma_proxy_list_indented_insert_2():
+#     red = RedBaron("[1]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.insert(1, "2")
+#     assert red.dumps() == "[1, 2]"
+# 
+# 
+# def test_comma_proxy_list_indented_insert_2_middle():
+#     red = RedBaron("[1, 3]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.insert(1, "2")
+#     assert red.dumps() == "[1, 2, 3]"
+# 
+# 
+# def test_comma_proxy_list_indented_append():
+#     red = RedBaron("[]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.append("1")
+#     assert red.dumps() == "[1]"
+# 
+# 
+# def test_comma_proxy_list_indented_append_2():
+#     red = RedBaron("[1]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.append("2")
+#     assert red.dumps() == "[1, 2]"
+# 
+# 
+# def test_comma_proxy_list_indented_append_3():
+#     red = RedBaron("[1, 2]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.append("3")
+#     assert red.dumps() == "[1, 2, 3]"
+# 
+# 
+# def test_comma_proxy_list_indented_pop():
+#     red = RedBaron("[1]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.pop(0)
+#     assert red.dumps() == "[]"
+# 
+# 
+# def test_comma_proxy_list_indented_pop_2_at_top():
+#     red = RedBaron("[2, 1]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.pop(0)
+#     assert red.dumps() == "[1]"
+# 
+# 
+# def test_comma_proxy_list_indented_pop_2():
+#     red = RedBaron("[1, 2]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.pop(1)
+#     assert red.dumps() == "[1]"
+# 
+# 
+# def test_comma_proxy_list_indented_pop_2_middle():
+#     red = RedBaron("[1, 2, 3]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.pop(1)
+#     assert red.dumps() == "[1, 3]"
+# 
+# 
+# def test_comma_proxy_list_indented_pop_no_index():
+#     red = RedBaron("[1, 2, 3]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.pop()
+#     assert red.dumps() == "[1, 2]"
+# 
+# 
+# def test_comma_proxy_list_indented_del():
+#     red = RedBaron("[1]")
+#     comma_proxy_list = red[0].value
+#     del comma_proxy_list[0]
+#     assert red.dumps() == "[]"
+# 
+# 
+# def test_comma_proxy_list_indented_del_2_at_top():
+#     red = RedBaron("[2, 1]")
+#     comma_proxy_list = red[0].value
+#     del comma_proxy_list[0]
+#     assert red.dumps() == "[1]"
+# 
+# 
+# def test_comma_proxy_list_indented_del_2():
+#     red = RedBaron("[1, 2]")
+#     comma_proxy_list = red[0].value
+#     del comma_proxy_list[1]
+#     assert red.dumps() == "[1]"
+# 
+# 
+# def test_comma_proxy_list_indented_del_2_middle():
+#     red = RedBaron("[1, 2, 3]")
+#     comma_proxy_list = red[0].value
+#     del comma_proxy_list[1]
+#     assert red.dumps() == "[1, 3]"
+# 
+# 
+# def test_comma_proxy_list_indented_remove():
+#     red = RedBaron("[1]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.remove(comma_proxy_list[0])
+#     assert red.dumps() == "[]"
+# 
+# 
+# def test_comma_proxy_list_indented_remove_2_at_top():
+#     red = RedBaron("[2, 1]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.remove(comma_proxy_list[0])
+#     assert red.dumps() == "[1]"
+# 
+# 
+# def test_comma_proxy_list_indented_remove_2():
+#     red = RedBaron("[1, 2]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.remove(comma_proxy_list[1])
+#     assert red.dumps() == "[1]"
+# 
+# 
+# def test_comma_proxy_list_indented_remove_2_middle():
+#     red = RedBaron("[1, 2, 3]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.remove(comma_proxy_list[1])
+#     assert red.dumps() == "[1, 3]"
+# 
+# 
+# def test_comma_proxy_list_indented_set_item():
+#     red = RedBaron("[1]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list[0] = "42"
+#     assert comma_proxy_list[0].type == "int"
+#     assert comma_proxy_list[0].value == 42
+#     comma_proxy_list[0] = "plop"
+#     assert comma_proxy_list[0].type == "name"
+#     assert comma_proxy_list[0].value == "plop"
+#     assert red.dumps() == "[plop]"
+# 
+# 
+# def test_comma_proxy_list_indented_set_slice():
+#     red = RedBaron("[1, 2, 3]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list[1:2] = ["42", "31", "23"]
+#     assert red.dumps() == "[1, 42, 31, 23, 3]"
+# 
+# 
+# def test_comma_proxy_list_indented_delslice():
+#     red = RedBaron("[1, 2, 3, 4, 5, 6]")
+#     comma_proxy_list = red[0].value
+#     del comma_proxy_list[1:4]
+#     assert red.dumps() == "[1, 5, 6]"
+# 
+# 
+# def test_comma_proxy_list_indented_getslice():
+#     red = RedBaron("[1, 2, 3, 4, 5, 6]")
+#     comma_proxy_list = red[0].value
+#     result = comma_proxy_list[1:2]
+#     expected_result = CommaProxyList(NodeList([comma_proxy_list[1]]))
+#     assert len(result) == len(expected_result)
+#     assert result[0] == expected_result[0]
+# 
+# 
+# def test_comma_proxy_list_indented_on_attribute_default_on_value():
+#     # this is only for testing, the correct on_attribute is "value"
+#     red = RedBaron("[]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.append("1")
+#     assert comma_proxy_list[0].on_attribute == "value"
+# 
+# 
+# def test_comma_proxy_list_indented_on_attribute():
+#     # this is only for testing, the correct on_attribute is "value"
+#     red = RedBaron("[]")
+#     comma_proxy_list = CommaProxyList(red[0].value.node_list, on_attribute="plop")
+#     comma_proxy_list.append("1")
+#     comma_proxy_list.append("1")
+#     assert comma_proxy_list[0].on_attribute == "plop"
+#     assert comma_proxy_list[1].on_attribute == "plop"
+#     assert comma_proxy_list.node_list[1].on_attribute == "plop"
+# 
+# 
+# def test_comma_proxy_list_indented_extend():
+#     red = RedBaron("[]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.extend(["1"])
+#     assert red.dumps() == "[1]"
+# 
+# 
+# def test_comma_proxy_list_indented_extend_2():
+#     red = RedBaron("[1]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.extend(["2", "plop", "42"])
+#     assert red.dumps() == "[1, 2, plop, 42]"
+# 
+# 
+# def test_comma_proxy_list_indented_extend_3():
+#     red = RedBaron("[1, 2]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.extend(["3"])
+#     assert red.dumps() == "[1, 2, 3]"
