@@ -1261,7 +1261,7 @@ class ProxyList(object):
 class CommaProxyList(ProxyList):
     def __init__(self, node_list, on_attribute="value"):
         super(CommaProxyList, self).__init__(node_list, on_attribute=on_attribute)
-        self.style = "flat"
+        self.style = "indented" if any(self.node_list('comma', recursive=False).map(lambda x: x('endl'))) else "flat"
 
 
 class DotProxyList(ProxyList):
