@@ -3595,3 +3595,8 @@ def test_line_proxy_with_blank_line_except_node():
 def test_line_proxy_with_blank_line_finally_node():
     red = RedBaron("try:\n    pass\nfinally:\n    pass\n\n    plop\n")
     assert len(red[0].finally_.value) == 3
+
+
+def test_regression_print_empty_proxy_list():
+    red = RedBaron("a = {}")
+    print red

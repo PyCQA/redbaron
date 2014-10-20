@@ -798,7 +798,7 @@ class Node(GenericNodesUtils):
             else:
                 to_return[key] = [node.fst() for node in getattr(self, key)]
         for key in self._dict_keys:
-            if getattr(self, key):
+            if getattr(self, key) not in (None, "", [], {}):
                 to_return[key] = getattr(self, key).fst()
             else:
                 to_return[key] = {}
