@@ -1263,6 +1263,30 @@ class CommaProxyList(ProxyList):
         super(CommaProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.style = "indented" if any(self.node_list('comma', recursive=False).map(lambda x: x('endl'))) else "flat"
 
+    def _get_middle_separator(self):
+        if self.style == "indented":
+            return CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "endl", "indent": "    ", "formatting": [], "value": "\n"}]})
+
+        return CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
+
+    def _generate_expected_list(self):
+        if self.style == "indented":
+            self.parent.second_formatting = NodeList.from_fst([{"type": "endl", "indent": "    ", "formatting": [], "value": "\n"}])
+        expected_list = []
+        for i in self.data:
+            expected_list.append(i)
+            separator = self._get_middle_separator().copy()
+            separator.parent = self.node_list
+            separator.on_attribute = self.on_attribute
+            expected_list.append(separator)
+
+        if self.style == "flat" and expected_list:
+            expected_list.pop()  # don't do that if trailing is desired
+        elif self.style == "indented" and expected_list:
+            expected_list[-1].second_formatting[0].indent = ""
+
+        return expected_list
+
 
 class DotProxyList(ProxyList):
     def __init__(self, node_list, on_attribute="value"):

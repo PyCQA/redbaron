@@ -3623,13 +3623,14 @@ def test_comma_proxy_list_indented_detect_style():
     red = RedBaron("[\n    1,\n    2,\n    3,\n]")
     comma_proxy_list = red[0].value
     assert comma_proxy_list.style == "indented"
-# 
-# 
-# def test_comma_proxy_list_indented_insert():
-#     red = RedBaron("[]")
-#     comma_proxy_list = red[0].value
-#     comma_proxy_list.insert(0, "1")
-#     assert red.dumps() == "[1]"
+
+
+def test_comma_proxy_list_indented_insert():
+    red = RedBaron("[]")
+    comma_proxy_list = red[0].value
+    comma_proxy_list.style = "indented"
+    comma_proxy_list.insert(0, "1")
+    assert red.dumps() == "[\n    1,\n]"
 # 
 # 
 # def test_comma_proxy_list_indented_insert_2_at_top():
