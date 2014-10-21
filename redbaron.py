@@ -1272,7 +1272,9 @@ class CommaProxyList(ProxyList):
     def _generate_expected_list(self):
         if self.style == "indented":
             self.parent.second_formatting = NodeList.from_fst([{"type": "endl", "indent": "    ", "formatting": [], "value": "\n"}])
+
         expected_list = []
+
         for i in self.data:
             expected_list.append(i)
             separator = self._get_middle_separator().copy()
