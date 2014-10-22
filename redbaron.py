@@ -1268,14 +1268,14 @@ class CommaProxyList(ProxyList):
 
     def _get_middle_separator(self):
         if self.style == "indented":
-            return CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "endl", "indent": "    ", "formatting": [], "value": "\n"}]})
+            return CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "endl", "indent": self.parent.indentation + "    ", "formatting": [], "value": "\n"}]})
 
         return CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
 
     def _generate_expected_list(self):
         if self.style == "indented":
             if self.data:
-                self.parent.second_formatting = NodeList.from_fst([{"type": "endl", "indent": "    ", "formatting": [], "value": "\n"}])
+                self.parent.second_formatting = NodeList.from_fst([{"type": "endl", "indent": self.parent.indentation + "    ", "formatting": [], "value": "\n"}])
             else:
                 self.parent.second_formatting = NodeList.from_fst([])
 
@@ -1291,7 +1291,7 @@ class CommaProxyList(ProxyList):
         if self.style == "flat" and expected_list:
             expected_list.pop()  # don't do that if trailing is desired
         elif self.style == "indented" and expected_list:
-            expected_list[-1].second_formatting[0].indent = ""
+            expected_list[-1].second_formatting[0].indent = self.parent.indentation
 
         return expected_list
 

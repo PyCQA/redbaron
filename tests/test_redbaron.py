@@ -3762,3 +3762,25 @@ def test_comma_proxy_list_indented_delslice():
     comma_proxy_list = red[0].value
     del comma_proxy_list[1:4]
     assert red.dumps() == "[\n    1,\n    5,\n    6,\n]"
+
+
+comma_proxy_list_indented_code_to_test = """
+with stuff:
+    a = [
+        1,
+    ]
+"""
+
+
+comma_proxy_list_indented_code_to_test_expected_result = """
+with stuff:
+    a = [
+        1,
+        2,
+    ]
+"""
+
+def test_comma_proxy_list_indented_in_indentation_case():
+    red = RedBaron(comma_proxy_list_indented_code_to_test)
+    red.list_.append("2")
+    assert red.dumps() == comma_proxy_list_indented_code_to_test_expected_result
