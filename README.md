@@ -1,6 +1,8 @@
 Introduction
 ============
 
+[![Build Status](https://travis-ci.org/Psycojoker/redbaron.svg?branch=master)](https://travis-ci.org/Psycojoker/redbaron)
+
 RedBaron is a query library for the [Baron](https://github.com/Psycojoker/baron) Full Syntax Tree (FST). But what is
 Baron? Baron is a syntax tree, like an
 [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) for the Python
