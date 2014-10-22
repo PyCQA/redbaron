@@ -1,7 +1,7 @@
 Introduction
 ============
 
-[![Build Status](https://travis-ci.org/Psycojoker/redbaron.svg?branch=master)](https://travis-ci.org/Psycojoker/redbaron)
+[![Build Status](https://travis-ci.org/Psycojoker/redbaron.svg?branch=master)](https://travis-ci.org/Psycojoker/redbaron) [![Latest Version](https://pypip.in/version/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Supported Python versions](https://pypip.in/py_versions/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Development Status](https://pypip.in/status/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Wheel Status](https://pypip.in/wheel/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Download format](https://pypip.in/format/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![License](https://pypip.in/license/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/)
 
 RedBaron is a query library for the [Baron](https://github.com/Psycojoker/baron) Full Syntax Tree (FST). But what is
 Baron? Baron is a syntax tree, like an
