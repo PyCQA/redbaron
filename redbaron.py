@@ -1293,6 +1293,22 @@ class CommaProxyList(ProxyList):
         return expected_list
 
 
+    def _diff_augmented_list(self):
+        expected_list = self._generate_expected_list()
+
+        for i in range(len(expected_list)):
+            if i >= len(self.node_list):
+                self.node_list.insert(i + 1, expected_list[i])
+
+            elif self.node_list[i] is not expected_list[i] and\
+                    not (self.node_list[i].type == expected_list[i].type and\
+                         self.node_list[i].type == self.middle_separator.type):
+                self.node_list.insert(i, expected_list[i])
+
+            elif (self.node_list[i].type, expected_list[i].type) == ("comma", "comma"):
+                if self.node_list[i].second_formatting != expected_list[i].second_formatting:
+                    self.node_list[i].second_formatting = expected_list[i].second_formatting.copy()
+
 class DotProxyList(ProxyList):
     def __init__(self, node_list, on_attribute="value"):
         super(DotProxyList, self).__init__(node_list, on_attribute=on_attribute)
