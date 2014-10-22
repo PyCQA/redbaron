@@ -3607,6 +3607,11 @@ def test_regression_tuple_proxy_list_append():
     red[0].append("3")
 
 
+def test_regression_help_proxy_list():
+    red = RedBaron("(1, 2)")
+    red[0].value.node_list.help()
+
+
 def test_comma_proxy_list_indented_len_not_empty():
     red = RedBaron("[\n    1,\n    2,\n    3,\n]")
     comma_proxy_list = red[0].value

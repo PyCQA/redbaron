@@ -928,7 +928,10 @@ class Node(GenericNodesUtils):
         if not isinstance(getattr(self.parent, self.on_attribute), (NodeList, ProxyList)):
             return None
 
-        return getattr(self.parent, self.on_attribute).index(self)
+        if isinstance(getattr(self.parent, self.on_attribute), ProxyList):
+            return getattr(self.parent, self.on_attribute).node_list.index(self)
+        else:
+            return getattr(self.parent, self.on_attribute).index(self)
 
     def _generate_nodes_in_rendering_order(self):
         previous = None
