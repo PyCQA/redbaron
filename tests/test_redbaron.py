@@ -3736,18 +3736,18 @@ def test_comma_proxy_list_indented_remove_2_at_top():
     comma_proxy_list = red[0].value
     comma_proxy_list.remove(comma_proxy_list[0])
     assert red.dumps() == "[\n    1,\n]"
-# 
-# 
-# def test_comma_proxy_list_indented_set_item():
-#     red = RedBaron("[1]")
-#     comma_proxy_list = red[0].value
-#     comma_proxy_list[0] = "42"
-#     assert comma_proxy_list[0].type == "int"
-#     assert comma_proxy_list[0].value == 42
-#     comma_proxy_list[0] = "plop"
-#     assert comma_proxy_list[0].type == "name"
-#     assert comma_proxy_list[0].value == "plop"
-#     assert red.dumps() == "[plop]"
+
+
+def test_comma_proxy_list_indented_set_item():
+    red = RedBaron("[\n    1,\n]")
+    comma_proxy_list = red[0].value
+    comma_proxy_list[0] = "42"
+    assert comma_proxy_list[0].type == "int"
+    assert comma_proxy_list[0].value == 42
+    comma_proxy_list[0] = "plop"
+    assert comma_proxy_list[0].type == "name"
+    assert comma_proxy_list[0].value == "plop"
+    assert red.dumps() == "[\n    plop,\n]"
 # 
 # 
 # def test_comma_proxy_list_indented_set_slice():
