@@ -1462,13 +1462,13 @@ class LineProxyList(ProxyList):
 #                add blank line arround in certain cases? Like arround function/class at first level and second level
 #                expected behavior on append when blank lines at the end of the block (-> append before blank lines)
 
+# CommaProxyList indented
+# "change formatting style"
+# the "\n" after the "[{(" is old by the parent node, this parent node should have a method to tell the CommaProxyList where this is
+
 # FIXME: doc others.rst line 244
 # FIXME: .help() seems broken
 # FIXME: __setattr__ is broken on formatting
-
-# other TODO
-# "change formatting style" for CommaProxyList
-# autodetect formatting for CommaProxyList
 
 # XXX
 # should .next and .previous behavior should be changed to drop formatting
