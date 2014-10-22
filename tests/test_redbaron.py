@@ -3748,20 +3748,20 @@ def test_comma_proxy_list_indented_set_item():
     assert comma_proxy_list[0].type == "name"
     assert comma_proxy_list[0].value == "plop"
     assert red.dumps() == "[\n    plop,\n]"
-# 
-# 
-# def test_comma_proxy_list_indented_set_slice():
-#     red = RedBaron("[1, 2, 3]")
-#     comma_proxy_list = red[0].value
-#     comma_proxy_list[1:2] = ["42", "31", "23"]
-#     assert red.dumps() == "[1, 42, 31, 23, 3]"
-# 
-# 
-# def test_comma_proxy_list_indented_delslice():
-#     red = RedBaron("[1, 2, 3, 4, 5, 6]")
-#     comma_proxy_list = red[0].value
-#     del comma_proxy_list[1:4]
-#     assert red.dumps() == "[1, 5, 6]"
+
+
+def test_comma_proxy_list_indented_set_slice():
+    red = RedBaron("[\n    1,\n    2,\n    3,\n]")
+    comma_proxy_list = red[0].value
+    comma_proxy_list[1:2] = ["42", "31", "23"]
+    assert red.dumps() == "[\n    1,\n    42,\n    31,\n    23,\n    3,\n]"
+
+
+def test_comma_proxy_list_indented_delslice():
+    red = RedBaron("[\n    1,\n    2,\n    3,\n    4,\n    5,\n    6,\n]")
+    comma_proxy_list = red[0].value
+    del comma_proxy_list[1:4]
+    assert red.dumps() == "[\n    1,\n    5,\n    6,\n]"
 # 
 # 
 # def test_comma_proxy_list_indented_getslice():
