@@ -1200,13 +1200,19 @@ class ProxyList(object):
         self.pop(self.index(value))
 
     def __delitem__(self, index):
-        self.pop(index)
+        if isinstance(index, slice):
+            self.__delslice__(index.start, index.stop)
+        else:
+            self.pop(index)
 
     def index(self, value, *args):
         return self.data.index(value, *args)
 
     def __getitem__(self, index):
-        return self.data[index]
+        if isinstance(index, slice):
+            return self.__getslice__(index.start, index.stop)
+        else:
+            return self.data[index]
 
     def __contains__(self, *args, **kwargs):
         return self.data.__contains__(*args, **kwargs)
@@ -1218,21 +1224,24 @@ class ProxyList(object):
         return self.data.count(value)
 
     def __setitem__(self, key, value):
-        self.data.__setitem__(key, self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute))
+        if isinstance(key, slice):
+            self.__setslice__(key.start, key.stop, value)
+        else:
+            self.data.__setitem__(key, self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute))
         self._diff_reduced_list()
         self._diff_augmented_list()
 
     def __setslice__(self, i, j, value):
-        self.data.__setslice__(i, j, self._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute=self.on_attribute))
+        self.data[i:j] = self._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute=self.on_attribute)
         self._diff_reduced_list()
         self._diff_augmented_list()
 
     def __delslice__(self, i, j):
-        self.data.__delslice__(i, j)
+        del self.data[i:j]
         self._diff_reduced_list()
 
     def __getslice__(self, i, j):
-        to_return = self.data.__getslice__(i, j)
+        to_return = self.data[i:j]
         return self.__class__(NodeList(to_return))
 
     def __repr__(self):
