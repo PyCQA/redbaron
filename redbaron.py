@@ -1274,7 +1274,10 @@ class CommaProxyList(ProxyList):
 
     def _generate_expected_list(self):
         if self.style == "indented":
-            self.parent.second_formatting = NodeList.from_fst([{"type": "endl", "indent": "    ", "formatting": [], "value": "\n"}])
+            if self.data:
+                self.parent.second_formatting = NodeList.from_fst([{"type": "endl", "indent": "    ", "formatting": [], "value": "\n"}])
+            else:
+                self.parent.second_formatting = NodeList.from_fst([])
 
         expected_list = []
 
@@ -1292,7 +1295,6 @@ class CommaProxyList(ProxyList):
 
         return expected_list
 
-
     def _diff_augmented_list(self):
         expected_list = self._generate_expected_list()
 
@@ -1308,6 +1310,29 @@ class CommaProxyList(ProxyList):
             elif (self.node_list[i].type, expected_list[i].type) == ("comma", "comma"):
                 if self.node_list[i].second_formatting != expected_list[i].second_formatting:
                     self.node_list[i].second_formatting = expected_list[i].second_formatting.copy()
+
+    def _diff_reduced_list(self):
+        expected_list = self._generate_expected_list()
+
+        i = 0
+
+        while i < len(self.node_list):
+            if i >= len(expected_list):
+                self.node_list.pop(i)
+
+            # type is equal, check for formatting nodes
+            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == self.middle_separator.type:
+                if self.node_list[i].second_formatting != expected_list[i].second_formatting:
+                    self.node_list[i].second_formatting = expected_list[i].second_formatting.copy()
+                i += 1
+
+            # that's the same node, continue
+            elif self.node_list[i] is expected_list[i]:
+                i += 1
+
+            else:
+                self.node_list.pop(i)
+
 
 class DotProxyList(ProxyList):
     def __init__(self, node_list, on_attribute="value"):
