@@ -3709,33 +3709,19 @@ def test_comma_proxy_list_indented_pop_no_index():
     comma_proxy_list.pop()
     assert red.dumps() == "[\n    1,\n    2,\n]"
 
-# 
-# def test_comma_proxy_list_indented_del():
-#     red = RedBaron("[1]")
-#     comma_proxy_list = red[0].value
-#     del comma_proxy_list[0]
-#     assert red.dumps() == "[]"
-# 
-# 
-# def test_comma_proxy_list_indented_del_2_at_top():
-#     red = RedBaron("[2, 1]")
-#     comma_proxy_list = red[0].value
-#     del comma_proxy_list[0]
-#     assert red.dumps() == "[1]"
-# 
-# 
-# def test_comma_proxy_list_indented_del_2():
-#     red = RedBaron("[1, 2]")
-#     comma_proxy_list = red[0].value
-#     del comma_proxy_list[1]
-#     assert red.dumps() == "[1]"
-# 
-# 
-# def test_comma_proxy_list_indented_del_2_middle():
-#     red = RedBaron("[1, 2, 3]")
-#     comma_proxy_list = red[0].value
-#     del comma_proxy_list[1]
-#     assert red.dumps() == "[1, 3]"
+
+def test_comma_proxy_list_indented_del():
+    red = RedBaron("[\n    1,\n]")
+    comma_proxy_list = red[0].value
+    del comma_proxy_list[0]
+    assert red.dumps() == "[]"
+
+
+def test_comma_proxy_list_indented_del_2_at_top():
+    red = RedBaron("[\n    2,\n    1,\n]")
+    comma_proxy_list = red[0].value
+    del comma_proxy_list[0]
+    assert red.dumps() == "[\n    1,\n]"
 # 
 # 
 # def test_comma_proxy_list_indented_remove():
