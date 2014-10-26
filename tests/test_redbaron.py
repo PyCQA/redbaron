@@ -3786,6 +3786,16 @@ def test_comma_proxy_list_indented_in_indentation_case():
     assert red.dumps() == comma_proxy_list_indented_code_to_test_expected_result
 
 
+def test_decorator_line_proxy_with_blank_line_list_len_empty():
+    red = RedBaron("def a():\n    pass\n")
+    assert len(red[0].decorators) == 0
+
+
+def test_decorator_line_proxy_with_blank_line_list_len():
+    red = RedBaron("@plop\n@pouet\ndef a():\n    pass\n")
+    assert len(red[0].decorators) == 2
+
+
 # def test_decorator_line_proxy_with_blank_line_list_insert():
 #     red = RedBaron("def a():\n    pass\n\n    plop\n")
 #     red[0].value.insert(1, "c")
