@@ -3812,24 +3812,18 @@ def test_decorator_line_proxy_list_append():
     red = RedBaron("@plop\ndef a():\n    pass\n\n")
     red[0].decorators.append("@c.d.e")
     assert red.dumps() == "@plop\n@c.d.e\ndef a():\n    pass\n\n"
-#
-#
-# def test_decorator_line_proxy_list_pop_blank_line():
-#     red = RedBaron("def a():\n    pass\n    qsd\n\n    plop\n    c\n    pass\n")
-#     red[0].decorators.pop(2)
-#     assert red.dumps() == "def a():\n    pass\n    qsd\n    plop\n    c\n    pass\n"
-#
-#
-# def test_decorator_line_proxy_list_pop():
-#     red = RedBaron("def a():\n    pass\n\n    plop\n    c\n    pass\n")
-#     red[0].decorators.pop()
-#     assert red.dumps() == "def a():\n    pass\n\n    plop\n    c\n"
-#
-#
-# def test_decorator_line_proxy_list_pop_2():
-#     red = RedBaron("def a():\n    pass\n\n    pass\n    pass\n")
-#     red[0].decorators.pop(0)
-#     assert red.dumps() == "def a():\n\n    pass\n    pass\n"
+
+
+def test_decorator_line_proxy_list_pop():
+    red = RedBaron("@a\n@b\ndef a():\n    pass\n")
+    red[0].decorators.pop(0)
+    assert red.dumps() == "@b\ndef a():\n    pass\n"
+
+
+def test_decorator_line_proxy_list_pop_2():
+    red = RedBaron("@a\n@b\n@c\ndef a():\n    pass\n")
+    red[0].decorators.pop(2)
+    assert red.dumps() == "@a\n@b\ndef a():\n    pass\n"
 #
 #
 # def test_decorator_line_proxy_list_del():
