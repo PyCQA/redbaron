@@ -1022,7 +1022,7 @@ class CodeBlockNode(Node):
             setattr(self, "value", LineProxyList(self.value, on_attribute="value"))
 
         elif key == "decorators" and not isinstance(self.decorators, LineProxyList):
-            setattr(self, "decorators", LineProxyList(self.decorators, on_attribute="decorators"))
+            setattr(self, "decorators", DecoratorsLineProxyList(self.decorators, on_attribute="decorators"))
 
 
 class ElseAttributeNode(CodeBlockNode):
@@ -1509,6 +1509,35 @@ class LineProxyList(ProxyList):
             else:
                 self.node_list.pop(i)
 
+
+class DecoratorsLineProxyList(LineProxyList):
+    def _generate_expected_list(self):
+        def generate_separator():
+            separator = self.middle_separator.copy()
+            separator.parent = self.node_list
+            separator.on_attribute = self.on_attribute
+            separator.indent = indentation
+            return separator
+
+        indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation
+        expected_list = []
+
+        for i in self.data:
+            # we face a blank line, remove previous separator since a blank line is not
+            # previoused by a separator
+            if i.type == "endl":
+                expected_list.pop()
+
+            expected_list.append(i)
+            expected_list.append(generate_separator())
+
+        if expected_list:
+            if self.parent.next:
+                expected_list[-1].indent = self.parent.indentation
+            else:
+                expected_list[-1].indent = ""
+
+        return expected_list
 
 # TODO
 # put LineProxyList on root
