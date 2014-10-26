@@ -3784,3 +3784,122 @@ def test_comma_proxy_list_indented_in_indentation_case():
     red = RedBaron(comma_proxy_list_indented_code_to_test)
     red.list_.append("2")
     assert red.dumps() == comma_proxy_list_indented_code_to_test_expected_result
+
+
+# def test_decorator_line_proxy_with_blank_line_list_insert():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n")
+#     red[0].value.insert(1, "c")
+#     assert red.dumps() == "def a():\n    pass\n    c\n\n    plop\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_insert_2_at_middle():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n    pass\n")
+#     red[0].value.insert(1, "c")
+#     assert red.dumps() == "def a():\n    pass\n    c\n\n    plop\n    pass\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_append():
+#     red = RedBaron("def a():\n    pass\n\n")
+#     red[0].value.append("c")
+#     assert red.dumps() == "def a():\n    pass\n\n    c\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_pop_blank_line():
+#     red = RedBaron("def a():\n    pass\n    qsd\n\n    plop\n    c\n    pass\n")
+#     red[0].value.pop(2)
+#     assert red.dumps() == "def a():\n    pass\n    qsd\n    plop\n    c\n    pass\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_pop():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n    c\n    pass\n")
+#     red[0].value.pop()
+#     assert red.dumps() == "def a():\n    pass\n\n    plop\n    c\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_pop_2():
+#     red = RedBaron("def a():\n    pass\n\n    pass\n    pass\n")
+#     red[0].value.pop(0)
+#     assert red.dumps() == "def a():\n\n    pass\n    pass\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_del():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n    c\n    pass\n")
+#     del red[0].value[0]
+#     assert red.dumps() == "def a():\n\n    plop\n    c\n    pass\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_del_blank_line():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n    c\n    pass\n")
+#     del red[0].value[1]
+#     assert red.dumps() == "def a():\n    pass\n    plop\n    c\n    pass\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_remove():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n    c\n    pass\n")
+#     red[0].value.remove(red[0].value[0])
+#     assert red.dumps() == "def a():\n\n    plop\n    c\n    pass\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_remove_2():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n    c\n    pass\n")
+#     red[0].value.remove(red[0].value[1])
+#     assert red.dumps() == "def a():\n    pass\n    plop\n    c\n    pass\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_set_slice():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n    a\n    plop\n    z\n")
+#     red[0].value[1:2] = ["caramba", "compote"]
+#     assert red.dumps() == "def a():\n    pass\n    caramba\n    compote\n    plop\n    a\n    plop\n    z\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_delslice():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n    caramba\n    compote\n    plop\n    z\n")
+#     del red[0].value[1:4]
+#     assert red.dumps() == "def a():\n    pass\n    compote\n    plop\n    z\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_getslice():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n    caramba\n    compote\n    plop\n    z\n")
+#     result = red[0].value[1:3]
+#     expected_result = LineProxyList(NodeList([red[0].value[1], red[0].value[2]]))
+#     assert len(result) == len(expected_result)
+#     assert result[0] == expected_result[0]
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_extend():
+#     red = RedBaron("def a():\n    pass\n\n    plop\n")
+#     red[0].value.extend(["zob"])
+#     assert red.dumps() == "def a():\n    pass\n\n    plop\n    zob\n"
+#
+#
+# def test_decorator_line_proxy_with_blank_line_list_different_indentation():
+#     red = RedBaron("def a():\n        pass\n\n        plop\n")
+#     red[0].value.append("c")
+#     assert red.dumps() == "def a():\n        pass\n\n        plop\n        c\n"
+#
+#
+# forwarded_indented_code = """
+# class A():
+#     while b:
+#         pass
+#
+#         pass
+#     while c:
+#         pass
+# """
+#
+# forwarded_indented_code_result = """
+# class A():
+#     while b:
+#         pass
+#
+#         pass
+#         plop
+#     while c:
+#         pass
+# """
+#
+# def test_decorator_line_proxy_with_blank_line_dont_break_next_block_identation():
+#     red = RedBaron(forwarded_indented_code)
+#     red.while_.append("plop")
+#     assert red.dumps() == forwarded_indented_code_result
