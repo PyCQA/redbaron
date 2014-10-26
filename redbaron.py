@@ -1021,6 +1021,9 @@ class CodeBlockNode(Node):
         if key == "value" and not isinstance(self.value, LineProxyList):
             setattr(self, "value", LineProxyList(self.value, on_attribute="value"))
 
+        if key == "decorators" and not isinstance(self.decorators, LineProxyList):
+            setattr(self, "decorators", LineProxyList(self.decorators, on_attribute="decorators"))
+
 
 class ElseAttributeNode(CodeBlockNode):
     def _get_last_member_to_clean(self):
