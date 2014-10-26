@@ -3808,10 +3808,10 @@ def test_decorator_line_proxy_list_insert_2_at_middle():
     assert red.dumps() == "@plop\n@pop\n@plouf\ndef a():\n    pass\n"
 
 
-# def test_decorator_line_proxy_list_append():
-#     red = RedBaron("def a():\n    pass\n\n")
-#     red[0].decorators.append("c")
-#     assert red.dumps() == "def a():\n    pass\n\n    c\n"
+def test_decorator_line_proxy_list_append():
+    red = RedBaron("@plop\ndef a():\n    pass\n\n")
+    red[0].decorators.append("@c.d.e")
+    assert red.dumps() == "@plop\n@c.d.e\ndef a():\n    pass\n\n"
 #
 #
 # def test_decorator_line_proxy_list_pop_blank_line():
