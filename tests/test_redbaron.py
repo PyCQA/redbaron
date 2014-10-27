@@ -580,42 +580,42 @@ def test_path_first_statement(red):
 
 def test_path_funcdef_decorators(red):
     check_path(red,
-            red.funcdef.decorators,
+            red.funcdef.decorators.node_list,
             [0, "decorators"]
         )
 
 
 def test_path_decorators_first(red):
     check_path(red,
-            red.funcdef.decorators[0],
+            red.funcdef.decorators.node_list[0],
             [0, "decorators", 0]
         )
 
 
 def test_path_decorators_first_dotted_name(red):
     check_path(red,
-            red.funcdef.decorators[0].value,
+            red.funcdef.decorators.node_list[0].value,
             [0, "decorators", 0, "value"]
         )
 
 
 def test_path_decorators_first_dotted_name_value(red):
     check_path(red,
-            red.funcdef.decorators[0].value.value,
+            red.funcdef.decorators.node_list[0].value.value,
             [0, "decorators", 0, "value", "value"]
         )
 
 
 def test_path_decorators_first_dotted_name_value_first(red):
     check_path(red,
-            red.funcdef.decorators[0].value.value[0],
+            red.funcdef.decorators.node_list[0].value.value[0],
             [0, "decorators", 0, "value", "value", 0]
         )
 
 
 def test_path_decorators_endl(red):
     check_path(red,
-            red.funcdef.decorators[1],
+            red.funcdef.decorators.node_list[1],
             [0, "decorators", 1]
         )
 
@@ -757,11 +757,11 @@ def test_root(red):
     nodes = [
         red.funcdef,
         red.funcdef.decorators,
-        red.funcdef.decorators[0],
-        red.funcdef.decorators[0].value,
-        red.funcdef.decorators[0].value.value,
-        red.funcdef.decorators[0].value.value[0],
-        red.funcdef.decorators[1],
+        red.funcdef.decorators.node_list[0],
+        red.funcdef.decorators.node_list[0].value,
+        red.funcdef.decorators.node_list[0].value.value,
+        red.funcdef.decorators.node_list[0].value.value[0],
+        red.funcdef.decorators.node_list[1],
         red.funcdef.first_formatting,
         red.funcdef.first_formatting[0],
         red.funcdef.second_formatting,
@@ -1197,142 +1197,142 @@ def test_set_attr_funcdef_advanced_inline_dont_break_next_block_indent_one_endl(
 def test_set_decorator_funcdef():
     red = RedBaron("def a(): pass")
     red[0].decorators = "@decorator"
-    assert len(red[0].decorators) == 2
+    assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
 def test_set_decorator_funcdef_endl():
     red = RedBaron("def a(): pass")
     red[0].decorators = "@decorator\n"
-    assert len(red[0].decorators) == 2
+    assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
 def test_set_decorator_funcdef_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "    @decorator"
-    assert len(red[0].decorators) == 2
+    assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
 def test_set_decorator_funcdef_indent_endl():
     red = RedBaron("def a(): pass")
     red[0].decorators = "    @decorator\n"
-    assert len(red[0].decorators) == 2
+    assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
 def test_set_decorator_funcdef_too_small_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = " @decorator"
-    assert len(red[0].decorators) == 2
+    assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
 def test_set_decorator_funcdef_too_small_indent_endl():
     red = RedBaron("def a(): pass")
     red[0].decorators = " @decorator\n"
-    assert len(red[0].decorators) == 2
+    assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
 def test_set_decorator_funcdef_too_big_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "       @decorator"
-    assert len(red[0].decorators) == 2
+    assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
 def test_set_decorator_funcdef_too_big_indent_endl():
     red = RedBaron("def a(): pass")
     red[0].decorators = "       @decorator\n"
-    assert len(red[0].decorators) == 2
+    assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
 def test_set_decorator_funcdef_complex():
     red = RedBaron("def a(): pass")
     red[0].decorators = "@plop\n@plouf"
-    assert len(red[0].decorators) == 4
+    assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
 def test_set_decorator_funcdef_complex_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "    @plop\n    @plouf"
-    assert len(red[0].decorators) == 4
+    assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
 def test_set_decorator_funcdef_complex_endl_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "\n    @plop\n    @plouf"
-    assert len(red[0].decorators) == 4
+    assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
 def test_set_decorator_funcdef_complex_space_endl_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "      \n    @plop\n    @plouf"
-    assert len(red[0].decorators) == 4
+    assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
 def test_set_decorator_funcdef_complex_too_small_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = " @plop\n @plouf"
-    assert len(red[0].decorators) == 4
+    assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
 def test_set_decorator_funcdef_complex_endl_too_small_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "\n @plop\n @plouf"
-    assert len(red[0].decorators) == 4
+    assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
 def test_set_decorator_funcdef_complex_space_endl_too_small_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = " \n @plop\n @plouf"
-    assert len(red[0].decorators) == 4
+    assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
 def test_set_decorator_funcdef_complex_too_big_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "     @plop\n     @plouf"
-    assert len(red[0].decorators) == 4
+    assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
 def test_set_decorator_funcdef_complex_endl_too_big_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "\n     @plop\n     @plouf"
-    assert len(red[0].decorators) == 4
+    assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
 def test_set_decorator_funcdef_complex_space_endl_too_big_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = " \n     @plop\n     @plouf"
-    assert len(red[0].decorators) == 4
+    assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
 def test_set_decorator_indented_funcdef():
     red = RedBaron(code_for_block_setattr)
     red.find("def", "b").decorators = "@pouet"
-    assert len(red.find("def", "b").decorators) == 2
-    assert red.find("def", "b").decorators[-1].indent == "    "
+    assert len(red.find("def", "b").decorators.node_list) == 2
+    assert red.find("def", "b").decorators.node_list[-1].indent == "    "
 
 
 def test_set_decoratorS_indented_funcdef():
     red = RedBaron(code_for_block_setattr)
     red.find("def", "b").decorators = "@pouet\n@plop"
-    assert len(red.find("def", "b").decorators) == 4
-    assert red.find("def", "b").decorators[-1].indent == "    "
-    assert red.find("def", "b").decorators[-3].indent == "    "
+    assert len(red.find("def", "b").decorators.node_list) == 4
+    assert red.find("def", "b").decorators.node_list[-1].indent == "    "
+    assert red.find("def", "b").decorators.node_list[-3].indent == "    "
 
 
 def test_assign_node_setattr_target():
