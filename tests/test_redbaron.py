@@ -3830,18 +3830,12 @@ def test_decorator_line_proxy_list_del():
     red = RedBaron("@plop\n@qsd\ndef a():\n    pass\n")
     del red[0].decorators[0]
     assert red.dumps() == "@qsd\ndef a():\n    pass\n"
-#
-#
-# def test_decorator_line_proxy_list_remove():
-#     red = RedBaron("def a():\n    pass\n\n    plop\n    c\n    pass\n")
-#     red[0].decorators.remove(red[0].value[0])
-#     assert red.dumps() == "def a():\n\n    plop\n    c\n    pass\n"
-#
-#
-# def test_decorator_line_proxy_list_remove_2():
-#     red = RedBaron("def a():\n    pass\n\n    plop\n    c\n    pass\n")
-#     red[0].decorators.remove(red[0].value[1])
-#     assert red.dumps() == "def a():\n    pass\n    plop\n    c\n    pass\n"
+
+
+def test_decorator_line_proxy_list_remove():
+    red = RedBaron("@a\n@b\ndef a():\n    pass\n")
+    red[0].decorators.remove(red[0].decorators[0])
+    assert red.dumps() == "@b\ndef a():\n    pass\n"
 #
 #
 # def test_decorator_line_proxy_list_set_slice():
