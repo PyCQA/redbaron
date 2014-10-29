@@ -1553,10 +1553,9 @@ class DecoratorsLineProxyList(LineProxyList):
 
 # CommaProxyList indented
 # "change formatting style"
-# the "\n" after the "[{(" is old by the parent node, this parent node should have a method to tell the CommaProxyList where this is
+# the "\n" after the "[{(" is hold by the parent node, this parent node should have a method to tell the CommaProxyList where this is
 
 # FIXME: doc others.rst line 244
-# FIXME: .help() seems broken
 # FIXME: __setattr__ is broken on formatting
 
 # XXX
