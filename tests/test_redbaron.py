@@ -8,7 +8,8 @@ import pytest
 from baron.utils import string_instance
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                       PassNode, NodeList, CommaNode, DotNode, CallNode,
-                      truncate, CommaProxyList, DotProxyList, LineProxyList)
+                      truncate, CommaProxyList, DotProxyList, LineProxyList,
+                      DecoratorsLineProxyList)
 
 
 def test_empty():
@@ -3836,12 +3837,13 @@ def test_decorator_line_proxy_list_remove():
     red = RedBaron("@a\n@b\ndef a():\n    pass\n")
     red[0].decorators.remove(red[0].decorators[0])
     assert red.dumps() == "@b\ndef a():\n    pass\n"
-#
-#
-# def test_decorator_line_proxy_list_set_slice():
-#     red = RedBaron("def a():\n    pass\n\n    plop\n    a\n    plop\n    z\n")
-#     red[0].decorators[1:2] = ["caramba", "compote"]
-#     assert red.dumps() == "def a():\n    pass\n    caramba\n    compote\n    plop\n    a\n    plop\n    z\n"
+
+
+def test_decorator_line_proxy_list_set_slice():
+    red = RedBaron("def a():\n    pass\n")
+    red[0].decorators[1:2] = ["@caramba", "@compote"]
+    assert red.dumps() == "@caramba\n@compote\ndef a():\n    pass\n"
+    assert isinstance(red[0].decorators, DecoratorsLineProxyList)
 #
 #
 # def test_decorator_line_proxy_list_delslice():
