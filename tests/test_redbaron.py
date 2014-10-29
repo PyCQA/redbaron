@@ -3868,7 +3868,7 @@ def test_decorator_line_proxy_list_extend():
 
 
 
-forwarded_indented_code = """
+forwarded_indented_code_decorators = """
 class A():
     def b(self):
         pass
@@ -3877,7 +3877,7 @@ class A():
         pass
 """
 
-forwarded_indented_code_result = """
+forwarded_indented_code_result_decorators = """
 class A():
     @plop
     def b(self):
@@ -3888,6 +3888,6 @@ class A():
 """
 
 def test_decorator_line_proxy_dont_break_next_block_identation():
-    red = RedBaron(forwarded_indented_code)
+    red = RedBaron(forwarded_indented_code_decorators)
     red.def_.decorators.append("@plop")
-    assert red.dumps() == forwarded_indented_code_result
+    assert red.dumps() == forwarded_indented_code_result_decorators
