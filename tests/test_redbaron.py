@@ -3844,12 +3844,12 @@ def test_decorator_line_proxy_list_set_slice():
     red[0].decorators[1:2] = ["@caramba", "@compote"]
     assert red.dumps() == "@caramba\n@compote\ndef a():\n    pass\n"
     assert isinstance(red[0].decorators, DecoratorsLineProxyList)
-#
-#
-# def test_decorator_line_proxy_list_delslice():
-#     red = RedBaron("def a():\n    pass\n\n    plop\n    caramba\n    compote\n    plop\n    z\n")
-#     del red[0].decorators[1:4]
-#     assert red.dumps() == "def a():\n    pass\n    compote\n    plop\n    z\n"
+
+
+def test_decorator_line_proxy_list_delslice():
+    red = RedBaron("@a\n@b\n@c\ndef a():\n    pass\n")
+    del red[0].decorators[1:4]
+    assert red.dumps() == "@a\ndef a():\n    pass\n"
 #
 #
 # def test_decorator_line_proxy_list_getslice():
