@@ -1,16 +1,17 @@
 Changelog
 =========
 
-0.3 (2014-09-29)
+0.3 (unreleased)
 ----------------
 
+- proxy lists, major improvement in the management of list of things
 - .append_value is no more since it is useless now due to proxy lists
 - .index has been renamed to .index_on_parent to be more coherent
 
 0.2 (2014-09-23)
 ----------------
 
-- for EVERY NODE in RedBaron, the automagic behavior when passing a string to
+- for EVERY NODES in RedBaron, the automagic behavior when passing a string to
   modify an attribute has been done, this is HUGE improvement
   https://redbaron.readthedocs.org/en/latest/modifying.html#full-documentations
 - it's now possible to use regex, globs, list/tuple and lambda (callable) in .find and
