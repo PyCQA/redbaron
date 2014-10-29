@@ -3864,36 +3864,30 @@ def test_decorator_line_proxy_list_extend():
     red = RedBaron("def a():\n    pass\n")
     red[0].decorators.extend(["@zob"])
     assert red.dumps() == "@zob\ndef a():\n    pass\n"
-#
-#
-# def test_decorator_line_proxy_list_different_indentation():
-#     red = RedBaron("def a():\n        pass\n\n        plop\n")
-#     red[0].decorators.append("c")
-#     assert red.dumps() == "def a():\n        pass\n\n        plop\n        c\n"
-#
-#
-# forwarded_indented_code = """
-# class A():
-#     while b:
-#         pass
-#
-#         pass
-#     while c:
-#         pass
-# """
-#
-# forwarded_indented_code_result = """
-# class A():
-#     while b:
-#         pass
-#
-#         pass
-#         plop
-#     while c:
-#         pass
-# """
-#
-# def test_decorator_line_proxy_dont_break_next_block_identation():
-#     red = RedBaron(forwarded_indented_code)
-#     red.while_.append("plop")
-#     assert red.dumps() == forwarded_indented_code_result
+
+
+
+
+forwarded_indented_code = """
+class A():
+    def b(self):
+        pass
+
+    def c(self):
+        pass
+"""
+
+forwarded_indented_code_result = """
+class A():
+    @plop
+    def b(self):
+        pass
+
+    def c(self):
+        pass
+"""
+
+def test_decorator_line_proxy_dont_break_next_block_identation():
+    red = RedBaron(forwarded_indented_code)
+    red.def_.decorators.append("@plop")
+    assert red.dumps() == forwarded_indented_code_result
