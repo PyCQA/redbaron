@@ -3850,14 +3850,14 @@ def test_decorator_line_proxy_list_delslice():
     red = RedBaron("@a\n@b\n@c\ndef a():\n    pass\n")
     del red[0].decorators[1:4]
     assert red.dumps() == "@a\ndef a():\n    pass\n"
-#
-#
-# def test_decorator_line_proxy_list_getslice():
-#     red = RedBaron("def a():\n    pass\n\n    plop\n    caramba\n    compote\n    plop\n    z\n")
-#     result = red[0].decorators[1:3]
-#     expected_result = LineProxyList(NodeList([red[0].decorators[1], red[0].value[2]]))
-#     assert len(result) == len(expected_result)
-#     assert result[0] == expected_result[0]
+
+
+def test_decorator_line_proxy_list_getslice():
+    red = RedBaron("@a\n@b\n@c\ndef a():\n    pass\n")
+    result = red[0].decorators[1:3]
+    expected_result = DecoratorsLineProxyList(NodeList([red[0].decorators[1], red[0].decorators[2]]))
+    assert len(result) == len(expected_result)
+    assert result[0] == expected_result[0]
 #
 #
 # def test_decorator_line_proxy_list_extend():
