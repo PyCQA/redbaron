@@ -110,6 +110,9 @@ class Path(object):
         if parent is None:
             return None
 
+        if isinstance(parent, RedBaron):
+            parent = parent.node_list
+
         if isinstance(parent, NodeList):
             pos = parent.index(node.node_list if isinstance(node, ProxyList) else node)
             return pos
@@ -2585,10 +2588,10 @@ class WithNode(CodeBlockNode):
             setattr(self, "contexts", CommaProxyList(self.contexts, on_attribute="contexts"))
 
 
-class RedBaron(NodeList):
+class RedBaron(LineProxyList):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):
-            self.data = NodeList.from_fst(baron.parse(source_code), parent=self, on_attribute="root")
+           super(RedBaron, self).__init__(NodeList.from_fst(baron.parse(source_code), parent=self, on_attribute="root"))
         else:
             # Might be init from same object, or slice
             super(RedBaron, self).__init__(source_code)

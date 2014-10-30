@@ -22,9 +22,9 @@ def test_is_list():
 
 def test_name():
     red = RedBaron("a\n")
-    assert len(red) == 2
-    assert isinstance(red[0], NameNode)
-    assert isinstance(red[1], EndlNode)
+    assert len(red.node_list) == 2
+    assert isinstance(red.node_list[0], NameNode)
+    assert isinstance(red.node_list[1], EndlNode)
     assert red[0].value == "a"
 
 
@@ -300,8 +300,8 @@ def test_indent_root():
     red = RedBaron("pouet")
     assert red[0].indentation == ""
     red = RedBaron("pouet\nplop\npop")
-    assert [x.indentation for x in red] == ["", "", "", "", ""]
-    assert [x.get_indentation_node() for x in red] == [None, None, red[1], None, red[3]]
+    assert [x.indentation for x in red.node_list] == ["", "", "", "", ""]
+    assert [x.get_indentation_node() for x in red.node_list] == [None, None, red.node_list[1], None, red.node_list[3]]
 
 
 def test_in_while():
@@ -424,7 +424,7 @@ def test_find_lambda():
 
 def test_find_kwarg_regex_instance():
     red = RedBaron("plop\npop\npouf\nabcd")
-    assert red.find("name", value=re.compile("^po")) == red[2]
+    assert red.find("name", value=re.compile("^po")) == red[1]
 
 
 def test_find_all_kwarg_regex_instance():
@@ -434,7 +434,7 @@ def test_find_all_kwarg_regex_instance():
 
 def test_find_kwarg_regex_syntaxe():
     red = RedBaron("plop\npop\npouf\nabcd")
-    assert red.find("name", value="re:^po") == red[2]
+    assert red.find("name", value="re:^po") == red[1]
 
 
 def test_find_all_kwarg_regex_syntaxe():
@@ -444,7 +444,7 @@ def test_find_all_kwarg_regex_syntaxe():
 
 def test_find_kwarg_glob_syntaxe():
     red = RedBaron("plop\npop\npouf\nabcd")
-    assert red.find("name", value="g:po*") == red[2]
+    assert red.find("name", value="g:po*") == red[1]
 
 
 def test_find_all_kwarg_glob_syntaxe():
@@ -455,7 +455,7 @@ def test_find_all_kwarg_glob_syntaxe():
 def test_identifier_find_kwarg_lambda():
     red = RedBaron("stuff\n1\n'string'")
     assert red.find(lambda x: x in ["name", "int"]) == red[0]
-    assert red(lambda x: x in ["name", "int"]) == red[::2][:2]
+    assert red(lambda x: x in ["name", "int"]) == red[:2].node_list
 
 
 def test_identifier_find_kwarg_regex_instance():
@@ -465,7 +465,7 @@ def test_identifier_find_kwarg_regex_instance():
 
 def test_identifier_find_all_kwarg_regex_instance():
     red = RedBaron("stuff\n1\n'string'")
-    assert red(re.compile("^[ni]")) == red[::2][:2]
+    assert red(re.compile("^[ni]")) == red[:2].node_list
 
 
 def test_identifier_find_kwarg_regex_syntaxe():
@@ -475,7 +475,7 @@ def test_identifier_find_kwarg_regex_syntaxe():
 
 def test_identifier_find_all_kwarg_regex_syntaxe():
     red = RedBaron("stuff\n1\n'string'")
-    assert red("re:^[ni]") == red[::2][:2]
+    assert red("re:^[ni]") == red[:2].node_list
 
 
 def test_identifier_find_kwarg_glob_syntaxe():
@@ -485,7 +485,7 @@ def test_identifier_find_kwarg_glob_syntaxe():
 
 def test_identifier_find_all_kwarg_glob_syntaxe():
     red = RedBaron("stuff\n1\n'string'")
-    assert red("g:s*") == red[-1:]
+    assert red("g:s*") == red[:2]
 
 
 def test_find_kwarg_list_tuple_instance():
