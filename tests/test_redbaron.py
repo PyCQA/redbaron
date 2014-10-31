@@ -565,7 +565,7 @@ def check_path(root, node, path):
 
 
 def test_path_root(red):
-    check_path(red, red, [])
+    check_path(red, red.node_list, [])
 
 
 def test_path_none(red):

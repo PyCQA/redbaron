@@ -2592,6 +2592,7 @@ class RedBaron(LineProxyList):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):
            super(RedBaron, self).__init__(NodeList.from_fst(baron.parse(source_code), parent=self, on_attribute="root"))
+           self.node_list.parent = None
         else:
             # Might be init from same object, or slice
             super(RedBaron, self).__init__(source_code)
