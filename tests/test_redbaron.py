@@ -485,7 +485,7 @@ def test_identifier_find_kwarg_glob_syntaxe():
 
 def test_identifier_find_all_kwarg_glob_syntaxe():
     red = RedBaron("stuff\n1\n'string'")
-    assert red("g:s*") == red[:2]
+    assert red("g:s*") == red[2:].node_list
 
 
 def test_find_kwarg_list_tuple_instance():
@@ -496,8 +496,8 @@ def test_find_kwarg_list_tuple_instance():
 
 def test_find_all_kwarg_list_tuple_instance():
     red = RedBaron("pouet\nstuff\n1")
-    assert red("name", value=["pouet", "stuff"]) == red[::2][:2]
-    assert red("name", value=("pouet", "stuff")) == red[::2][:2]
+    assert red("name", value=["pouet", "stuff"]) == red[:2].node_list
+    assert red("name", value=("pouet", "stuff")) == red[:2].node_list
 
 
 def test_identifier_find_kwarg_list_tuple_instance():
@@ -508,8 +508,8 @@ def test_identifier_find_kwarg_list_tuple_instance():
 
 def test_identifier_find_all_kwarg_list_tuple_instance():
     red = RedBaron("pouet\n'string'\n1")
-    assert red(["name", "string"]) == red[::2][:2]
-    assert red(("name", "string")) == red[::2][:2]
+    assert red(["name", "string"]) == red[:2].node_list
+    assert red(("name", "string")) == red[:2].node_list
 
 
 def test_default_test_value_find():
