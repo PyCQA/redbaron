@@ -110,10 +110,10 @@ You can read their documentation using the :file:`?` magic of ipython:
 
 .. ipython:: python
 
-    red[0].names?
+    print red[0].names.__doc__  # you can do "red[0].names?" in IPython shell
     red[0].names()
 
-    red[0].modules?
+    print red[0].modules.__doc__
     red[0].modules()
 
 If you come with cool helpers, don't hesitate to propose them in a `pull
