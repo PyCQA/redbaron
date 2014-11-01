@@ -110,11 +110,11 @@ You can read their documentation using the :file:`?` magic of ipython:
 
 .. ipython:: python
 
-    red.names?
-    red.names()
+    red[0].names?
+    red[0].names()
 
-    red.modules?
-    red.modules()
+    red[0].modules?
+    red[0].modules()
 
 If you come with cool helpers, don't hesitate to propose them in a `pull
 request <https://github.com/Psycojoker/redbaron>`_!
