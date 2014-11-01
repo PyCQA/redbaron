@@ -46,7 +46,8 @@ content so you easily see what you are doing when playing interactively with it
 (just like a BeautifulSoup instance).
 
 There are 2 families of Node in RedBaron: NodeList and standalone Node. Since a
-Python program is a list of operations, RedBaron will always be a NodeList.
+will see that later) and standalone Node. Since a
+Python program is a list of operations, RedBaron will always be a list.
 This is why when displayed you see integers on the left, those are the index in
 the list of the nodes of the right, so as expected:
 
