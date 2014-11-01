@@ -90,6 +90,11 @@ when called on a :file:`NodeList`:
 
     In [14]: red.help()
 
+The best way to understand how :file:`.help()` works is to remember that
+RedBaron is mapping from Baron FST which is JSON. This means that RedBaron node
+can be composed of either: string, bool, numbers, list or other nodes and the
+key are always string.
+
 helpers
 ~~~~~~~
 
