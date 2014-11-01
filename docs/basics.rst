@@ -53,7 +53,7 @@ the list of the nodes of the right, so as expected:
 
 .. ipython::
 
-    In [4]: red[2]
+    In [4]: red[1]
 
 You get the `print` Node that was located at 2. As you can see, here we are on a
 standalone Node, so we don't get the list of indexes of the left.
@@ -69,7 +69,6 @@ helping you understand how is it composed and how you can use it:
     In [5]: red[0]
 
     In [6]: red[0].help()
-
 
 Here, as you can see, :file:`hello = 'Hello World!'` is an
 :file:`AssignmentNode` and it has 2 attributes: :file:`target` and
