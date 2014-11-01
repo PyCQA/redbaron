@@ -131,7 +131,7 @@ the value :file:`True` if you want to display the whole tree.
     red = RedBaron("a = b if c else d")
     red.help()
     red.help(0)
-    red.help(1)
+    red.help(deep=1)  # you can name the argument too
     red.help(True)
 
 with_formatting
