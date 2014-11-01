@@ -29,8 +29,6 @@ https://github.com/Psycojoker/redbaron
 Installation
 ------------
 
-Not released on pypi yet.
-
 ::
 
     pip install redbaron
