@@ -41,7 +41,7 @@ for it, like BeautifulSoup.
     red = RedBaron("hello = 'Hello World!'\nprint hello")
     red
 
-As you can see, when displayed, a RedBaron instance renders to the actual
+As you can see, when displayed in a shell, a RedBaron instance renders to the actual
 content so you easily see what you are doing when playing interactively with it
 (just like a BeautifulSoup instance).
 
