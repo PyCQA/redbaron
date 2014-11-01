@@ -2588,7 +2588,7 @@ class WithNode(CodeBlockNode):
             setattr(self, "contexts", CommaProxyList(self.contexts, on_attribute="contexts"))
 
 
-class RedBaron(LineProxyList):
+class RedBaron(LineProxyList, GenericNodesUtils):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):
            super(RedBaron, self).__init__(NodeList.from_fst(baron.parse(source_code), parent=self, on_attribute="root"))
