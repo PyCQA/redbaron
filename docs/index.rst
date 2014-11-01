@@ -4,13 +4,22 @@ Welcome to RedBaron's documentation!
 Introduction
 ------------
 
-RedBaron is an abstraction on top of `Baron <https://github.com/Psycojoker/baron>`_ to make it easy to use. It is
-heavily inspired by BeautifulSoup.
+RedBaron is a python library and tool powerful enough to be used into IPython
+solely that intent to make the process of **writting code that modify source
+code** as easy and as simple as possible. That include writing custom
+refactoring, generic refactoring, tools, IDE or directly modifying you source
+code into IPython with an higher and more powerful abstraction than the
+advanced texts modification tools that you find in advanced text editors and
+IDE.
 
-Baron is a Full Syntax Tree (FST) library for Python. By opposition to an AST
-which drops some syntax information in the process of its creation (like empty
-lines, comments, formatting), a FST keeps everything and guarantees the
-operation :file:`fst_to_code(code_to_fst(source_code)) == source_code`.
+RedBaron guaranteed you that **it will only modify your code where you ask him
+to**. To achieve this, it is based on `Baron <https://github.com/Psycojoker/baron>`_
+a lossless `AST <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`_ for
+Python  that guarantees the operation :file:`fst_to_code(code_to_fst(source_code)) == source_code`.
+
+RedBaron API and feel is heavily inspired by BeautifulSoup. It tries to be
+simple and intuitive and that once you've get the basics principles, you are
+good without reading the doc for 80% of your operations.
 
 Code
 ----
