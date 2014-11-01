@@ -10,18 +10,6 @@
     from redbaron import RedBaron
 
 
-Before starting, just a reminder of what RedBaron is and is not:
-
-* I assume that you know what is Baron and why it is important. If it's not the
-  case, `go read this explanation page <why.html>`_.
-* Baron produces a FST in the form of a big JSON out of a valid Python source file. Working directly with a JSON of that size would be boring.
-* RedBaron is a tool built to interact with this JSON in a more easy way by providing an interface heavily inspired by BeautifulSoup, allowing to query and modify it.
-* **It is not a refactoring library**. But it allows you to write one way more easily that anything else I'm aware of.
-* Remember that despite all my efforts to make this a more realistic task, refactoring is still a **hard** problem.
-
-This documentation will teach you first the basics, then how to query the Baron FST
-using RedBaron and finally how to modify it.
-
 Basics
 ======
 
