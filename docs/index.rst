@@ -45,6 +45,7 @@ Basic usage
     import redbaron
     redbaron.ipython_behavior = False
 
+.. TODO meh, example is bad, change it
 
 .. ipython:: python
 
@@ -59,6 +60,8 @@ Basic usage
 
 Table of content
 ----------------
+
+.. TODO add a tutorial
 
 .. toctree::
    :maxdepth: 2
