@@ -104,7 +104,7 @@ are present:
 .. ipython:: python
 
     red = RedBaron("import a, b, c as d")
-    red.help(1)
+    red.help(deep=1)
 
 You can read their documentation using the :file:`?` magic of ipython:
 
