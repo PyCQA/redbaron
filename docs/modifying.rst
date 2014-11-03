@@ -13,21 +13,11 @@
 Modifying
 =========
 
-This is obviously one of the main usage of what you'll want to do with
-RedBaron. Thankfully, RedBaron provides ways to help you do that.
+Principle
+---------
 
-Obvious boring and annoying way to do that
-------------------------------------------
-
-This is the way of doing things that you'll probably never want to have to do.
-You can construct by hand new RedBaron nodes and attach them to existing node
-attributes. This is very boring to do since you need to construct everything by
-hand and that RedBaron node except Baron FST as first argument, but knowing how
-to do this might proves itself useful in some situation to bypass RedBaron
-limitations. Warning: it's very easy to break things doing this, absolutely no
-protection mechanisms are in place.
-
-Example:
+When it comes to modifying the tree, the normal classical way would tell you to
+use the RedBaron nodes constructors, like this:
 
 .. ipython::
 
@@ -37,29 +27,32 @@ Example:
 
     In [56]: red[0].value
 
-    In [57]: red[0].value = NameNode({"type": "name", "value": "stuff"})
+    In [57]: red[0].value = NameNode({'first_formatting': [{'type': 'space', 'value': ' '}], 'value': '+', 'second_formatting': [{'type': 'space', 'value': ' '}], 'second': {'section': 'number', 'type': 'int', 'value': '1'}, 'type': 'binary_operator', 'first': {'section': 'number', 'type': 'int', 'value': '1'}})
 
     In [58]: red
 
-Taking advantage of __setattr__
--------------------------------
+As you can see, this is totally impracticable. So, to solve this problem,
+RedBaron adopt a simple logic: you already know how to code in python, so, just
+send python code in form of a string, RedBaron will takes care or parsing and
+injecting it into its tree. This give an extremely simple and intuitive API:
 
-While paying the price of magic, RedBaron exploits the power of overloading
-__setattr__ to allow you to write things like:
+.. ipython:: python
 
-.. ipython::
+    In [55]: red = RedBaron("a = 1")
 
-    In [64]: from redbaron import RedBaron
+    In [56]: red[0].value
 
-    In [65]: red = RedBaron("a = 1")
+    In [57]: red[0].value = "1 + 1"
 
-    In [66]: red[0].value = "(1 + 3) * 4"
+    In [58]: red
 
-    In [67]: red[0]
+The details on how you can modify **every** nodes can be found here: :doc:`nodes_reference`.
 
-If you assign a string to a node attribute, RedBaron will
-automatically parse it with RedBaron and put the result in the
-previous node.
+Details
+-------
+
+As you might have already noticed, you can set attributes of a node with a
+string or a RedBaron node. This is also possible by directly passing FST.
 
 Here is an IPython session illustrating all the possibilities (be sure to have
 read the "node structures" in basics to understand what is happening):
@@ -152,17 +145,6 @@ This will be done if you set the attribute value using either a :file:`string`,
 a :file:`fst node`, an instance of a node or a node list.
 
 The same is done for :file:`.on_attribute`.
-
-Full Documentation
-------------------
-
-After an horribly long and boring work, every RedBaron node has advanced and
-powerfull automatic behavior on the string :file:`__setattr__` magic to
-evaluate the given string in the correct context and even automatically doing
-annoying work like, for example, fixing the indentation of an input for a
-function body.
-
-The whole documentation per nodes can be found on this page: :doc:`nodes_reference`.
 
 Next
 ~~~~
