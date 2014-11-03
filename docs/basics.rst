@@ -148,9 +148,8 @@ node list):
 
 Those attributes are always surrounding syntax element of Python like
 :file:`[](),.{}` or keywords. You should, normally, not have a lot of reasons
-to play with them. For the moment, the nodes aren't documented, so the best way
-to have an idea on where a formatting node takes action, apart from modifying
-it, is to look at `the code of baron.dumps<https://github.com/Psycojoker/baron/blob/master/baron/dumper.py>`_.
+to play with them. You can find a detailed version of each nodes here:
+:doc:`nodes_reference`.
 
 nodes structure
 ---------------
