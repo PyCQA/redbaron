@@ -36,7 +36,7 @@ RedBaron adopt a simple logic: you already know how to code in python, so, just
 send python code in form of a string, RedBaron will takes care or parsing and
 injecting it into its tree. This give an extremely simple and intuitive API:
 
-.. ipython:: python
+.. ipython::
 
     In [55]: red = RedBaron("a = 1")
 
