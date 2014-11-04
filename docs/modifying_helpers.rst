@@ -13,14 +13,6 @@
 Modifying helpers
 =================
 
-In an attempt to overcome some of the limitations describe at the end of the
-previous section and in an attempt to make RedBaron more pleasant to use, a
-series of helpers method are provided.
-
-An example on how you can do that by hand without the helper is provided
-everytime to teach you the general underlying of (Red)Baron. Expect this to be
-quite low level.
-
 .. _Node.from_fst:
 
 Node.from_fst()
@@ -50,9 +42,9 @@ parameters.
 NodeList.from_fst()
 -------------------
 
-Similary than :file:`Node.from_fst()`, :file:`NodeList.from_fst()` is an helper
+Similarly to :file:`Node.from_fst()`, :file:`NodeList.from_fst()` is an helper
 class method that takes a FST node **list** and return a RedBaron node **list**
-instance. Similary, you probably don't need to go so low level.
+instance. Similarly, you probably don't need to go so low level.
 
 
 .. ipython:: python
