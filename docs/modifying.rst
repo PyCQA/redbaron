@@ -48,6 +48,26 @@ injecting it into its tree. This give an extremely simple and intuitive API:
 
 The details on how you can modify **every** nodes can be found here: :doc:`nodes_reference`.
 
+Code block modifications
+------------------------
+
+The modification of python code block (like the body of a function or a while
+loop) is also possible this way. RedBaron will takes care for you or formatting
+you input the right way (adding surrounding blank lines and settings the
+correct indentation for the every line).
+
+Example:
+
+.. ipython:: python
+
+    red = RedBaron("while True: pass")
+    red[0].value = "plop"
+    red
+    red[0].value = "                        this_will_be_correctly_indented"
+    red
+
+You have the full list of cases handled on this page: :doc:`nodes_reference`.
+
 Details
 -------
 
