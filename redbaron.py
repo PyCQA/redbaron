@@ -1552,6 +1552,7 @@ class DecoratorsLineProxyList(LineProxyList):
 #                add blank line arround in certain cases? Like arround function/class at first level and second level
 #                expected behavior on append when blank lines at the end of the block (-> append before blank lines)
 #                more explicit display for blank lines in line proxy .help()
+# if node_list is modified, the proxy list won't update itself -> bugs
 
 # CommaProxyList indented
 # "change formatting style"
