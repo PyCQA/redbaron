@@ -1546,7 +1546,6 @@ class DecoratorsLineProxyList(LineProxyList):
         return expected_list
 
 # TODO
-# put LineProxyList on root
 # LineProxyList: special syntaxe for adding blank lines ("")
 #                handle comments
 #                should a 'pass' be put if the list would be empty?
