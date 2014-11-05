@@ -64,3 +64,7 @@ There are, for now, 4 kind of proxy lists:
   whole source code file)
 * :file:`DecoratorLineProxyList` which handles list of decorators (they are nearly the
   same than :file:`LineProxyList`)
+
+**Be aware that the proxy list are setted on the attribute that is a list, not
+on the node holding the list, see the 'value' attribute access in the
+example**.
