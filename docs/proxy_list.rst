@@ -320,3 +320,10 @@ put some space in your code or separate group of lines.
     red[0].append("plouf")
     red
     red[0].value
+
+DecoratorLineProxyList
+----------------------
+
+DecoratorLineProxyList are exactly the same than LineProxyList except they have
+a small modification to indent decorators correctly. Just think of them has
+LineProxyList and everything will be fine.
