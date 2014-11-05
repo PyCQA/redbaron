@@ -282,3 +282,20 @@ CommaProxyList is the most generic and most obvious proxy list, all the examples
 are made using it.
 
 It is used everywhere where values are separated by commas.
+
+DotProxyList
+------------
+
+DotProxyList is nearly as generic as the CommaProxyList. The specific case of a
+DotProxyList is that it is intelligent enough to not add a "." before a "call"
+(:file:`(a, b=c, *d, **e)`) or a "getitem" (:file:`[foobar]`).
+
+.. ipython:: python
+
+    red = RedBaron("a.b(c).d[e]")
+    red[0].value
+    red[0].append("[stuff]")
+    red[0]
+    red[0].value
+
+It is used everywhere where values are separated by ".".
