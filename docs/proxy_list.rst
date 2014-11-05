@@ -274,3 +274,11 @@ This mean that the 2 next lines are equivalent:
     red[0]
     red[0].value.append("plop")
     red[0].append("plop")
+
+CommaProxyList
+--------------
+
+CommaProxyList is the most generic and most obvious proxy list, all the examples
+are made using it.
+
+It is used everywhere where values are separated by commas.
