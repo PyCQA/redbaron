@@ -327,3 +327,10 @@ DecoratorLineProxyList
 DecoratorLineProxyList are exactly the same than LineProxyList except they have
 a small modification to indent decorators correctly. Just think of them has
 LineProxyList and everything will be fine.
+
+Next
+~~~~
+
+To learn about various helpers and features in RedBaron read :doc:`other`.
+
+Be sure to check :file:`.replace` on this page as it is very useful.
