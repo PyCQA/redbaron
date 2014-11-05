@@ -68,3 +68,23 @@ There are, for now, 4 kind of proxy lists:
 **Be aware that the proxy list are setted on the attribute that is a list, not
 on the node holding the list, see the 'value' attribute access in the
 example**.
+
+Usage
+-----
+
+As said, proxy lists have the exact same API than python list (at the execption
+that they don't implement the :file:`sort` and the :file:`reverse` method).
+Every method accept as input the same inputs that you can use to modify a node
+in ReadBaron. This means that you can pass: a string containing source code,
+FST or RedBaron node.
+
+Here is a session demonstrating every method of a proxy list:
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+
+Please refer to `python list documentation
+<https://docs.python.org/2/tutorial/datastructures.html>`_ a if you want to
+know the exact behavior or those methods (or `send a patch
+<https://github.com/Psycojoker/redbaron>`_ to improve this documentation).
