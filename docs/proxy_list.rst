@@ -299,3 +299,24 @@ DotProxyList is that it is intelligent enough to not add a "." before a "call"
     red[0].value
 
 It is used everywhere where values are separated by ".".
+
+LineProxyList
+-------------
+
+LineProxyList is used to handle lines of code, it takes care to place the
+correct endl node between and to set the correct indentation and not to break
+the indentation of the next block (if there is one).
+
+One particularity of LineProxyList is that it shows you explicitly the empty
+line (while other proxy lists never show you formatting). This is done because
+you'll often want to be able to manage those blank lines because you want to
+put some space in your code or separate group of lines.
+
+.. ipython:: python
+
+    red = RedBaron("while 42:\n    stuff\n    other_stuff\n\n    there_is_an_empty_line_before_me")
+    red
+    red[0].value
+    red[0].append("plouf")
+    red
+    red[0].value
