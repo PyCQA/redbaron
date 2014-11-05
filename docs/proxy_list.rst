@@ -259,3 +259,18 @@ or the other.
     red = RedBaron("[1, 2, 3]")
     red[0].value.node_list
     red[0].value
+
+Omitting ".value"
+-----------------
+
+For convenience, and because this is a super common typo error, if a node has a
+proxy list on its :file:`.value` attribute, you can omit to access it, the
+method access will be redirect to it.
+
+This mean that the 2 next lines are equivalent:
+
+.. ipython:: python
+
+    red[0]
+    red[0].value.append("plop")
+    red[0].append("plop")
