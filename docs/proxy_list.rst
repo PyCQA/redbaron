@@ -244,3 +244,18 @@ __delslice__
     del red[0].value[2:5]
     red
     red[0].value
+
+Access the unproxified node list
+--------------------------------
+
+The unproxified node list is stored under the attribute :file:`node_list` of
+the proxy list. **Be aware that, for now, the proxy won't detect if you
+directly modify the unproxified node list, this will cause bugs if you modify
+the unproxified list then use the proxy list directly**. So, for now, only use
+or the other.
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+    red[0].value.node_list
+    red[0].value
