@@ -70,7 +70,7 @@ Table of content
    basics
    querying
    modifying
-   modifying_helpers
+   proxy_list
    other
 
 Reference

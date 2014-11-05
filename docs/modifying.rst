@@ -169,4 +169,4 @@ The same is done for :file:`.on_attribute`.
 Next
 ~~~~
 
-To learn advanced modifying function in RedBaron read :doc:`modifying_helpers`.
+To learn how to work with list of things in RedBaron read :doc:`proxy_list`.
