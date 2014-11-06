@@ -334,6 +334,19 @@ DecoratorLineProxyList are exactly the same than LineProxyList except they have
 a small modification to indent decorators correctly. Just think of them has
 LineProxyList and everything will be fine.
 
+*Don't forget to add the :file:`@` when you add a new decorator (omitting it
+will raise an exception)*.
+
+Example:
+
+.. ipython:: python
+
+    red = RedBaron("@plop\ndef stuff():\n    pass\n")
+    red
+    red[0].decorators.append("@plouf")
+    red[0].decorators
+    red
+
 Next
 ~~~~
 
