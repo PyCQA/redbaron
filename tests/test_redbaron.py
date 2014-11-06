@@ -3891,3 +3891,9 @@ def test_decorator_line_proxy_dont_break_next_block_identation():
     red = RedBaron(forwarded_indented_code_decorators)
     red.def_.decorators.append("@plop")
     assert red.dumps() == forwarded_indented_code_result_decorators
+
+
+def test_line_proxy_correctly_indent_code_block():
+    red = RedBaron("while True:\n    pass\n")
+    red[0].extend(["if a:\n    pass\n\n"])
+    assert red.dumps() == "while True:\n    pass\n    if a:\n        pass\n"

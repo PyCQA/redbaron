@@ -1131,7 +1131,10 @@ class ProxyList(object):
         return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute).filtered()[0]
 
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
-        return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute)
+        if isinstance(value, string_instance):
+            return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute)
+        else:
+            return NodeList([self._convert_input_to_node_object(x, parent, on_attribute) for x in value])
 
     def _generate_expected_list(self):
         expected_list = []
@@ -1186,7 +1189,6 @@ class ProxyList(object):
         value = self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute)
         self.data.insert(index, value)
         self._diff_augmented_list()
-
 
     def append(self, value):
         self.insert(len(self), value)
