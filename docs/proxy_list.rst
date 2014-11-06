@@ -324,6 +324,9 @@ put some space in your code or separate group of lines.
     red
     red[0].value
 
+You can see the same example than before for CommaProxyList with LineProxyList
+here: :doc:`lineproxylist`.
+
 DecoratorLineProxyList
 ----------------------
 
