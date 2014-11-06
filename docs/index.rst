@@ -21,6 +21,16 @@ RedBaron API and feel is heavily inspired by BeautifulSoup. It tries to be
 simple and intuitive and that once you've get the basics principles, you are
 good without reading the doc for 80% of your operations.
 
+A note about the examples
+-------------------------
+
+This documentation is full of example for nearly everything. But in fact, those
+aren't really "example": those are real life code that are executed at the
+compilation time of this documentation, this guaranteed the example you see to
+work exactly the same way for you.
+
+Funny side effect: this make it possible to "break" this documentation.
+
 Code
 ----
 
