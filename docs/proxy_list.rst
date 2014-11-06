@@ -300,6 +300,9 @@ DotProxyList is that it is intelligent enough to not add a "." before a "call"
 
 It is used everywhere where values are separated by ".".
 
+You can see the same example than before for CommaProxyList with DotProxyList
+here: :doc:`dotproxylist`.
+
 LineProxyList
 -------------
 
