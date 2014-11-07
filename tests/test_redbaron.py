@@ -3914,3 +3914,15 @@ def test_root_as_line_proxy_list_append():
     red = RedBaron("a\nb\nc\n")
     red.append("c")
     assert red.dumps() == "a\nb\nc\nc\n"
+
+
+def test_root_as_line_proxy_list_pop():
+    red = RedBaron("a\nb\nc\nc\n")
+    red.pop()
+    assert red.dumps() == "a\nb\nc\n"
+
+
+def test_root_as_line_proxy_list_pop_2():
+    red = RedBaron("a\nb\nc\n")
+    red.pop(0)
+    assert red.dumps() == "b\nc\n"
