@@ -1453,7 +1453,9 @@ class LineProxyList(ProxyList):
 
         indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
         expected_list = []
-        expected_list.append(generate_separator())
+
+        if not isinstance(self, RedBaron):
+            expected_list.append(generate_separator())
 
         for i in self.data:
             # we face a blank line, remove previous separator since a blank line is not
@@ -1465,7 +1467,7 @@ class LineProxyList(ProxyList):
             expected_list.append(generate_separator())
 
         if expected_list:
-            if self.parent.next:
+            if self.parent and self.parent.next:
                 expected_list[-1].indent = self.parent.indentation
             else:
                 expected_list[-1].indent = ""
@@ -2590,7 +2592,7 @@ class WithNode(CodeBlockNode):
             setattr(self, "contexts", CommaProxyList(self.contexts, on_attribute="contexts"))
 
 
-class RedBaron(LineProxyList, GenericNodesUtils):
+class RedBaron(GenericNodesUtils, LineProxyList):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):
            super(RedBaron, self).__init__(NodeList.from_fst(baron.parse(source_code), parent=self, on_attribute="root"))

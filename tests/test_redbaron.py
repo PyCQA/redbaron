@@ -3902,3 +3902,9 @@ def test_line_proxy_correctly_indent_code_block():
 def test_root_as_line_proxy_list_len():
     red = RedBaron("a\nb\nc\n")
     assert len(red) == 3
+
+
+def test_root_as_line_proxy_list_insert():
+    red = RedBaron("a\nb\nc\n")
+    red.insert(1, "c")
+    assert red.dumps() == "a\nc\nb\nc\n"
