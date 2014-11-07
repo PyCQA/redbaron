@@ -1454,8 +1454,7 @@ class LineProxyList(ProxyList):
         indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
         expected_list = []
 
-        if not isinstance(self, RedBaron):
-            expected_list.append(generate_separator())
+        expected_list.append(generate_separator())
 
         for i in self.data:
             # we face a blank line, remove previous separator since a blank line is not
@@ -2595,14 +2594,50 @@ class WithNode(CodeBlockNode):
 class RedBaron(GenericNodesUtils, LineProxyList):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):
-           super(RedBaron, self).__init__(NodeList.from_fst(baron.parse(source_code), parent=self, on_attribute="root"))
-           self.node_list.parent = None
+            self.node_list = NodeList.from_fst(baron.parse(source_code), parent=self, on_attribute="root")
+            self.middle_separator = DotNode({"type": "endl", "formatting": [], "value": "\n", "indent": ""})
+
+            self.data = []
+            previous = None
+            for i in self.node_list:
+                if i.type != "endl":
+                    self.data.append(i)
+                elif previous and previous.type == "endl":
+                    self.data.append(previous)
+                elif previous is None and i.type == "endl":
+                    self.data.append(i)
+
+                previous = i
+            self.node_list.parent = None
         else:
             # Might be init from same object, or slice
             super(RedBaron, self).__init__(source_code)
         self.on_attribute = None
         self.parent = None
 
+    def _generate_expected_list(self):
+        def generate_separator():
+            separator = self.middle_separator.copy()
+            separator.parent = self.node_list
+            separator.on_attribute = self.on_attribute
+            separator.indent = indentation
+            return separator
+
+        indentation = ""
+        expected_list = []
+
+        for position, i in enumerate(self.data):
+            # we face a blank line, remove previous separator since a blank line is not
+            # previoused by a separator
+            if i.type == "endl" and position != 0:
+                expected_list.pop()
+
+            expected_list.append(i)
+
+            if not (i.type == "endl" and position == 0):
+                expected_list.append(generate_separator())
+
+        return expected_list
 
 # to avoid to have to declare EVERY node class, dynamically create the missings
 # ones using nodes_rendering_order as a reference
