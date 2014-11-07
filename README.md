@@ -21,8 +21,8 @@ RedBaron API and feel is heavily inspired by BeautifulSoup. It tries to be
 simple and intuitive and that once you've get the basics principles, you are
 good without reading the doc for 80% of your operations.
 
-**For now, RedBaron can be considered in beta, it is quite stable but it is
-still a bit rough.** Feedback is very welcome.
+**For now, RedBaron can be considered in alpha, the core is quite stable but it
+is not battle tested yet and is still a bit rough.** Feedback is very welcome.
 
 Installation
 ============
