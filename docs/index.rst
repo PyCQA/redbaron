@@ -55,18 +55,66 @@ Basic usage
     import redbaron
     redbaron.ipython_behavior = False
 
-.. TODO meh, example is bad, change it
+Simple API: give string, get string back.
 
 .. ipython:: python
 
     from redbaron import RedBaron
 
-    red = RedBaron("print 'hello world!'")
-    red[0].value[0].value = "'hello from Baron!'"
+    red = RedBaron("some_value = 42")
+    red.dumps()  # get code back
 
-    red.string.value = "'hello from Baron!'"  # alternatively, BeautifulSoup-style
+Though to be used in IPython directly:
 
-    red.dumps()  # gives you the modified source code
+.. ipython:: python
+
+    red  # direct feedback like BeautifulSoup, "0" here is the index of the node in our source code
+    red.help()  # helper function that discribe nodes content so you don't have to read the doc
+
+
+Easy nodes modifications, you already know how to code in python, so pass
+python code (in a string) on the attribute you want to modify (wonder what
+:file:`.value` is? look at the output of :file:`.help()` in the previous
+example):
+
+.. ipython:: python
+
+    red[0].value = "1 + 4"
+    red
+
+Easy queries, just like in BeautifulSoup:
+
+.. ipython:: python
+
+    red.find("int", value=4)
+    red.find_all("int")  # can also be written red("int") like in BeautifulSoup
+
+Queries can be very powerful, you can test each attributes with value/lambda/regex/special syntax for regex/globs.
+
+Now let's pretend that we are editing a django settings.py (notice that we are
+extending our source code using the same API than the one of a python list
+since we are in a list of lines):
+
+.. ipython:: python
+
+    red.extend(["\n", "INSTALLED_APPLICATIONS = (\n    'django',\n)"])  # here "\n" is to had a blank line
+    red
+
+And let's install another django application! (again: same API than a python list)
+
+.. ipython:: python
+
+    red.find("assignment", target=lambda x: x.dumps() == "INSTALLED_APPLICATIONS").value.append("'another_app'")
+    red
+
+Notice that the formatting of the tuple has been detected and respected when
+adding the new django application.
+
+And let's see the result of our work:
+
+.. ipython:: python
+
+    print red.dumps()
 
 Table of content
 ----------------
