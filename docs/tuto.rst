@@ -212,6 +212,23 @@ code. Just look by yourself:
     red[1].value = "'Hello World!'"
     red
 
+Notice that this also works with complex attributes like the body of a
+function. Here RedBaron makes a lot of effort to correctly format your input so
+you can pass it pretty much anything:
+
+.. ipython:: python
+
+    red = RedBaron("def a():\n    pass")
+    red[0].value = "1 + 1"
+    red  # correctly indented
+    red[0].value = "\n\n\n           stuff\n"
+    red  # again
+
+And this works too for more complex situations where the node is indented and
+followed by another node and can't break the indentation of this other node and
+other low level details that you don't want to hear about (but if you whish
+too, this is detailed in the full documentation).
+
 And *voilà*, you can't get easier than that. You can also pass RedBaron node
 objects (or FST) that you have obtain is some way or another, for example by
 using :file:`.copy()`:
