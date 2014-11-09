@@ -244,3 +244,5 @@ reader as exercice) with :file:`logger.debug(stuff)`:
     red("print", value=lambda x: len(x) == 1).map(lambda x: x.replace("logger.debug(%s)" % x.value.dumps()))
 
 (:file:`.map()` will be covered at the end of the tutorial but should speak for itself.)
+
+You can read everything about modifications in RedBaron here: :doc:`modifying`
