@@ -246,3 +246,80 @@ reader as exercice) with :file:`logger.debug(stuff)`:
 (:file:`.map()` will be covered at the end of the tutorial but should speak for itself.)
 
 You can read everything about modifications in RedBaron here: :doc:`modifying`
+
+Playing with list of nodes
+--------------------------
+
+Last big concept of RedBaron: how to handle list of nodes. The problem for
+short is that, for a python developer the list :file:`[1, 2, 3]` has 3 items,
+while in the FST world, it has 5 items because you need to take into account
+the commas. This is a pattern that you find in every list of nodes, the
+separator being either commas, dot (eg: :file:`a.b(c)[d]`) or end of line
+character (for line of code).
+
+Having to deal with those separator is extremely annoying and error prone, so,
+RedBaron offers you an abstraction that hides all of this for you! You just
+have to deal with those list of nodes like if they were regular python list and
+everything will fine. See by yourself:
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+    red.help()
+    red[0].value  # see: no explicit commas to deal with
+    red[0].value.append("4")
+    red  # comma has been added for us
+
+This abstraction is called a proxy list. Those proxy list can even detect
+indentation style for comma separated lists:
+
+.. ipython:: python
+
+    red = RedBaron("[\n    1,\n    2,\n    3\n]")
+    red
+    red[0].value.append("caramba")
+    red
+
+This also work with nodes separated by dots:
+
+.. ipython:: python
+
+    red = RedBaron("a.b(c)[d]")
+    red
+    red[0].value.extend(["e", "(f)", "[g:h]"])
+    red
+
+And lines of code (notice that the blank line is explicitly shown):
+
+.. ipython:: python
+
+    red = RedBaron("a = 1\n\nprint a")
+    red
+    red.insert(1, "if a:\n    print 'a == 1'")
+    red
+
+* every methods and protocols of python lists (expect :file:`sort` and :file:`reversed`) works on proxy list.
+* every list of nodes in python is wrapped by a proxy list.
+
+The raw list is stored on the :file:`.node_list` attribute of the proxy list:
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+    red[0].node_list
+
+**Warning**: the proxyfied list and the proxy list are only sync from the proxy
+list to the proxyfied list. If you start to modify the proxyfied list, don't
+use the proxy list anymore or you'll have strange bugs! This might changes in
+the future.
+
+One last thing: if the proxy list is stored on the :file:`.value` attribute,
+you can omit to access this attribute and directly called on the holder node.
+This is done because it is more intuitive, see by yourself:
+
+::
+
+    red = RedBaron("[1, 2, 3]")
+
+    red[0].append("4")  # is exactly the same than the next line
+    red[0].value.append("4")
