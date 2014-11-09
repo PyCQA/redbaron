@@ -79,7 +79,7 @@ __setitem__
 .. ipython:: python
 
     red
-    red[0].value[2] = "[1:2]"
+    red[0].value[2] = "plop"
     red
     red[0].value
 
