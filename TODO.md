@@ -5,6 +5,7 @@
 - rewrite that https://redbaron.readthedocs.org/en/latest/modifying.html
 - .at() return the first item starting at line X
 - .rename() (name -> value, def/class -> name)
+- .replace() expect a whole valid python program. This could be fixed by look at "on_attribute" and resetting itself like that.
 
 - generate default constructors for nodes using nodes_rendering_order
 - if possible try to keep a coherent signature with possibles attributes, set correctly default attributes
