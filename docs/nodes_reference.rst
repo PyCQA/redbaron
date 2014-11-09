@@ -283,7 +283,7 @@ nodes that can be in a CallNode are :ref:`ListArgumentNode` and
 .. ipython:: python
 
     RedBaron("a(b, c=d)")[0].value[1].value[0].help(deep=True)
-    RedBaron("a(b, c=d)")[0].value[1].value[2].help(deep=True)
+    RedBaron("a(b, c=d)")[0].value[1].value[1].help(deep=True)
 
 SetAttr
 -------
@@ -332,7 +332,7 @@ The comma node is responsible for holding the formatting around it.
 
 .. ipython:: python
 
-    RedBaron("[1, 2, 3]")[0].value[1].help(deep=True)
+    RedBaron("[1, 2, 3]")[0].value.node_list[1].help(deep=True)
 
 ComparisonNode
 ==============
@@ -622,8 +622,8 @@ if the CommentNode is the last node of the file).
 
 .. ipython:: python
 
-    RedBaron("suff\n")[1].help()
-    RedBaron("# first node of the file\n# last node of the file").help()
+    RedBaron("\n")[0].help()
+    RedBaron("# first node of the file\n# last node of the file").node_list.help()
 
 .. _ExceptNode:
 
