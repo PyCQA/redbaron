@@ -55,3 +55,7 @@ Now that you loaded your coded into RedBaron, let's talk about the principle of 
 * the classical approach for this is the `Abstract Syntax Tree (AST) <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`_ (it is used by compilers and interpreters like cpython)
 * RedBaron is using `Baron <https://github.com/psycojoker/baron>`_ which is producing something sightly different: a Full Syntax Tree (FST), it's like an AST except is keeps every informations possible to be lossless. The FST is in JSON. Also: it has been tough to be used by humans
 * So, where BeautifulSoup wrap the HTML datastructure into objects, RedBaron do the same thing for the FST datastructure
+
+Example of an AST for some language that looks like Go:
+
+.. image:: ast.png
