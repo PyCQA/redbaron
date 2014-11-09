@@ -124,6 +124,7 @@ Table of content
 .. toctree::
    :maxdepth: 2
 
+   tuto
    why
    basics
    querying
@@ -146,4 +147,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

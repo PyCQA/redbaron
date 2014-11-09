@@ -1,3 +1,12 @@
+.. ipython:: python
+    :suppress:
+
+    import sys
+    sys.path.append("..")
+
+    import redbaron
+    redbaron.ipython_behavior = False
+
 Learn how to use RedBaron
 =========================
 
@@ -16,3 +25,24 @@ The structure of this tutorial is more or less similar to the documentation one:
 * how to modify the tree
 * how to play with list of things
 * misc stuff
+
+Basic principles
+----------------
+
+Import, input and output:
+
+.. code-block:: python
+
+    from redbaron import RedBaron
+
+    red = RedBaron("code source as a string")
+    red.dumps()  # return a string version of the (possibly modified) tree
+
+    # from a file
+    with open("code.py", "r") as source_code:
+        red = RedBaron(source_code.read())
+
+    with open("code.py", "w") as source_code:
+        source_code.py", "w").write(red.dumps())
+
+    red.fst()  # return the full syntax tree in form a json serialisable python datastructure (dictionnary and list of string/bool/ints)
