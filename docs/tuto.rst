@@ -323,3 +323,38 @@ This is done because it is more intuitive, see by yourself:
 
     red[0].append("4")  # is exactly the same than the next line
     red[0].value.append("4")
+
+Misc things
+-----------
+
+A short list of useful features of RedBaron:
+
+* :file:`.map`, a method of RedBaron lists that takes a callable (like a lambda or a function), apply it to every one of its members and returns a RedBaron list containing the result of the call
+* :file:`.apply` same than :file:`.map` except it returns a RedBaron list of the nodes on which the callable has been applied (instead of the result of the call)
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+    red("int").map(lambda x: x.value + 42)
+    red("int").apply(lambda x: x.value + 42)
+
+* :file:`.filter`, another method of RedBaron list, it takes a callable and return a RedBaron list containing the nodes for which the callable has return True (or something that is tested has True in python)
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+    red("int").filter(lambda x: x.value % 2 == 1)  # nombre impairs
+
+* :file:`.next` gives the node just after the current one if the node is in a list
+* :file:`.previous` dot the inverse
+* :file:`.parent` gives the holder of this node
+
+.. ipython:: python
+
+    red = RedBaron("[1, 2, 3]")
+    red.int_
+    red.int_.next
+    red.int_.previous  # None because nothing is behind it
+    red.int_.parent
+
+And you can find all the others various RedBaron features here: :doc:`other`
