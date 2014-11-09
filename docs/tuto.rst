@@ -45,4 +45,13 @@ Import, input and output:
     with open("code.py", "w") as source_code:
         source_code.py", "w").write(red.dumps())
 
-    red.fst()  # return the full syntax tree in form a json serialisable python datastructure (dictionnary and list of string/bool/ints)
+    red.fst()  # return the Full Syntax Tree in form json serializable python datastructures (dictionary and list of string/bool/ints)
+
+Now that you loaded your coded into RedBaron, let's talk about the principle of RedBaron:
+
+* when you are writing source code (of any classical language), you are actually writing a tree structure in a source file
+* for example: in :file:`1 + 2` the top node is :file:`+`, the left one is :file:`1` and the right one is :file:`2`
+* in :file:`(1 + 2) + 3` the top node is, again, :file:`+`, but the left one is actually :file:`(1 + 2)` which is again, another :file:`+` node! and so on and so on
+* the classical approach for this is the `Abstract Syntax Tree (AST) <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`_ (it is used by compilers and interpreters like cpython)
+* RedBaron is using `Baron <https://github.com/psycojoker/baron>`_ which is producing something sightly different: a Full Syntax Tree (FST), it's like an AST except is keeps every informations possible to be lossless. The FST is in JSON. Also: it has been tough to be used by humans
+* So, where BeautifulSoup wrap the HTML datastructure into objects, RedBaron do the same thing for the FST datastructure
