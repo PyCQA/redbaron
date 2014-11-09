@@ -83,7 +83,7 @@ selected source code, so you'll have a direct idea of what you are working on:
 
 .. ipython:: python
 
-    red = RedBaron("stuff = 1 + 2\nprint stuff")
+    red = RedBaron("stuff = 1 + 2\nprint 'Hello', stuff")
     red
 
 You might notice the :file:`0` and the :file:`1` on the left: those are the
@@ -94,3 +94,58 @@ a list of statements). See by yourself:
 
     red[0]
     red[1]
+
+But now, how to access the attributes? Since reading the doc for every node is
+boring, RedBaron comes with a helper method that shows you the underlying
+structure of the currently selected nodes:
+
+.. ipython:: python
+
+    red[0]
+    red[0].help()
+
+The output might be a bit scary at first, but what is shows you is simply the
+underlying structure that is map to the one of the JSON or Baron. Here: we are
+on an AssignmentNode (something like :file:`a = b`) that has 3 attributes:
+operator, target and value. The operator is an empty string (it could has been
+a python operator like :file:`+` in a case like :file:`a += b`) and target and
+value which point to other nodes (notice the :file:`->` instead of a :file:`=`
+in the output).
+
+Let's try it:
+
+.. ipython:: python
+
+    red[0]
+    red[0].operator
+    red[0].target
+    red[0].value
+
+The last kind of attributes that you might are list like here for the print
+statement:
+
+.. ipython:: python
+
+    red[1].help()
+
+Notice the :file:`*` before :file:`StringNode` and :file:`NameNode`? That
+indicates that their are items of a list (on the attribute value). Look:
+
+.. ipython:: python
+
+    red[1]
+    red[1].value
+    red[1].value[0]
+    red[1].value[1]
+
+And *voilà*, you now know how to navigate the tree by attributes without having
+to read any documentation.
+
+And one last thing: by default :file:`.help()` stops at a certain deep and
+displays :file:`...` instead of going further. To avoid that, simply pass an
+integer that indicate the deep or :file:`True` if you want to display the whole tree.
+
+::
+
+    red.help(4)
+    red.help(True)
