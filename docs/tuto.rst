@@ -149,3 +149,5 @@ integer that indicate the deep or :file:`True` if you want to display the whole 
 
     red.help(4)
     red.help(True)
+
+You can read the whole documentation of :file:`.help` here: :ref:`help()`

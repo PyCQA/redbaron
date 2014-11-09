@@ -57,6 +57,8 @@ the list of the nodes of the right, so as expected:
 You get the `print` Node that was located at 2. As you can see, here we are on a
 standalone Node, so we don't get the list of indexes of the left.
 
+.. _help():
+
 .help()
 -------
 
