@@ -71,3 +71,26 @@ formatting related, you can ignore it):
 
     red = RedBaron("1+2")
     print json.dumps(red.fst(), indent=4)
+
+Use it in a shell
+-----------------
+
+Now that you should have understand the concept of the source code as a tree,
+let's explore it.
+
+First, like BeautifulSoup, when used in a shell RedBaron display the currently
+selected source code, so you'll have a direct idea of what you are working on:
+
+.. ipython:: python
+
+    red = RedBaron("stuff = 1 + 2\nprint stuff")
+    red
+
+You might notice the :file:`0` and the :file:`1` on the left: those are the
+indexes of the 2 nodes in the root of the source code (because a source code is
+a list of statements). See by yourself:
+
+.. ipython:: python
+
+    red[0]
+    red[1]
