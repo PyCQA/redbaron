@@ -195,3 +195,52 @@ in BeautifulSoup), just have a look:
 
     red.int  # is the equivalent of red.find("int")
     red("int", value=2)  # is the equivalent of red.find_all("int", value=2)
+
+Modification
+------------
+
+Nodes modification is extremely simple in RedBaron: you just have to set the
+attribute of the node you want to modify with a string containing python source
+code. Just look by yourself:
+
+.. ipython:: python
+
+    red
+    red[0].target = "something_else"
+    red[0].value = "42 * 34"
+    red
+    red[1].value = "'Hello World!'"
+    red
+
+And *voilà*, you can't get easier than that. You can also pass RedBaron node
+objects (or FST) that you have obtain is some way or another, for example by
+using :file:`.copy()`:
+
+.. ipython:: python
+
+    red
+    i = red[0].value.copy()
+    red[1].value = i
+    red
+
+You can also replace a node *in place* using the :file:`.replace()` method.
+**Warning**: the :file:`.replace()` expect that the string you pass it
+represent a whole valid python program (so for example: :file:`.replace("*args,
+**kwargs")` won't work). This limitation should be raised in the future.
+
+.. ipython:: python
+
+    red
+    red[0].value.replace("1234")
+    red
+
+This is generally very useful when working on queries. For example (a real life
+example), here is the code to replace every :file:`print stuff` (prints
+statement of **one** argument, the one with multiple arguments is left to the
+reader as exercice) with :file:`logger.debug(stuff)`:
+
+::
+
+    red("print", value=lambda x: len(x) == 1).map(lambda x: x.replace("logger.debug(%s)" % x.value.dumps()))
+
+(:file:`.map()` will be covered at the end of the tutorial but should speak for itself.)
