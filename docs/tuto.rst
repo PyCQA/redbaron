@@ -151,3 +151,47 @@ integer that indicate the deep or :file:`True` if you want to display the whole 
     red.help(True)
 
 You can read the whole documentation of :file:`.help` here: :ref:`help()`
+
+Querying
+--------
+
+Again, querying is very inspired by BeautifulSoup. You have 2 methods:
+:file:`.find` and :file:`.find_all`. Those 2 methods accept the same arguments.
+The first one returns the first matched node and the second one, a list of all
+the matched nodes.
+
+The first argument is a string that represent the kind of the node you want to
+match on. This is the "identifiers" displayed by :file:`.help()`. Example:
+
+.. ipython:: python
+
+    red
+    red.help()
+    red.find("assignment")
+    red.find("print")
+    red.find_all("int")
+
+Then, you can pass as many keyword arguments as you want, those keywords
+arguments will test the attributes of the node and select it if all attributes
+match:
+
+.. ipython:: python
+
+    red.find("int", value=2)
+
+The only special argument you can pass is :file:`recursive` that determine if
+the query is done recursively. By default it is set at :file:`True`, just pass
+:file:`recursive=False` to :file:`.find` or :file:`.find_all` to avoid that.
+
+Queries are very powerful: you can pass lambda, regex, a short hand syntax for
+regex and globs, a tuple of string instead of a string for the type of nodes, a
+global regex that receives the node (instead of a regex per attribute) etc...
+You can read all of that here: :doc:`querying`.
+
+:file:`.find` and :file:`.find_all` also have a shortcut syntax (exactly like
+in BeautifulSoup), just have a look:
+
+.. ipython:: python
+
+    red.int  # is the equivalent of red.find("int")
+    red("int", value=2)  # is the equivalent of red.find_all("int", value=2)
