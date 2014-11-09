@@ -6,6 +6,7 @@
 
     import redbaron
     redbaron.ipython_behavior = False
+    from redbaron import RedBaron
 
 Learn how to use RedBaron
 =========================
@@ -59,3 +60,14 @@ Now that you loaded your coded into RedBaron, let's talk about the principle of 
 Example of an AST for some language that looks like Go:
 
 .. image:: ast.png
+
+While you don't have to do that, it might helps your understanding of RedBaron
+to see the procude FST (every key that has "_formatting" in its name is ...
+formatting related, you can ignore it):
+
+.. ipython:: python
+
+    import json
+
+    red = RedBaron("1+2")
+    print json.dumps(red.fst(), indent=4)
