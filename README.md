@@ -34,6 +34,7 @@ Links
 
 **RedBaron is fully documented, be sure to check the turorial and documentation**.
 
+* [Tutorial](https://redbaron.readthedocs.org/en/latest/tuto.html)
 * [Documentation](https://redbaron.readthedocs.org)
 * [Baron](https://github.com/Psycojoker/baron)
 * IRC chat: [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron)
