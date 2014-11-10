@@ -32,7 +32,7 @@ Installation
 Links
 =====
 
-**RedBaron is fully documented, be sure to check the documentation**.
+**RedBaron is fully documented, be sure to check the turorial and documentation**.
 
 * [Documentation](https://redbaron.readthedocs.org)
 * [Baron](https://github.com/Psycojoker/baron)
