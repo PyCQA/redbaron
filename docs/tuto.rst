@@ -110,12 +110,17 @@ structure of the currently selected nodes:
     red[0].help()
 
 The output might be a bit scary at first, but it's simply showing you the
-underlying structure that is map to the one of Baron JSON. Here: we are
-on an AssignmentNode (something like :file:`a = b`) that has 3 attributes:
-operator, target and value. The operator is an empty string (it could have been
-a python operator like :file:`+` in a case like :file:`a += b`) and target and
-value which point to other nodes (notice the :file:`->` instead of a :file:`=`
-in the output).
+underlying structure, mapped to Baron JSON's one.
+
+Let's take it step by step:
+
+* We are on an :file:`AssignmentNode` (something like :file:`a = b`) that has 3 attributes: :file:`operator`, :file:`target` and :file:`value`.
+* The :file:`operator` is an empty string (it could have been a python operator like :file:`+` in a case like :file:`a += b`)
+* :file:`target` points to another node, a :file:`NameNode` (you can see this thanks to the arrow :file:`->` instead of an equal sign :file:`=`)
+* :file:`value` points to a :file:`BinaryOperatorNode`.
+
+To get more information about all the existing kind of nodes, see the
+documentation: :doc:`nodes_reference`.
 
 Let's try it:
 
