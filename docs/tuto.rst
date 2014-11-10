@@ -33,23 +33,26 @@ The structure of this tutorial is similar to the documentation's:
 Basic principles
 ----------------
 
-Import, input and output:
+Input and output with the source code in a string:
 
 .. code-block:: python
 
     from redbaron import RedBaron
 
     red = RedBaron("code source as a string")
-    red.dumps()  # return a string version of the (possibly modified) tree
+    red.dumps()
 
-    # from a file
+Input and output with the source code in a file:
+
+.. code-block:: python
+
+    from redbaron import RedBaron
+
     with open("code.py", "r") as source_code:
         red = RedBaron(source_code.read())
 
     with open("code.py", "w") as source_code:
         source_code.py", "w").write(red.dumps())
-
-    red.fst()  # return the Full Syntax Tree in form json serializable python datastructures (dictionary and list of string/bool/ints)
 
 Now that you loaded your coded into RedBaron, let's talk about the principle of RedBaron:
 
