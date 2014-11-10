@@ -360,6 +360,7 @@ is intended as such, see the documentation for more information:
     red
 
 The important things to remember are that:
+
 * Every method and protocol of python lists (except :file:`sort` and :file:`reversed`) works on proxy list.
 * And every node list in python is wrapped by a proxy list.
 
