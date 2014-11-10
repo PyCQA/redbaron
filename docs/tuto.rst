@@ -54,7 +54,7 @@ Now that you loaded your coded into RedBaron, let's talk about the principle of 
 * for example: in :file:`1 + 2` the top node is :file:`+`, the left one is :file:`1` and the right one is :file:`2`
 * in :file:`(1 + 2) + 3` the top node is, again, :file:`+`, but the left one is actually :file:`(1 + 2)` which is again, another :file:`+` node! and so on and so on
 * the classical approach for this is the `Abstract Syntax Tree (AST) <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`_ (it is used by compilers and interpreters like cpython)
-* RedBaron is using `Baron <https://github.com/psycojoker/baron>`_ which is producing something slightly different: a Full Syntax Tree (FST), it's like an AST except is keeps every informations possible to be lossless. The FST is in JSON. Also: it has been thought to be used by humans
+* RedBaron is using `Baron <https://github.com/psycojoker/baron>`_ which is producing something slightly different: a Full Syntax Tree (FST). It's like an AST except it keeps every informations possible to be lossless. The FST is in JSON. Also: it has been thought to be used by humans
 * So, where BeautifulSoup wraps the HTML datastructure into objects, RedBaron do the same thing for the FST datastructure
 
 Example of an AST for some language that looks like Go:
@@ -105,9 +105,9 @@ structure of the currently selected nodes:
     red[0].help()
 
 The output might be a bit scary at first, but it's simply showing you the
-underlying structure that is map to the one of the JSON or Baron. Here: we are
+underlying structure that is map to the one of Baron JSON. Here: we are
 on an AssignmentNode (something like :file:`a = b`) that has 3 attributes:
-operator, target and value. The operator is an empty string (it could has been
+operator, target and value. The operator is an empty string (it could have been
 a python operator like :file:`+` in a case like :file:`a += b`) and target and
 value which point to other nodes (notice the :file:`->` instead of a :file:`=`
 in the output).
@@ -121,7 +121,7 @@ Let's try it:
     red[0].target
     red[0].value
 
-The last kind of attributes that you might are list like here for the print
+The last kind of attributes that you might want to use are list like here for the print
 statement:
 
 .. ipython:: python
@@ -129,7 +129,7 @@ statement:
     red[1].help()
 
 Notice the :file:`*` before :file:`StringNode` and :file:`NameNode`? That
-indicates that their are items of a list (on the attribute value). Look:
+indicates that they are items of a list (on the attribute value). Look:
 
 .. ipython:: python
 
@@ -143,7 +143,7 @@ to read any documentation.
 
 And one last thing: by default :file:`.help()` stops at a certain deep and
 displays :file:`...` instead of going further. To avoid that, simply pass an
-integer that indicate the deep or :file:`True` if you want to display the whole tree.
+integer that indicates the deep or :file:`True` if you want to display the whole tree.
 
 ::
 
@@ -185,7 +185,7 @@ the query is done recursively. By default it is set at :file:`True`, just pass
 
 Queries are very powerful: you can pass lambda, regex, a short hand syntax for
 regex and globs, a tuple of string instead of a string for the type of nodes, a
-global regex that receives the node (instead of a regex per attribute) etc...
+global regex that receives the node (instead of a regex per attribute), etc.
 You can read all of that here: :doc:`querying`.
 
 :file:`.find` and :file:`.find_all` also have a shortcut syntax (exactly like
@@ -241,8 +241,8 @@ using :file:`.copy()`:
     red
 
 You can also replace a node *in place* using the :file:`.replace()` method.
-**Warning**: the :file:`.replace()` expect that the string you pass it
-represent a whole valid python program (so for example: :file:`.replace("*args,
+**Warning**: the :file:`.replace()` expects that the string you pass
+represents a whole valid python program (so for example: :file:`.replace("*args,
 **kwargs")` won't work). This limitation should be raised in the future.
 
 .. ipython:: python
@@ -277,7 +277,7 @@ character (for line of code).
 Having to deal with those separator is extremely annoying and error prone, so,
 RedBaron offers you an abstraction that hides all of this for you! You just
 have to deal with those list of nodes like if they were regular python list and
-everything will fine. See by yourself:
+everything will be fine. See by yourself:
 
 .. ipython:: python
 
@@ -355,7 +355,7 @@ A short list of useful features of RedBaron:
     red("int").map(lambda x: x.value + 42)
     red("int").apply(lambda x: x.value + 42)
 
-* :file:`.filter`, another method of RedBaron list, it takes a callable and return a RedBaron list containing the nodes for which the callable has return True (or something that is tested has True in python)
+* :file:`.filter`, another method of RedBaron list, it takes a callable and return a RedBaron list containing the nodes for which the callable has returned True (or something that is tested has True in python)
 
 .. ipython:: python
 
