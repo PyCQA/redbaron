@@ -268,7 +268,7 @@ followed by another node whose indentation can't be broken and
 other low level details that you don't want to hear about (but if you wish
 too, this is detailed in the full documentation).
 
-And *voilà*, you can't get easier than that. You can also pass RedBaron node
+And *voilà*, easy source code modification! You can also pass RedBaron node
 objects or Baron JSON FST that you have obtain is some way or another, for example by
 using :file:`.copy()`:
 
