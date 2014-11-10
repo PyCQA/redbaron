@@ -274,6 +274,7 @@ using :file:`.copy()`:
 
 .. ipython:: python
 
+    red = RedBaron("stuff = 1 + 2\nprint 'Hello', stuff")
     red
     i = red[0].value.copy()
     red[1].value = i
