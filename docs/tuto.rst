@@ -334,7 +334,7 @@ indentation style for comma separated lists:
 
 .. ipython:: python
 
-    red = RedBaron("[\n    1,\n    2,\n    3\n]")
+    red = RedBaron("[\n    1,\n    2,\n    3,\n]")
     red
     red[0].value.append("caramba")
     red
