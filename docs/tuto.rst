@@ -307,12 +307,14 @@ You can read everything about modifications in RedBaron here: :doc:`modifying`
 Playing with list of nodes
 --------------------------
 
-Last big concept of RedBaron: how to handle list of nodes. The problem for
-short is that, for a python developer the list :file:`[1, 2, 3]` has 3 items,
-while in the FST world, it has 5 items because you need to take into account
-the commas. This is a pattern that you find in every list of nodes, the
-separator being either commas, dot (eg: :file:`a.b(c)[d]`) or end of line
-character (for line of code).
+The last big concept of RedBaron covered in this tutorial is how to handle list of nodes. The problem for
+short is that, for a python developer, the list :file:`[1, 2, 3]` has 3 items
+but it has 5 items in the FST world, because it needs to take into account
+the commas. It is not sufficient to know that it is a comma separated
+list because each comma can have a different formatting. This is
+a pattern you find in every list of nodes, the separator being
+either commas, dots (eg: :file:`a.b(c)[d]`) or end of line characters (for
+lines of code).
 
 Having to deal with those separators is extremely annoying and error
 prone, so, RedBaron offers an abstraction that hides all this for you!
@@ -346,7 +348,9 @@ This also work with nodes separated by dots:
     red[0].value.extend(["e", "(f)", "[g:h]"])
     red
 
-And lines of code (note that the blank lines are explicitly shown):
+And lines of code (note that the blank lines are explicitly shown and it
+is intended as such, see the documentation for more information:
+:doc:`proxy_list`):
 
 .. ipython:: python
 
