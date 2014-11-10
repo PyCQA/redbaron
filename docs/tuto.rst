@@ -11,21 +11,24 @@
 Learn how to use RedBaron
 =========================
 
-This tutorial intent to guide you through the big principles of RedBaron and
-highlight the most useful helpers and tricks. It is more or less a lighter
-version of the already existing documentation.
+This tutorial guides you through the big principles of RedBaron and
+highlights the most useful helpers and tricks. It is more or less
+a lighter version of the already existing documentation.
 
 A reminder before starting:
 
-* **RedBaron doesn't do static analysis** and will never do (but it's very likely that it will be combined with tools that do it like astroid or rope to bring static analysis into RedBaron or easy source code modification in the others)
+* **RedBaron doesn't do static analysis** and will never do (but it's
+  very likely that it will be combined with tools that do it, like
+  astroid or rope, to bring static analysis into RedBaron or easy source
+  code modification in the others)
 
-The structure of this tutorial is more or less similar to the documentation one:
+The structure of this tutorial is similar to the documentation's:
 
-* basic principles and how to use it into a shell
+* basic principles and how to use it in a shell
 * how to query the tree
 * how to modify the tree
 * how to play with list of things
-* misc stuff
+* miscellaneous but useful stuff
 
 Basic principles
 ----------------
@@ -61,9 +64,9 @@ Example of an AST for some language that looks like Go:
 
 .. image:: ast.png
 
-While you don't have to do that, it might help your understanding of RedBaron
-to see the produced FST (every key that has "_formatting" in its name is 
-formatting related, you can ignore it):
+While you don't have to do that to use RedBaron on a daily basis, seeing
+the produced FST can help your understand RedBaron better (every key
+that has "_formatting" in its name is formatting related):
 
 .. ipython:: python
 
@@ -75,8 +78,7 @@ formatting related, you can ignore it):
 Use it in a shell
 -----------------
 
-Now that you should have understand the concept of the source code as a tree,
-let's explore it.
+Now that we stated the concept of the source code as a tree, let's explore it.
 
 First, like BeautifulSoup, when used in a shell RedBaron displays the currently
 selected source code, so you'll have a direct idea of what you are working on:
@@ -128,7 +130,7 @@ statement:
 
     red[1].help()
 
-Notice the :file:`*` before :file:`StringNode` and :file:`NameNode`? That
+Notice the :file:`*` before :file:`StringNode` and :file:`NameNode`? It
 indicates that they are items of a list (on the attribute value). Look:
 
 .. ipython:: python
@@ -139,11 +141,12 @@ indicates that they are items of a list (on the attribute value). Look:
     red[1].value[1]
 
 And *voilà*, you now know how to navigate the tree by attributes without having
-to read any documentation.
+to read any documentation!
 
-And one last thing: by default :file:`.help()` stops at a certain deep and
-displays :file:`...` instead of going further. To avoid that, simply pass an
-integer that indicates the deep or :file:`True` if you want to display the whole tree.
+And one last thing: by default :file:`.help()` stops at a certain
+"deepness level" and displays :file:`...` instead of going further. To
+avoid that, simply pass an integer that indicates the "deepness level"
+you want, or give :file:`True` if you want to display the whole tree.
 
 ::
 
@@ -155,10 +158,10 @@ You can read the whole documentation of :file:`.help` here: :ref:`help()`
 Querying
 --------
 
-Again, querying is very inspired by BeautifulSoup. You have 2 methods:
-:file:`.find` and :file:`.find_all`. Those 2 methods accept the same arguments.
-The first one returns the first matched node and the second one, a list of all
-the matched nodes.
+Querying is inspired by BeautifulSoup. You have access to 2 methods:
+:file:`.find` and :file:`.find_all`, accepting the same arguments. The
+first one returns the first matched node and the second one returns
+the list of all the matched nodes.
 
 The first argument is a string that represent the kind of the node you want to
 match on. This is the "identifiers" displayed by :file:`.help()`. Example:
@@ -171,9 +174,9 @@ match on. This is the "identifiers" displayed by :file:`.help()`. Example:
     red.find("print")
     red.find_all("int")
 
-Then, you can pass as many keyword arguments as you want, those keywords
-arguments will test the attributes of the node and select it if all attributes
-match:
+Then, you can pass as many keyword arguments as you want. They will
+filter the returned list on the attributes of the node and keep only
+those matching all attributes:
 
 .. ipython:: python
 
@@ -183,13 +186,13 @@ The only special argument you can pass is :file:`recursive` that determine if
 the query is done recursively. By default it is set at :file:`True`, just pass
 :file:`recursive=False` to :file:`.find` or :file:`.find_all` to avoid that.
 
-Queries are very powerful: you can pass lambda, regex, a short hand syntax for
-regex and globs, a tuple of string instead of a string for the type of nodes, a
+Queries are very powerful: you can pass lambdas, regexes, a short hand syntax for
+regexes and globs, a tuple of string instead of a string for the node kind, a
 global regex that receives the node (instead of a regex per attribute), etc.
-You can read all of that here: :doc:`querying`.
+You can read all of that in the documentation: :doc:`querying`.
 
-:file:`.find` and :file:`.find_all` also have a shortcut syntax (exactly like
-in BeautifulSoup), just have a look:
+Finally, :file:`.find` and :file:`.find_all` also have a shortcut syntax (exactly like
+in BeautifulSoup):
 
 .. ipython:: python
 
@@ -225,12 +228,12 @@ you can pass it pretty much anything:
     red  # again
 
 And this works too for more complex situations where the node is indented and
-followed by another node and can't break the indentation of this other node and
+followed by another node whose indentation can't be broken and
 other low level details that you don't want to hear about (but if you wish
 too, this is detailed in the full documentation).
 
 And *voilà*, you can't get easier than that. You can also pass RedBaron node
-objects (or FST) that you have obtain is some way or another, for example by
+objects or Baron JSON FST that you have obtain is some way or another, for example by
 using :file:`.copy()`:
 
 .. ipython:: python
@@ -253,8 +256,8 @@ represents a whole valid python program (so for example: :file:`.replace("*args,
 
 This is generally very useful when working on queries. For example (a real life
 example), here is the code to replace every :file:`print stuff` (prints
-statement of **one** argument, the one with multiple arguments is left to the
-reader as exercice) with :file:`logger.debug(stuff)`:
+statement of **one** argument, an example with multiple arguments is left as an exercice to the
+reader) with :file:`logger.debug(stuff)`:
 
 ::
 
@@ -274,10 +277,10 @@ the commas. This is a pattern that you find in every list of nodes, the
 separator being either commas, dot (eg: :file:`a.b(c)[d]`) or end of line
 character (for line of code).
 
-Having to deal with those separator is extremely annoying and error prone, so,
-RedBaron offers you an abstraction that hides all of this for you! You just
-have to deal with those list of nodes like if they were regular python list and
-everything will be fine. See by yourself:
+Having to deal with those separators is extremely annoying and error
+prone, so, RedBaron offers an abstraction that hides all this for you!
+You just have to deal with those list of nodes like if they were regular
+python list and everything will be fine. See by yourself:
 
 .. ipython:: python
 
@@ -287,7 +290,7 @@ everything will be fine. See by yourself:
     red[0].value.append("4")
     red  # comma has been added for us
 
-This abstraction is called a proxy list. Those proxy list can even detect
+This abstraction is called a proxy list. They can even detect
 indentation style for comma separated lists:
 
 .. ipython:: python
@@ -306,7 +309,7 @@ This also work with nodes separated by dots:
     red[0].value.extend(["e", "(f)", "[g:h]"])
     red
 
-And lines of code (notice that the blank line is explicitly shown):
+And lines of code (note that the blank lines are explicitly shown):
 
 .. ipython:: python
 
@@ -315,8 +318,9 @@ And lines of code (notice that the blank line is explicitly shown):
     red.insert(1, "if a:\n    print 'a == 1'")
     red
 
-* every method and protocol of python lists (expect :file:`sort` and :file:`reversed`) works on proxy list.
-* every list of nodes in python is wrapped by a proxy list.
+The important things to remember are that:
+* Every method and protocol of python lists (except :file:`sort` and :file:`reversed`) works on proxy list.
+* And every node list in python is wrapped by a proxy list.
 
 The raw list is stored on the :file:`.node_list` attribute of the proxy list:
 
@@ -325,13 +329,13 @@ The raw list is stored on the :file:`.node_list` attribute of the proxy list:
     red = RedBaron("[1, 2, 3]")
     red[0].node_list
 
-**Warning**: the proxyfied list and the proxy list are only sync from the proxy
-list to the proxyfied list. If you start to modify the proxyfied list, don't
-use the proxy list anymore or you'll have strange bugs! This might changes in
+**Warning**: the proxyfied list and the proxy list are only synced from the proxy
+list to the raw list. If you start to modify the raw list, don't
+use the proxy list anymore or you'll have strange bugs! This might change in
 the future.
 
 One last thing: if the proxy list is stored on the :file:`.value` attribute,
-you can omit to access this attribute and directly called on the holder node.
+you can directly call the methods on the holder node.
 This is done because it is more intuitive, see by yourself:
 
 ::
@@ -347,7 +351,7 @@ Misc things
 A short list of useful features of RedBaron:
 
 * :file:`.map`, a method of RedBaron lists that takes a callable (like a lambda or a function), apply it to every one of its members and returns a RedBaron list containing the result of the call
-* :file:`.apply` same than :file:`.map` except it returns a RedBaron list of the nodes on which the callable has been applied (instead of the result of the call)
+* :file:`.apply` same than :file:`.map` except it returns a RedBaron list of the nodes on which the callable has been applied (i.e. the members before the call instead of the members after the call)
 
 .. ipython:: python
 
