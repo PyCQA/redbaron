@@ -229,8 +229,11 @@ in BeautifulSoup):
 
 .. ipython:: python
 
-    red.int  # is the equivalent of red.find("int")
-    red("int", value=2)  # is the equivalent of red.find_all("int", value=2)
+    red.find("int")
+    red.int
+
+    red.find_all("int", value=2)
+    red("int", value=2)
 
 Modification
 ------------
