@@ -13,7 +13,7 @@ Learn how to use RedBaron
 
 This tutorial intent to guide you through the big principles of RedBaron and
 highlight the most useful helpers and tricks. It is more or less a lighter
-version version of the already existing documentation.
+version of the already existing documentation.
 
 A reminder before starting:
 
@@ -54,15 +54,15 @@ Now that you loaded your coded into RedBaron, let's talk about the principle of 
 * for example: in :file:`1 + 2` the top node is :file:`+`, the left one is :file:`1` and the right one is :file:`2`
 * in :file:`(1 + 2) + 3` the top node is, again, :file:`+`, but the left one is actually :file:`(1 + 2)` which is again, another :file:`+` node! and so on and so on
 * the classical approach for this is the `Abstract Syntax Tree (AST) <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`_ (it is used by compilers and interpreters like cpython)
-* RedBaron is using `Baron <https://github.com/psycojoker/baron>`_ which is producing something sightly different: a Full Syntax Tree (FST), it's like an AST except is keeps every informations possible to be lossless. The FST is in JSON. Also: it has been tough to be used by humans
-* So, where BeautifulSoup wrap the HTML datastructure into objects, RedBaron do the same thing for the FST datastructure
+* RedBaron is using `Baron <https://github.com/psycojoker/baron>`_ which is producing something slightly different: a Full Syntax Tree (FST), it's like an AST except is keeps every informations possible to be lossless. The FST is in JSON. Also: it has been thought to be used by humans
+* So, where BeautifulSoup wraps the HTML datastructure into objects, RedBaron do the same thing for the FST datastructure
 
 Example of an AST for some language that looks like Go:
 
 .. image:: ast.png
 
-While you don't have to do that, it might helps your understanding of RedBaron
-to see the procude FST (every key that has "_formatting" in its name is ...
+While you don't have to do that, it might help your understanding of RedBaron
+to see the produced FST (every key that has "_formatting" in its name is 
 formatting related, you can ignore it):
 
 .. ipython:: python
@@ -78,7 +78,7 @@ Use it in a shell
 Now that you should have understand the concept of the source code as a tree,
 let's explore it.
 
-First, like BeautifulSoup, when used in a shell RedBaron display the currently
+First, like BeautifulSoup, when used in a shell RedBaron displays the currently
 selected source code, so you'll have a direct idea of what you are working on:
 
 .. ipython:: python
@@ -104,7 +104,7 @@ structure of the currently selected nodes:
     red[0]
     red[0].help()
 
-The output might be a bit scary at first, but what is shows you is simply the
+The output might be a bit scary at first, but it's simply showing you the
 underlying structure that is map to the one of the JSON or Baron. Here: we are
 on an AssignmentNode (something like :file:`a = b`) that has 3 attributes:
 operator, target and value. The operator is an empty string (it could has been
@@ -226,7 +226,7 @@ you can pass it pretty much anything:
 
 And this works too for more complex situations where the node is indented and
 followed by another node and can't break the indentation of this other node and
-other low level details that you don't want to hear about (but if you whish
+other low level details that you don't want to hear about (but if you wish
 too, this is detailed in the full documentation).
 
 And *voilà*, you can't get easier than that. You can also pass RedBaron node
@@ -315,7 +315,7 @@ And lines of code (notice that the blank line is explicitly shown):
     red.insert(1, "if a:\n    print 'a == 1'")
     red
 
-* every methods and protocols of python lists (expect :file:`sort` and :file:`reversed`) works on proxy list.
+* every method and protocol of python lists (expect :file:`sort` and :file:`reversed`) works on proxy list.
 * every list of nodes in python is wrapped by a proxy list.
 
 The raw list is stored on the :file:`.node_list` attribute of the proxy list:
@@ -360,10 +360,10 @@ A short list of useful features of RedBaron:
 .. ipython:: python
 
     red = RedBaron("[1, 2, 3]")
-    red("int").filter(lambda x: x.value % 2 == 1)  # nombre impairs
+    red("int").filter(lambda x: x.value % 2 == 1)  # odd numbers
 
 * :file:`.next` gives the node just after the current one if the node is in a list
-* :file:`.previous` dot the inverse
+* :file:`.previous` does the inverse
 * :file:`.parent` gives the holder of this node
 
 .. ipython:: python
