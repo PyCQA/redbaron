@@ -134,15 +134,19 @@ Let's try it:
     red[0].target
     red[0].value
 
-The last kind of attributes that you might want to use are list like here for the print
-statement:
+For now we saw attributes that are either strings or pointing to other
+nodes, respectively called leafs and branches in the tree terminology.
+The last kind of attributes that you will encounter are a special case
+of the branch nodes: instead of pointing to a single node, they point to
+a list of nodes. You can see this in the print statement's :file:`value`
+attribute:
 
 .. ipython:: python
 
     red[1].help()
 
 Notice the :file:`*` before :file:`StringNode` and :file:`NameNode`? It
-indicates that they are items of a list (on the attribute value). Look:
+indicates that they are items of a list. Look:
 
 .. ipython:: python
 
