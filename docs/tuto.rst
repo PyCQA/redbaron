@@ -112,6 +112,9 @@ structure of the currently selected nodes:
 The output might be a bit scary at first, but it's simply showing you the
 underlying structure, mapped to Baron JSON's one.
 
+*By the way, RedBaron has nice coloration features if you use ipython as
+your python shell.*
+
 Let's take it step by step:
 
 * We are on an :file:`AssignmentNode` (something like :file:`a = b`) that has 3 attributes: :file:`operator`, :file:`target` and :file:`value`.
