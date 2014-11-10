@@ -3970,3 +3970,9 @@ def test_root_as_line_proxy_list_getslice():
     expected_result = LineProxyList(NodeList([red[1], red[2]]))
     assert len(result) == len(expected_result)
     assert result[0] == expected_result[0]
+
+
+def test_root_as_line_proxy_list_extend():
+    red = RedBaron("\n\na\nb\nc\n")
+    red.extend(["zob"])
+    assert red.dumps() == "\n\na\nb\nc\nzob\n"
