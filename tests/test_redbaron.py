@@ -3950,3 +3950,9 @@ def test_root_as_line_proxy_list_remove_2():
     red = RedBaron("\n\na\nb\nc\n")
     red.remove(red[2])
     assert red.dumps() == "\n\nb\nc\n"
+
+
+def test_root_as_line_proxy_list_set_slice():
+    red = RedBaron("\n\na\nb\nc\n")
+    red[1:2] = ["caramba", "compote"]
+    assert red.dumps() == "\ncaramba\ncompote\na\nb\nc\n"
