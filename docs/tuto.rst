@@ -92,8 +92,8 @@ selected source code, so you'll have a direct idea of what you are working on:
     red
 
 You might notice the :file:`0` and the :file:`1` on the left: those are the
-indexes of the 2 nodes in the root of the source code (because a source code is
-a list of statements). See by yourself:
+indexes of the 2 nodes in the root of the source code. In fact, a source code is
+a list of statements so the root node :file:`red` is a list. See by yourself:
 
 .. ipython:: python
 
@@ -142,6 +142,19 @@ indicates that they are items of a list (on the attribute value). Look:
     red[1].value
     red[1].value[0]
     red[1].value[1]
+
+And if we show the help of the value attribute, we clearly see that
+there is a list of nodes.
+
+.. ipython:: python
+
+    red[1].value.help()
+
+This is similar for the root node, which is itself also a list of nodes:
+
+.. ipython:: python
+
+    red.help()
 
 And *voilà*, you now know how to navigate the tree by attributes without having
 to read any documentation!
