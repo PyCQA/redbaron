@@ -3938,3 +3938,15 @@ def test_root_as_line_proxy_list_del_blank_line():
     red = RedBaron("\na\nb\nc\n")
     del red[1]
     assert red.dumps() == "\nb\nc\n"
+
+
+def test_root_as_line_proxy_list_remove():
+    red = RedBaron("\n\na\nb\nc\n")
+    red.remove(red[0])
+    assert red.dumps() == "\na\nb\nc\n"
+
+
+def test_root_as_line_proxy_list_remove_2():
+    red = RedBaron("\n\na\nb\nc\n")
+    red.remove(red[2])
+    assert red.dumps() == "\n\nb\nc\n"
