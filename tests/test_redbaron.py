@@ -130,7 +130,7 @@ def test_assign_on_object_value_fst():
 
 def test_generate_helpers():
     red = RedBaron("def a(): pass")
-    assert set(red[0]._generate_identifiers()) == set(["funcdef", "funcdef_", "funcdefnode", "def", "def_"])
+    assert set(red[0]._generate_identifiers()) == set(["funcdef", "funcdef_", "defnode", "def", "def_"])
 
 
 def test_assign_node_list():
@@ -371,7 +371,7 @@ def test_parent_find_direct():
 def test_parent_find_two_levels():
     red = RedBaron(some_data_for_test)
     r = red.assignment.target
-    assert r.parent_find('funcdef') is red.find('funcdef', name='a')
+    assert r.parent_find('def') is red.find('def', name='a')
 
 
 def test_parent_find_two_levels_options():
@@ -398,9 +398,9 @@ def test_find():
 
 def test_find_other_properties():
     red = RedBaron("def a(): b = c")
+    assert red.def_ == red[0]
     assert red.funcdef == red[0]
     assert red.funcdef_ == red[0]
-    assert red.def_ == red[0]
 
 
 def test_find_case_insensitive():
@@ -574,214 +574,214 @@ def test_path_none(red):
 
 def test_path_first_statement(red):
     check_path(red,
-            red.funcdef,
+            red.def_,
             [0]
         )
 
 
-def test_path_funcdef_decorators(red):
+def test_path_def__decorators(red):
     check_path(red,
-            red.funcdef.decorators.node_list,
+            red.def_.decorators.node_list,
             [0, "decorators"]
         )
 
 
 def test_path_decorators_first(red):
     check_path(red,
-            red.funcdef.decorators.node_list[0],
+            red.def_.decorators.node_list[0],
             [0, "decorators", 0]
         )
 
 
 def test_path_decorators_first_dotted_name(red):
     check_path(red,
-            red.funcdef.decorators.node_list[0].value,
+            red.def_.decorators.node_list[0].value,
             [0, "decorators", 0, "value"]
         )
 
 
 def test_path_decorators_first_dotted_name_value(red):
     check_path(red,
-            red.funcdef.decorators.node_list[0].value.value,
+            red.def_.decorators.node_list[0].value.value,
             [0, "decorators", 0, "value", "value"]
         )
 
 
 def test_path_decorators_first_dotted_name_value_first(red):
     check_path(red,
-            red.funcdef.decorators.node_list[0].value.value[0],
+            red.def_.decorators.node_list[0].value.value[0],
             [0, "decorators", 0, "value", "value", 0]
         )
 
 
 def test_path_decorators_endl(red):
     check_path(red,
-            red.funcdef.decorators.node_list[1],
+            red.def_.decorators.node_list[1],
             [0, "decorators", 1]
         )
 
 
 def test_path_first_formatting(red):
     check_path(red,
-            red.funcdef.first_formatting,
+            red.def_.first_formatting,
             [0, "first_formatting"]
         )
 
 
 def test_path_first_formatting_value(red):
     check_path(red,
-            red.funcdef.first_formatting[0],
+            red.def_.first_formatting[0],
             [0, "first_formatting", 0]
         )
 
 
 def test_path_second_formatting(red):
     check_path(red,
-            red.funcdef.second_formatting,
+            red.def_.second_formatting,
             [0, "second_formatting"]
         )
 
 
 def test_path_third_formatting(red):
     check_path(red,
-            red.funcdef.third_formatting,
+            red.def_.third_formatting,
             [0, "third_formatting"]
         )
 
 
 def test_path_arguments(red):
     check_path(red,
-            red.funcdef.arguments.node_list,
+            red.def_.arguments.node_list,
             [0, "arguments"]
         )
 
 
 def test_path_arguments_first(red):
     check_path(red,
-            red.funcdef.arguments.node_list[0],
+            red.def_.arguments.node_list[0],
             [0, "arguments", 0]
         )
 
 
 def test_path_arguments_comma(red):
     check_path(red,
-            red.funcdef.arguments.node_list[1],
+            red.def_.arguments.node_list[1],
             [0, "arguments", 1]
         )
 
 
 def test_path_arguments_second(red):
     check_path(red,
-            red.funcdef.arguments.node_list[2],
+            red.def_.arguments.node_list[2],
             [0, "arguments", 2]
         )
 
 
 def test_path_fourth_formatting(red):
     check_path(red,
-            red.funcdef.fourth_formatting,
+            red.def_.fourth_formatting,
             [0, "fourth_formatting"]
         )
 
 
 def test_path_fifth_formatting(red):
     check_path(red,
-            red.funcdef.fifth_formatting,
+            red.def_.fifth_formatting,
             [0, "fifth_formatting"]
         )
 
 
 def test_path_sixth_formatting(red):
     check_path(red,
-            red.funcdef.sixth_formatting,
+            red.def_.sixth_formatting,
             [0, "sixth_formatting"]
         )
 
 
 def test_path_value(red):
     check_path(red,
-            red.funcdef.value.node_list,
+            red.def_.value.node_list,
             [0, "value"]
         )
 
 
 def test_path_value_first_endl(red):
     check_path(red,
-            red.funcdef.value.node_list[0],
+            red.def_.value.node_list[0],
             [0, "value", 0]
         )
 
 
 def test_path_value_assignment(red):
     check_path(red,
-            red.funcdef.value.node_list[1],
+            red.def_.value.node_list[1],
             [0, "value", 1]
         )
 
 
 def test_path_value_assignment_target(red):
     check_path(red,
-            red.funcdef.value.node_list[1].target,
+            red.def_.value.node_list[1].target,
             [0, "value", 1, "target"]
         )
 
 
 def test_path_value_assignment_value(red):
     check_path(red,
-            red.funcdef.value.node_list[1].value,
+            red.def_.value.node_list[1].value,
             [0, "value", 1, "value"]
         )
 
 
 def test_path_value_assignment_value_first(red):
     check_path(red,
-            red.funcdef.value.node_list[1].value.first,
+            red.def_.value.node_list[1].value.first,
             [0, "value", 1, "value", "first"]
         )
 
 
 def test_path_value_assignment_value_second(red):
     check_path(red,
-            red.funcdef.value.node_list[1].value.second,
+            red.def_.value.node_list[1].value.second,
             [0, "value", 1, "value", "second"]
         )
 
 
 def test_path_value_second_endl(red):
     check_path(red,
-            red.funcdef.value.node_list[2],
+            red.def_.value.node_list[2],
             [0, "value", 2]
         )
 
 
 def test_root(red):
     nodes = [
-        red.funcdef,
-        red.funcdef.decorators,
-        red.funcdef.decorators.node_list[0],
-        red.funcdef.decorators.node_list[0].value,
-        red.funcdef.decorators.node_list[0].value.value,
-        red.funcdef.decorators.node_list[0].value.value[0],
-        red.funcdef.decorators.node_list[1],
-        red.funcdef.first_formatting,
-        red.funcdef.first_formatting[0],
-        red.funcdef.second_formatting,
-        red.funcdef.third_formatting,
-        red.funcdef.arguments,
-        red.funcdef.arguments.node_list[0],
-        red.funcdef.arguments.node_list[1],
-        red.funcdef.arguments.node_list[2],
-        red.funcdef.fourth_formatting,
-        red.funcdef.fifth_formatting,
-        red.funcdef.sixth_formatting,
-        red.funcdef.value.node_list,
-        red.funcdef.value.node_list[0],
-        red.funcdef.value.node_list[1],
-        red.funcdef.value.node_list[1].target,
-        red.funcdef.value.node_list[1].value,
-        red.funcdef.value.node_list[1].value.first,
-        red.funcdef.value.node_list[1].value.second,
-        red.funcdef.value.node_list[2]
+        red.def_,
+        red.def_.decorators,
+        red.def_.decorators.node_list[0],
+        red.def_.decorators.node_list[0].value,
+        red.def_.decorators.node_list[0].value.value,
+        red.def_.decorators.node_list[0].value.value[0],
+        red.def_.decorators.node_list[1],
+        red.def_.first_formatting,
+        red.def_.first_formatting[0],
+        red.def_.second_formatting,
+        red.def_.third_formatting,
+        red.def_.arguments,
+        red.def_.arguments.node_list[0],
+        red.def_.arguments.node_list[1],
+        red.def_.arguments.node_list[2],
+        red.def_.fourth_formatting,
+        red.def_.fifth_formatting,
+        red.def_.sixth_formatting,
+        red.def_.value.node_list,
+        red.def_.value.node_list[0],
+        red.def_.value.node_list[1],
+        red.def_.value.node_list[1].target,
+        red.def_.value.node_list[1].value,
+        red.def_.value.node_list[1].value.first,
+        red.def_.value.node_list[1].value.second,
+        red.def_.value.node_list[2]
     ]
 
     for node in nodes:
@@ -791,32 +791,32 @@ def test_root(red):
 fst = red()
 bounding_boxes = [
     (((1, 1),  (4, 0)),  ((1, 1), (4, 0)), fst),
-    (((1, 1),  (4, 0)),  ((1, 1), (4, 0)), fst.funcdef),
-    (((1, 1),  (2, 0)),  ((1, 1), (2, 0)), fst.funcdef.decorators.node_list),
-    (((1, 1),  (1, 5)),  ((1, 1), (1, 5)), fst.funcdef.decorators.node_list[0]),
-    (((1, 2),  (1, 5)),  ((1, 1), (1, 4)), fst.funcdef.decorators.node_list[0].value),
-    (((1, 2),  (1, 5)),  ((1, 1), (1, 4)), fst.funcdef.decorators.node_list[0].value.value),
-    (((1, 2),  (1, 5)),  ((1, 1), (1, 4)), fst.funcdef.decorators.node_list[0].value.value[0]),
-    (((1, 6),  (2, 0)),  ((1, 1), (2, 0)), fst.funcdef.decorators.node_list[1]),
-    (((2, 4),  (2, 4)),  ((1, 1), (1, 1)), fst.funcdef.first_formatting),
-    (((2, 4),  (2, 4)),  ((1, 1), (1, 1)), fst.funcdef.first_formatting[0]),
-    (((2, 6),  (2, 5)),  ((1, 1), (1, 0)), fst.funcdef.second_formatting),
-    (((2, 7),  (2, 6)),  ((1, 1), (1, 0)), fst.funcdef.third_formatting),
-    (((2, 7),  (2, 10)), ((1, 1), (1, 4)), fst.funcdef.arguments),
-    (((2, 7),  (2, 7)),  ((1, 1), (1, 1)), fst.funcdef.arguments.node_list[0]),
-    (((2, 8),  (2, 9)),  ((1, 1), (1, 2)), fst.funcdef.arguments.node_list[1]),
-    (((2, 10), (2, 10)), ((1, 1), (1, 1)), fst.funcdef.arguments.node_list[2]),
-    (((2, 11), (2, 10)), ((1, 1), (1, 0)), fst.funcdef.fourth_formatting),
-    (((2, 12), (2, 11)), ((1, 1), (1, 0)), fst.funcdef.fifth_formatting),
-    (((2, 13), (2, 12)), ((1, 1), (1, 0)), fst.funcdef.sixth_formatting),
-    (((2, 13), (4, 0)),  ((1, 1), (3, 0)), fst.funcdef.value),
-    (((2, 13), (3, 4)),  ((1, 1), (2, 4)), fst.funcdef.value.node_list[0]),
-    (((3, 5),  (3, 13)), ((1, 1), (1, 9)), fst.funcdef.value.node_list[1]),
-    (((3, 5),  (3, 5)),  ((1, 1), (1, 1)), fst.funcdef.value.node_list[1].target),
-    (((3, 9),  (3, 13)), ((1, 1), (1, 5)), fst.funcdef.value.node_list[1].value),
-    (((3, 9),  (3, 9)),  ((1, 1), (1, 1)), fst.funcdef.value.node_list[1].value.first),
-    (((3, 13), (3, 13)), ((1, 1), (1, 1)), fst.funcdef.value.node_list[1].value.second),
-    (((3, 14), (4, 0)),  ((1, 1), (2, 0)), fst.funcdef.value.node_list[2])
+    (((1, 1),  (4, 0)),  ((1, 1), (4, 0)), fst.def_),
+    (((1, 1),  (2, 0)),  ((1, 1), (2, 0)), fst.def_.decorators.node_list),
+    (((1, 1),  (1, 5)),  ((1, 1), (1, 5)), fst.def_.decorators.node_list[0]),
+    (((1, 2),  (1, 5)),  ((1, 1), (1, 4)), fst.def_.decorators.node_list[0].value),
+    (((1, 2),  (1, 5)),  ((1, 1), (1, 4)), fst.def_.decorators.node_list[0].value.value),
+    (((1, 2),  (1, 5)),  ((1, 1), (1, 4)), fst.def_.decorators.node_list[0].value.value[0]),
+    (((1, 6),  (2, 0)),  ((1, 1), (2, 0)), fst.def_.decorators.node_list[1]),
+    (((2, 4),  (2, 4)),  ((1, 1), (1, 1)), fst.def_.first_formatting),
+    (((2, 4),  (2, 4)),  ((1, 1), (1, 1)), fst.def_.first_formatting[0]),
+    (((2, 6),  (2, 5)),  ((1, 1), (1, 0)), fst.def_.second_formatting),
+    (((2, 7),  (2, 6)),  ((1, 1), (1, 0)), fst.def_.third_formatting),
+    (((2, 7),  (2, 10)), ((1, 1), (1, 4)), fst.def_.arguments),
+    (((2, 7),  (2, 7)),  ((1, 1), (1, 1)), fst.def_.arguments.node_list[0]),
+    (((2, 8),  (2, 9)),  ((1, 1), (1, 2)), fst.def_.arguments.node_list[1]),
+    (((2, 10), (2, 10)), ((1, 1), (1, 1)), fst.def_.arguments.node_list[2]),
+    (((2, 11), (2, 10)), ((1, 1), (1, 0)), fst.def_.fourth_formatting),
+    (((2, 12), (2, 11)), ((1, 1), (1, 0)), fst.def_.fifth_formatting),
+    (((2, 13), (2, 12)), ((1, 1), (1, 0)), fst.def_.sixth_formatting),
+    (((2, 13), (4, 0)),  ((1, 1), (3, 0)), fst.def_.value),
+    (((2, 13), (3, 4)),  ((1, 1), (2, 4)), fst.def_.value.node_list[0]),
+    (((3, 5),  (3, 13)), ((1, 1), (1, 9)), fst.def_.value.node_list[1]),
+    (((3, 5),  (3, 5)),  ((1, 1), (1, 1)), fst.def_.value.node_list[1].target),
+    (((3, 9),  (3, 13)), ((1, 1), (1, 5)), fst.def_.value.node_list[1].value),
+    (((3, 9),  (3, 9)),  ((1, 1), (1, 1)), fst.def_.value.node_list[1].value.first),
+    (((3, 13), (3, 13)), ((1, 1), (1, 1)), fst.def_.value.node_list[1].value.second),
+    (((3, 14), (4, 0)),  ((1, 1), (2, 0)), fst.def_.value.node_list[2])
 ]
 
 @pytest.fixture(params = bounding_boxes)
@@ -830,12 +830,12 @@ def test_bounding_box(red, bounding_box_fixture):
 
 
 def test_bounding_box_of_attribute(red):
-    assert ((2, 1), (2, 3)) == red.funcdef.get_absolute_bounding_box_of_attribute("def")
+    assert ((2, 1), (2, 3)) == red.def_.get_absolute_bounding_box_of_attribute("def")
 
 
 def test_bounding_box_of_attribute_no_attribute(red):
     with pytest.raises(KeyError):
-        red.funcdef.get_absolute_bounding_box_of_attribute("xxx")
+        red.def_.get_absolute_bounding_box_of_attribute("xxx")
 
 
 def test_bounding_box_of_attribute_no_index(red):
@@ -859,34 +859,34 @@ def a(c, d):
 """)
 
 positions = [
-    (fst.funcdef.decorators[0],                       [(1, 1)]),
-    (fst.funcdef.decorators[0].value.value[0],        [(1, 2), (1, 3), (1, 4), (1, 5)]),
+    (fst.def_.decorators[0],                       [(1, 1)]),
+    (fst.def_.decorators[0].value.value[0],        [(1, 2), (1, 3), (1, 4), (1, 5)]),
     # How to get this one ? (2, 0) and (2, 1) does not work, see out of scope
-    #(fst.funcdef.decorators[1],                       [(?, ?)]),
-    (fst.funcdef,                                     [(3, 1), (3, 2), (3, 3)]),
-    (fst.funcdef.first_formatting[0],                 [(3, 4)]),
-    (fst.funcdef,                                     [(3, 5), (3, 6)]),
-    (fst.funcdef.arguments.node_list[0],                        [(3, 7)]),
-    (fst.funcdef.arguments.node_list[1],                        [(3, 8)]),
-    (fst.funcdef.arguments.node_list[1].second_formatting[0],   [(3, 9)]),
-    (fst.funcdef.arguments.node_list[2],                        [(3, 10)]),
-    (fst.funcdef,                                     [(3, 11), (3, 12)]),
-    (fst.funcdef.value.node_list[0],                            [(4, 1), (4, 2), (4, 3), (4, 4)]),
-    (fst.funcdef.value.node_list[1].target,                     [(4, 5)]),
-    (fst.funcdef.value.node_list[1].first_formatting[0],        [(4, 6)]),
-    (fst.funcdef.value.node_list[1],                            [(4, 7)]),
-    (fst.funcdef.value.node_list[1].second_formatting[0],       [(4, 8)]),
-    (fst.funcdef.value.node_list[1].value.first,                [(4, 9)]),
-    (fst.funcdef.value.node_list[1].value.first_formatting[0],  [(4, 10)]),
-    (fst.funcdef.value.node_list[1].value,                      [(4, 11)]),
-    (fst.funcdef.value.node_list[1].value.second_formatting[0], [(4, 12)]),
-    (fst.funcdef.value.node_list[1].value.second,               [(4, 13)]),
-    (fst.funcdef.value.node_list[2],                            [(5, 1), (5, 2), (5, 3), (5, 4)]),
-    (fst.funcdef.value.node_list[3].target,                     [(5, 5)]),
-    (fst.funcdef.value.node_list[3].first_formatting[0],        [(5, 6)]),
-    (fst.funcdef.value.node_list[3],                            [(5, 7)]),
-    (fst.funcdef.value.node_list[3].second_formatting[0],       [(5, 8)]),
-    (fst.funcdef.value.node_list[3].value,                      [(5, 9)]),
+    #(fst.def_.decorators[1],                       [(?, ?)]),
+    (fst.def_,                                     [(3, 1), (3, 2), (3, 3)]),
+    (fst.def_.first_formatting[0],                 [(3, 4)]),
+    (fst.def_,                                     [(3, 5), (3, 6)]),
+    (fst.def_.arguments.node_list[0],                        [(3, 7)]),
+    (fst.def_.arguments.node_list[1],                        [(3, 8)]),
+    (fst.def_.arguments.node_list[1].second_formatting[0],   [(3, 9)]),
+    (fst.def_.arguments.node_list[2],                        [(3, 10)]),
+    (fst.def_,                                     [(3, 11), (3, 12)]),
+    (fst.def_.value.node_list[0],                            [(4, 1), (4, 2), (4, 3), (4, 4)]),
+    (fst.def_.value.node_list[1].target,                     [(4, 5)]),
+    (fst.def_.value.node_list[1].first_formatting[0],        [(4, 6)]),
+    (fst.def_.value.node_list[1],                            [(4, 7)]),
+    (fst.def_.value.node_list[1].second_formatting[0],       [(4, 8)]),
+    (fst.def_.value.node_list[1].value.first,                [(4, 9)]),
+    (fst.def_.value.node_list[1].value.first_formatting[0],  [(4, 10)]),
+    (fst.def_.value.node_list[1].value,                      [(4, 11)]),
+    (fst.def_.value.node_list[1].value.second_formatting[0], [(4, 12)]),
+    (fst.def_.value.node_list[1].value.second,               [(4, 13)]),
+    (fst.def_.value.node_list[2],                            [(5, 1), (5, 2), (5, 3), (5, 4)]),
+    (fst.def_.value.node_list[3].target,                     [(5, 5)]),
+    (fst.def_.value.node_list[3].first_formatting[0],        [(5, 6)]),
+    (fst.def_.value.node_list[3],                            [(5, 7)]),
+    (fst.def_.value.node_list[3].second_formatting[0],       [(5, 8)]),
+    (fst.def_.value.node_list[3].value,                      [(5, 9)]),
     # out of scope
     (fst,                                             [(2, 0),  (2, 1)]),
 ]
@@ -974,133 +974,133 @@ def test_set_attr_on_dict_empty():
     assert len(red[0].value) == 0
 
 
-def test_set_attr_funcdef_name():
+def test_set_attr_def_name():
     red = RedBaron("def a(): pass")
     red[0].name = "plop"
     assert isinstance(red[0].name, string_instance)
 
 
-def test_set_attr_funcdef_arguments():
+def test_set_attr_def_arguments():
     red = RedBaron("def a(): pass")
     red[0].arguments = "x, y=z, *args, **kwargs"
     assert len(red[0].arguments.filtered()) == 4
 
 
-def test_set_attr_funcdef_value_simple():
+def test_set_attr_def_value_simple():
     red = RedBaron("def a(): pass")
     red[0].value = "plop"
     assert red[0].value.dumps() == "\n    plop\n"
 
 
-def test_set_attr_funcdef_value_simple_indented():
+def test_set_attr_def_value_simple_indented():
     red = RedBaron("def a(): pass")
     red[0].value = "    plop"
     assert red[0].value.dumps() == "\n    plop\n"
 
 
-def test_set_attr_funcdef_value_simple_endl():
+def test_set_attr_def_value_simple_endl():
     red = RedBaron("def a(): pass")
     red[0].value = "\nplop"
     assert red[0].value.dumps() == "\n    plop\n"
 
 
-def test_set_attr_funcdef_value_simple_space_endl():
+def test_set_attr_def_value_simple_space_endl():
     red = RedBaron("def a(): pass")
     red[0].value = "  \nplop"
     assert red[0].value.dumps() == "\n    plop\n"
 
 
-def test_set_attr_funcdef_value_simple_space_endl_space():
+def test_set_attr_def_value_simple_space_endl_space():
     red = RedBaron("def a(): pass")
     red[0].value = "  \n   plop"
     assert red[0].value.dumps() == "\n    plop\n"
 
 
-def test_set_attr_funcdef_value_simple_too_much_space():
+def test_set_attr_def_value_simple_too_much_space():
     red = RedBaron("def a(): pass")
     red[0].value = "                          plop"
     assert red[0].value.dumps() == "\n    plop\n"
 
 
-def test_set_attr_funcdef_value_simple_endl_too_much_space():
+def test_set_attr_def_value_simple_endl_too_much_space():
     red = RedBaron("def a(): pass")
     red[0].value = "\n                          plop"
     assert red[0].value.dumps() == "\n    plop\n"
 
 
-def test_set_attr_funcdef_value_simple_space_endl_too_much_space():
+def test_set_attr_def_value_simple_space_endl_too_much_space():
     red = RedBaron("def a(): pass")
     red[0].value = "  \n                        plop"
     assert red[0].value.dumps() == "\n    plop\n"
 
 
-def test_set_attr_funcdef_value_complex():
+def test_set_attr_def_value_complex():
     red = RedBaron("def a(): pass")
     red[0].value = "plop\nplouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_value_endl_complex():
+def test_set_attr_def_value_endl_complex():
     red = RedBaron("def a(): pass")
     red[0].value = "\nplop\nplouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_value_indent_complex():
+def test_set_attr_def_value_indent_complex():
     red = RedBaron("def a(): pass")
     red[0].value = "    plop\n    plouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_value_endl_indent_complex():
+def test_set_attr_def_value_endl_indent_complex():
     red = RedBaron("def a(): pass")
     red[0].value = "\n    plop\n    plouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_value_space_endl_indent_complex():
+def test_set_attr_def_value_space_endl_indent_complex():
     red = RedBaron("def a(): pass")
     red[0].value = "    \n    plop\n    plouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_too_small_indent_complex():
+def test_set_attr_def_too_small_indent_complex():
     red = RedBaron("def a(): pass")
     red[0].value = " plop\n plouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_endl_too_small_indent_complex():
+def test_set_attr_def_endl_too_small_indent_complex():
     red = RedBaron("def a(): pass")
     red[0].value = "\n plop\n plouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_space_endl_too_small_indent_complex():
+def test_set_attr_def_space_endl_too_small_indent_complex():
     red = RedBaron("def a(): pass")
     red[0].value = " \n plop\n plouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_too_much_indent_complex():
+def test_set_attr_def_too_much_indent_complex():
     red = RedBaron("def a(): pass")
     red[0].value = "            plop\n            plouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_endl_too_much_indent_complex():
+def test_set_attr_def_endl_too_much_indent_complex():
     red = RedBaron("def a(): pass")
     red[0].value = "\n            plop\n            plouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_space_endl_too_much_indent_complex():
+def test_set_attr_def_space_endl_too_much_indent_complex():
     red = RedBaron("def a(): pass")
     red[0].value = "            \n            plop\n            plouf"
     assert red[0].value.dumps() == "\n    plop\n    plouf\n"
 
 
-def test_set_attr_funcdef_space_complex_with_more_complex_indent():
+def test_set_attr_def_space_complex_with_more_complex_indent():
     red = RedBaron("def a(): pass")
     red[0].value = "plop\nif a:\n    pass\n"
     assert red[0].value.dumps() == "\n    plop\n    if a:\n        pass\n"
@@ -1125,210 +1125,210 @@ def d():
     pass
 """
 
-def test_set_attr_funcdef_advanced_dont_break_next_block_indent():
+def test_set_attr_def_advanced_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="c").value = "return 42"
     assert len(red.find("def", name="c")("endl")) == 4
     assert red.find("def", name="c").value.node_list[-1].indent == ""
 
 
-def test_set_attr_funcdef_advanced_dont_break_next_block_indent_one_endl():
+def test_set_attr_def_advanced_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="c").value = "return 42\n"
     assert len(red.find("def", name="c")("endl")) == 4
     assert red.find("def", name="c").value.node_list[-1].indent == ""
 
 
-def test_set_attr_funcdef_advanced_dont_break_next_block_indent_two_endl():
+def test_set_attr_def_advanced_dont_break_next_block_indent_two_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="c").value = "return 42\n\n"
     assert len(red.find("def", name="c")("endl")) == 4
     assert red.find("def", name="c").value.node_list[-1].indent == ""
 
 
-def test_set_attr_funcdef_advanced_in_class_dont_break_next_block_indent():
+def test_set_attr_def_advanced_in_class_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="a").value = "return 42"
     assert len(red.find("def", name="a")("endl")) == 3
     assert red.find("def", name="a").value.node_list[-1].indent == "    "
 
 
-def test_set_attr_funcdef_advanced_in_class_dont_break_next_block_indent_one_endl():
+def test_set_attr_def_advanced_in_class_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="a").value = "return 42\n"
     assert len(red.find("def", name="a")("endl")) == 3
     assert red.find("def", name="a").value.node_list[-1].indent == "    "
 
 
-def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent():
+def test_set_attr_def_advanced_in_class_at_the_end_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="b").value = "return 42"
     assert len(red.find("def", name="b")("endl")) == 4
     assert red.find("def", name="b").value.node_list[-1].indent == ""
 
 
-def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent_one_endl():
+def test_set_attr_def_advanced_in_class_at_the_end_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="b").value = "return 42\n"
     assert len(red.find("def", name="b")("endl")) == 4
     assert red.find("def", name="b").value.node_list[-1].indent == ""
 
 
-def test_set_attr_funcdef_advanced_in_class_at_the_end_dont_break_next_block_indent_two_endl():
+def test_set_attr_def_advanced_in_class_at_the_end_dont_break_next_block_indent_two_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="b").value = "return 42\n\n"
     assert len(red.find("def", name="b")("endl")) == 4
     assert red.find("def", name="b").value.node_list[-1].indent == ""
 
 
-def test_set_attr_funcdef_advanced_inline_dont_break_next_block_indent():
+def test_set_attr_def_advanced_inline_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="zomg").value = "return 42"
     assert len(red.find("def", name="zomg")("endl")) == 3
     assert red.find("def", name="zomg").value.node_list[-1].indent == "    "
 
 
-def test_set_attr_funcdef_advanced_inline_dont_break_next_block_indent_one_endl():
+def test_set_attr_def_advanced_inline_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="zomg").value = "return 42\n"
     assert len(red.find("def", name="zomg")("endl")) == 3
     assert red.find("def", name="zomg").value.node_list[-1].indent == "    "
 
 
-def test_set_decorator_funcdef():
+def test_set_decorator_def():
     red = RedBaron("def a(): pass")
     red[0].decorators = "@decorator"
     assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
-def test_set_decorator_funcdef_endl():
+def test_set_decorator_def_endl():
     red = RedBaron("def a(): pass")
     red[0].decorators = "@decorator\n"
     assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
-def test_set_decorator_funcdef_indent():
+def test_set_decorator_def_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "    @decorator"
     assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
-def test_set_decorator_funcdef_indent_endl():
+def test_set_decorator_def_indent_endl():
     red = RedBaron("def a(): pass")
     red[0].decorators = "    @decorator\n"
     assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
-def test_set_decorator_funcdef_too_small_indent():
+def test_set_decorator_def_too_small_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = " @decorator"
     assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
-def test_set_decorator_funcdef_too_small_indent_endl():
+def test_set_decorator_def_too_small_indent_endl():
     red = RedBaron("def a(): pass")
     red[0].decorators = " @decorator\n"
     assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
-def test_set_decorator_funcdef_too_big_indent():
+def test_set_decorator_def_too_big_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "       @decorator"
     assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
-def test_set_decorator_funcdef_too_big_indent_endl():
+def test_set_decorator_def_too_big_indent_endl():
     red = RedBaron("def a(): pass")
     red[0].decorators = "       @decorator\n"
     assert len(red[0].decorators.node_list) == 2
     assert red[0].decorators.dumps() == "@decorator\n"
 
 
-def test_set_decorator_funcdef_complex():
+def test_set_decorator_def_complex():
     red = RedBaron("def a(): pass")
     red[0].decorators = "@plop\n@plouf"
     assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
-def test_set_decorator_funcdef_complex_indent():
+def test_set_decorator_def_complex_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "    @plop\n    @plouf"
     assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
-def test_set_decorator_funcdef_complex_endl_indent():
+def test_set_decorator_def_complex_endl_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "\n    @plop\n    @plouf"
     assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
-def test_set_decorator_funcdef_complex_space_endl_indent():
+def test_set_decorator_def_complex_space_endl_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "      \n    @plop\n    @plouf"
     assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
-def test_set_decorator_funcdef_complex_too_small_indent():
+def test_set_decorator_def_complex_too_small_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = " @plop\n @plouf"
     assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
-def test_set_decorator_funcdef_complex_endl_too_small_indent():
+def test_set_decorator_def_complex_endl_too_small_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "\n @plop\n @plouf"
     assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
-def test_set_decorator_funcdef_complex_space_endl_too_small_indent():
+def test_set_decorator_def_complex_space_endl_too_small_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = " \n @plop\n @plouf"
     assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
-def test_set_decorator_funcdef_complex_too_big_indent():
+def test_set_decorator_def_complex_too_big_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "     @plop\n     @plouf"
     assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
-def test_set_decorator_funcdef_complex_endl_too_big_indent():
+def test_set_decorator_def_complex_endl_too_big_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = "\n     @plop\n     @plouf"
     assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
-def test_set_decorator_funcdef_complex_space_endl_too_big_indent():
+def test_set_decorator_def_complex_space_endl_too_big_indent():
     red = RedBaron("def a(): pass")
     red[0].decorators = " \n     @plop\n     @plouf"
     assert len(red[0].decorators.node_list) == 4
     assert red[0].decorators.dumps() == "@plop\n@plouf\n"
 
 
-def test_set_decorator_indented_funcdef():
+def test_set_decorator_indented_def():
     red = RedBaron(code_for_block_setattr)
     red.find("def", "b").decorators = "@pouet"
     assert len(red.find("def", "b").decorators.node_list) == 2
     assert red.find("def", "b").decorators.node_list[-1].indent == "    "
 
 
-def test_set_decoratorS_indented_funcdef():
+def test_set_decorators_indented_def():
     red = RedBaron(code_for_block_setattr)
     red.find("def", "b").decorators = "@pouet\n@plop"
     assert len(red.find("def", "b").decorators.node_list) == 4
