@@ -54,14 +54,14 @@ Input and output with the source code in a file:
     with open("code.py", "w") as source_code:
         source_code.py", "w").write(red.dumps())
 
-Now that you loaded your coded into RedBaron, let's talk about the principle of RedBaron:
+Now that you know how to load your code into RedBaron, let's talk about its principles:
 
-* when you are writing source code (of any classical language), you are actually writing a tree structure in a source file
-* for example: in :file:`1 + 2` the top node is :file:`+`, the left one is :file:`1` and the right one is :file:`2`
-* in :file:`(1 + 2) + 3` the top node is, again, :file:`+`, but the left one is actually :file:`(1 + 2)` which is again, another :file:`+` node! and so on and so on
-* the classical approach for this is the `Abstract Syntax Tree (AST) <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`_ (it is used by compilers and interpreters like cpython)
-* RedBaron is using `Baron <https://github.com/psycojoker/baron>`_ which is producing something slightly different: a Full Syntax Tree (FST). It's like an AST except it keeps every informations possible to be lossless. The FST is in JSON. Also: it has been thought to be used by humans
-* So, where BeautifulSoup wraps the HTML datastructure into objects, RedBaron do the same thing for the FST datastructure
+* RedBaron represents the source code as a tree. This is because when you are writing source code (of any classical language), you are actually writing a tree structure in the source file.
+* For example: in :file:`1 + 2` the top node is :file:`+`, the left one is :file:`1` and the right one is :file:`2`.
+* In :file:`(1 + 2) + 3` the top node is, again, :file:`+`, but the left one is actually :file:`(1 + 2)` which is again another :file:`+` node! This structure *is* a tree.
+* The classical approach to handle such a structure is to use an `Abstract Syntax Tree (AST) <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`_ (it is used by compilers and interpreters like cpython).
+* RedBaron, by relying on `Baron <https://github.com/psycojoker/baron>`_, uses a *Full* Syntax Tree (FST). It's like an AST except it keeps every information, included formatting, and is then a lossless representation of the source code. Under the hood, the FST produced by Baron is in JSON and has been thought to be read and used by humans (although not as easily as RedBaron).
+* So, when BeautifulSoup wraps the HTML datastructure into objects, RedBaron does the same thing for the FST datastructure and provides a nice way to interact with the source code.
 
 Example of an AST for some language that looks like Go:
 
