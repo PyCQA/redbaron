@@ -171,6 +171,9 @@ This is similar for the root node, which is itself also a list of nodes:
 And *voilà*, you now know how to navigate the tree by attributes without having
 to read any documentation!
 
+If you're curious about the :file:`identifiers` outputted by the
+:file:`.help()` method, read on to the next section.
+
 And one last thing: by default :file:`.help()` stops at a certain
 "deepness level" and displays :file:`...` instead of going further. To
 avoid that, simply pass an integer that indicates the "deepness level"
@@ -191,8 +194,10 @@ Querying is inspired by BeautifulSoup. You have access to 2 methods:
 first one returns the first matched node and the second one returns
 the list of all the matched nodes.
 
-The first argument is a string that represent the kind of the node you want to
-match on. This is the "identifiers" displayed by :file:`.help()`. Example:
+The first argument is a string that represent the kind of the node you
+want to match on. The :file:`identifiers` section displayed by the
+:file:`.help()` method shows you several strings you can use to identify
+a kind of node. For example:
 
 .. ipython:: python
 
