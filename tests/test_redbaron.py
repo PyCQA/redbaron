@@ -3956,3 +3956,9 @@ def test_root_as_line_proxy_list_set_slice():
     red = RedBaron("\n\na\nb\nc\n")
     red[1:2] = ["caramba", "compote"]
     assert red.dumps() == "\ncaramba\ncompote\na\nb\nc\n"
+
+
+def test_root_as_line_proxy_list_delslice():
+    red = RedBaron("\n\na\nb\nc\n")
+    del red[1:4]
+    assert red.dumps() == "\nc\n"
