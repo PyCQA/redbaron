@@ -76,7 +76,7 @@ that has "_formatting" in its name is formatting related):
     import json
 
     red = RedBaron("1+2")
-    print json.dumps(red.fst(), indent=4)
+    print json.dumps(red.fst(), indent=4)  # json.dumps is used for pretty printing
 
 Use it in a shell
 -----------------
