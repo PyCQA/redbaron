@@ -298,7 +298,7 @@ DotProxyList is that it is intelligent enough to not add a "." before a "call"
 
     red = RedBaron("a.b(c).d[e]")
     red[0].value
-    red[0].append("[stuff]")
+    red[0].extend(["[stuff]", "f", "(g, h)"])
     red[0]
     red[0].value
 
