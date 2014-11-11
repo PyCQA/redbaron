@@ -29,7 +29,7 @@ a list, you need to take care of a lot of details:
 * if the list is empty you don't have to put a comma
 * otherwise yes
 * but wait, what happens if there is a trailing comma?
-* also, what to do if the list is declared in an indented way (with "\n    " after every comma for example)?
+* also, what to do if the list is declared in an indented way (with :file:`"\\n    "` after every comma for example)?
 * etc...
 
 And that's only for acomma separated list of things: you also have the
