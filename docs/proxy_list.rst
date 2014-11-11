@@ -16,9 +16,11 @@ Proxy List
 Problem
 -------
 
-For a python developer, this list: :file:`[1, 2, 3]` has 3 members, which is
-true in the python world, but in the "source code modification" world, this
-list has 5 elements because you have to count the 2 commas.
+For a python developer, the list :file:`[1, 2, 3]` has 3 members, which
+is true in the python world, but in the "source code modification"
+world, this list has 5 elements because you have to count the 2 commas.
+Indeed each comma needs to be taken into account separately because they
+can have a different formatting.
 
 This makes things quite annoying to deal with because you have to think
 about the formatting too! For example, if you want to append an item to
