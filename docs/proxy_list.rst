@@ -16,35 +16,39 @@ Proxy List
 Problem
 -------
 
-For a python developer, this list: :file:`[1, 2, 3]` has 3 members, which is
-true in the python world, but in the "source code modification" world, this
-list has 5 elements because you have to count the 2 commas.
+For a python developer, the list :file:`[1, 2, 3]` has 3 members, which
+is true in the python world, but in the "source code modification"
+world, this list has 5 elements because you have to count the 2 commas.
+Indeed each comma needs to be taken into account separately because they
+can have a different formatting.
 
-This makes things quite annoying to deal with because you have to think about
-this formatting detail to. For example: you want to append an item to a list:
+This makes things quite annoying to deal with because you have to think
+about the formatting too! For example, if you want to append an item to
+a list, you need to take care of a lot of details:
 
 * if the list is empty you don't have to put a comma
 * otherwise yes
 * but wait, what happens if there is a trailing comma?
-* also, what to do if the list is declared in an indented way (with "\n    " after every comma for example)?
+* also, what to do if the list is declared in an indented way (with :file:`"\\n    "` after every comma for example)?
 * etc...
 
-And I'm only talking about comma separated list of things: you also have the
-same things for dot separated things (:file:`a.b.c().d[plop]`) and endl
-separated lists (a python code block, or you whole source file).
+And that's only for acomma separated list of things: you also have the
+same formatting details to care about for dot separated lists
+(e.g. :file:`a.b.c().d[plop]`) and endl separated lists (a python code block,
+or you whole source file).
 
 You don't want to have to deal with this.
 
 Solution
 --------
 
-To avoid you to deal with all this boring low level details things, RedBaron
-implements "proxy lists", an abstraction that gives you the impression that the
+To avoid you to deal with all this boring low level details, RedBaron
+implements "proxy lists". This abstraction gives you the impression that the
 list of things you are dealing with behave the same way than in the python
 world while taking care of all the low level formatting details.
 
-The "proxy lists" have the same API than the python lists so they should be
-really intuitive to use for you.
+The "proxy lists" has the same API than a python list so they should be
+really intuitive to use.
 
 For example:
 
@@ -58,25 +62,25 @@ For example:
 
 There are, for now, 4 kind of proxy lists:
 
-* :file:`CommaProxyList` which handles things separated by comma
+* :file:`CommaProxyList` which handles comma separated lists
 * :file:`DotProxyList` which handles :file:`atomtrailers` (those kind of constructions: :file:`a.b[plop].c()`)
-* :file:`LineProxyList` which handles lines of code (like the body of a function or you
-  whole source code file)
-* :file:`DecoratorLineProxyList` which handles list of decorators (they are nearly the
-  same than :file:`LineProxyList`)
+* :file:`LineProxyList` which handles lines of code (like the body of a function or the
+  whole source code)
+* :file:`DecoratorLineProxyList` which handles lists of decorators (they are nearly the
+  same as :file:`LineProxyList`)
 
 **Be aware that the proxy list are setted on the attribute that is a list, not
-on the node holding the list, see the 'value' attribute access in the
-example**.
+on the node holding the list. See the 'value' attribute access in the
+examples below.**
 
 Usage
 -----
 
-As said, proxy lists have the exact same API than python list (at the execption
-that they don't implement the :file:`sort` and the :file:`reverse` method).
-Every method accept as input the same inputs that you can use to modify a node
-in ReadBaron. This means that you can pass: a string containing source code,
-FST or RedBaron node.
+As said, proxy lists have the exact same API than python lists (at the exception
+that they don't implement the :file:`sort` and :file:`reverse` methods).
+Every method accepts as input the same inputs that you can use to modify a node
+in RedBaron. This means that you can pass a string containing source code,
+a FST or a RedBaron node.
 
 Here is a session demonstrating every method of a proxy list:
 
@@ -85,7 +89,7 @@ Here is a session demonstrating every method of a proxy list:
     red = RedBaron("[1, 2, 3]")
 
 Please refer to `python list documentation
-<https://docs.python.org/2/tutorial/datastructures.html>`_ a if you want to
+<https://docs.python.org/2/tutorial/datastructures.html>`_ if you want to
 know the exact behavior or those methods (or `send a patch
 <https://github.com/Psycojoker/redbaron>`_ to improve this documentation).
 
@@ -252,7 +256,7 @@ The unproxified node list is stored under the attribute :file:`node_list` of
 the proxy list. **Be aware that, for now, the proxy won't detect if you
 directly modify the unproxified node list, this will cause bugs if you modify
 the unproxified list then use the proxy list directly**. So, for now, only use
-or the other.
+one or the other.
 
 .. ipython:: python
 
@@ -264,10 +268,10 @@ Omitting ".value"
 -----------------
 
 For convenience, and because this is a super common typo error, if a node has a
-proxy list on its :file:`.value` attribute, you can omit to access it, the
-method access will be redirect to it.
+proxy list on its :file:`.value` attribute, you can omit to access it and the
+method access will be automatically redirect to it.
 
-This mean that the 2 next lines are equivalent:
+This means that the 2 next lines are equivalent:
 
 .. ipython:: python
 
@@ -279,7 +283,7 @@ CommaProxyList
 --------------
 
 CommaProxyList is the most generic and most obvious proxy list, all the examples
-are made using it.
+above are made using it.
 
 It is used everywhere where values are separated by commas.
 
@@ -294,13 +298,13 @@ DotProxyList is that it is intelligent enough to not add a "." before a "call"
 
     red = RedBaron("a.b(c).d[e]")
     red[0].value
-    red[0].append("[stuff]")
+    red[0].extend(["[stuff]", "f", "(g, h)"])
     red[0]
     red[0].value
 
 It is used everywhere where values are separated by ".".
 
-You can see the same example than before for CommaProxyList with DotProxyList
+You can see a complete example with a DotProxyList, like for the CommaProxyList,
 here: :doc:`dotproxylist`.
 
 LineProxyList
@@ -324,15 +328,15 @@ put some space in your code or separate group of lines.
     red
     red[0].value
 
-You can see the same example than before for CommaProxyList with LineProxyList
+You can see a complete example with a LineProxyList, like for the CommaProxyList,
 here: :doc:`lineproxylist`.
 
 DecoratorLineProxyList
 ----------------------
 
-DecoratorLineProxyList are exactly the same than LineProxyList except they have
-a small modification to indent decorators correctly. Just think of them has
-LineProxyList and everything will be fine.
+A DecoratorLineProxyList is exactly the same as a LineProxyList except it has
+a small modification to indent decorators correctly. Just think of it as
+a simple LineProxyList and everything will be fine.
 
 *Don't forget to add the :file:`@` when you add a new decorator (omitting it
 will raise an exception)*.
@@ -350,6 +354,5 @@ Example:
 Next
 ~~~~
 
-To learn about various helpers and features in RedBaron read :doc:`other`.
-
-Be sure to check :file:`.replace` on this page as it is very useful.
+To learn about various helpers and features in RedBaron, read :doc:`other`.
+Be sure to check the :file:`.replace()` method on that page as it can be very useful.
