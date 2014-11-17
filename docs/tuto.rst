@@ -52,7 +52,7 @@ Input and output with the source code in a file:
         red = RedBaron(source_code.read())
 
     with open("code.py", "w") as source_code:
-        source_code.py", "w").write(red.dumps())
+        source_code.write(red.dumps())
 
 Now that you know how to load your code into RedBaron, let's talk about its principles:
 
