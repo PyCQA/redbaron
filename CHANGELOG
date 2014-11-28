@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.4 (unreleased)
+----------------
+
+- compatibility with baron upstream (removal of def_argument_node and
+  uniformisation of def_arguments structure)
+
 0.3 (2014-11-12)
 ----------------
 
