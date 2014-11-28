@@ -1714,7 +1714,10 @@ class CallNode(Node):
 class CallArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return Node.from_fst(baron.parse("a(%s)" % string)[0]["value"][1]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("a(%s)" % string)[0]["value"][1]["value"][0]["value"], parent=parent, on_attribute=on_attribute) if string else ""
+
+        elif on_attribute == "target":
+            return Node.from_fst(baron.parse("a(%s=b)" % string)[0]["value"][1]["value"][0]["target"], parent=parent, on_attribute=on_attribute) if string else ""
 
         else:
             raise Exception("Unhandled case")
@@ -1813,7 +1816,10 @@ class DecoratorNode(Node):
 class DefArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
-            return Node.from_fst(baron.parse("def a(b=%s): pass" % string)[0]["arguments"][0]["value"], parent=parent, on_attribute=on_attribute)
+            return Node.from_fst(baron.parse("def a(b=%s): pass" % string)[0]["arguments"][0]["value"], parent=parent, on_attribute=on_attribute) if string else ""
+
+        elif on_attribute == "target":
+            return Node.from_fst(baron.parse("def a(%s=b): pass" % string)[0]["arguments"][0]["target"], parent=parent, on_attribute=on_attribute) if string else ""
 
         else:
             raise Exception("Unhandled case")
@@ -2683,4 +2689,3 @@ def truncate(text, n):
     truncated[-3:-1] = ['.', '.', '.']
     del truncated[n-4 : -4]
     return "".join(truncated)
-

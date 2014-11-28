@@ -866,10 +866,10 @@ positions = [
     (fst.def_,                                     [(3, 1), (3, 2), (3, 3)]),
     (fst.def_.first_formatting[0],                 [(3, 4)]),
     (fst.def_,                                     [(3, 5), (3, 6)]),
-    (fst.def_.arguments.node_list[0],                        [(3, 7)]),
+    (fst.def_.arguments.node_list[0].target,                 [(3, 7)]),
     (fst.def_.arguments.node_list[1],                        [(3, 8)]),
     (fst.def_.arguments.node_list[1].second_formatting[0],   [(3, 9)]),
-    (fst.def_.arguments.node_list[2],                        [(3, 10)]),
+    (fst.def_.arguments.node_list[2].target,                 [(3, 10)]),
     (fst.def_,                                     [(3, 11), (3, 12)]),
     (fst.def_.value.node_list[0],                            [(4, 1), (4, 2), (4, 3), (4, 4)]),
     (fst.def_.value.node_list[1].target,                     [(4, 5)]),
@@ -1705,9 +1705,9 @@ def test_call_argument_setattr_value():
 
 def test_call_argument_setattr_name():
     red = RedBaron("a(b)")
-    red[0].value[1].value[0].name = "caramba"
+    red[0].value[1].value[0].target = "caramba"
     assert red.dumps() == "a(caramba=b)"
-    red[0].value[1].value[0].name = ""
+    red[0].value[1].value[0].target = ""
     assert red.dumps() == "a(b)"
     with pytest.raises(Exception):
         red[0].value[1].value[0].value = "def a(): pass"
