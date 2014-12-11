@@ -1,11 +1,12 @@
 Changelog
 =========
 
-0.4 (unreleased)
+0.4 (2014-12-11)
 ----------------
 
 - compatibility with baron upstream (removal of def_argument_node and
   uniformisation of def_arguments structure)
+- fix: long wasn't supported in redbaron (due to a bug in baron)
 
 0.3 (2014-11-12)
 ----------------
