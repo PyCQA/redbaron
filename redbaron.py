@@ -1254,7 +1254,7 @@ class ProxyList(object):
 
     def __repr__(self):
         # the isinstance here is for building sphinx doc
-        if isinstance(sys.stdout, StringIO) or os.isatty(sys.stdout.fileno()):
+        if isinstance(sys.stdout, StringIO) or (hasattr(sys.stdout, 'fileno') and os.isatty(sys.stdout.fileno())):
             return self.__str__()
 
         return "<%s %s, \"%s\" %s, on %s %s>" % (
