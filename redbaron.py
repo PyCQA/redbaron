@@ -64,6 +64,14 @@ class Path(object):
 
         self.path = path
 
+    def __eq__(self, other):
+        return not self != other
+
+    def __ne__(self, other):
+        if not isinstance(other, Path):
+            return True
+        return self.path != other.path
+
     @classmethod
     def from_baron_path(class_, node, path):
         if path is None:
@@ -870,6 +878,15 @@ class Node(GenericNodesUtils):
                                                   encoding="Utf-8"))
         else:
             return self.dumps()
+
+    def __eq__(self, other):
+        return not self != other
+
+    def __ne__(self, other):
+        for key in itertools.chain(self._str_keys, self._list_keys, self._dict_keys):
+            if getattr(self, key) != getattr(other, key, None):
+                return True
+        return False
 
     def copy(self):
         # XXX not very optimised but at least very simple
