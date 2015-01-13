@@ -28,7 +28,16 @@ else:
 
 def in_a_shell():
     # the isinstance here is for building sphinx doc
-    return isinstance(sys.stdout, StringIO) or (hasattr(sys.stdout, 'fileno') and os.isatty(sys.stdout.fileno()))
+    if isinstance(sys.stdout, StringIO):
+        return True
+    try:
+        if hasattr(sys.stdout, 'fileno') and os.isatty(sys.stdout.fileno()):
+            return True
+    except Exception:
+        # someone is doing strange things with stdout (eg: bpython or ipython notebook)
+        return False
+
+    return False
 
 
 def indent(block_of_text, indentation):
