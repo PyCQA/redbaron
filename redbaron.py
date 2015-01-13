@@ -26,6 +26,11 @@ else:
     from StringIO import StringIO
 
 
+def in_a_shell():
+    # the isinstance here is for building sphinx doc
+    return isinstance(sys.stdout, StringIO) or (hasattr(sys.stdout, 'fileno') and os.isatty(sys.stdout.fileno()))
+
+
 def indent(block_of_text, indentation):
     """
     Helper function to indent a block of text.
@@ -301,8 +306,7 @@ class NodeList(UserList, GenericNodesUtils):
         return baron.dumps(self.fst())
 
     def __repr__(self):
-        # the isinstance here is for building sphinx doc
-        if isinstance(sys.stdout, StringIO) or os.isatty(sys.stdout.fileno()):
+        if in_a_shell():
             return self.__str__()
 
         return "<%s %s, \"%s\" %s, on %s %s>" % (
@@ -850,8 +854,7 @@ class Node(GenericNodesUtils):
         return "\n  ".join(to_join)
 
     def __repr__(self):
-        # the isinstance here is for building sphinx doc
-        if isinstance(sys.stdout, StringIO) or os.isatty(sys.stdout.fileno()):
+        if in_a_shell():
             return self.__str__()
 
         return "<%s path=%s, \"%s\" %s, on %s %s>" % (
@@ -1253,8 +1256,7 @@ class ProxyList(object):
         return self.__class__(NodeList(to_return))
 
     def __repr__(self):
-        # the isinstance here is for building sphinx doc
-        if isinstance(sys.stdout, StringIO) or (hasattr(sys.stdout, 'fileno') and os.isatty(sys.stdout.fileno())):
+        if in_a_shell():
             return self.__str__()
 
         return "<%s %s, \"%s\" %s, on %s %s>" % (
