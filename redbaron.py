@@ -10,7 +10,7 @@ from pygments import highlight
 from pygments.token import Comment, Text, String, Keyword, Name, Operator
 from pygments.lexer import RegexLexer, bygroups
 from pygments.lexers import PythonLexer
-from pygments.formatters import Terminal256Formatter
+from pygments.formatters import Terminal256Formatter, HtmlFormatter
 
 import baron
 import baron.path
@@ -334,6 +334,24 @@ class NodeList(UserList, GenericNodesUtils):
             to_return += "\n"
         return to_return
         return "%s" % [x.__repr__() for x in self.data]
+
+    def _repr_html_(self):
+        def __repr_html(self):
+            # string addition is slow (and makes copies)
+            yield u"<table>"
+            yield u"<tr><th>Index</th><th>node</th></tr>"
+            for num, item in enumerate(self):
+                yield u"<tr>"
+                yield u"<td>"
+                yield str(num)
+                yield u"</td>"
+                yield u"<td>"
+                yield item._repr_html_()
+                yield u"</td>"
+                yield u"</tr>"
+            yield "</table>"
+        return u''.join(__repr_html(self))
+
 
     def help(self, deep=2, with_formatting=False):
         for num, i in enumerate(self.data):
@@ -883,6 +901,10 @@ class Node(GenericNodesUtils):
         else:
             return self.dumps()
 
+    def _repr_html_(self):
+        return highlight(self.dumps(), PythonLexer(encode="Utf-8"),
+                         HtmlFormatter(noclasses=True, encoding="UTf-8"))
+
     def copy(self):
         # XXX not very optimised but at least very simple
         return Node.from_fst(self.fst())
@@ -1276,6 +1298,23 @@ class ProxyList(object):
                 self.parent.__class__.__name__,
                 id(self.parent)
             )
+
+    def _repr_html_(self):
+        def __repr_html(self):
+            # string addition is slow (and makes copies)
+            yield u"<table>"
+            yield u"<tr><th>Index</th><th>node</th></tr>"
+            for num, item in enumerate(self):
+                yield u"<tr>"
+                yield u"<td>"
+                yield str(num)
+                yield u"</td>"
+                yield u"<td>"
+                yield item._repr_html_()
+                yield u"</td>"
+                yield u"</tr>"
+            yield "</table>"
+        return u''.join(__repr_html(self))
 
     def __str__(self):
         to_return = ""
@@ -1940,6 +1979,10 @@ class ElseNode(CodeBlockNode):
 class EndlNode(Node):
     def __repr__(self):
         return repr(baron.dumps([self.fst()]))
+
+    def _repr_html_(self):
+        return highlight(self.__repr__(), PythonLexer(encode="Utf-8"),
+                         HtmlFormatter(noclasses=True, encoding="UTf-8"))
 
 
 class ExceptNode(CodeBlockNode):
