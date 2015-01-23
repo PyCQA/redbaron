@@ -1565,6 +1565,13 @@ class LineProxyList(ProxyList):
             else:
                 self.node_list.pop(i)
 
+    def get_absolute_bounding_box_of_attribute(self, index):
+        if index >= len(self.data) or index < 0:
+            raise IndexError()
+        index = self[index].index_on_parent
+        path = self.path().to_baron_path() + [index]
+        return baron.path.path_to_bounding_box(self.root.fst(), path)
+
 
 class DecoratorsLineProxyList(LineProxyList):
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
