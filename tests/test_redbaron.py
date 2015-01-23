@@ -19,31 +19,6 @@ def test_index():
     assert red[0].value.index_on_parent is None
 
 
-test_indent_code = """
-def a():
-    # plop
-    1 + 2
-    if caramba:
-        plop
-    pouf
-
-"""
-
-
-def test_increase_indentation():
-    red = RedBaron(test_indent_code)
-    red.increase_indentation(4)
-    indented_code = "\n" + "\n".join(map(lambda x: "    " + x, test_indent_code.split("\n")[1:-2])) + "\n\n"
-    assert red.dumps() == indented_code
-
-
-def test_decrease_indentation():
-    red = RedBaron(test_indent_code)
-    red.decrease_indentation(4)
-    indented_code = "\ndef a():\n" + "\n".join(map(lambda x: x[4:], test_indent_code.split("\n")[2:-2])) + "\n\n"
-    assert red.dumps() == indented_code
-
-
 def test_regression_find_all_recursive():
     red = RedBaron("a.b()")
     assert red[0].value("name", recursive=False) == [red.name, red("name")[1]]
