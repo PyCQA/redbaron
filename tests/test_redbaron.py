@@ -16,40 +16,6 @@ def a(c, d):
 """)
 
 
-def test_root(red):
-    nodes = [
-        red.def_,
-        red.def_.decorators,
-        red.def_.decorators.node_list[0],
-        red.def_.decorators.node_list[0].value,
-        red.def_.decorators.node_list[0].value.value,
-        red.def_.decorators.node_list[0].value.value[0],
-        red.def_.decorators.node_list[1],
-        red.def_.first_formatting,
-        red.def_.first_formatting[0],
-        red.def_.second_formatting,
-        red.def_.third_formatting,
-        red.def_.arguments,
-        red.def_.arguments.node_list[0],
-        red.def_.arguments.node_list[1],
-        red.def_.arguments.node_list[2],
-        red.def_.fourth_formatting,
-        red.def_.fifth_formatting,
-        red.def_.sixth_formatting,
-        red.def_.value.node_list,
-        red.def_.value.node_list[0],
-        red.def_.value.node_list[1],
-        red.def_.value.node_list[1].target,
-        red.def_.value.node_list[1].value,
-        red.def_.value.node_list[1].value.first,
-        red.def_.value.node_list[1].value.second,
-        red.def_.value.node_list[2]
-    ]
-
-    for node in nodes:
-        assert red is node.root
-
-
 fst = red()
 bounding_boxes = [
     (((1, 1),  (4, 0)),  ((1, 1), (4, 0)), fst),
@@ -166,11 +132,6 @@ def test_find_by_position(position_fixture):
 def test_other_name_assignment():
     red = RedBaron("a = b")
     assert red.assign is red[0]
-
-
-def test_get_root():
-    red = RedBaron("def a(b=c):\n    return 42")
-    assert red is red.find("int").root
 
 
 def test_setitem_nodelist():
