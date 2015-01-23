@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.4.1 (not released)
+--------------------
+
+- fix index handling in get_absolute_bounding_box_of_attribute method in
+  a LineProxyList
+
 0.4 (2014-12-11)
 ----------------
 
