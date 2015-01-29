@@ -2099,6 +2099,14 @@ class FromImportNode(Node):
         """
         return [x.value for x in self.targets]
 
+    def full_path_names(self):
+        """Return the list of new names imported with the full module path
+
+        For example (notice 'e' instead of 'f'):
+            RedBaron("from qsd import a, c, e as f").names() == ['qsd.a', 'qsd.c', 'qsd.f']
+        """
+        return [self.value.dumps() + "." + (x.target if x.target else x.value) for x in self.targets]
+
     def full_path_modules(self):
         """Return the list of the targets imported with the full module path
 
