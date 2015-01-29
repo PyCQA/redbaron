@@ -19,3 +19,8 @@ def test_from_import_names():
 def test_from_import_modules():
     red = RedBaron("from qsd import a, c, e as f")
     assert red[0].modules() == ['a', 'c', 'e']
+
+
+def test_from_import_full_path_modules():
+    red = RedBaron("from qsd import a, c, e as f")
+    assert red[0].full_path_modules() == ['qsd.a', 'qsd.c', 'qsd.e']
