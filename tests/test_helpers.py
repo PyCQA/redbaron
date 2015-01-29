@@ -14,3 +14,8 @@ def test_import_names():
 def test_from_import_names():
     red = RedBaron("from qsd import a, c, e as f")
     assert red[0].names() == ['a', 'c', 'f']
+
+
+def test_from_import_modules():
+    red = RedBaron("from qsd import a, c, e as f")
+    assert red[0].modules() == ['a', 'c', 'e']

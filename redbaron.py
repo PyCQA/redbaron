@@ -2091,6 +2091,14 @@ class FromImportNode(Node):
         """
         return [x.target if x.target else x.value for x in self.targets]
 
+    def modules(self):
+        """Return the list of the targets imported
+
+        For example (notice 'e' instead of 'f'):
+            RedBaron("from qsd import a, c, e as f").names() == ['a', 'c', 'e']
+        """
+        return [x.value for x in self.targets]
+
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "targets":
             fst = baron.parse("from a import %s" % string)[0]["targets"]
