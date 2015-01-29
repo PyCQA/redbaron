@@ -10,6 +10,7 @@ Changelog
   https://cloud.githubusercontent.com/assets/41827/5731132/65ff4c92-9b80-11e4-977c-0faebbf63415.png
 - fix: RedBaron repr was crashing in bpython and in ipython notebook. The new
   behavior should be way more stable and never crash.
+- new helpers .names, .modules, .full_path_modules for from_import node
 
 0.4 (2014-12-11)
 ----------------
