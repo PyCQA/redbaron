@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.4.1 (unreleased)
+0.5 (unreleased)
 --------------------
 
 - fix index handling in get_absolute_bounding_box_of_attribute method in
