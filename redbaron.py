@@ -1525,7 +1525,8 @@ class LineProxyList(ProxyList):
                 expected_list.pop()
 
             expected_list.append(i)
-            expected_list.append(generate_separator())
+            if i.type not in ('function', 'class'):
+                expected_list.append(generate_separator())
 
         if expected_list:
             if self.parent and self.parent.next:
@@ -2745,7 +2746,7 @@ class RedBaron(GenericNodesUtils, LineProxyList):
 
             expected_list.append(i)
 
-            if not (i.type == "endl" and position == 0):
+            if not (i.type == "endl" and position == 0) and (i.type not in ('function', 'class')):
                 expected_list.append(generate_separator())
 
         return expected_list
