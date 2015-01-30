@@ -818,6 +818,8 @@ class Node(GenericNodesUtils):
             'parse_code_block',
             'parse_decorators',
             'from_fst',
+            'index_on_parent',
+            'index_on_parent_raw',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -959,6 +961,16 @@ class Node(GenericNodesUtils):
 
     @property
     def index_on_parent(self):
+        if not self.parent:
+            return None
+
+        if not isinstance(getattr(self.parent, self.on_attribute), (NodeList, ProxyList)):
+            return None
+
+        return getattr(self.parent, self.on_attribute).index(self)
+
+    @property
+    def index_on_parent_raw(self):
         if not self.parent:
             return None
 
@@ -1568,7 +1580,7 @@ class LineProxyList(ProxyList):
     def get_absolute_bounding_box_of_attribute(self, index):
         if index >= len(self.data) or index < 0:
             raise IndexError()
-        index = self[index].index_on_parent
+        index = self[index].index_on_parent_raw
         path = self.path().to_baron_path() + [index]
         return baron.path.path_to_bounding_box(self.root.fst(), path)
 
