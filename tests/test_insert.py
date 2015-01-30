@@ -40,8 +40,8 @@ def test_insert_with_class_1(red):
     assert red.dumps() == """\
 class A:
     pass
-a = 1
 
+a = 1
 class B:
     pass
 """
@@ -55,9 +55,9 @@ def test_insert_with_class_2(red):
 class A:
     pass
 
-a = 1
 class B:
     pass
+a = 1
 """
 
 
@@ -73,4 +73,3 @@ class B:
     pass
 a = 1
 """
-
