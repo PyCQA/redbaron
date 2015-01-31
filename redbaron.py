@@ -820,6 +820,7 @@ class Node(GenericNodesUtils):
             'from_fst',
             'index_on_parent',
             'index_on_parent_raw',
+            'insert_before',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -1007,6 +1008,9 @@ class Node(GenericNodesUtils):
 
     def decrease_indentation(self, number_of_spaces):
         self.get_indentation_node().indent -= number_of_spaces * " "
+
+    def insert_before(self, value):
+        self.parent.insert(self.index_on_parent, value)
 
 
 class CodeBlockNode(Node):

@@ -546,3 +546,8 @@ def test_replace():
     assert isinstance(red[0], NameNode)
     assert red.dumps() == "caramba"
 
+
+def test_insert_before():
+    red = RedBaron("a = 1\nprint pouet\n")
+    red.print_.insert_before("chocolat")
+    assert red.dumps() == "a = 1\nchocolat\nprint pouet\n"
