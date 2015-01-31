@@ -398,3 +398,16 @@ node you've just got via query. Those helpers are here for that:
     red
     red.print_.insert_after("foobar")
     red
+
+Additionally, you can give an optional argument :file:`offset` to insert more
+than one line after or before:
+
+
+.. ipython:: python
+
+    red = RedBaron("foo = 42\nprint 'bar'\n")
+    red
+    red.print_.insert_before("baz", offset=1)
+    red
+    red[0].insert_after("foobar", offset=1)
+    red
