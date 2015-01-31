@@ -383,3 +383,18 @@ instance. Similarly, you probably don't need to go so low level.
 
     from redbaron import NodeList
     NodeList.from_fst([{"type": "name", "value": "a"}, {'first_formatting': [], 'type': 'comma', 'second_formatting': [{'type': 'space', 'value': ' '}]}, {"type": "name", "value": "b"}])
+
+.insert_before .insert_after
+----------------------------
+
+One thing you often wants to do is to insert things just after or before the
+node you've just got via query. Those helpers are here for that:
+
+.. ipython:: python
+
+    red = RedBaron("foo = 42\nprint 'bar'\n")
+    red
+    red.print_.insert_before("baz")
+    red
+    red.print_.insert_after("foobar")
+    red
