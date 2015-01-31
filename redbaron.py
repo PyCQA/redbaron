@@ -821,6 +821,7 @@ class Node(GenericNodesUtils):
             'index_on_parent',
             'index_on_parent_raw',
             'insert_before',
+            'insert_after',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -1011,6 +1012,10 @@ class Node(GenericNodesUtils):
 
     def insert_before(self, value):
         self.parent.insert(self.index_on_parent, value)
+
+
+    def insert_after(self, value):
+        self.parent.insert(self.index_on_parent + 1, value)
 
 
 class CodeBlockNode(Node):

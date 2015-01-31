@@ -551,3 +551,9 @@ def test_insert_before():
     red = RedBaron("a = 1\nprint pouet\n")
     red.print_.insert_before("chocolat")
     assert red.dumps() == "a = 1\nchocolat\nprint pouet\n"
+
+
+def test_insert_after():
+    red = RedBaron("a = 1\nprint pouet\n")
+    red.print_.insert_after("chocolat")
+    assert red.dumps() == "a = 1\nprint pouet\nchocolat\n"
