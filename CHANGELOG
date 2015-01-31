@@ -13,6 +13,7 @@ Changelog
 - new helpers .names, .modules, .full_path_modules for from_import node
 - add a node.index_on_parent_raw and make node.index_on_parent works has it
   should be intuitivly according to the proxy list api
+- new helper methods: .insert_before and .insert_after
 - fix: some white space bugs in the merging algorithm of line proxy
 - fix: on_attribute and parent were correctly set on newly added elements to
   the root node
