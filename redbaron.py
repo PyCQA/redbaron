@@ -1014,8 +1014,8 @@ class Node(GenericNodesUtils):
         self.parent.insert(self.index_on_parent - offset, value)
 
 
-    def insert_after(self, value):
-        self.parent.insert(self.index_on_parent + 1, value)
+    def insert_after(self, value, offset=0):
+        self.parent.insert(self.index_on_parent + 1 + offset, value)
 
 
 class CodeBlockNode(Node):
