@@ -14,6 +14,8 @@ Changelog
 - add a node.index_on_parent_raw and make node.index_on_parent works has it
   should be intuitivly according to the proxy list api
 - fix: some white space bugs in the merging algorithm of line proxy
+- fix: on_attribute and parent were correctly set on newly added elements to
+  the root node
 
 0.4 (2014-12-11)
 ----------------
