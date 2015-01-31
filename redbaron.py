@@ -1013,7 +1013,6 @@ class Node(GenericNodesUtils):
     def insert_before(self, value, offset=0):
         self.parent.insert(self.index_on_parent - offset, value)
 
-
     def insert_after(self, value, offset=0):
         self.parent.insert(self.index_on_parent + 1 + offset, value)
 
@@ -2735,6 +2734,12 @@ class RedBaron(GenericNodesUtils, LineProxyList):
             super(RedBaron, self).__init__(source_code)
         self.on_attribute = None
         self.parent = None
+
+    def _convert_input_to_node_object(self, value, parent, on_attribute):
+        return GenericNodesUtils._convert_input_to_node_object(self, value, self, "root")
+
+    def _convert_input_to_node_object_list(self, value, parent, on_attribute):
+        return GenericNodesUtils._convert_input_to_node_object_list(self, value, self, "root")
 
     def _generate_expected_list(self):
         def generate_separator():
