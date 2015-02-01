@@ -24,6 +24,8 @@ good without reading the doc for 80% of your operations.
 **For now, RedBaron can be considered in alpha, the core is quite stable but it
 is not battle tested yet and is still a bit rough.** Feedback is very welcome.
 
+**Disclamer**: RedBaron (and baron) is **working** with python3 but it NOT fully parsing it yet.
+
 Installation
 ============
 
