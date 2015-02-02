@@ -820,6 +820,8 @@ class Node(GenericNodesUtils):
             'from_fst',
             'index_on_parent',
             'index_on_parent_raw',
+            'insert_before',
+            'insert_after',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -1007,6 +1009,12 @@ class Node(GenericNodesUtils):
 
     def decrease_indentation(self, number_of_spaces):
         self.get_indentation_node().indent -= number_of_spaces * " "
+
+    def insert_before(self, value, offset=0):
+        self.parent.insert(self.index_on_parent - offset, value)
+
+    def insert_after(self, value, offset=0):
+        self.parent.insert(self.index_on_parent + 1 + offset, value)
 
 
 class CodeBlockNode(Node):
@@ -2726,6 +2734,12 @@ class RedBaron(GenericNodesUtils, LineProxyList):
             super(RedBaron, self).__init__(source_code)
         self.on_attribute = None
         self.parent = None
+
+    def _convert_input_to_node_object(self, value, parent, on_attribute):
+        return GenericNodesUtils._convert_input_to_node_object(self, value, self, "root")
+
+    def _convert_input_to_node_object_list(self, value, parent, on_attribute):
+        return GenericNodesUtils._convert_input_to_node_object_list(self, value, self, "root")
 
     def _generate_expected_list(self):
         def generate_separator():

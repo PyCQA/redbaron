@@ -63,7 +63,7 @@ red = RedBaron(open("../setup.py", "r").read())
 # built documents.
 #
 # The short X.Y version.
-version = eval(red.find("call_argument", name="version").value.value)
+version = eval(red.find("call_argument", target=lambda x: x and x.dumps() == "version").value.value)
 # The full version, including alpha/beta/rc tags.
 release = version
 

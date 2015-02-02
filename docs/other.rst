@@ -124,12 +124,16 @@ node in which this node is located:
     red.int_
     assert red.int_.root is red
 
+.. _index_on_parent:
+
 .index_on_parent
 ----------------
 
 Every node have the :file:`.index_on_parent` attribute (property) that returns the index
 at which this node is store in its parent node list. If the node isn't stored
-in a node list, it returns :file:`None`.
+in a node list, it returns :file:`None`. In the node is stored in a proxy list
+(:doc:`proxy_list`), it's the index in the proxy list that is return, to get
+the unproxified index use :ref:`index_on_parent_raw`.
 
 .. ipython:: python
 
@@ -139,6 +143,21 @@ in a node list, it returns :file:`None`.
     red[0].value.value[2].index_on_parent
     red[0].value
     red[0].value.index_on_parent
+
+.. _index_on_parent_raw:
+
+.index_on_parent_raw
+--------------------
+
+Same than :ref:`index_on_parent` except that it always return the unproxified
+whether the node is stored in a proxy list or not.
+
+.. ipython:: python
+
+    red = RedBaron("a = [1, 2, 3]")
+    red[0].value.value.node_list
+    red[0].value.value.node_list[2]
+    red[0].value.value.node_list[2].index_on_parent_raw
 
 .filtered()
 -----------
@@ -364,3 +383,31 @@ instance. Similarly, you probably don't need to go so low level.
 
     from redbaron import NodeList
     NodeList.from_fst([{"type": "name", "value": "a"}, {'first_formatting': [], 'type': 'comma', 'second_formatting': [{'type': 'space', 'value': ' '}]}, {"type": "name", "value": "b"}])
+
+.insert_before .insert_after
+----------------------------
+
+One thing you often wants to do is to insert things just after or before the
+node you've just got via query. Those helpers are here for that:
+
+.. ipython:: python
+
+    red = RedBaron("foo = 42\nprint 'bar'\n")
+    red
+    red.print_.insert_before("baz")
+    red
+    red.print_.insert_after("foobar")
+    red
+
+Additionally, you can give an optional argument :file:`offset` to insert more
+than one line after or before:
+
+
+.. ipython:: python
+
+    red = RedBaron("foo = 42\nprint 'bar'\n")
+    red
+    red.print_.insert_before("baz", offset=1)
+    red
+    red[0].insert_after("foobar", offset=1)
+    red

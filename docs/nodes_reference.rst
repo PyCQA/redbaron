@@ -750,6 +750,20 @@ SetAttr
     red[0].targets = "a as b, c as d, e"
     red
 
+Helpers
+-------
+
+To reduce the complexity, 2 helpers method are provided:
+
+.. ipython:: python
+
+    red = RedBaron("from foo.bar import baz as stuff, plop")
+    red[0].names()  # names added to the context
+    red[0].modules()  # modules imported
+    red[0].full_path_names()  # names added to the context with full path
+    red[0].full_path_modules()  # modules imported with full path
+
+
 
 FuncdefNode
 ===========

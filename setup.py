@@ -12,13 +12,13 @@ except ImportError:
 
 
 setup(name='redbaron',
-      version='0.4',
+      version='0.5',
       description='Abstraction on top of baron, a FST for python to make writing refactoring code a realistic task',
       author='Laurent Peuch',
       long_description=read_md("README.md") + "\n\n" + open("CHANGELOG", "r").read(),
       author_email='cortex@worlddomination.be',
       url='https://github.com/Psycojoker/redbaron',
-      install_requires=['baron>=0.5', 'pygments'],
+      install_requires=['baron>=0.6.1', 'pygments'],
       license= 'lgplv3+',
       py_modules=["redbaron"],
       keywords='baron fst ast refactoring',
