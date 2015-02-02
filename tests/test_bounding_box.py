@@ -121,29 +121,25 @@ def test_bounding_box_with_proxy_list():
     assert ((2, 5), (5, 7)) == RED.class_.value[0].absolute_bounding_box
     assert ((6, 5), (9, 17)) == RED.class_.value[1].absolute_bounding_box
     assert ((9, 18), (10, 0)) == RED.class_.value[2].absolute_bounding_box
-    assert ((11, 5), (16, 12)) == RED.class_.value[3].absolute_bounding_box
-    assert ((16, 13), (17, 0)) == RED.class_.value[4].absolute_bounding_box
-    assert ((18, 5), (18, 16)) == RED.class_.value[5].absolute_bounding_box
-    assert ((18, 17), (19, 0)) == RED.class_.value[6].absolute_bounding_box
-    assert ((20, 5), (26, 12)) == RED.class_.value[7].absolute_bounding_box
-    assert ((26, 13), (27, 0)) == RED.class_.value[8].absolute_bounding_box
-    assert ((28, 5), (31, 17)) == RED.class_.value[9].absolute_bounding_box
+    assert ((11, 5), (18, 4)) == RED.class_.value[3].absolute_bounding_box
+    assert ((18, 5), (18, 16)) == RED.class_.value[4].absolute_bounding_box
+    assert ((18, 17), (19, 0)) == RED.class_.value[5].absolute_bounding_box
+    assert ((20, 5), (28, 4)) == RED.class_.value[6].absolute_bounding_box
+    assert ((28, 5), (31, 17)) == RED.class_.value[7].absolute_bounding_box
     with pytest.raises(IndexError):
         RED.class_.value[8]
 
 
 def test_bounding_box_of_attribute_with_proxy_list():
-    # assert ((1, 1), (32, 0)) == RED.absolute_bounding_box
-    # assert ((1, 1), (32, 0)) == RED.class_.absolute_bounding_box
+    assert ((1, 1), (32, 0)) == RED.absolute_bounding_box
+    assert ((1, 1), (32, 0)) == RED.class_.absolute_bounding_box
     assert ((2, 5), (5, 7)) == RED.class_.value.get_absolute_bounding_box_of_attribute(0)
     assert ((6, 5), (9, 17)) == RED.class_.value.get_absolute_bounding_box_of_attribute(1)
     assert ((9, 18), (10, 0)) == RED.class_.value.get_absolute_bounding_box_of_attribute(2)
-    assert ((11, 5), (16, 12)) == RED.class_.value.get_absolute_bounding_box_of_attribute(3)
-    assert ((16, 13), (17, 0)) == RED.class_.value.get_absolute_bounding_box_of_attribute(4)
-    assert ((18, 5), (18, 16)) == RED.class_.value.get_absolute_bounding_box_of_attribute(5)
-    assert ((18, 17), (19, 0)) == RED.class_.value.get_absolute_bounding_box_of_attribute(6)
-    assert ((20, 5), (26, 12)) == RED.class_.value.get_absolute_bounding_box_of_attribute(7)
-    assert ((26, 13), (27, 0)) == RED.class_.value.get_absolute_bounding_box_of_attribute(8)
-    assert ((28, 5), (31, 17)) == RED.class_.value.get_absolute_bounding_box_of_attribute(9)
+    assert ((11, 5), (18, 4)) == RED.class_.value.get_absolute_bounding_box_of_attribute(3)
+    assert ((18, 5), (18, 16)) == RED.class_.value.get_absolute_bounding_box_of_attribute(4)
+    assert ((18, 17), (19, 0)) == RED.class_.value.get_absolute_bounding_box_of_attribute(5)
+    assert ((20, 5), (28, 4)) == RED.class_.value.get_absolute_bounding_box_of_attribute(6)
+    assert ((28, 5), (31, 17)) == RED.class_.value.get_absolute_bounding_box_of_attribute(7)
     with pytest.raises(IndexError):
         RED.class_.value.get_absolute_bounding_box_of_attribute(8)
