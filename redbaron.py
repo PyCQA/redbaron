@@ -251,7 +251,6 @@ class GenericNodesUtils(object):
             elif kind == "string":
                 if isinstance(getattr(node, key), string_instance):
                     yield node
-                    continue
             elif kind == "key":
                 for i in self._iter_in_rendering_order(getattr(node, key)):
                     yield i
