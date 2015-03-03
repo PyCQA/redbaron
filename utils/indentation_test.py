@@ -10,7 +10,7 @@ red = RedBaron(open("../redbaron.py", "r").read())
 def walk(node):
     if node is None:
         return
-    print [node.indentation, node]
+    print([node.indentation, node])
     for i in node._dict_keys:
         walk(getattr(node, i))
 
@@ -18,4 +18,4 @@ def walk(node):
         map(walk, getattr(node, i))
 
 map(walk, red)
-# print walk(red[0])
+# print(walk(red[0]))

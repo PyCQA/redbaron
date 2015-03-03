@@ -76,7 +76,7 @@ that has "_formatting" in its name is formatting related):
     import json
 
     red = RedBaron("1+2")
-    print json.dumps(red.fst(), indent=4)  # json.dumps is used for pretty printing
+    print(json.dumps(red.fst(), indent=4))  # json.dumps is used for pretty printing
 
 Use it in a shell
 -----------------
@@ -88,7 +88,7 @@ selected source code, so you'll have a direct idea of what you are working on:
 
 .. ipython:: python
 
-    red = RedBaron("stuff = 1 + 2\nprint 'Hello', stuff")
+    red = RedBaron("stuff = 1 + 2\nprint(stuff)")
     red
 
 You might notice the :file:`0` and the :file:`1` on the left: those are the
@@ -274,7 +274,7 @@ using :file:`.copy()`:
 
 .. ipython:: python
 
-    red = RedBaron("stuff = 1 + 2\nprint 'Hello', stuff")
+    red = RedBaron("stuff = 1 + 2\nprint(stuff)")
     red
     i = red[0].value.copy()
     red[1].value = i
@@ -354,9 +354,9 @@ is intended as such, see the documentation for more information:
 
 .. ipython:: python
 
-    red = RedBaron("a = 1\n\nprint a")
+    red = RedBaron("a = 1\n\nprint(a)")
     red
-    red.insert(1, "if a:\n    print 'a == 1'")
+    red.insert(1, "if a:\n    print('a == 1')")
     red
 
 The important things to remember are that:

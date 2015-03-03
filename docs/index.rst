@@ -114,7 +114,7 @@ And let's see the result of our work:
 
 .. ipython:: python
 
-    print red.dumps()
+    print(red.dumps())
 
 Table of content
 ----------------

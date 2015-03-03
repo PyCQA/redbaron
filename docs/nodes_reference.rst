@@ -1090,14 +1090,14 @@ A node representing a print statement.
 
 .. ipython:: python
 
-    RedBaron("print stuff")[0].help(deep=True)
+    RedBaron("print(stuff)")[0].help(deep=True)
 
 SetAttr
 -------
 
 .. ipython:: python
 
-    red = RedBaron("print stuff")
+    red = RedBaron("print(stuff)")
     red
     red[0].destination = "some_file"
     red
