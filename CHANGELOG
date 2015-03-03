@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - fix whitespace duplication when using .insert()
+- DecoratorProxyList of the last method of a function wasn't handling correctly the indentation of its last endl token
 
 0.5 (2015-01-31)
 ----------------
