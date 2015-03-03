@@ -1618,10 +1618,9 @@ class DecoratorsLineProxyList(LineProxyList):
             expected_list.append(generate_separator())
 
         if expected_list:
-            if self.parent.next:
-                expected_list[-1].indent = self.parent.indentation
-            else:
-                expected_list[-1].indent = ""
+            # decorators always have a next item
+            # don't break its indentation
+            expected_list[-1].indent = self.parent.indentation
 
         return expected_list
 
