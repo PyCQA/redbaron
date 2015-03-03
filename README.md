@@ -31,6 +31,12 @@ Installation
 
     pip install redbaron
 
+Running tests
+=============
+
+    pip install pytest
+    py.test tests
+
 Links
 =====
 
