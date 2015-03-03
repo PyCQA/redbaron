@@ -37,7 +37,7 @@ insert
 .. ipython:: python
 
     red
-    red[0].value.insert(1, "print caribou")
+    red[0].value.insert(1, "print(caribou)")
     red
     red[0].value
 
@@ -145,7 +145,7 @@ __iter__
 
     red
     for i in red[0].value:
-        print i.dumps()
+        print(i.dumps())
 
 __getslice__
 ~~~~~~~~~~~~

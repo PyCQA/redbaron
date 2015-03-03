@@ -19,7 +19,7 @@ RedBaron is very simple to use, you just need to import it and feed him with a s
 
     from redbaron import RedBaron
 
-    red = RedBaron("print 'hello world!'")
+    red = RedBaron("print('hello world!')")
 
 But what you should be really doing is using RedBaron directly into a shell (I
 recommend `IPython <http://ipython.org/>`_ but
@@ -38,7 +38,7 @@ for it, like BeautifulSoup.
 .. ipython:: python
 
     from redbaron import RedBaron
-    red = RedBaron("hello = 'Hello World!'\nprint hello")
+    red = RedBaron("hello = 'Hello World!'\nprint(hello)")
     red
 
 As you can see, when displayed in a shell, a RedBaron instance renders to the actual
@@ -111,10 +111,10 @@ You can read their documentation using the :file:`?` magic of ipython:
 
 .. ipython:: python
 
-    print red[0].names.__doc__  # you can do "red[0].names?" in IPython shell
+    print(red[0].names.__doc__)  # you can do "red[0].names?" in IPython shell
     red[0].names()
 
-    print red[0].modules.__doc__
+    print(red[0].modules.__doc__)
     red[0].modules()
 
 If you come with cool helpers, don't hesitate to propose them in a `pull
@@ -169,7 +169,7 @@ attributes):
 
     In [3]: red[0].value
 
-* node attributes, which are other nodes. They are shown with a :file:`->` followed by the name of the other node 
+* node attributes, which are other nodes. They are shown with a :file:`->` followed by the name of the other node
   at the next line in :file:`.help()`. :file:`.target` and :file:`.value` here for example.
 
 .. ipython::
@@ -180,7 +180,7 @@ attributes):
 
     In [21]: red[0].target.help()
 
-* nodelist attributes, which are lists of other nodes. They are shown with a :file:`->` followed by a series of names 
+* nodelist attributes, which are lists of other nodes. They are shown with a :file:`->` followed by a series of names
   of the other nodes starting with a :file:`*` for every item of the list. :file:`.value` here for example:
 
 .. ipython::
