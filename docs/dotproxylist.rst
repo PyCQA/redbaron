@@ -145,7 +145,7 @@ __iter__
 
     red
     for i in red[0].value:
-        print i.dumps()
+        print(i.dumps())
 
 __getslice__
 ~~~~~~~~~~~~

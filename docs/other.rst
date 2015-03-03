@@ -86,31 +86,31 @@ if you want to iterate on the neighbours of the node.
 
     In [42]: list = red[0]
 
-    In [42]: print list.next
-    In [42]: print list.previous
+    In [42]: print(list.next)
+    In [42]: print(list.previous)
 
     In [42]: list.help()
-    In [42]: print list.value[0]
-    In [42]: print list.value[0].next
-    In [42]: print list.value[0].previous
-    In [42]: print list.value[2]
-    In [42]: print list.value[2].next
-    In [42]: print list.value[2].previous
+    In [42]: print(list.value[0])
+    In [42]: print(list.value[0].next)
+    In [42]: print(list.value[0].previous)
+    In [42]: print(list.value[2])
+    In [42]: print(list.value[2].next)
+    In [42]: print(list.value[2].previous)
 
     In [42]: assign = red[2]
 
     In [42]: assign.help()
-    In [42]: print assign.target.next
-    In [42]: print assign.target.previous
+    In [42]: print(assign.target.next)
+    In [42]: print(assign.target.previous)
 
     In [42]: list.value[2].help(deep=1)
-    In [42]: print [x for x list.value[2].next_generator()]
-    In [42]: print [x for x list.value[2].previous_generator()]
+    In [42]: print([x for x list.value[2].next_generator()])
+    In [42]: print([x for x list.value[2].previous_generator()])
     In [42]: list.value.help(deep=0)
-    In [42]: print [x for x list.value.next_generator()]
-    In [42]: print [x for x list.value.previous_generator()]
-    In [42]: print [x for x assign.target.next_generator()]
-    In [42]: print [x for x assign.target.previous_generator()]
+    In [42]: print([x for x list.value.next_generator()])
+    In [42]: print([x for x list.value.previous_generator()])
+    In [42]: print([x for x assign.target.next_generator()])
+    In [42]: print([x for x assign.target.previous_generator()])
 
 .root
 -----
@@ -392,7 +392,7 @@ node you've just got via query. Those helpers are here for that:
 
 .. ipython:: python
 
-    red = RedBaron("foo = 42\nprint 'bar'\n")
+    red = RedBaron("foo = 42\nprint('bar')\n")
     red
     red.print_.insert_before("baz")
     red
@@ -405,7 +405,7 @@ than one line after or before:
 
 .. ipython:: python
 
-    red = RedBaron("foo = 42\nprint 'bar'\n")
+    red = RedBaron("foo = 42\nprint('bar')\n")
     red
     red.print_.insert_before("baz", offset=1)
     red
