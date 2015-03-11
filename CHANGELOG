@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.5.1 (unreleased)
+0.5.1 (2015-03-11)
 ------------------
 
 - fix whitespace duplication when using .insert()
