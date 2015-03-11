@@ -1021,6 +1021,9 @@ class CodeBlockNode(Node):
         if on_attribute == "value":
             return self.parse_code_block(string, parent=parent, on_attribute=on_attribute)
 
+        elif on_attribute.endswith("_formatting"):
+            return super(CodeBlockNode, self)._string_to_node_list(string, parent, on_attribute)
+
         else:
             raise Exception("Unhandled case")
 
