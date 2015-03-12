@@ -1548,7 +1548,7 @@ class LineProxyList(ProxyList):
                 expected_list.pop()
 
             expected_list.append(i)
-            if i.type not in ('function', 'class'):
+            if i.type not in ('def', 'class'):
                 expected_list.append(generate_separator())
             else:
                 # In case of a function or class, the last \n is owned
@@ -1561,7 +1561,7 @@ class LineProxyList(ProxyList):
             else:
                 last_indentation = ""
 
-            if expected_list[-1].type not in ('function', 'class'):
+            if expected_list[-1].type not in ('def', 'class'):
                 expected_list[-1].indent = last_indentation
             else:
                 # In case of a function or class, the last \n is owned
@@ -2829,7 +2829,7 @@ class RedBaron(GenericNodesUtils, LineProxyList):
 
             expected_list.append(i)
 
-            if not (i.type == "endl" and position == 0) and (i.type not in ('function', 'class')):
+            if not (i.type == "endl" and position == 0) and (i.type not in ('def', 'class')):
                 expected_list.append(generate_separator())
 
         return expected_list
