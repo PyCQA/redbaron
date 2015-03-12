@@ -300,6 +300,12 @@ class NodeList(UserList, GenericNodesUtils):
     def __getattr__(self, key):
         return self.find(key)
 
+    def getitem(self, index, show_all=False):
+        if isinstance(index, slice):
+            return self.__getslice__(index.start, index.stop)
+        else:
+            return self.__getitem__(index)
+
     def __setitem__(self, key, value):
         self.data[key] = self._convert_input_to_node_object(value, parent=self.parent, on_attribute=self.on_attribute)
 
@@ -1284,6 +1290,14 @@ class ProxyList(object):
 
     def index(self, value, *args):
         return self.data.index(value, *args)
+
+    def getitem(self, index, show_all=False):
+        if not show_all:
+            return self.__getitem__(index)
+        if isinstance(index, slice):
+            return self.node_list.__getslice__(index.start, index.stop)
+        else:
+            return self.node_list.__getitem__(index)
 
     def __getitem__(self, index):
         if isinstance(index, slice):
