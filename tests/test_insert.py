@@ -314,3 +314,22 @@ def a(self, a):
     return False
 """)
 
+
+def test_insert_nested_line_in_def_with_if():
+    red = RedBaron("""\
+def a(self, a):
+    if a == 42:
+        return True
+    return False
+""")
+
+    red.def_.if_.insert(0, "a = 1")
+
+    assert_with_indent(red, """\
+def a(self, a):
+    if a == 42:
+        a = 1
+        return True
+    return False
+""")
+

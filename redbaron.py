@@ -1569,7 +1569,7 @@ class LineProxyList(ProxyList):
                 expected_list.append(generate_separator())
 
         if expected_list:
-            if self.parent and self.parent.next:
+            if self.parent and self.parent.next_rendered:
                 last_indentation = self.parent.indentation
             else:
                 last_indentation = ""
