@@ -9,6 +9,7 @@ Changelog
 - fix node.decrease_indentation (that was simply not working)
 - fix code_block_node.value was broken on node with no parent
 - add getitem() method with same api on NodeList and ProxyList
+- fix: inconsistencies when inserting lines around code blocks
 
 0.5.1 (2015-03-11)
 ------------------
