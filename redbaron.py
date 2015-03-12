@@ -1562,12 +1562,11 @@ class LineProxyList(ProxyList):
                 expected_list.pop()
 
             expected_list.append(i)
-            if i.type not in ('def', 'class'):
-                expected_list.append(generate_separator())
+            if i.type in ('def', 'class', 'ifelseblock'):
+                # In this case, the last \n is owned by the class
+                i.value.getitem(-1, show_all=True).indent = indentation
             else:
-                # In case of a function or class, the last \n is owned
-                # by the class
-                i.value.node_list[-1].indent = indentation
+                expected_list.append(generate_separator())
 
         if expected_list:
             if self.parent and self.parent.next:
@@ -1575,12 +1574,11 @@ class LineProxyList(ProxyList):
             else:
                 last_indentation = ""
 
-            if expected_list[-1].type not in ('def', 'class'):
-                expected_list[-1].indent = last_indentation
+            if expected_list[-1].type in ('def', 'class', 'ifelseblock'):
+                # In this case, the last \n is owned by the class
+                expected_list[-1].value.getitem(-1, show_all=True).indent = last_indentation
             else:
-                # In case of a function or class, the last \n is owned
-                # by the class
-                expected_list[-1].value.node_list[-1].indent = last_indentation
+                expected_list[-1].indent = last_indentation
 
         return expected_list
 
