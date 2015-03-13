@@ -1128,7 +1128,7 @@ def test_decorator_line_proxy_dont_break_next_block_identation():
 def test_line_proxy_correctly_indent_code_block():
     red = RedBaron("while True:\n    pass\n")
     red[0].extend(["if a:\n    pass\n\n"])
-    assert red.dumps() == "while True:\n    pass\n    if a:\n        pass\n\n"
+    assert red.dumps() == "while True:\n    pass\n    if a:\n        pass\n"
 
 
 def test_root_as_line_proxy_list_len():
