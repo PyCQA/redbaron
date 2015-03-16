@@ -377,3 +377,25 @@ def a(self, a):
     return False
 """)
 
+def test_extend_newline_and_def_in_def():
+    red = RedBaron("""\
+def a(self, a):
+    return False
+""")
+
+    red.def_.extend(["", "def b():\n    return True", ""])
+    red.def_.extend(["", "def b():\n    return True", ""])
+
+    assert_with_indent(red, """\
+def a(self, a):
+    return False
+
+    def b():
+        return True
+
+
+    def b():
+        return True
+
+""")
+

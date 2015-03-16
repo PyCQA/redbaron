@@ -1562,12 +1562,16 @@ class LineProxyList(ProxyList):
         for i in self.data:
             # we face a blank line, remove previous separator since a blank line is not
             # previoused by a separator
-            if i.type == "endl":
-                expected_list.pop()
-
             expected_list.append(i)
+            if i.type == "endl" and expected_list[-1].type == "endl":
+                expected_list.pop()
+                try:
+                    expected_list[-1].getitem(-1, show_all=True).indent = ''
+                except (AttributeError, IndexError, TypeError):
+                    expected_list[-1].indent = ''
+
             if i.type in ('def', 'class', 'ifelseblock'):
-                # In this case, the last \n is owned by the class
+                # In this case, the last \n is owned by the node
                 i.value.getitem(-1, show_all=True).indent = indentation
             else:
                 expected_list.append(generate_separator())
@@ -1579,7 +1583,7 @@ class LineProxyList(ProxyList):
                 last_indentation = ""
 
             if expected_list[-1].type in ('def', 'class', 'ifelseblock'):
-                # In this case, the last \n is owned by the class
+                # In this case, the last \n is owned by the node
                 expected_list[-1].value.getitem(-1, show_all=True).indent = last_indentation
             else:
                 expected_list[-1].indent = last_indentation
@@ -1587,23 +1591,17 @@ class LineProxyList(ProxyList):
         return expected_list
 
     def _diff_augmented_list(self):
-        def is_blank_line(node):
-            return node in self.data
-
         expected_list = self._generate_expected_list()
 
         for i in range(len(expected_list)):
             if i >= len(self.node_list):
                 self.node_list.insert(i + 1, expected_list[i])
 
-            elif (self.node_list[i].type, expected_list[i].type) == ("endl", "endl")\
-                    and not is_blank_line(expected_list[i])\
-                    and not is_blank_line(self.node_list[i]):
+            elif (self.node_list[i].type, expected_list[i].type) == ("endl", "endl"):
                 if self.node_list[i].indent != expected_list[i].indent:
                     self.node_list[i].indent = expected_list[i].indent
 
-            elif self.node_list[i] is not expected_list[i] and\
-                    (not (self.node_list[i].type, expected_list[i].type) == ("endl", "endl") or is_blank_line(expected_list[i]) or is_blank_line(self.node_list[i])):
+            elif self.node_list[i] is not expected_list[i]:
                 self.node_list.insert(i, expected_list[i])
 
     def _diff_reduced_list(self):
