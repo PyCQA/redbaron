@@ -1203,7 +1203,11 @@ class ProxyList(object):
         return self.node_list.find_all(identifier, *args, **kwargs)
 
     def _convert_input_to_node_object(self, value, parent, on_attribute):
-        return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute).filtered()[0]
+        lst = self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute)
+        if all(i.type == 'endl' for i in lst):
+            return lst[0]
+        else:
+            return lst.filtered()[0]
 
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
         if isinstance(value, string_instance):

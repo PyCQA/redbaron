@@ -27,9 +27,12 @@ append
 .. ipython:: python
 
     red
+    red[0].value.append("")
     red[0].value.append("stuff")
     red
     red[0].value
+
+Appending an empty string or a string containing a \n adds a new line.
 
 insert
 ~~~~~~
@@ -37,9 +40,12 @@ insert
 .. ipython:: python
 
     red
+    red[0].value.insert(1, "\n")
     red[0].value.insert(1, "print(caribou)")
     red
     red[0].value
+
+Inserting an empty string or a string containing a \n adds a new line.
 
 extend
 ~~~~~~
@@ -47,9 +53,11 @@ extend
 .. ipython:: python
 
     red
-    red[0].value.extend(["a", "if a:\n    pass", "stuff"])
+    red[0].value.extend(["a", "\n", "if a:\n    pass", "stuff"])
     red
     red[0].value
+
+Extending with an empty string or a string containing a \n adds a new line.
 
 pop
 ~~~

@@ -10,6 +10,7 @@ Changelog
 - fix code_block_node.value was broken on node with no parent
 - add getitem() method with same api on NodeList and ProxyList
 - fix: inconsistencies when inserting lines around code blocks
+- inserting a blank lines inserts effectively a \n in a LineProxyList
 
 0.5.1 (2015-03-11)
 ------------------

@@ -333,3 +333,47 @@ def a(self, a):
     return False
 """)
 
+def test_insert_newline_in_def_with_if():
+    red = RedBaron("""\
+def a(self, a):
+    if a == 42:
+        return True
+    return False
+""")
+
+    red.def_.if_.insert(0, "a = 1")
+    red.def_.if_.insert(0, "")
+    red.def_.if_.insert(0, "b = 2")
+
+    assert_with_indent(red, """\
+def a(self, a):
+    if a == 42:
+        b = 2
+
+        a = 1
+        return True
+    return False
+""")
+
+def test_append_newline_line_in_def_with_if():
+    red = RedBaron("""\
+def a(self, a):
+    if a == 42:
+        return True
+    return False
+""")
+
+    red.def_.if_.append("")
+    red.def_.if_.extend(["", "a = 1", ""])
+
+    assert_with_indent(red, """\
+def a(self, a):
+    if a == 42:
+        return True
+
+
+        a = 1
+
+    return False
+""")
+
