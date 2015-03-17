@@ -1579,20 +1579,26 @@ class LineProxyList(ProxyList):
 
         expected_list.append(generate_separator())
 
+        def modify_last_indentation(node, indentation):
+            try:
+                current_last = node.getitem(-1, show_all=True)
+                while current_last.type in ('def', 'class', 'ifelseblock'):
+                    current_last = current_last.getitem(-1, show_all=True)
+                current_last.indent = indentation
+            except (AttributeError, IndexError, TypeError):
+                node.indent = indentation
+
         for i in self.data:
             # we face a blank line, remove previous separator since a blank line is not
             # previoused by a separator
             expected_list.append(i)
             if i.type == "endl" and expected_list[-1].type == "endl":
                 expected_list.pop()
-                try:
-                    expected_list[-1].getitem(-1, show_all=True).indent = ''
-                except (AttributeError, IndexError, TypeError):
-                    expected_list[-1].indent = ''
+                modify_last_indentation(expected_list[-1], '')
 
             if i.type in ('def', 'class', 'ifelseblock'):
                 # In this case, the last \n is owned by the node
-                i.value.getitem(-1, show_all=True).indent = indentation
+                modify_last_indentation(i.value.getitem(-1, show_all=True), indentation)
             else:
                 expected_list.append(generate_separator())
 
@@ -1604,7 +1610,7 @@ class LineProxyList(ProxyList):
 
             if expected_list[-1].type in ('def', 'class', 'ifelseblock'):
                 # In this case, the last \n is owned by the node
-                expected_list[-1].value.getitem(-1, show_all=True).indent = last_indentation
+                modify_last_indentation(expected_list[-1].value.getitem(-1, show_all=True), last_indentation)
             else:
                 expected_list[-1].indent = last_indentation
 
