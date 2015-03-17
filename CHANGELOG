@@ -8,6 +8,8 @@ Changelog
 - breaking: IntNode no longer return an int on .value but a .string instead, use .to_python to have an evaluated version
 - fix node.decrease_indentation (that was simply not working)
 - fix code_block_node.value was broken on node with no parent
+- now redbaron Path() class can be compared directly to baron paths
+  without using to_baron_path() helper.
 
 0.5.1 (2015-03-11)
 ------------------
