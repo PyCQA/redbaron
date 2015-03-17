@@ -399,3 +399,20 @@ def a(self, a):
 
 """)
 
+def test_append_newline_and_def_in_nested_class():
+    red = RedBaron("""\
+class A:
+    class B:
+        pass
+""")
+
+    #red.class_.class_.append("def b():\n    return True")
+    red.class_.class_.append("a = 1")
+
+    assert_with_indent(red, """\
+class A:
+    class B:
+        pass
+        a = 1
+""")
+
