@@ -510,6 +510,15 @@ class Node(GenericNodesUtils):
             previous = None
             target = target.parent
 
+    @property
+    def next_recursive(self):
+        target = self
+        while not target.next:
+            if not target.parent:
+                break
+            target = target.parent
+        return target.next
+
     def next_generator(self):
         in_list = self._get_list_attribute_is_member_off()
 
@@ -541,6 +550,15 @@ class Node(GenericNodesUtils):
                 previous = i
 
             target = target.parent
+
+    @property
+    def previous_recursive(self):
+        target = self
+        while not target.previous:
+            if not target.parent:
+                break
+            target = target.parent
+        return target.previous
 
     def previous_generator(self):
         in_list = self._get_list_attribute_is_member_off()

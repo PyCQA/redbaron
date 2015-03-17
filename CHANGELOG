@@ -11,6 +11,7 @@ Changelog
 - add getitem() method with same api on NodeList and ProxyList
 - fix: inconsistencies when inserting lines around code blocks
 - inserting a blank lines inserts effectively a \n in a LineProxyList
+- new helper methods: .next_recursive and .previous_recursive https://redbaron.readthedocs.org/en/latest/other.html
 
 0.5.1 (2015-03-11)
 ------------------

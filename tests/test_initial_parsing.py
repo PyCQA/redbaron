@@ -263,6 +263,21 @@ def test_node_next():
     assert inner[4].next is None
 
 
+def test_node_next_recursive():
+    red = RedBaron("def a():\n    b = 1\ndef c():\n    d = 1")
+    assert red.next is None
+    assert red.next_recursive is None
+    first, second = red.find_all('def')
+    assert first.next is second
+    inner = first.value.node_list
+    assert inner[0].next == inner[1]
+    assert inner[0].next_recursive == inner[1]
+    assert inner[1].next == inner[2]
+    assert inner[1].next_recursive == inner[2]
+    assert inner[2].next == None
+    assert inner[2].next_recursive == second
+
+
 def test_node_previous():
     red = RedBaron("[1, 2, 3]")
     assert red.previous is None
@@ -273,6 +288,21 @@ def test_node_previous():
     assert inner[2].previous == inner[1]
     assert inner[1].previous == inner[0]
     assert inner[0].previous is None
+
+
+def test_node_previous_recursive():
+    red = RedBaron("def a():\n    b = 1\ndef c():\n    d = 1")
+    assert red.previous is None
+    assert red.previous_recursive is None
+    first, second = red.find_all('def')
+    assert second.previous is first
+    inner = second.value.node_list
+    assert inner[2].previous == inner[1]
+    assert inner[2].previous_recursive == inner[1]
+    assert inner[1].previous == inner[0]
+    assert inner[1].previous_recursive == inner[0]
+    assert inner[0].previous == None
+    assert inner[0].previous_recursive == first
 
 
 def test_node_next_generator():
