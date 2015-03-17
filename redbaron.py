@@ -327,7 +327,7 @@ class NodeList(UserList, GenericNodesUtils):
 
     def __repr__(self):
         if in_a_shell():
-            return self.__str__()
+            return self.dumps()
 
         return "<%s %s, \"%s\" %s, on %s %s>" % (
                 self.__class__.__name__,
@@ -341,10 +341,9 @@ class NodeList(UserList, GenericNodesUtils):
     def __str__(self):
         to_return = ""
         for number, value in enumerate(self.data):
-            to_return += ("%-3s " % number) + "\n    ".join(value.__repr__().split("\n"))
+            to_return += ("%-3s " % number) + "\n    ".join(value.dumps().split("\n"))
             to_return += "\n"
         return to_return
-        return "%s" % [x.__repr__() for x in self.data]
 
     def _repr_html_(self):
         def __repr_html(self):
@@ -898,7 +897,7 @@ class Node(GenericNodesUtils):
 
     def __repr__(self):
         if in_a_shell():
-            return self.__str__()
+            return self.dumps()
 
         return "<%s path=%s, \"%s\" %s, on %s %s>" % (
                 self.__class__.__name__,
@@ -1323,7 +1322,7 @@ class ProxyList(object):
 
     def __repr__(self):
         if in_a_shell():
-            return self.__str__()
+            return self.dumps()
 
         return "<%s %s, \"%s\" %s, on %s %s>" % (
                 self.__class__.__name__,
@@ -1354,10 +1353,9 @@ class ProxyList(object):
     def __str__(self):
         to_return = ""
         for number, value in enumerate(self.data):
-            to_return += ("%-3s " % number) + "\n    ".join(value.__repr__().split("\n"))
+            to_return += ("%-3s " % number) + "\n    ".join(value.dumps().split("\n"))
             to_return += "\n"
         return to_return
-        return "%s" % [x.__repr__() for x in self.data]
 
     def __getattr__(self, key):
         return getattr(self.node_list, key)
