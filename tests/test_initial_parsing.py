@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding:Utf-8 -*-
 
+""" Tests initial parsing through the RedBaron() base function """
+
 
 import baron
 import re
@@ -127,7 +129,9 @@ def test_assign_on_object_value_fst():
 
 def test_generate_helpers():
     red = RedBaron("def a(): pass")
-    assert set(red[0]._generate_identifiers()) == set(["funcdef", "funcdef_", "defnode", "def", "def_"])
+    assert set(red[0]._generate_identifiers()) == set([
+        "funcdef", "funcdef_", "defnode", "def", "def_"
+        ])
 
 
 def test_assign_node_list():
@@ -163,7 +167,11 @@ def test_assign_node_list_fst():
 def test_assign_node_list_mixed():
     red = RedBaron("[1, 2, 3]")
     l = red[0]
-    l.value = ["plop", {"type": "comma", "first_formatting": [], "second_formatting": []}, {"type": "name", "value": "pouet"}]
+    l.value = ["plop",
+               {"type": "comma",
+                "first_formatting": [],
+                "second_formatting": []},
+               {"type": "name", "value": "pouet"}]
     assert l.value[0].value == "plop"
     assert l.value[0].type == "name"
     assert l.value.node_list[1].type == "comma"
@@ -274,7 +282,8 @@ def test_node_next_generator():
 
 def test_node_previous_generator():
     red = RedBaron("[1, 2, 3]")
-    assert list(red[0].value.node_list[2].previous_generator()) == list(reversed(red[0].value.node_list[:2]))
+    assert list(red[0].value.node_list[2].previous_generator()) \
+        == list(reversed(red[0].value.node_list[:2]))
 
 
 def test_map():
@@ -298,17 +307,19 @@ def test_indent_root():
     assert red[0].indentation == ""
     red = RedBaron("pouet\nplop\npop")
     assert [x.indentation for x in red.node_list] == ["", "", "", "", ""]
-    assert [x.get_indentation_node() for x in red.node_list] == [None, None, red.node_list[1], None, red.node_list[3]]
+    assert [x.get_indentation_node() for x in red.node_list] \
+        == [None, None, red.node_list[1], None, red.node_list[3]]
 
 
 def test_in_while():
     red = RedBaron("while a:\n    pass\n")
-    assert red[0].value.node_list[-2].indentation == "    "
-    assert red[0].value.node_list[-1].indentation == ""
-    assert red[0].value.node_list[-2].get_indentation_node() is red[0].value.node_list[-3]
-    assert red[0].value.node_list[-1].get_indentation_node() is None
-    assert red[0].value.node_list[-3].get_indentation_node() is None
-    assert red[0].value.node_list[-2].indentation_node_is_direct()
+    node_list = red[0].value.node_list
+    assert node_list[-2].indentation == "    "
+    assert node_list[-1].indentation == ""
+    assert node_list[-2].get_indentation_node() is red[0].value.node_list[-3]
+    assert node_list[-1].get_indentation_node() is None
+    assert node_list[-3].get_indentation_node() is None
+    assert node_list[-2].indentation_node_is_direct()
 
 
 def test_one_line_while():
@@ -339,15 +350,17 @@ def test_filtered_endl():
 
 def test_filtered_comma():
     red = RedBaron("[1, 2, 3]")
-    assert red[0].value.filtered() == tuple(red[0].value.filter(lambda x: not isinstance(x, CommaNode)))
+    assert red[0].value.filtered() \
+        == tuple(red[0].value.filter(lambda x: not isinstance(x, CommaNode)))
 
 
 def test_filtered_dot():
     red = RedBaron("a.b.c(d)")
-    assert red[0].value.filtered() == tuple(red[0].value.filter(lambda x: not isinstance(x, DotNode)))
+    assert red[0].value.filtered() \
+        == tuple(red[0].value.filter(lambda x: not isinstance(x, DotNode)))
 
 
-some_data_for_test = """\
+SOME_DATA_FOR_TEST = """\
 def plop():
     def a():
         with b as c:
@@ -360,22 +373,22 @@ def test_parent_find_empty():
 
 
 def test_parent_find_direct():
-    red = RedBaron(some_data_for_test)
-    r = red.assignment.target
-    assert r.parent_find('with') is red.with_
+    red = RedBaron(SOME_DATA_FOR_TEST)
+    target = red.assignment.target
+    assert target.parent_find('with') is red.with_
 
 
 def test_parent_find_two_levels():
-    red = RedBaron(some_data_for_test)
-    r = red.assignment.target
-    assert r.parent_find('def') is red.find('def', name='a')
+    red = RedBaron(SOME_DATA_FOR_TEST)
+    target = red.assignment.target
+    assert target.parent_find('def') is red.find('def', name='a')
 
 
 def test_parent_find_two_levels_options():
-    red = RedBaron(some_data_for_test)
-    r = red.assignment.target
-    assert r.parent_find('def', name='plop') is red.def_
-    assert r.parent_find('def', name='dont_exist') is None
+    red = RedBaron(SOME_DATA_FOR_TEST)
+    target = red.assignment.target
+    assert target.parent_find('def', name='plop') is red.def_
+    assert target.parent_find('def', name='dont_exist') is None
 
 
 def test_find_empty():
@@ -426,7 +439,8 @@ def test_find_kwarg_regex_instance():
 
 def test_find_all_kwarg_regex_instance():
     red = RedBaron("plop\npop\npouf\nabcd")
-    assert red("name", value=re.compile("^po")) == red("name", value=lambda x: x.startswith("po"))
+    assert red("name", value=re.compile("^po")) \
+        == red("name", value=lambda x: x.startswith("po"))
 
 
 def test_find_kwarg_regex_syntaxe():
@@ -436,7 +450,8 @@ def test_find_kwarg_regex_syntaxe():
 
 def test_find_all_kwarg_regex_syntaxe():
     red = RedBaron("plop\npop\npouf\nabcd")
-    assert red("name", value="re:^po") == red("name", value=lambda x: x.startswith("po"))
+    assert red("name", value="re:^po") \
+        == red("name", value=lambda x: x.startswith("po"))
 
 
 def test_find_kwarg_glob_syntaxe():
@@ -446,7 +461,8 @@ def test_find_kwarg_glob_syntaxe():
 
 def test_find_all_kwarg_glob_syntaxe():
     red = RedBaron("plop\npop\npouf\nabcd")
-    assert red("name", value="g:po*") == red("name", value=lambda x: x.startswith("po"))
+    assert red("name", value="g:po*") \
+        == red("name", value=lambda x: x.startswith("po"))
 
 
 def test_identifier_find_kwarg_lambda():

@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding:Utf-8 -*-
 
+""" Main redbaron test module """
 
 from redbaron import RedBaron, truncate
 
