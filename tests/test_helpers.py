@@ -41,3 +41,5 @@ def test_to_python_float_node():
     red = RedBaron("1.1")
     assert red[0].value == "1.1"
     assert red[0].to_python() == 1.1
+
+# TODO to_python for OctaNode, HexaNode, LongNode "strings, tuples, lists, dicts, booleans, and None"
