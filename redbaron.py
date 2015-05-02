@@ -1,6 +1,7 @@
 import re
 import os
 import sys
+import ast
 import inspect
 import itertools
 
@@ -2279,6 +2280,9 @@ class ImportNode(Node):
 
 
 class IntNode(Node):
+    def to_python(self):
+        return ast.literal_eval(self.value)
+
     def fst(self):
         return {
             "type": "int",
