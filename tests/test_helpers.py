@@ -35,3 +35,9 @@ def test_to_python_int_node():
     red = RedBaron("1")
     assert red[0].value == "1"
     assert red[0].to_python() == 1
+
+
+def test_to_python_float_node():
+    red = RedBaron("1.1")
+    assert red[0].value == "1.1"
+    assert red[0].to_python() == 1.1

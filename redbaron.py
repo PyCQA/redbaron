@@ -2105,6 +2105,11 @@ class ForNode(ElseAttributeNode):
             return super(ForNode, self)._string_to_node(string, parent, on_attribute)
 
 
+class FloatNode(Node):
+    def to_python(self):
+        return ast.literal_eval(self.value)
+
+
 class FromImportNode(Node):
     def names(self):
         """Return the list of new names imported
