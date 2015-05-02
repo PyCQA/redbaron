@@ -139,6 +139,11 @@ class Path(object):
         return to_return
 
 
+class LiteralyEvaluable(object):
+    def to_python(self):
+        return ast.literal_eval(self.value)
+
+
 class GenericNodesUtils(object):
     """
     Mixen top class for Node and NodeList that contains generic methods that are used by both.
@@ -2104,9 +2109,8 @@ class ForNode(ElseAttributeNode):
             return super(ForNode, self)._string_to_node(string, parent, on_attribute)
 
 
-class FloatNode(Node):
-    def to_python(self):
-        return ast.literal_eval(self.value)
+class FloatNode(Node, LiteralyEvaluable):
+    pass
 
 
 class FromImportNode(Node):
@@ -2283,10 +2287,7 @@ class ImportNode(Node):
             setattr(self, "value", CommaProxyList(self.value, on_attribute="value"))
 
 
-class IntNode(Node):
-    def to_python(self):
-        return ast.literal_eval(self.value)
-
+class IntNode(Node, LiteralyEvaluable):
     def fst(self):
         return {
             "type": "int",
