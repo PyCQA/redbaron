@@ -1629,8 +1629,7 @@ class DecoratorsLineProxyList(LineProxyList):
         return expected_list
 
 # TODO
-# LineProxyList: special syntaxe for adding blank lines ("")
-#                handle comments
+# LineProxyList: handle comments
 #                should a 'pass' be put if the list would be empty?
 #                add blank line arround in certain cases? Like arround function/class at first level and second level
 #                expected behavior on append when blank lines at the end of the block (-> append before blank lines)
