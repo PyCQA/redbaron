@@ -2279,14 +2279,10 @@ class ImportNode(Node):
 
 
 class IntNode(Node):
-    def __init__(self, node, *args, **kwargs):
-        super(IntNode, self).__init__(node, *args, **kwargs)
-        self.value = int(self.value)
-
     def fst(self):
         return {
             "type": "int",
-            "value": str(self.value),
+            "value": self.value,
             "section": "number",
         }
 

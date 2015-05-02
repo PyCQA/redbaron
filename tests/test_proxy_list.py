@@ -164,7 +164,7 @@ def test_comma_proxy_list_set_item():
     comma_proxy_list = red[0].value
     comma_proxy_list[0] = "42"
     assert comma_proxy_list[0].type == "int"
-    assert comma_proxy_list[0].value == 42
+    assert comma_proxy_list[0].value == "42"
     comma_proxy_list[0] = "plop"
     assert comma_proxy_list[0].type == "name"
     assert comma_proxy_list[0].value == "plop"
@@ -365,7 +365,7 @@ def test_comma_proxy_list_delegation_from_parent_node_on_value_contains():
 
 def test_comma_proxy_list_delegation_from_parent_node_on_value_iter():
     red = RedBaron("[42]")
-    assert [x.value for x in red[0]] == [42]
+    assert [x.value for x in red[0]] == ["42"]
 
 
 def test_comma_proxy_list_delegation_from_parent_node_on_value_count():
@@ -976,7 +976,7 @@ def test_comma_proxy_list_indented_set_item():
     comma_proxy_list = red[0].value
     comma_proxy_list[0] = "42"
     assert comma_proxy_list[0].type == "int"
-    assert comma_proxy_list[0].value == 42
+    assert comma_proxy_list[0].value == "42"
     comma_proxy_list[0] = "plop"
     assert comma_proxy_list[0].type == "name"
     assert comma_proxy_list[0].value == "plop"

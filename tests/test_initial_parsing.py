@@ -30,14 +30,14 @@ def test_name():
 def test_int():
     red = RedBaron("1\n")
     assert isinstance(red[0], IntNode)
-    assert red[0].value == 1
+    assert red[0].value == "1"
 
 
 def test_assign():
     red = RedBaron("a = 2")
     assert isinstance(red[0], AssignmentNode)
     assert isinstance(red[0].value, IntNode)
-    assert red[0].value.value == 2
+    assert red[0].value.value == "2"
     assert isinstance(red[0].target, NameNode)
     assert red[0].target.value == "a"
 
@@ -48,14 +48,14 @@ def test_binary_operator():
     assert isinstance(red[0].first, NameNode)
     assert red[0].first.value == "z"
     assert isinstance(red[0].second, IntNode)
-    assert red[0].second.value == 42
+    assert red[0].second.value == "42"
 
     red = RedBaron("z  -      42")
     assert red[0].value == "-"
     assert isinstance(red[0].first, NameNode)
     assert red[0].first.value == "z"
     assert isinstance(red[0].second, IntNode)
-    assert red[0].second.value == 42
+    assert red[0].second.value == "42"
 
 
 def test_pass():
@@ -114,7 +114,7 @@ def test_assign_on_object_value():
     assert binop.first.value == "pouet"
     assert binop.first.type == "name"
     binop.first = "42"  # will be parsed as a int
-    assert binop.first.value == 42
+    assert binop.first.value == "42"
     assert binop.first.type == "int"
 
 
@@ -288,7 +288,7 @@ def test_node_previous_generator():
 
 def test_map():
     red = RedBaron("[1, 2, 3]")
-    assert red('int').map(lambda x: x.value) == NodeList([1, 2, 3])
+    assert red('int').map(lambda x: x.value) == NodeList(["1", "2", "3"])
 
 
 def test_apply():
