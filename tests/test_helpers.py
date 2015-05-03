@@ -73,4 +73,10 @@ def test_to_python_float_exponant_node():
     assert red[0].to_python() == 11.0
 
 
+def test_to_python_string_node():
+    red = RedBaron("'pouet'")
+    assert red[0].value == "'pouet'"
+    assert red[0].to_python() == 'pouet'
+
+
 # TODO to_python for "strings, tuples, lists, dicts, booleans, and None"

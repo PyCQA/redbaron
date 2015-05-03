@@ -2540,6 +2540,10 @@ class SpaceNode(Node):
         return repr(baron.dumps([self.fst()]))
 
 
+class StringNode(Node, LiteralyEvaluable):
+    pass
+
+
 class StringChainNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
