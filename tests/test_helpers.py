@@ -120,4 +120,9 @@ def test_to_python_unicode_tuple_node():
     assert red[0].to_python() == (1, 2, 3)
 
 
-# TODO to_python for "lists, dicts, booleans, and None"
+def test_to_python_unicode_tuple_node():
+    red = RedBaron("[1, 2, 3]")
+    assert red[0].to_python() == [1, 2, 3]
+
+
+# TODO to_python for "dicts, booleans, and None"
