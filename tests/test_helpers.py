@@ -115,4 +115,9 @@ def test_to_python_unicode_raw_string_node():
     assert red[0].to_python() == ur'pouet'
 
 
-# TODO to_python for "tuples, lists, dicts, booleans, and None"
+def test_to_python_unicode_tuple_node():
+    red = RedBaron("(1, 2, 3)")
+    assert red[0].to_python() == (1, 2, 3)
+
+
+# TODO to_python for "lists, dicts, booleans, and None"
