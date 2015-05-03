@@ -109,4 +109,10 @@ def test_to_python_binary_raw_string_node():
     assert red[0].to_python() == br'pouet'
 
 
-# TODO to_python for "strings, tuples, lists, dicts, booleans, and None"
+def test_to_python_unicode_raw_string_node():
+    red = RedBaron("ur'pouet'")
+    assert red[0].value == "ur'pouet'"
+    assert red[0].to_python() == ur'pouet'
+
+
+# TODO to_python for "tuples, lists, dicts, booleans, and None"
