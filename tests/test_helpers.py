@@ -137,4 +137,6 @@ def test_to_python_name_node_boolean():
     assert red[0].to_python() == True
 
 
-# TODO to_python for "None"
+def test_to_python_name_node_None():
+    red = RedBaron("None")
+    assert red[0].to_python() == None
