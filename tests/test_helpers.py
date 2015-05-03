@@ -84,4 +84,11 @@ def test_to_python_string_chain_node():
     assert red[0].dumps() == "'pouet' 'pop'"
     assert red[0].to_python() == 'pouetpop'
 
+
+def test_to_python_raw_string_node():
+    red = RedBaron("r'pouet'")
+    assert red[0].value == "r'pouet'"
+    assert red[0].to_python() == r'pouet'
+
+
 # TODO to_python for "strings, tuples, lists, dicts, booleans, and None"

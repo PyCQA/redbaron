@@ -2464,6 +2464,10 @@ class RaiseNode(Node):
             raise Exception("Unhandled case")
 
 
+class RawStringNode(Node, LiteralyEvaluable):
+    pass
+
+
 class ReprNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("`%s`" % string)[0]["value"]
