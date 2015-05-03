@@ -1736,7 +1736,7 @@ class AtomtrailersNode(Node):
             setattr(self, "value", DotProxyList(self.value))
 
 
-class BinaryNode(Node):
+class BinaryNode(Node, LiteralyEvaluable):
     def __setattr__(self, key, value):
         if key == "value" and isinstance(value, string_instance):
             assert baron.parse(value)[0]["type"] == "binary"

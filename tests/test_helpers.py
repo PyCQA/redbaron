@@ -61,4 +61,10 @@ def test_to_python_long_node():
     assert red[0].to_python() == 10L
 
 
+def test_to_python_binary_node():
+    red = RedBaron("0b101010101")
+    assert red[0].value == "0b101010101"
+    assert red[0].to_python() == 341
+
+
 # TODO to_python for "strings, tuples, lists, dicts, booleans, and None"
