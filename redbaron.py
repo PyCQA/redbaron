@@ -2229,6 +2229,10 @@ class GlobalNode(Node):
             setattr(self, "value", CommaProxyList(self.value, on_attribute="value"))
 
 
+class HexaNode(Node, LiteralyEvaluable):
+    pass
+
+
 class IfNode(CodeBlockNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
