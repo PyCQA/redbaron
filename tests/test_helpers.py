@@ -115,17 +115,17 @@ def test_to_python_unicode_raw_string_node():
     assert red[0].to_python() == ur'pouet'
 
 
-def test_to_python_unicode_tuple_node():
+def test_to_python_tuple_node():
     red = RedBaron("(1, 2, 3)")
     assert red[0].to_python() == (1, 2, 3)
 
 
-def test_to_python_unicode_tuple_node():
+def test_to_python_list_node():
     red = RedBaron("[1, 2, 3]")
     assert red[0].to_python() == [1, 2, 3]
 
 
-def test_to_python_unicode_dict_node():
+def test_to_python_dict_node():
     red = RedBaron("{1: 2, 2: 3, 3: 4}")
     assert red[0].to_python() == {1: 2, 2: 3, 3: 4}
 
