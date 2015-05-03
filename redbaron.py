@@ -1947,7 +1947,7 @@ class DictitemNode(Node):
             raise Exception("Unhandled case")
 
 
-class DictNode(Node):
+class DictNode(Node, LiteralyEvaluable):
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("{%s}" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
