@@ -2544,7 +2544,10 @@ class StringNode(Node, LiteralyEvaluable):
     pass
 
 
-class StringChainNode(Node):
+class StringChainNode(Node, LiteralyEvaluable):
+    def to_python(self):
+        return ast.literal_eval(self.dumps())
+
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
             fst = baron.parse("a = %s" % string)[0]["value"]["value"]

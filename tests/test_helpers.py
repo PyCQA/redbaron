@@ -79,4 +79,9 @@ def test_to_python_string_node():
     assert red[0].to_python() == 'pouet'
 
 
+def test_to_python_string_chain_node():
+    red = RedBaron("'pouet' 'pop'")
+    assert red[0].dumps() == "'pouet' 'pop'"
+    assert red[0].to_python() == 'pouetpop'
+
 # TODO to_python for "strings, tuples, lists, dicts, booleans, and None"
