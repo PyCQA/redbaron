@@ -2361,6 +2361,11 @@ class ListNode(Node):
         if key == "value" and not isinstance(self.value, CommaProxyList):
             setattr(self, "value", CommaProxyList(self.value))
 
+
+class LongNode(Node, LiteralyEvaluable):
+    pass
+
+
 class NameAsNameNode(Node):
     def __setattr__(self, key, value):
         if key == "target":

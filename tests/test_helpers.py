@@ -54,4 +54,11 @@ def test_to_python_hexa_node():
     assert red[0].value == "0xFF"
     assert red[0].to_python() == 255
 
-# TODO to_python for LongNode "strings, tuples, lists, dicts, booleans, and None"
+
+def test_to_python_long_node():
+    red = RedBaron("10L")
+    assert red[0].value == "10L"
+    assert red[0].to_python() == 10L
+
+
+# TODO to_python for "strings, tuples, lists, dicts, booleans, and None"
