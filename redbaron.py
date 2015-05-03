@@ -2656,6 +2656,10 @@ class TupleNode(Node):
             setattr(self, "value", CommaProxyList(self.value))
 
 
+class UnicodeStringNode(Node, LiteralyEvaluable):
+    pass
+
+
 class UnitaryOperatorNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "target":
