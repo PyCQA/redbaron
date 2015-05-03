@@ -1762,6 +1762,10 @@ class BinaryOperatorNode(Node):
             raise Exception("Unhandled case")
 
 
+class BinaryStringNode(Node, LiteralyEvaluable):
+    pass
+
+
 class BooleanOperatorNode(Node):
     def __setattr__(self, key, value):
         if key == "value" and isinstance(value, string_instance):
