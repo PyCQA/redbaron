@@ -1,3 +1,4 @@
+import pytest
 from redbaron import RedBaron
 
 
@@ -140,3 +141,13 @@ def test_to_python_name_node_boolean():
 def test_to_python_name_node_None():
     red = RedBaron("None")
     assert red[0].to_python() == None
+
+
+def test_to_python_name_node_otherwise_raise():
+    red = RedBaron("foo")
+    try:
+        red[0].to_python()
+    except Exception as e:
+        message = 'to_python method only works on numbers, strings, list, tuple, dict, boolean and None. (using ast.literal_eval). The piece of code that you are trying to convert contains an illegale value, for example, a variable.'
+        assert e.message == message
+        assert e.args == (message,)

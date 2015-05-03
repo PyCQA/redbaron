@@ -141,7 +141,13 @@ class Path(object):
 
 class LiteralyEvaluable(object):
     def to_python(self):
-        return ast.literal_eval(self.dumps())
+        try:
+            return ast.literal_eval(self.dumps())
+        except ValueError as e:
+            message = 'to_python method only works on numbers, strings, list, tuple, dict, boolean and None. (using ast.literal_eval). The piece of code that you are trying to convert contains an illegale value, for example, a variable.'
+            e.message = message
+            e.args = (message,)
+            raise e
 
 
 class GenericNodesUtils(object):
