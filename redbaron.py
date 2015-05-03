@@ -827,6 +827,7 @@ class Node(GenericNodesUtils):
             'index_on_parent_raw',
             'insert_before',
             'insert_after',
+            'to_python',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -2375,6 +2376,10 @@ class ListNode(Node, LiteralyEvaluable):
 
 
 class LongNode(Node, LiteralyEvaluable):
+    pass
+
+
+class NameNode(Node, LiteralyEvaluable):
     pass
 
 

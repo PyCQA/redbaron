@@ -130,4 +130,11 @@ def test_to_python_dict_node():
     assert red[0].to_python() == {1: 2, 2: 3, 3: 4}
 
 
-# TODO to_python for "booleans, and None"
+def test_to_python_name_node_boolean():
+    red = RedBaron("False")
+    assert red[0].to_python() == False
+    red = RedBaron("True")
+    assert red[0].to_python() == True
+
+
+# TODO to_python for "None"
