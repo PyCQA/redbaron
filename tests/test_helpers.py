@@ -67,4 +67,10 @@ def test_to_python_binary_node():
     assert red[0].to_python() == 341
 
 
+def test_to_python_float_exponant_node():
+    red = RedBaron("1.1e1")
+    assert red[0].value == "1.1e1"
+    assert red[0].to_python() == 11.0
+
+
 # TODO to_python for "strings, tuples, lists, dicts, booleans, and None"

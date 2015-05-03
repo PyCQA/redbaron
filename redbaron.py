@@ -2113,6 +2113,10 @@ class FloatNode(Node, LiteralyEvaluable):
     pass
 
 
+class FloatExponantNode(Node, LiteralyEvaluable):
+    pass
+
+
 class FromImportNode(Node):
     def names(self):
         """Return the list of new names imported
