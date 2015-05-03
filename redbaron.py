@@ -2374,6 +2374,10 @@ class NameAsNameNode(Node):
         return super(NameAsNameNode, self).__setattr__(key, value)
 
 
+class OctaNode(Node, LiteralyEvaluable):
+    pass
+
+
 class PrintNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "destination":
