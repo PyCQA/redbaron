@@ -357,7 +357,7 @@ class NodeList(UserList, GenericNodesUtils):
                 yield str(num)
                 yield u"</td>"
                 yield u"<td>"
-                yield item._repr_html_()
+                yield item._repr_html_() if hasattr(item, "_repr_html_") else str(item)
                 yield u"</td>"
                 yield u"</tr>"
             yield "</table>"
