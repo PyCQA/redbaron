@@ -1,3 +1,4 @@
+import sys
 import pytest
 from redbaron import RedBaron
 
@@ -57,9 +58,11 @@ def test_to_python_hexa_node():
 
 
 def test_to_python_long_node():
-    red = RedBaron("10L")
-    assert red[0].value == "10L"
-    assert red[0].to_python() == 10L
+    # long doesn't exist anymore in python3
+    if sys.version < '3':
+        red = RedBaron("10L")
+        assert red[0].value == "10L"
+        assert red[0].to_python() == long("10L")
 
 
 def test_to_python_binary_node():
