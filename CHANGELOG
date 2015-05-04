@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6 (unreleased)
+----------------
+
+- new helper method .to_python that wrap ast.literal_eval on compatibile nodes
+- breaking: IntNode no longer return an int on .value but a .string instead, use .to_python to have an evaluated version
+
 0.5.1 (2015-03-11)
 ------------------
 
