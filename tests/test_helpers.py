@@ -48,7 +48,8 @@ def test_to_python_float_node():
 def test_to_python_octa_node():
     red = RedBaron("0011")
     assert red[0].value == "0011"
-    assert red[0].to_python() == 9
+    if sys.version < '3':
+        assert red[0].to_python() == 9
 
 
 def test_to_python_hexa_node():
