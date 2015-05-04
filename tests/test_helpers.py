@@ -108,15 +108,17 @@ def test_to_python_unicode_string_node():
 
 
 def test_to_python_binary_raw_string_node():
-    red = RedBaron("br'pouet'")
-    assert red[0].value == "br'pouet'"
-    assert red[0].to_python() == br'pouet'
+    if sys.version < '3':
+        red = RedBaron("br'pouet'")
+        assert red[0].value == "br'pouet'"
+        assert red[0].to_python() == eval("br'pouet'")
 
 
 def test_to_python_unicode_raw_string_node():
-    red = RedBaron("ur'pouet'")
-    assert red[0].value == "ur'pouet'"
-    assert red[0].to_python() == ur'pouet'
+    if sys.version < '3':
+        red = RedBaron("ur'pouet'")
+        assert red[0].value == "ur'pouet'"
+        assert red[0].to_python() == eval("ur'pouet'")
 
 
 def test_to_python_tuple_node():
