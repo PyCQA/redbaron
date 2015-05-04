@@ -281,8 +281,8 @@ RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :fil
 
     red = RedBaron("[1, 2, 3]")
     red('int')
-    red('int').map(lambda x: x.value + 1)
-    red('int').filter(lambda x: x.value % 2 == 0)
+    red('int').map(lambda x: x.to_python() + 1)
+    red('int').filter(lambda x: x.to_python() % 2 == 0)
 
 .. ipython:: python
 
