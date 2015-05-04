@@ -207,6 +207,35 @@ expect the number of spaces to add or to remove as first argument.
     red[0].value.decrease_indentation(15)
     red
 
+.to_python()
+------------
+
+This method safely evaluate the current selected nodes. It wraps
+`ast.literal_eval
+<https://docs.python.org/2/library/ast.html#ast.literal_eval>`_, therefor, and
+for security reasons, it only works on a subset of python: numbers, strings,
+lists, dicts, tuples, boolean and :file:`None`. Of course, using this method on
+a list/dict/tuple containing values that aren't listed here will raise a
+:file:`ValueError`.
+
+.. ipython:: python
+
+    RedBaron("42")[0].value  # string
+    RedBaron("42")[0].to_python()  # python int
+
+    RedBaron("'a' 'b'")[0].dumps()
+    RedBaron("'a' 'b'")[0].to_python()
+    RedBaron("u'unicode string'")[0].to_python()
+
+    RedBaron("[1, 2, 3]")[0].to_python()
+    RedBaron("(1, 2, 3)")[0].to_python()
+    RedBaron("{'foo': 'bar'}")[0].to_python()
+
+    RedBaron("False")[0].to_python()
+    RedBaron("True")[0].to_python()
+
+    print(RedBaron("None")[0].to_python())
+
 .path()
 -------
 
