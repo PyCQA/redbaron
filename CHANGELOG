@@ -6,6 +6,7 @@ Changelog
 
 - new helper method .to_python that wrap ast.literal_eval on compatibile nodes https://redbaron.readthedocs.org/en/latest/other.html#to-python
 - breaking: IntNode no longer return an int on .value but a .string instead, use .to_python to have an evaluated version
+- fix node.decrease_indentation (that was simply not working)
 
 0.5.1 (2015-03-11)
 ------------------
