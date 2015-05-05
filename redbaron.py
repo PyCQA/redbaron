@@ -1020,7 +1020,7 @@ class Node(GenericNodesUtils):
         self.get_indentation_node().indent += number_of_spaces * " "
 
     def decrease_indentation(self, number_of_spaces):
-        self.get_indentation_node().indent -= number_of_spaces * " "
+        self.get_indentation_node().indent = self.get_indentation_node().indent[:-len(number_of_spaces * " ")]
 
     def insert_before(self, value, offset=0):
         self.parent.insert(self.index_on_parent - offset, value)
