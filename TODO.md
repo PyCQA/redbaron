@@ -73,5 +73,4 @@ conversion from string chain to string
 
 ### Misc
 
-- node.to_python return an instance in python of the node (in a "safe" eval), for eg RedBaron("42")[0].to_python() -> 42 as an int instance
 - to_python car accept an argument context which is a context dict to pass to it
