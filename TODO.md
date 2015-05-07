@@ -70,7 +70,3 @@ conversion between binary_operator/boolean_operator/comparison
 conversion from if/elif/else to if/elif/else (careful about the ifelseblock)
 conversion from call_argument/def_argument to list_argument or dict_argument and vice versa
 conversion from string chain to string
-
-### Misc
-
-- to_python car accept an argument context which is a context dict to pass to it
