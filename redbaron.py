@@ -1064,7 +1064,7 @@ class CodeBlockNode(Node):
 
         endl_base_node = Node.from_fst({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'}, on_attribute=on_attribute, parent=parent)
 
-        if (self.on_attribute == "root" and self.next) or (not self.next and self.parent.next):
+        if (self.on_attribute == "root" and self.next) or (not self.next and self.parent and self.parent.next):
             # I need to finish with 3 endl nodes
             if not all(map(lambda x: x.type == "endl", result[-1:])):
                 result.append(endl_base_node.copy())
