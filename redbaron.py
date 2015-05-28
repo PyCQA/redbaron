@@ -354,13 +354,13 @@ class NodeList(UserList, GenericNodesUtils):
             for num, item in enumerate(self):
                 yield u"<tr>"
                 yield u"<td>"
-                yield str(num)
+                yield u"%d" % num
                 yield u"</td>"
                 yield u"<td>"
                 yield item._repr_html_() if hasattr(item, "_repr_html_") else str(item)
                 yield u"</td>"
                 yield u"</tr>"
-            yield "</table>"
+            yield u"</table>"
         return u''.join(__repr_html(self))
 
 
@@ -1342,13 +1342,13 @@ class ProxyList(object):
             for num, item in enumerate(self):
                 yield u"<tr>"
                 yield u"<td>"
-                yield str(num)
+                yield u"%d" % num
                 yield u"</td>"
                 yield u"<td>"
                 yield item._repr_html_()
                 yield u"</td>"
                 yield u"</tr>"
-            yield "</table>"
+            yield u"</table>"
         return u''.join(__repr_html(self))
 
     def __str__(self):
