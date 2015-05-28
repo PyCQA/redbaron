@@ -919,7 +919,7 @@ class Node(GenericNodesUtils):
 
     def _repr_html_(self):
         return highlight(self.dumps(), PythonLexer(encode="Utf-8"),
-                         HtmlFormatter(noclasses=True, encoding="UTf-8"))
+                         HtmlFormatter(noclasses=True))
 
     def copy(self):
         # XXX not very optimised but at least very simple
@@ -2031,7 +2031,7 @@ class EndlNode(Node):
 
     def _repr_html_(self):
         return highlight(self.__repr__(), PythonLexer(encode="Utf-8"),
-                         HtmlFormatter(noclasses=True, encoding="UTf-8"))
+                         HtmlFormatter(noclasses=True))
 
 
 class ExceptNode(CodeBlockNode):
