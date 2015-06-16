@@ -300,12 +300,6 @@ class NodeList(UserList, GenericNodesUtils):
     def __getattr__(self, key):
         return self.find(key)
 
-    def getitem(self, index, show_all=False):
-        if isinstance(index, slice):
-            return self.__getslice__(index.start, index.stop)
-        else:
-            return self.__getitem__(index)
-
     def __setitem__(self, key, value):
         self.data[key] = self._convert_input_to_node_object(value, parent=self.parent, on_attribute=self.on_attribute)
 
@@ -1315,14 +1309,6 @@ class ProxyList(object):
     def index(self, value, *args):
         return self.data.index(value, *args)
 
-    def getitem(self, index, show_all=False):
-        if not show_all:
-            return self.__getitem__(index)
-        if isinstance(index, slice):
-            return self.node_list.__getslice__(index.start, index.stop)
-        else:
-            return self.node_list.__getitem__(index)
-
     def __getitem__(self, index):
         if isinstance(index, slice):
             return self.__getslice__(index.start, index.stop)
@@ -1579,11 +1565,18 @@ class LineProxyList(ProxyList):
 
         expected_list.append(generate_separator())
 
+        def get_real_last(node):
+            try:
+                return node.node_list[-1]
+            except:
+                return node[-1]
+
+
         def modify_last_indentation(node, indentation):
             try:
-                current_last = node.getitem(-1, show_all=True)
+                current_last = get_real_last(node)
                 while current_last.type in ('def', 'class', 'ifelseblock'):
-                    current_last = current_last.getitem(-1, show_all=True)
+                    current_last = get_real_last(current_last)
                 current_last.indent = indentation
             except (AttributeError, IndexError, TypeError):
                 node.indent = indentation
@@ -1598,7 +1591,7 @@ class LineProxyList(ProxyList):
 
             if i.type in ('def', 'class', 'ifelseblock'):
                 # In this case, the last \n is owned by the node
-                modify_last_indentation(i.value.getitem(-1, show_all=True), indentation)
+                modify_last_indentation(get_real_last(i.value), indentation)
             else:
                 expected_list.append(generate_separator())
 
@@ -1610,7 +1603,7 @@ class LineProxyList(ProxyList):
 
             if expected_list[-1].type in ('def', 'class', 'ifelseblock'):
                 # In this case, the last \n is owned by the node
-                modify_last_indentation(expected_list[-1].value.getitem(-1, show_all=True), last_indentation)
+                modify_last_indentation(get_real_last(expected_list[-1].value), last_indentation)
             else:
                 expected_list[-1].indent = last_indentation
 
@@ -1638,7 +1631,7 @@ class LineProxyList(ProxyList):
             last_inserted_indentation = self.parent.indentation or ""
         if last_inserted_node.type in ('def', 'class', 'ifelseblock'):
             # In this case, the last \n is owned by the node
-            last_inserted_node.value.getitem(-1, show_all=True).indent = last_inserted_indentation
+            last_inserted_node.value[-1].indent = last_inserted_indentation
         else:
             last_inserted_node.indent = last_inserted_indentation
 
