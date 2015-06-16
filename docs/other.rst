@@ -79,13 +79,11 @@ node is not in a node list. A node list will never have a :file:`.next` or
 Nodes also have a :file:`.next_generator()` and :file:`.previous_generator()`
 if you want to iterate on the neighbours of the node.
 
-Nodes have a :file:`.next_recursive` and :file:`.previous_recursive`
-attribute that point to the next or previous node if the node is located
-in a node list. They are set at :file:`None` if the node is not in
-a node list but, compared to the simple :file:`.next` and
-:file:`.previous` attributes, they are not set to :file:`None` if there
-are no adjacent nodes. In that case, they point to the first adjacent
-node that exist in the parent hierarchy.
+Nodes have also a :file:`.next_recursive` and
+:file:`.previous_recursive` attribute. It is similar to the non
+recursive function but differ in the fact that, when using
+:file:`.next_recursive` on a node at the end of the list, it points to
+the first adjacent node that exist in the parent hierarchy.
 
 .. ipython::
 
