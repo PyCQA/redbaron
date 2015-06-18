@@ -167,7 +167,7 @@ class GenericNodesUtils(object):
             value.on_attribute = on_attribute
             return value
 
-        raise NotImplemented
+        raise NotImplementedError
 
     def _string_to_node(self, string, parent, on_attribute):
         return Node.from_fst(baron.parse(string)[0], parent=parent, on_attribute=on_attribute)
