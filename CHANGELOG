@@ -9,6 +9,8 @@ Changelog
 - fix node.decrease_indentation (that was simply not working)
 - fix code_block_node.value was broken on node with no parent
 - add string representation for Path object
+- now redbaron Path() class can be compared directly to baron paths
+  without using to_baron_path() helper.
 
 0.5.1 (2015-03-11)
 ------------------

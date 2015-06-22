@@ -113,6 +113,14 @@ class Path(object):
     def __repr__(self):
         return '<' + self.__str__() + ' object at ' + str(id(self)) + '>'
 
+    def __eq__(self, other):
+        if isinstance(other, Path):
+            return self.to_baron_path() == other.to_baron_path()
+        elif isinstance(other, list):
+            return self.to_baron_path() == other
+        else:
+            return False
+
     @classmethod
     def get_holder(class_, node):
         if node.on_attribute is not None and isinstance(node.parent, Node):
