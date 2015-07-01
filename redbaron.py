@@ -2832,7 +2832,7 @@ class RedBaron(GenericNodesUtils, LineProxyList):
 
             expected_list.append(i)
 
-            if not (i.type == "endl" and position == 0) and (i.type not in ('function', 'class')):
+            if not (i.type == "endl" and position == 0) and (i.type not in ('def', 'class')):
                 expected_list.append(generate_separator())
 
         return expected_list
