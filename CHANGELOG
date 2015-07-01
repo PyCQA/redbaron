@@ -11,6 +11,7 @@ Changelog
 - add string representation for Path object
 - now redbaron Path() class can be compared directly to baron paths
   without using to_baron_path() helper.
+- fix by novocaine: 'function' was used as a function type detector instead of 'def'
 
 0.5.1 (2015-03-11)
 ------------------
