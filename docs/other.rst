@@ -67,8 +67,8 @@ match the query.
     r.parent_find('def', name='a')
     r.parent_find('def', name='dont_exist')
 
-.next .previous .next_generator() .previous_generator()
--------------------------------------------------------
+.next .previous .next_recursive .previous_recursive .next_generator() .previous_generator()
+-------------------------------------------------------------------------------------------
 
 In a similar fashion, nodes have a :file:`.next` and :file:`.previous`
 attributes that point to the next or previous node if the node is located in a
@@ -79,9 +79,15 @@ node is not in a node list. A node list will never have a :file:`.next` or
 Nodes also have a :file:`.next_generator()` and :file:`.previous_generator()`
 if you want to iterate on the neighbours of the node.
 
+Nodes have also a :file:`.next_recursive` and
+:file:`.previous_recursive` attribute. It is similar to the non
+recursive function but differ in the fact that, when using
+:file:`.next_recursive` on a node at the end of the list, it points to
+the first adjacent node that exist in the parent hierarchy.
+
 .. ipython::
 
-    In [42]: red = RedBaron("[1, 2, 3];a = 1")
+    In [42]: red = RedBaron("[1, 2, 3]; a = 1")
     In [42]: red.help()
 
     In [42]: list = red[0]
@@ -92,10 +98,14 @@ if you want to iterate on the neighbours of the node.
     In [42]: list.help()
     In [42]: print(list.value[0])
     In [42]: print(list.value[0].next)
+    In [42]: print(list.value[0].next_recursive)
     In [42]: print(list.value[0].previous)
+    In [42]: print(list.value[0].previous_recursive)
     In [42]: print(list.value[2])
     In [42]: print(list.value[2].next)
+    In [42]: print(list.value[2].next_recursive)
     In [42]: print(list.value[2].previous)
+    In [42]: print(list.value[2].previous_recursive)
 
     In [42]: assign = red[2]
 

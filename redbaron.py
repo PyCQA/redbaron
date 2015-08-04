@@ -518,6 +518,15 @@ class Node(GenericNodesUtils):
             previous = None
             target = target.parent
 
+    @property
+    def next_recursive(self):
+        target = self
+        while not target.next:
+            if not target.parent:
+                break
+            target = target.parent
+        return target.next
+
     def next_generator(self):
         in_list = self._get_list_attribute_is_member_off()
 
@@ -549,6 +558,15 @@ class Node(GenericNodesUtils):
                 previous = i
 
             target = target.parent
+
+    @property
+    def previous_recursive(self):
+        target = self
+        while not target.previous:
+            if not target.parent:
+                break
+            target = target.parent
+        return target.previous
 
     def previous_generator(self):
         in_list = self._get_list_attribute_is_member_off()
@@ -596,8 +614,10 @@ class Node(GenericNodesUtils):
 
         if self.on_attribute is "root":
             in_list = self.parent
-        else:
+        elif self.on_attribute is not None:
             in_list = getattr(self.parent, self.on_attribute)
+        else:
+            return None
 
         if isinstance(in_list, ProxyList):
             return in_list.node_list
@@ -1211,7 +1231,11 @@ class ProxyList(object):
         return self.node_list.find_all(identifier, *args, **kwargs)
 
     def _convert_input_to_node_object(self, value, parent, on_attribute):
-        return self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute).filtered()[0]
+        lst = self.node_list.parent._convert_input_to_node_object_list(value, parent, on_attribute)
+        if all(i.type == 'endl' for i in lst):
+            return lst[0]
+        else:
+            return lst.filtered()[0]
 
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
         if isinstance(value, string_instance):
@@ -1555,43 +1579,75 @@ class LineProxyList(ProxyList):
 
         expected_list.append(generate_separator())
 
+        def get_real_last(node):
+            try:
+                return node.node_list[-1]
+            except:
+                return node[-1]
+
+
+        def modify_last_indentation(node, indentation):
+            try:
+                current_last = get_real_last(node)
+                while current_last.type in ('def', 'class', 'ifelseblock'):
+                    current_last = get_real_last(current_last)
+                current_last.indent = indentation
+            except (AttributeError, IndexError, TypeError):
+                node.indent = indentation
+
         for i in self.data:
             # we face a blank line, remove previous separator since a blank line is not
             # previoused by a separator
-            if i.type == "endl":
-                expected_list.pop()
-
             expected_list.append(i)
-            if i.type not in ('function', 'class'):
+            if i.type == "endl" and expected_list[-1].type == "endl":
+                expected_list.pop()
+                modify_last_indentation(expected_list[-1], '')
+
+            if i.type in ('def', 'class', 'ifelseblock'):
+                # In this case, the last \n is owned by the node
+                modify_last_indentation(get_real_last(i.value), indentation)
+            else:
                 expected_list.append(generate_separator())
 
         if expected_list:
-            if self.parent and self.parent.next:
-                expected_list[-1].indent = self.parent.indentation
+            if self.parent and self.parent.next_rendered:
+                last_indentation = self.parent.indentation
             else:
-                expected_list[-1].indent = ""
+                last_indentation = ""
+
+            if expected_list[-1].type in ('def', 'class', 'ifelseblock'):
+                # In this case, the last \n is owned by the node
+                modify_last_indentation(get_real_last(expected_list[-1].value), last_indentation)
+            else:
+                expected_list[-1].indent = last_indentation
 
         return expected_list
 
     def _diff_augmented_list(self):
-        def is_blank_line(node):
-            return node in self.data
-
         expected_list = self._generate_expected_list()
 
         for i in range(len(expected_list)):
             if i >= len(self.node_list):
                 self.node_list.insert(i + 1, expected_list[i])
 
-            elif (self.node_list[i].type, expected_list[i].type) == ("endl", "endl")\
-                    and not is_blank_line(expected_list[i])\
-                    and not is_blank_line(self.node_list[i]):
+            elif (self.node_list[i].type, expected_list[i].type) == ("endl", "endl"):
                 if self.node_list[i].indent != expected_list[i].indent:
                     self.node_list[i].indent = expected_list[i].indent
 
-            elif self.node_list[i] is not expected_list[i] and\
-                    (not (self.node_list[i].type, expected_list[i].type) == ("endl", "endl") or is_blank_line(expected_list[i]) or is_blank_line(self.node_list[i])):
+            elif self.node_list[i] is not expected_list[i]:
                 self.node_list.insert(i, expected_list[i])
+
+        last_inserted_node = self.node_list[i+1 if i+1 < len(self.node_list) else -1]
+        after_last_inserted_node = last_inserted_node.next_recursive
+        if not after_last_inserted_node:
+            last_inserted_indentation = ""
+        else:
+            last_inserted_indentation = self.parent.indentation or ""
+        if last_inserted_node.type in ('def', 'class', 'ifelseblock'):
+            # In this case, the last \n is owned by the node
+            last_inserted_node.value[-1].indent = last_inserted_indentation
+        else:
+            last_inserted_node.indent = last_inserted_indentation
 
     def _diff_reduced_list(self):
         expected_list = self._generate_expected_list()
@@ -1653,6 +1709,20 @@ class DecoratorsLineProxyList(LineProxyList):
             expected_list[-1].indent = self.parent.indentation
 
         return expected_list
+
+    def _diff_augmented_list(self):
+        expected_list = self._generate_expected_list()
+
+        for i in range(len(expected_list)):
+            if i >= len(self.node_list):
+                self.node_list.insert(i + 1, expected_list[i])
+
+            elif (self.node_list[i].type, expected_list[i].type) == ("endl", "endl"):
+                if self.node_list[i].indent != expected_list[i].indent:
+                    self.node_list[i].indent = expected_list[i].indent
+
+            elif self.node_list[i] is not expected_list[i]:
+                self.node_list.insert(i, expected_list[i])
 
 # TODO
 # LineProxyList: handle comments
