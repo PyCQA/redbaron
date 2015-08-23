@@ -106,7 +106,7 @@ class Path(object):
 
     def to_baron_path(self):
         return self.path
- 
+
     def __str__(self):
         return 'Path(%s @ %s)' % (self.node.__class__.__name__ + ('(' + self.node.identifier + ')' if self.node.identifier else ''), str(self.path))
 
@@ -1156,7 +1156,7 @@ class ElseAttributeNode(CodeBlockNode):
         if re.match("^\s*%s" % indented_type, string):
 
             # we've got indented text, let's deindent it
-            if string.startswith((" ", "	")):
+            if string.startswith((" ", "        ")):
                 # assuming that the first spaces are the indentation
                 indentation = len(re.search("^ +", string).group())
                 string = re.sub("(\r?\n)%s" % (" " * indentation), "\\1", string)
@@ -1222,10 +1222,55 @@ class ElseAttributeNode(CodeBlockNode):
 
 class ProxyList(object):
     def __init__(self, node_list, on_attribute="value"):
-        self.node_list = node_list
-        self.data = list(node_list.filtered())
+        self.data = self._build_private_list(node_list)
         self.middle_separator = CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
         self.on_attribute = on_attribute
+        self.parent = node_list.parent
+
+    def _diff_augmented_list(self):
+        for position, i in enumerate(self.data):
+            is_last = position + 1 == len(self.data)
+
+            # None is a sentry value here to be replace by formatting
+            if i[1] is not None:
+                # those entries doesn't need work, skip them
+                if not is_last and i[1] == []:
+                    separator = self.middle_separator.copy()
+                    separator.parent = self
+                    separator.on_attribute = self.on_attribute
+
+                    i[1] = [separator]
+
+            if not is_last:
+                separator = self.middle_separator.copy()
+                separator.parent = self
+                separator.on_attribute = self.on_attribute
+
+                i[1] = [separator]
+
+                continue
+
+            i[1] = []
+
+    @property
+    def node_list(self):
+        result = NodeList([], on_attribute=self.on_attribute, parent=self.parent)
+        for item, formatting_list in self.data:
+            result.append(item)
+            result += formatting_list
+
+        return result
+
+    def _build_private_list(self, node_list):
+        data = []
+        for i in node_list:
+            if isinstance(i, (EndlNode, CommaNode, DotNode)):
+                if not data:
+                    data.append([None, []])
+                data[-1][1].append(i)
+            else:
+                data.append([i, []])
+        return data
 
     def __call__(self, identifier, *args, **kwargs):
         return self.node_list.find_all(identifier, *args, **kwargs)
@@ -1257,51 +1302,26 @@ class ProxyList(object):
 
         return expected_list
 
-    def _diff_augmented_list(self):
-        expected_list = self._generate_expected_list()
-
-        for i in range(len(expected_list)):
-            if i >= len(self.node_list):
-                self.node_list.insert(i + 1, expected_list[i])
-
-            elif self.node_list[i] is not expected_list[i] and\
-                    not (self.node_list[i].type == expected_list[i].type and\
-                         self.node_list[i].type == self.middle_separator.type):
-                self.node_list.insert(i, expected_list[i])
-
-    def _diff_reduced_list(self):
-        expected_list = self._generate_expected_list()
-
-        i = 0
-
-        while i < len(self.node_list):
-            if i >= len(expected_list):
-                self.node_list.pop(i)
-
-            # type is equal, check for formatting nodes
-            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == self.middle_separator.type:
-                i += 1
-
-            # that's the same node, continue
-            elif self.node_list[i] is expected_list[i]:
-                i += 1
-
-            else:
-                self.node_list.pop(i)
-
     def __len__(self):
-        return len(self.data)
+        if not self.data:
+            return 0
+
+        if self.data[0][0] is not None:
+            return len(self.data)
+
+        return len(self.data) - 1
+
 
     def insert(self, index, value):
         value = self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute)
-        self.data.insert(index, value)
+        self.data.insert(index, [value, None])
         self._diff_augmented_list()
 
     def append(self, value):
         self.insert(len(self), value)
 
     def extend(self, values):
-        self.data.extend(self._convert_input_to_node_object_list(values, parent=self.node_list, on_attribute=self.on_attribute))
+        self.data.extend([(x, None) for x in self._convert_input_to_node_object_list(values, parent=self.node_list, on_attribute=self.on_attribute)])
         self._diff_augmented_list()
 
     def pop(self, index=None):
@@ -1321,13 +1341,13 @@ class ProxyList(object):
             self.pop(index)
 
     def index(self, value, *args):
-        return self.data.index(value, *args)
+        return map(lambda x: x[0], self.data).index(value, *args)
 
     def __getitem__(self, index):
         if isinstance(index, slice):
             return self.__getslice__(index.start, index.stop)
         else:
-            return self.data[index]
+            return self.data[index][0]
 
     def __contains__(self, *args, **kwargs):
         return self.data.__contains__(*args, **kwargs)
@@ -1336,18 +1356,19 @@ class ProxyList(object):
         return self.data.__iter__()
 
     def count(self, value):
-        return self.data.count(value)
+        return map(lambda x: x[0], self.data).count(value)
 
     def __setitem__(self, key, value):
         if isinstance(key, slice):
             self.__setslice__(key.start, key.stop, value)
         else:
-            self.data.__setitem__(key, self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute))
+            self.data[key][0] = self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute)
         self._diff_reduced_list()
         self._diff_augmented_list()
 
     def __setslice__(self, i, j, value):
-        self.data[i:j] = self._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute=self.on_attribute)
+        self.data[i:j] = [(x, None) for x in self._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute=self.on_attribute)]
+
         self._diff_reduced_list()
         self._diff_augmented_list()
 
@@ -1356,7 +1377,7 @@ class ProxyList(object):
         self._diff_reduced_list()
 
     def __getslice__(self, i, j):
-        to_return = self.data[i:j]
+        to_return = [x[0] for x in self.data[i:j]]
         return self.__class__(NodeList(to_return))
 
     def __repr__(self):
@@ -1422,7 +1443,7 @@ class CommaProxyList(ProxyList):
         expected_list = []
 
         for i in self.data:
-            expected_list.append(i)
+            expected_list.append(i[0])
             separator = self._get_middle_separator().copy()
             separator.parent = self.node_list
             separator.on_attribute = self.on_attribute
@@ -1435,103 +1456,19 @@ class CommaProxyList(ProxyList):
 
         return expected_list
 
-    def _diff_augmented_list(self):
-        expected_list = self._generate_expected_list()
-
-        for i in range(len(expected_list)):
-            if i >= len(self.node_list):
-                self.node_list.insert(i + 1, expected_list[i])
-
-            elif self.node_list[i] is not expected_list[i] and\
-                    not (self.node_list[i].type == expected_list[i].type and\
-                         self.node_list[i].type == self.middle_separator.type):
-                self.node_list.insert(i, expected_list[i])
-
-            elif (self.node_list[i].type, expected_list[i].type) == ("comma", "comma"):
-                if self.node_list[i].second_formatting != expected_list[i].second_formatting:
-                    self.node_list[i].second_formatting = expected_list[i].second_formatting.copy()
-
-    def _diff_reduced_list(self):
-        expected_list = self._generate_expected_list()
-
-        i = 0
-
-        while i < len(self.node_list):
-            if i >= len(expected_list):
-                self.node_list.pop(i)
-
-            # type is equal, check for formatting nodes
-            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == self.middle_separator.type:
-                if self.node_list[i].second_formatting != expected_list[i].second_formatting:
-                    self.node_list[i].second_formatting = expected_list[i].second_formatting.copy()
-                i += 1
-
-            # that's the same node, continue
-            elif self.node_list[i] is expected_list[i]:
-                i += 1
-
-            else:
-                self.node_list.pop(i)
-
 
 class DotProxyList(ProxyList):
     def __init__(self, node_list, on_attribute="value"):
         super(DotProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.middle_separator = DotNode({"type": "dot", "first_formatting": [], "second_formatting": []})
 
-    def _diff_augmented_list(self):
-        expected_list = self._generate_expected_list()
-
-        i, j = 0, 0
-
-        while j < len(self.node_list) and self.node_list[j].type == "dot":
-            j += 1
-
-        while i < len(expected_list):
-            if j >= len(self.node_list):
-                self.node_list.insert(j + 1, expected_list[i])
-
-            elif self.node_list[j] is not expected_list[i] and\
-                    not (self.node_list[j].type == expected_list[i].type and\
-                         self.node_list[j].type == self.middle_separator.type):
-                self.node_list.insert(j, expected_list[i])
-
-            i += 1
-            j += 1
-
-    def _diff_reduced_list(self):
-        expected_list = self._generate_expected_list()
-
-
-        i, j = 0, 0
-
-        while j < len(self.node_list) and self.node_list[j].type == "dot":
-            j += 1
-
-        while j < len(self.node_list):
-            if i >= len(expected_list):
-                self.node_list.pop(j)
-
-            # type is equal, check for formatting nodes
-            elif self.node_list[j].type == expected_list[i].type and self.node_list[j].type == self.middle_separator.type:
-                i += 1
-                j += 1
-
-            # that's the same node, continue
-            elif self.node_list[j] is expected_list[i]:
-                i += 1
-                j += 1
-
-            else:
-                self.node_list.pop(j)
-
     def _generate_expected_list(self):
         expected_list = []
         for i in self.data:
-            if expected_list and i.type in ("call", "getitem"):
+            if expected_list and i[0].type in ("call", "getitem"):
                 expected_list.pop()
 
-            expected_list.append(i)
+            expected_list.append(i[0])
             separator = self.middle_separator.copy()
             separator.parent = self.node_list
             separator.on_attribute = self.on_attribute
@@ -1623,54 +1560,6 @@ class LineProxyList(ProxyList):
 
         return expected_list
 
-    def _diff_augmented_list(self):
-        expected_list = self._generate_expected_list()
-
-        for i in range(len(expected_list)):
-            if i >= len(self.node_list):
-                self.node_list.insert(i + 1, expected_list[i])
-
-            elif (self.node_list[i].type, expected_list[i].type) == ("endl", "endl"):
-                if self.node_list[i].indent != expected_list[i].indent:
-                    self.node_list[i].indent = expected_list[i].indent
-
-            elif self.node_list[i] is not expected_list[i]:
-                self.node_list.insert(i, expected_list[i])
-
-        last_inserted_node = self.node_list[i+1 if i+1 < len(self.node_list) else -1]
-        after_last_inserted_node = last_inserted_node.next_recursive
-        if not after_last_inserted_node:
-            last_inserted_indentation = ""
-        else:
-            last_inserted_indentation = self.parent.indentation or ""
-        if last_inserted_node.type in ('def', 'class', 'ifelseblock'):
-            # In this case, the last \n is owned by the node
-            last_inserted_node.value[-1].indent = last_inserted_indentation
-        else:
-            last_inserted_node.indent = last_inserted_indentation
-
-    def _diff_reduced_list(self):
-        expected_list = self._generate_expected_list()
-
-        i = 0
-
-        while i < len(self.node_list):
-            if i >= len(expected_list):
-                self.node_list.pop(i)
-
-            # type is equal, check for formatting nodes
-            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == self.middle_separator.type:
-                if self.node_list[i].indent != expected_list[i].indent:
-                    self.node_list[i].indent = expected_list[i].indent
-                i += 1
-
-            # that's the same node, continue
-            elif self.node_list[i] is expected_list[i]:
-                i += 1
-
-            else:
-                self.node_list.pop(i)
-
     def get_absolute_bounding_box_of_attribute(self, index):
         if index >= len(self.data) or index < 0:
             raise IndexError()
@@ -1709,20 +1598,6 @@ class DecoratorsLineProxyList(LineProxyList):
             expected_list[-1].indent = self.parent.indentation
 
         return expected_list
-
-    def _diff_augmented_list(self):
-        expected_list = self._generate_expected_list()
-
-        for i in range(len(expected_list)):
-            if i >= len(self.node_list):
-                self.node_list.insert(i + 1, expected_list[i])
-
-            elif (self.node_list[i].type, expected_list[i].type) == ("endl", "endl"):
-                if self.node_list[i].indent != expected_list[i].indent:
-                    self.node_list[i].indent = expected_list[i].indent
-
-            elif self.node_list[i] is not expected_list[i]:
-                self.node_list.insert(i, expected_list[i])
 
 # TODO
 # LineProxyList: handle comments
@@ -2856,18 +2731,18 @@ class WithNode(CodeBlockNode):
 class RedBaron(GenericNodesUtils, LineProxyList):
     def __init__(self, source_code):
         if isinstance(source_code, string_instance):
-            self.node_list = NodeList.from_fst(baron.parse(source_code), parent=self, on_attribute="root")
             self.middle_separator = DotNode({"type": "endl", "formatting": [], "value": "\n", "indent": ""})
 
+            node_list = NodeList.from_fst(baron.parse(source_code), parent=self, on_attribute="root")
             self.data = []
             previous = None
-            for i in self.node_list:
+            for i in node_list:
                 if i.type != "endl":
-                    self.data.append(i)
+                    self.data.append([i, []])
                 elif previous and previous.type == "endl":
-                    self.data.append(previous)
+                    self.data.append([previous, []])
                 elif previous is None and i.type == "endl":
-                    self.data.append(i)
+                    self.data.append([i, []])
 
                 previous = i
             self.node_list.parent = None
@@ -2876,6 +2751,15 @@ class RedBaron(GenericNodesUtils, LineProxyList):
             super(RedBaron, self).__init__(source_code)
         self.on_attribute = None
         self.parent = None
+
+    @property
+    def node_list(self):
+        result = []
+        for item, formatting_list in self.data:
+            result.append(item)
+            result += formatting_list
+
+        return NodeList(result, parent=self, on_attribute="root")
 
     def _convert_input_to_node_object(self, value, parent, on_attribute):
         return GenericNodesUtils._convert_input_to_node_object(self, value, self, "root")
