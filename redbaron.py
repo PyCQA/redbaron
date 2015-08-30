@@ -3041,11 +3041,11 @@ class RedBaron(GenericNodesUtils, LineProxyList):
             previous = None
             for i in self.node_list:
                 if i.type != "endl":
-                    self.data.append(i)
+                    self.data.append([i, []])
                 elif previous and previous.type == "endl":
-                    self.data.append(previous)
+                    self.data.append([previous, []])
                 elif previous is None and i.type == "endl":
-                    self.data.append(i)
+                    self.data.append([i, []])
 
                 previous = i
             self.node_list.parent = None
