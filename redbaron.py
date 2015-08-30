@@ -1332,7 +1332,7 @@ class ProxyList(object):
         self.insert(len(self), value)
 
     def extend(self, values):
-        self.data.extend(self._convert_input_to_node_object_list(values, parent=self.node_list, on_attribute=self.on_attribute))
+        self.data.extend(map(lambda x: [x, []], self._convert_input_to_node_object_list(values, parent=self.node_list, on_attribute=self.on_attribute)))
         self._diff_augmented_list()
 
     def pop(self, index=None):
