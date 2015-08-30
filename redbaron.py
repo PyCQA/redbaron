@@ -1325,7 +1325,7 @@ class ProxyList(object):
 
     def insert(self, index, value):
         value = self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute)
-        self.data.insert(index, value)
+        self.data.insert(index, [value, None])
         self._diff_augmented_list()
 
     def append(self, value):
