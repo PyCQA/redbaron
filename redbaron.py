@@ -1359,7 +1359,7 @@ class ProxyList(object):
         if isinstance(index, slice):
             return self.__getslice__(index.start, index.stop)
         else:
-            return self.data[index]
+            return self.data[index][0]
 
     def __contains__(self, *args, **kwargs):
         return self.data.__contains__(*args, **kwargs)
