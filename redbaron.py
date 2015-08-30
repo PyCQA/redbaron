@@ -1442,25 +1442,35 @@ class CommaProxyList(ProxyList):
         return CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
 
     def _generate_expected_list(self):
-        if self.style == "indented":
-            if self.data:
-                self.parent.second_formatting = NodeList.from_fst([{"type": "endl", "indent": self.parent.indentation + "    ", "formatting": [], "value": "\n"}])
-            else:
-                self.parent.second_formatting = NodeList.from_fst([])
-
         expected_list = []
 
-        for i in self.data:
-            expected_list.append(i)
-            separator = self._get_middle_separator().copy()
-            separator.parent = self.node_list
-            separator.on_attribute = self.on_attribute
-            expected_list.append(separator)
+        for position, i in enumerate(self.data):
+            is_last = position == len(self.data) - 1
+            expected_list.append(i[0])
+            # XXX this will need refactoring...
+            if i[1] is not None:
+                # here we encounter a middle value that should have formatting
+                # to separate between the intems but has not so we add it
+                # this happen because a new value has been added after this one
+                if not is_last and not i[1]:
+                    separator = self.middle_separator.copy()
+                    separator.parent = self.node_list
+                    separator.on_attribute = self.on_attribute
+                    expected_list.append(separator)
 
-        if self.style == "flat" and expected_list:
-            expected_list.pop()  # don't do that if trailing is desired
-        elif self.style == "indented" and expected_list:
-            expected_list[-1].second_formatting[0].indent = self.parent.indentation
+                else:
+                    expected_list += i[1]
+            else:
+                # here we generate the new expected formatting
+                # None is used as a sentry value for newly inserted values in the proxy list
+                if not is_last:
+                    separator = self.middle_separator.copy()
+                    separator.parent = self.node_list
+                    separator.on_attribute = self.on_attribute
+                    expected_list.append(separator)
+
+        # if expected_list:
+            # expected_list.pop()  # don't do that if trailing is desired
 
         return expected_list
 
