@@ -1256,15 +1256,35 @@ class ProxyList(object):
 
     def _generate_expected_list(self):
         expected_list = []
-        for i in self.data:
-            expected_list.append(i)
-            separator = self.middle_separator.copy()
-            separator.parent = self.node_list
-            separator.on_attribute = self.on_attribute
-            expected_list.append(separator)
 
-        if expected_list:
-            expected_list.pop()  # don't do that if trailing is desired
+        for position, i in enumerate(self.data):
+            is_last = position == len(self.data) - 1
+            expected_list.append(i[0])
+            # XXX this will need refactoring...
+            if i[1] is not None:
+                # here we encounter a middle value that should have formatting
+                # to separate between the intems but has not so we add it
+                # this happen because a new value has been added after this one
+                if not is_last and not i[1]:
+                    separator = self.middle_separator.copy()
+                    separator.parent = self.node_list
+                    separator.on_attribute = self.on_attribute
+                    expected_list.append(separator)
+
+                # XXX shoud uniformise the list of formatting nodes
+                elif is_last and i[1] and i[1][0].type in ("comma", "dot"):
+                    # XXX this will likely break comments if presents at the end of the list
+                    pass
+                else:
+                    expected_list += i[1]
+            else:
+                # here we generate the new expected formatting
+                # None is used as a sentry value for newly inserted values in the proxy list
+                if not is_last:
+                    separator = self.middle_separator.copy()
+                    separator.parent = self.node_list
+                    separator.on_attribute = self.on_attribute
+                    expected_list.append(separator)
 
         return expected_list
 
