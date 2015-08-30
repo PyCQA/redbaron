@@ -1725,6 +1725,10 @@ class LineProxyList(ProxyList):
 
             previous = expected_list[-1]
 
+        if self.parent and self.parent.next_rendered:
+            last_indentation = self.parent.indentation
+        else:
+            last_indentation = ""
 
         if False:
             if expected_list[-1].type in ('def', 'class', 'ifelseblock'):
