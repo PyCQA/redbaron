@@ -1526,8 +1526,26 @@ class CommaProxyList(ProxyList):
 
 class DotProxyList(ProxyList):
     def __init__(self, node_list, on_attribute="value"):
+        # XXX this will have its limitations, users will probably wants to be
+        # able to modify those, DotProxyList should be reconsidered for that
+        self.heading_dots = []
         super(DotProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.middle_separator = DotNode({"type": "dot", "first_formatting": [], "second_formatting": []})
+
+    def _build_inner_list(self, node_list):
+        # XXX couldn't this actually be make more generic and only in parent?
+        result = []
+
+        for i in node_list:
+            if isinstance(i, DotNode):
+                if not result:
+                    self.heading_dots.append(i)
+                else:
+                    result[-1][1].append(i)
+            else:
+                result.append([i, []])
+
+        return result
 
     def _diff_augmented_list(self):
         # XXX to remove?
