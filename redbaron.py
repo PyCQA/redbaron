@@ -1697,6 +1697,7 @@ class LineProxyList(ProxyList):
         previous = expected_list[-1] if expected_list else None
 
         might_need_separator = False
+        has_added_separator = False
 
         if expected_list and self.data and self.data[0][0].type == "endl" and not expected_list[-1].formatting.comment:
             expected_list[-1].indent = ""
@@ -1707,6 +1708,10 @@ class LineProxyList(ProxyList):
                 previous = expected_list[-1]
                 might_need_separator = False
 
+            if has_added_separator and i[0].type == "endl":
+                expected_list[-1].indent = ""
+
+            has_added_separator = False
 
             is_last = position == len(self.data) - 1
             expected_list.append(i[0])
@@ -1732,6 +1737,7 @@ class LineProxyList(ProxyList):
                 # here we generate the new expected formatting
                 # None is used as a sentry value for newly inserted values in the proxy list
                 if not is_last:
+                    has_added_separator = True
                     expected_list.append(generate_separator())
 
             previous = expected_list[-1]
