@@ -1706,6 +1706,9 @@ class LineProxyList(ProxyList):
             is_last = position == len(self.data) - 1
             expected_list.append(i[0])
 
+            if previous and previous.type == "endl" and i[0].type != "endl" and previous.indentation != indentation:
+                previous.indent = indentation
+
             # XXX this will need refactoring...
             if i[1] is not None:
                 # XXX shoud uniformise the list of formatting nodes
