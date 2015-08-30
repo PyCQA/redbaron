@@ -1435,6 +1435,10 @@ class CommaProxyList(ProxyList):
         super(CommaProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.style = "indented" if any(self.node_list('comma', recursive=False).map(lambda x: x('endl'))) else "flat"
 
+        # XXX will likely break if the user modify the formatting of the list,
+        # I don't like that
+        self.has_trailing = self.node_list and self.node_list[-1].type == "comma"
+
     def _get_middle_separator(self):
         if self.style == "indented":
             return CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "endl", "indent": self.parent.indentation + "    ", "formatting": [], "value": "\n"}]})
@@ -1458,6 +1462,10 @@ class CommaProxyList(ProxyList):
                     separator.on_attribute = self.on_attribute
                     expected_list.append(separator)
 
+                # comma list doesn't have trailing but has a comma at its end, remove it
+                elif is_last and not self.has_trailing and i[1] and i[1][0].type == "comma":
+                    # XXX this will likely break comments if presents at the end of the list
+                    pass
                 else:
                     expected_list += i[1]
             else:
