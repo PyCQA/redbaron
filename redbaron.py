@@ -1374,12 +1374,12 @@ class ProxyList(object):
         if isinstance(key, slice):
             self.__setslice__(key.start, key.stop, value)
         else:
-            self.data.__setitem__(key, self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute))
+            self.data[key][0] = self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute)
         self._diff_reduced_list()
         self._diff_augmented_list()
 
     def __setslice__(self, i, j, value):
-        self.data[i:j] = self._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute=self.on_attribute)
+        self.data[i:j] = map(lambda x: [x, None], self._convert_input_to_node_object_list(value, parent=self.node_list, on_attribute=self.on_attribute))
         self._diff_reduced_list()
         self._diff_augmented_list()
 
