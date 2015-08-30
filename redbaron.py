@@ -1499,6 +1499,7 @@ class CommaProxyList(ProxyList):
                     self.node_list[i].second_formatting = expected_list[i].second_formatting.copy()
 
     def _diff_reduced_list(self):
+        return super(CommaProxyList, self)._diff_reduced_list()
         expected_list = self._generate_expected_list()
 
         i = 0
