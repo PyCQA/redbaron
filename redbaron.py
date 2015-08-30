@@ -1696,6 +1696,8 @@ class LineProxyList(ProxyList):
         expected_list = self.first_blank_lines[:]
         previous = expected_list[-1] if expected_list else None
 
+        if expected_list and self.data and self.data[0][0].type == "endl" and not expected_list[-1].formatting.comment:
+            expected_list[-1].indent = ""
 
         for position, i in enumerate(self.data):
             if True:  # stupid git and it's broken diff
