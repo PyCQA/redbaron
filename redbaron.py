@@ -1530,6 +1530,8 @@ class DotProxyList(ProxyList):
         self.middle_separator = DotNode({"type": "dot", "first_formatting": [], "second_formatting": []})
 
     def _diff_augmented_list(self):
+        # XXX to remove?
+        return super(DotProxyList, self)._diff_augmented_list()
         expected_list = self._generate_expected_list()
 
         i, j = 0, 0
@@ -1550,6 +1552,8 @@ class DotProxyList(ProxyList):
             j += 1
 
     def _diff_reduced_list(self):
+        # XXX to remove?
+        return super(DotProxyList, self)._diff_reduced_list()
         expected_list = self._generate_expected_list()
 
 
