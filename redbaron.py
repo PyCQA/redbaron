@@ -1388,7 +1388,7 @@ class ProxyList(object):
         self._diff_reduced_list()
 
     def __getslice__(self, i, j):
-        to_return = self.data[i:j]
+        to_return = map(lambda x: x[0], self.data[i:j])
         return self.__class__(NodeList(to_return))
 
     def __repr__(self):
