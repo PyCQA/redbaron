@@ -1302,23 +1302,14 @@ class ProxyList(object):
 
     def _diff_reduced_list(self):
         expected_list = self._generate_expected_list()
+        to_remove = []
 
-        i = 0
+        for i in self.node_list:
+            if i not in expected_list:
+                to_remove.append(i)
 
-        while i < len(self.node_list):
-            if i >= len(expected_list):
-                self.node_list.pop(i)
-
-            # type is equal, check for formatting nodes
-            elif self.node_list[i].type == expected_list[i].type and self.node_list[i].type == self.middle_separator.type:
-                i += 1
-
-            # that's the same node, continue
-            elif self.node_list[i] is expected_list[i]:
-                i += 1
-
-            else:
-                self.node_list.pop(i)
+        for i in to_remove:
+            self.node_list.remove(i)
 
     def __len__(self):
         return len(self.data)
