@@ -1352,7 +1352,8 @@ class ProxyList(object):
             self.pop(index)
 
     def index(self, value, *args):
-        return self.data.index(value, *args)
+        # XXX would be better if I iterate other the list
+        return map(lambda x: x[0], self.data).index(value, *args)
 
     def __getitem__(self, index):
         if isinstance(index, slice):
