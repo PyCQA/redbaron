@@ -1696,12 +1696,17 @@ class LineProxyList(ProxyList):
         expected_list = self.first_blank_lines[:]
         previous = expected_list[-1] if expected_list else None
 
+        might_need_separator = False
+
         if expected_list and self.data and self.data[0][0].type == "endl" and not expected_list[-1].formatting.comment:
             expected_list[-1].indent = ""
 
         for position, i in enumerate(self.data):
-            if True:  # stupid git and it's broken diff
+            if might_need_separator and i[0].type != "endl" and (not previous or previous.type != "endl"):
                 expected_list.append(generate_separator())
+                previous = expected_list[-1]
+                might_need_separator = False
+
 
             is_last = position == len(self.data) - 1
             expected_list.append(i[0])
@@ -1711,8 +1716,14 @@ class LineProxyList(ProxyList):
 
             # XXX this will need refactoring...
             if i[1] is not None:
+                # here we encounter a middle value that should have formatting
+                # to separate between the intems but has not so we add it
+                # this happen because a new value has been added after this one
+                if not is_last and not i[1]:
+                    might_need_separator = True
+
                 # XXX shoud uniformise the list of formatting nodes
-                if is_last and i[1] and i[1][0].type in ("comma", "dot"):
+                elif is_last and i[1] and i[1][0].type in ("comma", "dot"):
                     # XXX this will likely break comments if presents at the end of the list
                     pass
                 else:
