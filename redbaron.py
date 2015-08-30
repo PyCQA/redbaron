@@ -1368,7 +1368,7 @@ class ProxyList(object):
         return self.data.__iter__()
 
     def count(self, value):
-        return self.data.count(value)
+        return map(lambda x: x[0], self.data).count(value)
 
     def __setitem__(self, key, value):
         if isinstance(key, slice):
