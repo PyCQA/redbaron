@@ -1816,6 +1816,7 @@ class LineProxyList(ProxyList):
 #        return expected_list
 
     def _diff_augmented_list(self):
+        # XXX remove?
         self.node_list.data = self._generate_expected_list()[:]
         return
         expected_list = self._generate_expected_list()
@@ -1830,6 +1831,7 @@ class LineProxyList(ProxyList):
                 self.node_list.insert(i, expected_list[i])
 
     def _diff_reduced_list(self):
+        # XXX remove?
         return super(LineProxyList, self)._diff_reduced_list()
         expected_list = self._generate_expected_list()
 
