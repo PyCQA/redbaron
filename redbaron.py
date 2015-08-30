@@ -1644,18 +1644,29 @@ class DotProxyList(ProxyList):
 
 class LineProxyList(ProxyList):
     def __init__(self, node_list, on_attribute="value"):
+        self.first_blank_lines = []
         super(LineProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.middle_separator = DotNode({"type": "endl", "formatting": [], "value": "\n", "indent": "    "})
 
-        self.data = []
+
+    def _build_inner_list(self, node_list):
+        result = []
+
         previous = None
         for i in node_list:
             if i.type != "endl":
-                self.data.append(i)
+                result.append([i, []])
             elif previous and previous.type == "endl":
-                self.data.append(previous)
+                result.append([i, []])
+            else:
+                if result:
+                    result[-1][1].append(i)
+                else:
+                    self.first_blank_lines.append(i)
 
             previous = i
+
+        return result
 
     def _generate_expected_list(self):
         def generate_separator():
