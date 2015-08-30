@@ -1816,6 +1816,8 @@ class LineProxyList(ProxyList):
 #        return expected_list
 
     def _diff_augmented_list(self):
+        self.node_list.data = self._generate_expected_list()[:]
+        return
         expected_list = self._generate_expected_list()
 
         for i in range(len(expected_list)):
