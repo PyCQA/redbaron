@@ -1822,24 +1822,10 @@ class LineProxyList(ProxyList):
             if i >= len(self.node_list):
                 self.node_list.insert(i + 1, expected_list[i])
 
-            elif (self.node_list[i].type, expected_list[i].type) == ("endl", "endl"):
-                if self.node_list[i].indent != expected_list[i].indent:
-                    self.node_list[i].indent = expected_list[i].indent
-
-            elif self.node_list[i] is not expected_list[i]:
+            elif self.node_list[i] is not expected_list[i] and\
+                    not (self.node_list[i].type == expected_list[i].type and\
+                         self.node_list[i].type == self.middle_separator.type):
                 self.node_list.insert(i, expected_list[i])
-
-        last_inserted_node = self.node_list[i+1 if i+1 < len(self.node_list) else -1]
-        after_last_inserted_node = last_inserted_node.next_recursive
-        if not after_last_inserted_node:
-            last_inserted_indentation = ""
-        else:
-            last_inserted_indentation = self.parent.indentation or ""
-        if last_inserted_node.type in ('def', 'class', 'ifelseblock'):
-            # In this case, the last \n is owned by the node
-            last_inserted_node.value[-1].indent = last_inserted_indentation
-        else:
-            last_inserted_node.indent = last_inserted_indentation
 
     def _diff_reduced_list(self):
         expected_list = self._generate_expected_list()
