@@ -1830,6 +1830,7 @@ class LineProxyList(ProxyList):
                 self.node_list.insert(i, expected_list[i])
 
     def _diff_reduced_list(self):
+        return super(LineProxyList, self)._diff_reduced_list()
         expected_list = self._generate_expected_list()
 
         i = 0
