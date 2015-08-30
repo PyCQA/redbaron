@@ -1289,6 +1289,9 @@ class ProxyList(object):
         return expected_list
 
     def _diff_augmented_list(self):
+        # XXX remove if proven useless
+        self.node_list.data = self._generate_expected_list()[:]
+        return
         expected_list = self._generate_expected_list()
 
         for i in range(len(expected_list)):
@@ -1301,6 +1304,9 @@ class ProxyList(object):
                 self.node_list.insert(i, expected_list[i])
 
     def _diff_reduced_list(self):
+        # XXX remove if proven useless
+        self.node_list.data = self._generate_expected_list()[:]
+        return
         expected_list = self._generate_expected_list()
         to_remove = []
 
