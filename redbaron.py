@@ -1730,7 +1730,10 @@ class LineProxyList(ProxyList):
         else:
             last_indentation = ""
 
-        if False:
+        if not expected_list or expected_list[-1].type != "endl":
+            expected_list.append(generate_separator())
+            expected_list[-1].indent = last_indentation
+        else:
             if expected_list[-1].type in ('def', 'class', 'ifelseblock'):
                 # In this case, the last \n is owned by the node
                 modify_last_indentation(get_real_last(expected_list[-1].value), last_indentation)
