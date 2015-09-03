@@ -1474,7 +1474,7 @@ class CommaProxyList(ProxyList):
             else:
                 # here we generate the new expected formatting
                 # None is used as a sentry value for newly inserted values in the proxy list
-                if not is_last:
+                if not is_last or self.has_trailing:
                     expected_list.append(generate_separator())
 
         # if expected_list:
