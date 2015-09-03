@@ -1487,8 +1487,12 @@ class CommaProxyList(ProxyList):
                     expected_list.append(generate_separator())
                     expected_list[-1].second_formatting[0].indent = ""
 
-        # if expected_list:
-            # expected_list.pop()  # don't do that if trailing is desired
+        if expected_list and self.has_trailing and self.style == "indented":
+            if not expected_list[-1].second_formatting.endl:
+                raise Exception("Unhandled case")
+            elif expected_list[-1].second_formatting.endl.indent != self.parent.indentation:
+                expected_list[-1].second_formatting.endl.indent = self.parent.indentation
+
 
         return expected_list
 
