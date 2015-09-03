@@ -1887,6 +1887,9 @@ class DecoratorsLineProxyList(LineProxyList):
         return map(lambda x: self._convert_input_to_node_object(x, parent, on_attribute), value)
 
     def _generate_expected_list(self):
+        # XXX to clean
+        return super(DecoratorsLineProxyList, self)._generate_expected_list()
+
         def generate_separator():
             separator = self.middle_separator.copy()
             separator.parent = self.node_list
