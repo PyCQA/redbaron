@@ -1421,6 +1421,7 @@ class ProxyList(object):
     def __str__(self):
         to_return = ""
         for number, value in enumerate(self.data):
+            value = value[0]
             to_return += ("%-3s " % number) + "\n    ".join(value.__repr__().split("\n"))
             to_return += "\n"
         return to_return
