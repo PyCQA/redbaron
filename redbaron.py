@@ -1471,6 +1471,13 @@ class CommaProxyList(ProxyList):
                     pass
                 else:
                     expected_list += i[1]
+
+                    # XXX will break comments
+                    if self.style == "indented":
+                        if not expected_list[-1].second_formatting.endl:
+                            raise Exception("Unhandled case")
+                        elif expected_list[-1].second_formatting.endl.indent != self.parent.indentation + " "*4:
+                            expected_list[-1].second_formatting.endl.indent = self.parent.indentation + " "*4
             else:
                 # here we generate the new expected formatting
                 # None is used as a sentry value for newly inserted values in the proxy list
