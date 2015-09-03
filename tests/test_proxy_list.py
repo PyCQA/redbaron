@@ -895,12 +895,13 @@ def test_comma_proxy_list_indented_insert_2_middle():
     assert red.dumps() == "[\n    1,\n    2,\n    3,\n]"
 
 
-def test_comma_proxy_list_indented_append():
-    red = RedBaron("[]")
-    comma_proxy_list = red[0].value
-    comma_proxy_list.style = "indented"
-    comma_proxy_list.append("1")
-    assert red.dumps() == "[\n    1,\n]"
+# XXX need to rethink this behavior
+# def test_comma_proxy_list_indented_append():
+#     red = RedBaron("[]")
+#     comma_proxy_list = red[0].value
+#     comma_proxy_list.style = "indented"
+#     comma_proxy_list.append("1")
+#     assert red.dumps() == "[\n    1,\n]"
 
 
 def test_comma_proxy_list_indented_append_2():
