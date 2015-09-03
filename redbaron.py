@@ -1362,7 +1362,7 @@ class ProxyList(object):
         return self.data.__contains__(*args, **kwargs)
 
     def __iter__(self):
-        return self.data.__iter__()
+        return map(lambda x: x[0], self.data).__iter__()
 
     def count(self, value):
         return map(lambda x: x[0], self.data).count(value)
