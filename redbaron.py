@@ -1452,6 +1452,12 @@ class CommaProxyList(ProxyList):
             separator.on_attribute = self.on_attribute
             return separator
 
+        # XXX will break comments
+        if not self.data:
+            self.parent.first_formatting = []
+            self.parent.second_formatting = []
+            return []
+
         expected_list = []
 
         for position, i in enumerate(self.data):
