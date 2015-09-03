@@ -1446,6 +1446,12 @@ class CommaProxyList(ProxyList):
         return CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
 
     def _generate_expected_list(self):
+        def generate_separator():
+            separator = self._get_middle_separator()
+            separator.parent = self.node_list
+            separator.on_attribute = self.on_attribute
+            return separator
+
         expected_list = []
 
         for position, i in enumerate(self.data):
@@ -1457,10 +1463,7 @@ class CommaProxyList(ProxyList):
                 # to separate between the intems but has not so we add it
                 # this happen because a new value has been added after this one
                 if not is_last and not i[1]:
-                    separator = self.middle_separator.copy()
-                    separator.parent = self.node_list
-                    separator.on_attribute = self.on_attribute
-                    expected_list.append(separator)
+                    expected_list.append(generate_separator())
 
                 # comma list doesn't have trailing but has a comma at its end, remove it
                 elif is_last and not self.has_trailing and i[1] and i[1][0].type == "comma":
@@ -1472,10 +1475,7 @@ class CommaProxyList(ProxyList):
                 # here we generate the new expected formatting
                 # None is used as a sentry value for newly inserted values in the proxy list
                 if not is_last:
-                    separator = self.middle_separator.copy()
-                    separator.parent = self.node_list
-                    separator.on_attribute = self.on_attribute
-                    expected_list.append(separator)
+                    expected_list.append(generate_separator())
 
         # if expected_list:
             # expected_list.pop()  # don't do that if trailing is desired
