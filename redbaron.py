@@ -1412,7 +1412,7 @@ class ProxyList(object):
                 yield str(num)
                 yield u"</td>"
                 yield u"<td>"
-                yield item._repr_html_()
+                yield item[0]._repr_html_()
                 yield u"</td>"
                 yield u"</tr>"
             yield "</table>"
