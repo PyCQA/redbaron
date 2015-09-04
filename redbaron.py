@@ -1745,7 +1745,7 @@ class LineProxyList(ProxyList):
                 # here we encounter a middle value that should have formatting
                 # to separate between the intems but has not so we add it
                 # this happen because a new value has been added after this one
-                if not is_last and not i[1]:
+                if not is_last and not i[1] and i[0].type not in ("def", "class"):
                     might_need_separator = True
 
                 # XXX shoud uniformise the list of formatting nodes
@@ -1768,7 +1768,7 @@ class LineProxyList(ProxyList):
         else:
             last_indentation = ""
 
-        if not expected_list or expected_list[-1].type != "endl":
+        if not expected_list or expected_list[-1].type not in ("endl", "class", "def"):
             expected_list.append(generate_separator())
             expected_list[-1].indent = last_indentation
         else:
