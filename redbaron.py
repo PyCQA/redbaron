@@ -1057,10 +1057,10 @@ class Node(GenericNodesUtils):
         self.get_indentation_node().indent = self.get_indentation_node().indent[:-len(number_of_spaces * " ")]
 
     def insert_before(self, value, offset=0):
-        self.parent.insert(self.index_on_parent - offset, value)
+        return self.parent.insert(self.index_on_parent - offset, value)
 
     def insert_after(self, value, offset=0):
-        self.parent.insert(self.index_on_parent + 1 + offset, value)
+        return self.parent.insert(self.index_on_parent + 1 + offset, value)
 
 
 class CodeBlockNode(Node):
@@ -1296,9 +1296,10 @@ class ProxyList(object):
         value = self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute)
         self.data.insert(index, value)
         self._diff_augmented_list()
+        return value
 
     def append(self, value):
-        self.insert(len(self), value)
+        return self.insert(len(self), value)
 
     def extend(self, values):
         self.data.extend(self._convert_input_to_node_object_list(values, parent=self.node_list, on_attribute=self.on_attribute))
