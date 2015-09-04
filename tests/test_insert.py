@@ -185,7 +185,7 @@ class A:
 """)
 
 
-def test_insert_inside_nested_class_1(red_nested):
+def test_insert_inside_nested_class_2(red_nested):
     red_nested[0].insert(0, "def a(self):\n    pass")
 
     assert_with_indent(red_nested, """\
