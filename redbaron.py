@@ -1757,7 +1757,10 @@ class LineProxyList(ProxyList):
             else:
                 # here we generate the new expected formatting
                 # None is used as a sentry value for newly inserted values in the proxy list
-                if not is_last:
+                # CodeBlockNode are responsible for the last indentation
+                if isinstance(i[0], CodeBlockNode):
+                    pass
+                elif not is_last:
                     has_added_separator = True
                     expected_list.append(generate_separator())
 
