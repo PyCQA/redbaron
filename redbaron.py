@@ -1740,6 +1740,10 @@ class LineProxyList(ProxyList):
             if previous and previous.type == "endl" and i[0].type != "endl" and previous.indentation != indentation:
                 previous.indent = indentation
 
+            if i[0].type != "endl" and previous and isinstance(previous, CodeBlockNode):
+                modify_last_indentation(get_real_last(previous.value), indentation)
+
+
             # XXX this will need refactoring...
             if i[1] is not None:
                 # here we encounter a middle value that should have formatting
