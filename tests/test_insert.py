@@ -5,7 +5,10 @@
 
 import pytest
 # pylint: disable=redefined-outer-name
+import redbaron
 from redbaron import RedBaron
+
+redbaron.DEBUG = True
 
 
 def assert_with_indent(left, right):
