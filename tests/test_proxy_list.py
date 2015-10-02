@@ -3,8 +3,11 @@
 
 """ Tests the rendering feature """
 
+import redbaron
 from redbaron import (RedBaron, NodeList, CommaProxyList,
                       DotProxyList, LineProxyList, DecoratorsLineProxyList)
+
+redbaron.DEBUG = True
 
 
 def test_comma_proxy_list_len_empty():

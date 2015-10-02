@@ -27,9 +27,14 @@ else:
     from StringIO import StringIO
 
 
+def log(string, *args):
+    if DEBUG:
+        sys.stdout.write("%s\n" % (string % args))
+
+
 def in_a_shell():
     # the isinstance here is for building sphinx doc
-    if isinstance(sys.stdout, StringIO):
+    if DEBUG or isinstance(sys.stdout, StringIO):
         return True
     try:
         if hasattr(sys.stdout, 'fileno') and os.isatty(sys.stdout.fileno()):
@@ -1690,6 +1695,7 @@ class LineProxyList(ProxyList):
         return result
 
     def _generate_expected_list(self):
+        log("Start _generate_expected_list for LineProxyList")
         indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
 
         def generate_separator():
@@ -3134,6 +3140,7 @@ for node_type in nodes_rendering_order:
 
 
 ipython_behavior = True
+DEBUG = False
 def runned_from_ipython():
     if not ipython_behavior:
         return False
