@@ -1698,6 +1698,8 @@ class LineProxyList(ProxyList):
         log("Start _generate_expected_list for LineProxyList")
         indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
 
+        log("Detect indentation has %s", indentation.__repr__())
+
         def generate_separator():
             separator = self.middle_separator.copy()
             separator.parent = self.node_list
@@ -1727,70 +1729,93 @@ class LineProxyList(ProxyList):
         has_added_separator = False
 
         if expected_list and self.data and self.data[0][0].type == "endl" and not expected_list[-1].formatting.comment:
+            log("first_blank_lines doesn't has comments, reset indentation")
             expected_list[-1].indent = ""
 
         for position, i in enumerate(self.data):
+            log("[%s] %s", position, i)
+
             if might_need_separator and i[0].type != "endl" and (not previous or previous.type != "endl"):
+                log(">> Previous line has content and needs to be indented, append separator to indent it")
                 expected_list.append(generate_separator())
                 previous = expected_list[-1]
                 might_need_separator = False
 
             if has_added_separator and i[0].type == "endl":
+                # XXX this will break comments if present
+                log("Previous is endl and current is endl, remove indentation of previous")
                 expected_list[-1].indent = ""
 
             has_added_separator = False
 
             is_last = position == len(self.data) - 1
+            log(">> Append node to expected_list: '%s'", [i[0]])
             expected_list.append(i[0])
 
             if previous and previous.type == "endl" and i[0].type != "endl" and previous.indentation != indentation:
+                log("Previous is endl and current isn't endl and identation isn't correct, fix it")
                 previous.indent = indentation
 
             if i[0].type != "endl" and previous and isinstance(previous, CodeBlockNode):
+                log("Previous is CodeBlockNode and current isn't endl, ensure previous has the current identation")
                 modify_last_indentation(get_real_last(previous.value), indentation)
 
 
             # XXX this will need refactoring...
             if i[1] is not None:
+                log("current doesn't have None for formatting")
                 # here we encounter a middle value that should have formatting
                 # to separate between the intems but has not so we add it
                 # this happen because a new value has been added after this one
                 if not is_last and not i[1] and i[0].type not in ("def", "class"):
+                    log("If current isn't a CodeBlockNode and doesn't have a separator and isn't the last, mark it has might needing a separator")
                     might_need_separator = True
 
                 # XXX shoud uniformise the list of formatting nodes
                 elif is_last and i[1] and i[1][0].type in ("comma", "dot"):
                     # XXX this will likely break comments if presents at the end of the list
+                    log("Current is last and a CodeBlockNode, don't do anything")
                     pass
                 else:
+                    log(">> Append formatting to expected_list: %s", i[1])
                     expected_list += i[1]
             else:
+                log("current HAS None for formatting")
                 # here we generate the new expected formatting
                 # None is used as a sentry value for newly inserted values in the proxy list
                 # CodeBlockNode are responsible for the last indentation
                 if isinstance(i[0], CodeBlockNode):
+                    log("Current is CodeBlockNode, don't do anything")
                     pass
                 elif not is_last:
+                    log(">> Current is not last, append a separator")
                     has_added_separator = True
                     expected_list.append(generate_separator())
 
             previous = expected_list[-1]
 
+        log("End of loop")
         if self.parent and self.parent.next_rendered:
+            log("CodeBlockNode is followed by another node, don't break it's indentation")
             last_indentation = self.parent.indentation
         else:
+            log("CodeBlockNode is NOT followed by another node, avoid trailing spaces")
             last_indentation = ""
 
         if not expected_list or expected_list[-1].type not in ("endl", "class", "def"):
+            log(">> List is empty or last node is not a CodeBlockNode, append a separator to it and set identation to it")
             expected_list.append(generate_separator())
             expected_list[-1].indent = last_indentation
         else:
             if expected_list[-1].type in ('def', 'class', 'ifelseblock'):
                 # In this case, the last \n is owned by the node
+                log("Last node is a CodeBlockNode, ensure that I still have the same last_indentation")
                 modify_last_indentation(get_real_last(expected_list[-1].value), last_indentation)
             else:
+                log("Last node is NOT CodeBlockNode, ensure that I still have the same last_indentation")
                 expected_list[-1].indent = last_indentation
 
+        log("End")
         return expected_list
 
 #        def generate_separator():
