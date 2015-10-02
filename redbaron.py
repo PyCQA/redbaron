@@ -1767,7 +1767,7 @@ class LineProxyList(ProxyList):
                 # here we encounter a middle value that should have formatting
                 # to separate between the intems but has not so we add it
                 # this happen because a new value has been added after this one
-                if not is_last and not i[1] and i[0].type not in ("def", "class"):
+                if not is_last and not i[1] and not isinstance(i[0], CodeBlockNode):
                     log("If current isn't a CodeBlockNode and doesn't have a separator and isn't the last, mark it has might needing a separator")
                     might_need_separator = True
 
@@ -1802,12 +1802,12 @@ class LineProxyList(ProxyList):
             log("CodeBlockNode is NOT followed by another node, avoid trailing spaces")
             last_indentation = ""
 
-        if not expected_list or expected_list[-1].type not in ("endl", "class", "def"):
+        if not expected_list or not isinstance(expected_list[-1], (CodeBlockNode, EndlNode)):
             log(">> List is empty or last node is not a CodeBlockNode, append a separator to it and set identation to it")
             expected_list.append(generate_separator())
             expected_list[-1].indent = last_indentation
         else:
-            if expected_list[-1].type in ('def', 'class', 'ifelseblock'):
+            if isinstance(expected_list[-1], CodeBlockNode):
                 # In this case, the last \n is owned by the node
                 log("Last node is a CodeBlockNode, ensure that I still have the same last_indentation")
                 modify_last_indentation(get_real_last(expected_list[-1].value), last_indentation)
