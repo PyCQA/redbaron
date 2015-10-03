@@ -1735,7 +1735,7 @@ class LineProxyList(ProxyList):
         for position, i in enumerate(self.data):
             log("[%s] %s", position, i)
 
-            if might_need_separator and i[0].type != "endl" and (not previous or previous.type != "endl"):
+            if might_need_separator and i[0].type != "endl" and (not previous or previous.type != "endl") and not isinstance(previous, (CodeBlockNode, IfelseblockNode)):
                 log(">> Previous line has content and current needs to be indented, append separator to indent it")
                 expected_list.append(generate_separator())
                 previous = expected_list[-1]
