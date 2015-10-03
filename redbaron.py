@@ -1736,7 +1736,7 @@ class LineProxyList(ProxyList):
             log("[%s] %s", position, i)
 
             if might_need_separator and i[0].type != "endl" and (not previous or previous.type != "endl"):
-                log(">> Previous line has content and needs to be indented, append separator to indent it")
+                log(">> Previous line has content and current needs to be indented, append separator to indent it")
                 expected_list.append(generate_separator())
                 previous = expected_list[-1]
                 might_need_separator = False
@@ -1796,14 +1796,14 @@ class LineProxyList(ProxyList):
 
         log("End of loop")
         if self.parent and self.parent.next_rendered:
-            log("CodeBlockNode is followed by another node, don't break it's indentation")
+            log("self.parent is followed by another node, last_indentation is indentation of self.parent")
             last_indentation = self.parent.indentation
         else:
-            log("CodeBlockNode is NOT followed by another node, avoid trailing spaces")
+            log("self.parent is NOT followed by another node, last indentation is empty string")
             last_indentation = ""
 
         if not expected_list or not isinstance(expected_list[-1], (CodeBlockNode, EndlNode)):
-            log(">> List is empty or last node is not a CodeBlockNode, append a separator to it and set identation to it")
+            log(">> List is empty or last node is not a CodeBlockNode or EndlNode, append a separator to it and set identation to it")
             expected_list.append(generate_separator())
             expected_list[-1].indent = last_indentation
         else:
