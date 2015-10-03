@@ -1790,8 +1790,8 @@ class LineProxyList(ProxyList):
                 if isinstance(i[0], CodeBlockNode):
                     log("Current is CodeBlockNode, don't do anything")
                     pass
-                elif not is_last:
-                    log(">> Current is not last, append a separator")
+                elif not is_last and not i[0].type == "endl":
+                    log(">> Current is not last and not endl, append a separator")
                     log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
                     has_added_separator = True
                     expected_list.append(generate_separator())
