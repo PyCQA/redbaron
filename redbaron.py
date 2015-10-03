@@ -1747,6 +1747,10 @@ class LineProxyList(ProxyList):
                 log("Previous is endl and current is endl, remove indentation of previous")
                 expected_list[-1].indent = ""
 
+            if previous and previous.type == "endl" and i[0].type == "endl":
+                # XXX this will break comments
+                previous.indent = ""
+
             has_added_separator = False
 
             is_last = position == len(self.data) - 1
