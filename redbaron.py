@@ -1737,8 +1737,8 @@ class LineProxyList(ProxyList):
 
             if might_need_separator and i[0].type != "endl" and (not previous or previous.type != "endl") and not isinstance(previous, (CodeBlockNode, IfelseblockNode)):
                 log(">> Previous line has content and current needs to be indented, append separator to indent it")
-                log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
                 expected_list.append(generate_separator())
+                log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
                 previous = expected_list[-1]
                 might_need_separator = False
 
@@ -1751,8 +1751,8 @@ class LineProxyList(ProxyList):
 
             is_last = position == len(self.data) - 1
             log(">> Append node to expected_list: '%s'", [i[0]])
-            log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
             expected_list.append(i[0])
+            log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
 
             if previous and previous.type == "endl" and i[0].type != "endl" and previous.indentation != indentation:
                 log("Previous is endl and current isn't endl and identation isn't correct, fix it")
@@ -1780,8 +1780,8 @@ class LineProxyList(ProxyList):
                     pass
                 else:
                     log(">> Append formatting to expected_list: %s", i[1])
-                    log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
                     expected_list += i[1]
+                    log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
             else:
                 log("current HAS None for formatting")
                 # here we generate the new expected formatting
@@ -1792,9 +1792,9 @@ class LineProxyList(ProxyList):
                     pass
                 elif not is_last and not i[0].type == "endl":
                     log(">> Current is not last and not endl, append a separator")
-                    log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
                     has_added_separator = True
                     expected_list.append(generate_separator())
+                    log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
 
             previous = expected_list[-1]
 
@@ -1808,9 +1808,9 @@ class LineProxyList(ProxyList):
 
         if not expected_list or not isinstance(expected_list[-1], (CodeBlockNode, EndlNode)):
             log(">> List is empty or last node is not a CodeBlockNode or EndlNode, append a separator to it and set identation to it")
-            log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
             expected_list.append(generate_separator())
             expected_list[-1].indent = last_indentation
+            log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
         else:
             if isinstance(expected_list[-1], CodeBlockNode):
                 # In this case, the last \n is owned by the node
