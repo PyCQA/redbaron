@@ -2,6 +2,7 @@
 
 ### Important
 
+- raise AttributeError on node.attribute if attribute not in available nodes names
 - rewrite that https://redbaron.readthedocs.org/en/latest/modifying.html
 - .at() return the first item starting at line X
 - .rename() (name -> value, def/class -> name)
