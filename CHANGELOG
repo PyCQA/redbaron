@@ -16,7 +16,7 @@ Changelog
 - fix: inconsistencies when inserting lines around code blocks
 - inserting a blank lines inserts effectively a \n in a LineProxyList
 - new helper methods: .next_recursive and .previous_recursive https://redbaron.readthedocs.org/en/latest/other.html
-- performance improvement: pre-compute ._render attribute
+- performance improvement: pre-compute ._render and ._identifiers attributes
 
 0.5.1 (2015-03-11)
 ------------------

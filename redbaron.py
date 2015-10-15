@@ -488,6 +488,14 @@ class Node(GenericNodesUtils):
 
         self.init = False
 
+        self._identifiers = [x.lower() for x in [
+            self.type,
+            self.__class__.__name__,
+            self.__class__.__name__.replace("Node", ""),
+            self.type + "_"
+        ] + self._other_identifiers]
+
+
     @classmethod
     def from_fst(klass, node, parent=None, on_attribute=None):
         class_name = "".join(map(lambda x: x.capitalize(), node["type"].split("_"))) + "Node"
@@ -768,7 +776,7 @@ class Node(GenericNodesUtils):
         return None
 
     def _node_match_query(self, node, identifier, *args, **kwargs):
-        if not self._attribute_match_query(node._generate_identifiers(), identifier.lower() if isinstance(identifier, string_instance) and not identifier.startswith("re:") else identifier):
+        if not self._attribute_match_query(node._identifiers, identifier.lower() if isinstance(identifier, string_instance) and not identifier.startswith("re:") else identifier):
             return False
 
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys
@@ -830,14 +838,6 @@ class Node(GenericNodesUtils):
 
     def path(self):
         return Path(self)
-
-    def _generate_identifiers(self):
-        return sorted(set(map(lambda x: x.lower(), [
-            self.type,
-            self.__class__.__name__,
-            self.__class__.__name__.replace("Node", ""),
-            self.type + "_"
-        ] + self._other_identifiers)))
 
     def _get_helpers(self):
         not_helpers = set([
@@ -907,7 +907,7 @@ class Node(GenericNodesUtils):
         if not deep:
             to_join[-1] += " ..."
         else:
-            to_join.append("# identifiers: %s" % ", ".join(self._generate_identifiers()))
+            to_join.append("# identifiers: %s" % ", ".join(self._identifiers))
             if self._get_helpers():
                 to_join.append("# helpers: %s" % ", ".join(self._get_helpers()))
             if self._default_test_value != "value":
