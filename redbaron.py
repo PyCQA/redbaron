@@ -637,13 +637,8 @@ class Node(GenericNodesUtils):
 
         return in_list
 
-
-    def find(self, identifier, *args, **kwargs):
-        if "recursive" in kwargs:
-            recursive = kwargs["recursive"]
-            kwargs = kwargs.copy()
-            del kwargs["recursive"]
-        else:
+    def find(self, identifier, *args, recursive=None, **kwargs):
+        if recursive is None:
             recursive = True
 
         if self._node_match_query(self, identifier, *args, **kwargs):
@@ -658,14 +653,14 @@ class Node(GenericNodesUtils):
                 if not i:
                     continue
 
-                found = i.find(identifier, *args, **kwargs)
+                found = i.find(identifier, *args, recursive=recursive, **kwargs)
                 if found:
                     return found
 
             elif kind == "list":
                 attr = getattr(self, key).node_list if isinstance(getattr(self, key), ProxyList) else getattr(self, key)
                 for i in attr:
-                    found = i.find(identifier, *args, **kwargs)
+                    found = i.find(identifier, *args, recursive=recursive, **kwargs)
                     if found:
                         return found
 
