@@ -1744,11 +1744,12 @@ class LineProxyList(ProxyList):
 
             if has_added_separator and i[0].type == "endl":
                 # XXX this will break comments if present
-                log("Previous is endl and current is endl, remove indentation of previous")
+                log("Previous is endl (from a added separator) and current is endl, remove indentation of previous")
                 expected_list[-1].indent = ""
 
             if previous and previous.type == "endl" and i[0].type == "endl":
                 # XXX this will break comments
+                log("Previous is endl and current is endl, remove indentation of previous")
                 previous.indent = ""
 
             has_added_separator = False
