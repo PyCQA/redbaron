@@ -668,10 +668,6 @@ class Node(GenericNodesUtils):
                     found = i.find(identifier, *args, recursive=recursive, **kwargs)
                     if found:
                         return found
-
-            else:
-                raise Exception()
-
     def __getattr__(self, key):
         if key.endswith("_") and key[:-1] in self._dict_keys + self._list_keys + self._str_keys:
             return getattr(self, key[:-1])
