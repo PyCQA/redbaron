@@ -147,7 +147,12 @@ class Path(object):
             return pos
 
         if isinstance(node, NodeList):
-            return next((key for (_, key, _) in parent._render if getattr(parent, key) is node or getattr(getattr(parent, key), "node_list", None) is node), None)
+            for (_, key, _) in parent._render:
+                child = parent.find(key, recursive=False)
+                if child is node \
+                        or getattr(child, "node_list", None) is node:
+                    return key
+
 
         to_return = next((key for (_, key, _) in parent._render if key == node.on_attribute), None)
         return to_return
