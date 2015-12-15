@@ -336,8 +336,8 @@ By default, the editor is taken from the variable :file:`EDITOR` in the
 environements variables. If this variable is not present, nano is used. You can
 use a different editor this way: :file:`node.edit(editor="vim")`.
 
-.absolute_bounding_box()
-------------------------
+.absolute_bounding_box
+----------------------
 
 The absolute bounding box of a node represents its top-left and
 bottom-right position relative to the fst's root node. The position is
