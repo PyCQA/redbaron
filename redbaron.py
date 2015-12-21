@@ -945,9 +945,7 @@ class Node(GenericNodesUtils):
 
     def __str__(self):
         if runned_from_ipython():
-            return highlight(self.dumps(), PythonLexer(encoding="Utf-8"),
-                             Terminal256Formatter(style='monokai',
-                                                  encoding="Utf-8"))
+            return highlight(self.dumps(), PythonLexer(), Terminal256Formatter(style='monokai'))
         else:
             return self.dumps()
 
