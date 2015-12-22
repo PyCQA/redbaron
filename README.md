@@ -4,7 +4,7 @@ Introduction
 [![Build Status](https://travis-ci.org/Psycojoker/redbaron.svg?branch=master)](https://travis-ci.org/Psycojoker/redbaron) [![Latest Version](https://pypip.in/version/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Supported Python versions](https://pypip.in/py_versions/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Development Status](https://pypip.in/status/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Wheel Status](https://pypip.in/wheel/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Download format](https://pypip.in/format/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![License](https://pypip.in/license/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/)
 
 RedBaron is a python library and tool powerful enough to be used into IPython
-solely that intent to make the process of **writting code that modify source
+solely that intent to make the process of **writing code that modify source
 code** as easy and as simple as possible. That include writing custom
 refactoring, generic refactoring, tools, IDE or directly modifying you source
 code into IPython with an higher and more powerful abstraction than the
