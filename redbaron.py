@@ -147,9 +147,14 @@ class Path(object):
             return pos
 
         if isinstance(node, NodeList):
-            return next((key for (_, key, _) in parent._render() if getattr(parent, key) is node or getattr(getattr(parent, key), "node_list", None) is node), None)
+            for (_, key, _) in parent._render:
+                child = parent.find(key, recursive=False)
+                if child is node \
+                        or getattr(child, "node_list", None) is node:
+                    return key
 
-        to_return = next((key for (_, key, _) in parent._render() if key == node.on_attribute), None)
+
+        to_return = next((key for (_, key, _) in parent._render if key == node.on_attribute), None)
         return to_return
 
 
@@ -271,7 +276,7 @@ class GenericNodesUtils(object):
             return
         if not (isinstance(node, Node) and node.type == "endl"):
             yield node
-        for kind, key, display in node._render():
+        for kind, key, display in node._render:
             if kind == "constant":
                 yield node
             elif kind == "string":
@@ -465,7 +470,9 @@ class Node(GenericNodesUtils):
         self._list_keys = []
         self._dict_keys = []
         self.type = node["type"]
-        for kind, key, _ in filter(lambda x: x[0] != "constant", self._render()):
+        self._render = nodes_rendering_order[self.type]
+
+        for kind, key, _ in filter(lambda x: x[0] != "constant", self._render):
             if kind == "key":
                 if node[key]:
                     setattr(self, key, Node.from_fst(node[key], parent=self, on_attribute=key))
@@ -485,6 +492,14 @@ class Node(GenericNodesUtils):
                 raise Exception(str((node["type"], kind, key)))
 
         self.init = False
+
+        self._identifiers = [x.lower() for x in [
+            self.type,
+            self.__class__.__name__,
+            self.__class__.__name__.replace("Node", ""),
+            self.type + "_"
+        ] + self._other_identifiers]
+
 
     @classmethod
     def from_fst(klass, node, parent=None, on_attribute=None):
@@ -627,13 +642,8 @@ class Node(GenericNodesUtils):
 
         return in_list
 
-
-    def find(self, identifier, *args, **kwargs):
-        if "recursive" in kwargs:
-            recursive = kwargs["recursive"]
-            kwargs = kwargs.copy()
-            del kwargs["recursive"]
-        else:
+    def find(self, identifier, *args, recursive=None, **kwargs):
+        if recursive is None:
             recursive = True
 
         if self._node_match_query(self, identifier, *args, **kwargs):
@@ -642,26 +652,22 @@ class Node(GenericNodesUtils):
         if not recursive:
             return None
 
-        for kind, key, _ in filter(lambda x: x[0] in ("list", "key"), self._render()):
+        for kind, key, _ in filter(lambda x: x[0] in ("list", "key"), self._render):
             if kind == "key":
                 i = getattr(self, key)
                 if not i:
                     continue
 
-                found = i.find(identifier, *args, **kwargs)
+                found = i.find(identifier, *args, recursive=recursive, **kwargs)
                 if found:
                     return found
 
             elif kind == "list":
                 attr = getattr(self, key).node_list if isinstance(getattr(self, key), ProxyList) else getattr(self, key)
                 for i in attr:
-                    found = i.find(identifier, *args, **kwargs)
+                    found = i.find(identifier, *args, recursive=recursive, **kwargs)
                     if found:
                         return found
-
-            else:
-                raise Exception()
-
     def __getattr__(self, key):
         if key.endswith("_") and key[:-1] in self._dict_keys + self._list_keys + self._str_keys:
             return getattr(self, key[:-1])
@@ -732,7 +738,7 @@ class Node(GenericNodesUtils):
         if not recursive:
             return to_return
 
-        for kind, key, _ in filter(lambda x: x[0] in ("list", "formatting") or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render()):
+        for kind, key, _ in filter(lambda x: x[0] in ("list", "formatting") or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)), self._render):
             if kind == "key":
                 i = getattr(self, key)
                 if not i:
@@ -766,7 +772,7 @@ class Node(GenericNodesUtils):
         return None
 
     def _node_match_query(self, node, identifier, *args, **kwargs):
-        if not self._attribute_match_query(node._generate_identifiers(), identifier.lower() if isinstance(identifier, string_instance) and not identifier.startswith("re:") else identifier):
+        if not self._attribute_match_query(node._identifiers, identifier.lower() if isinstance(identifier, string_instance) and not identifier.startswith("re:") else identifier):
             return False
 
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys
@@ -828,14 +834,6 @@ class Node(GenericNodesUtils):
 
     def path(self):
         return Path(self)
-
-    def _generate_identifiers(self):
-        return sorted(set(map(lambda x: x.lower(), [
-            self.type,
-            self.__class__.__name__,
-            self.__class__.__name__.replace("Node", ""),
-            self.type + "_"
-        ] + self._other_identifiers)))
 
     def _get_helpers(self):
         not_helpers = set([
@@ -905,7 +903,7 @@ class Node(GenericNodesUtils):
         if not deep:
             to_join[-1] += " ..."
         else:
-            to_join.append("# identifiers: %s" % ", ".join(self._generate_identifiers()))
+            to_join.append("# identifiers: %s" % ", ".join(self._identifiers))
             if self._get_helpers():
                 to_join.append("# helpers: %s" % ", ".join(self._get_helpers()))
             if self._default_test_value != "value":
@@ -975,10 +973,6 @@ class Node(GenericNodesUtils):
             value = self._convert_input_to_node_object_list(value, self, name)
 
         return super(Node, self).__setattr__(name, value)
-
-
-    def _render(self):
-        return nodes_rendering_order[self.type]
 
     def replace(self, new_node):
         new_node = self._convert_input_to_node_object(new_node, parent=None, on_attribute=None, generic=True)
