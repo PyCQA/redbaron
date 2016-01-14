@@ -16,6 +16,7 @@ Changelog
 - fix: inconsistencies when inserting lines around code blocks
 - inserting a blank lines inserts effectively a \n in a LineProxyList
 - new helper methods: .next_recursive and .previous_recursive https://redbaron.readthedocs.org/en/latest/other.html
+- fix: behavior of .next/.previous and their generator counterpart of nodes stored in an IfelseBlock will return nodes next to the IfelseBlock for a more intuitive behavior since IfelseBlock is a virtual block
 
 0.5.1 (2015-03-11)
 ------------------
