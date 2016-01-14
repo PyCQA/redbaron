@@ -2400,7 +2400,7 @@ class ElifNode(IfElseBlockSiblingNode):
             raise Exception("Unhandled case")
 
 
-class ElseNode(CodeBlockNode):
+class ElseNode(IfElseBlockSiblingNode):
     pass
 
 
