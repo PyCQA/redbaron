@@ -1871,62 +1871,6 @@ class LineProxyList(ProxyList):
         log("End")
         return expected_list
 
-#        def generate_separator():
-#            separator = self.middle_separator.copy()
-#            separator.parent = self.node_list
-#            separator.on_attribute = self.on_attribute
-#            separator.indent = indentation
-#            return separator
-#
-#        indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
-#        expected_list = []
-#
-#        expected_list.append(generate_separator())
-#
-#        def get_real_last(node):
-#            try:
-#                return node.node_list[-1]
-#            except:
-#                return node[-1]
-#
-#
-#        def modify_last_indentation(node, indentation):
-#            try:
-#                current_last = get_real_last(node)
-#                while current_last.type in ('def', 'class', 'ifelseblock'):
-#                    current_last = get_real_last(current_last)
-#                current_last.indent = indentation
-#            except (AttributeError, IndexError, TypeError):
-#                node.indent = indentation
-#
-#        for i in self.data:
-#            # we face a blank line, remove previous separator since a blank line is not
-#            # previoused by a separator
-#            expected_list.append(i)
-#            if i.type == "endl" and expected_list[-1].type == "endl":
-#                expected_list.pop()
-#                modify_last_indentation(expected_list[-1], '')
-#
-#            if i.type in ('def', 'class', 'ifelseblock'):
-#                # In this case, the last \n is owned by the node
-#                modify_last_indentation(get_real_last(i.value), indentation)
-#            else:
-#                expected_list.append(generate_separator())
-#
-#        if expected_list:
-#            if self.parent and self.parent.next_rendered:
-#                last_indentation = self.parent.indentation
-#            else:
-#                last_indentation = ""
-#
-#            if expected_list[-1].type in ('def', 'class', 'ifelseblock'):
-#                # In this case, the last \n is owned by the node
-#                modify_last_indentation(get_real_last(expected_list[-1].value), last_indentation)
-#            else:
-#                expected_list[-1].indent = last_indentation
-#
-#        return expected_list
-
     def _diff_augmented_list(self):
         # XXX remove?
         self.node_list.data = self._generate_expected_list()[:]
