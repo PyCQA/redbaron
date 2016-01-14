@@ -344,6 +344,13 @@ def test_node_if_ifelseblock_next_generator():
     assert list(red.if_.next_generator()) == [red.else_, red.find("name", "chocolat")]
 
 
+def test_node_if_ifelseblock_previous_generator():
+    red = RedBaron("if a:\n    pass")
+    assert len(list(red.if_.previous_generator())) == 0
+    red = RedBaron("chocolat\nif a:\n    pass\n")
+    assert list(red.if_.previous_generator())[0] is red.find("endl")
+
+
 def test_map():
     red = RedBaron("[1, 2, 3]")
     assert red('int').map(lambda x: x.value) == NodeList(["1", "2", "3"])
