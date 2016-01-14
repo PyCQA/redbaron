@@ -1264,6 +1264,7 @@ class ElseAttributeNode(CodeBlockNode):
 class ProxyList(object):
     def __init__(self, node_list, on_attribute="value"):
         self.node_list = node_list
+        self.heading_formatting = []
         self.data = self._build_inner_list(node_list)
         self.middle_separator = CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
         self.on_attribute = on_attribute
@@ -1273,7 +1274,10 @@ class ProxyList(object):
 
         for i in node_list:
             if isinstance(i, (EndlNode, CommaNode, DotNode)):
-                result[-1][1].append(i)
+                if result:
+                    result[-1][1].append(i)
+                else:
+                    self.heading_formatting.append(i)
             else:
                 result.append([i, []])
 
@@ -1296,7 +1300,7 @@ class ProxyList(object):
             return NodeList([self._convert_input_to_node_object(x, parent, on_attribute) for x in value])
 
     def _generate_expected_list(self):
-        expected_list = []
+        expected_list = self.heading_formatting[:]
 
         for position, i in enumerate(self.data):
             is_last = position == len(self.data) - 1
