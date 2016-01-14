@@ -1367,7 +1367,7 @@ class ProxyList(object):
 
     def index(self, value, *args):
         # XXX would be better if I iterate other the list
-        return map(lambda x: x[0], self.data).index(value, *args)
+        return [x[0] for x in self.data].index(value, *args)
 
     def __getitem__(self, index):
         if isinstance(index, slice):
@@ -1382,7 +1382,7 @@ class ProxyList(object):
         return map(lambda x: x[0], self.data).__iter__()
 
     def count(self, value):
-        return map(lambda x: x[0], self.data).count(value)
+        return [x[0] for x in self.data].count(value)
 
     def __setitem__(self, key, value):
         if isinstance(key, slice):
