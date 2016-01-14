@@ -1674,7 +1674,7 @@ class DotProxyList(ProxyList):
             # XXX this will need refactoring...
             if i[1] is not None:
                 # here we encounter a middle value that should have formatting
-                # to separate between the intems but has not so we add it
+                # to separate between the items but has not so we add it
                 # this happen because a new value has been added after this one
                 if not is_last and not i[1]:
                     separator = self.middle_separator.copy()
