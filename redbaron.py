@@ -2614,6 +2614,14 @@ class IfNode(CodeBlockNode):
 
         return previous_
 
+    def next_generator(self):
+        for i in super(IfNode, self).next_generator():
+            yield i
+
+        if self.parent:
+            for i in self.parent.next_generator():
+                yield i
+
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
             return Node.from_fst(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
