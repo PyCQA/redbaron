@@ -1984,32 +1984,6 @@ class DecoratorsLineProxyList(LineProxyList):
         expected_list[-1].indent = self.parent.indentation
         return expected_list
 
-        def generate_separator():
-            separator = self.middle_separator.copy()
-            separator.parent = self.node_list
-            separator.on_attribute = self.on_attribute
-            separator.indent = indentation
-            return separator
-
-        indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation
-        expected_list = []
-
-        for i in self.data:
-            # we face a blank line, remove previous separator since a blank line is not
-            # previoused by a separator
-            if i.type == "endl":
-                expected_list.pop()
-
-            expected_list.append(i)
-            expected_list.append(generate_separator())
-
-        if expected_list:
-            # decorators always have a next item
-            # don't break its indentation
-            expected_list[-1].indent = self.parent.indentation
-
-        return expected_list
-
     def _diff_augmented_list(self):
         expected_list = self._generate_expected_list()
 
