@@ -325,6 +325,13 @@ def test_node_if_ifelseblock_next():
     assert red.if_.next is red.find("name", "chocolat")
 
 
+def test_node_if_ifelseblock_previous():
+    red = RedBaron("if a:\n    pass")
+    assert red.if_.previous is None
+    red = RedBaron("chocolat\nif a:\n    pass")
+    assert red.if_.previous is red.find("endl")
+
+
 def test_map():
     red = RedBaron("[1, 2, 3]")
     assert red('int').map(lambda x: x.value) == NodeList(["1", "2", "3"])

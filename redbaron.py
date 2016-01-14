@@ -2605,6 +2605,15 @@ class IfNode(CodeBlockNode):
 
         return next_
 
+    @property
+    def previous(self):
+        previous_ = super(IfNode, self).previous
+
+        if previous_ is None and self.parent:
+            previous_ = self.parent.previous
+
+        return previous_
+
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
             return Node.from_fst(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
