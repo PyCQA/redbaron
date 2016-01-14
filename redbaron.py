@@ -219,7 +219,7 @@ class GenericNodesUtils(object):
         if isinstance(value, ProxyList):
             return value
 
-        raise NotImplemented
+        raise NotImplementedError
 
     @property
     def bounding_box(self):
