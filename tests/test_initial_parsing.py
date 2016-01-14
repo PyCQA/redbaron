@@ -316,6 +316,15 @@ def test_node_previous_generator():
         == list(reversed(red[0].value.node_list[:2]))
 
 
+def test_node_if_ifelseblock_next():
+    red = RedBaron("if a:\n    pass")
+    assert red.if_.next is None
+    red = RedBaron("if a:\n    pass\nelse:\n    pass")
+    assert red.if_.next is red.else_
+    red = RedBaron("if a:\n    pass\nchocolat")
+    assert red.if_.next is red.find("name", "chocolat")
+
+
 def test_map():
     red = RedBaron("[1, 2, 3]")
     assert red('int').map(lambda x: x.value) == NodeList(["1", "2", "3"])
