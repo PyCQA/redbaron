@@ -1614,9 +1614,12 @@ class LineProxyList(ProxyList):
 
         return result
 
+    def _get_separator_indentation(self):
+        return self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
+
     def _generate_expected_list(self):
         log("Start _generate_expected_list for LineProxyList")
-        indentation = self.node_list.filtered()[0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
+        indentation = self._get_separator_indentation()
 
         log("Detect indentation has %s", indentation.__repr__())
 
@@ -1769,6 +1772,8 @@ class DecoratorsLineProxyList(LineProxyList):
         expected_list[-1].indent = self.parent.indentation
         return expected_list
 
+    def _get_separator_indentation(self):
+        return self.parent.indentation
 
 # TODO
 # LineProxyList: handle comments
