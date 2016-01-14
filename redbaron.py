@@ -70,8 +70,6 @@ class Path(object):
     """
 
     def __init__(self, node):
-        self.path = None
-        self.node = None
         self.node = node
 
         parent = node
