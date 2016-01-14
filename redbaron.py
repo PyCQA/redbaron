@@ -1980,7 +1980,9 @@ class DecoratorsLineProxyList(LineProxyList):
 
     def _generate_expected_list(self):
         # XXX to clean
-        return super(DecoratorsLineProxyList, self)._generate_expected_list()
+        expected_list = super(DecoratorsLineProxyList, self)._generate_expected_list()
+        expected_list[-1].indent = self.parent.indentation
+        return expected_list
 
         def generate_separator():
             separator = self.middle_separator.copy()
