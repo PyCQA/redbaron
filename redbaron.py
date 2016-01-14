@@ -1843,7 +1843,7 @@ class LineProxyList(ProxyList):
 
         log("-- result before end list procedure: %s", map(lambda x: x.dumps(), expected_list))
 
-        if self.parent and self.parent.next_rendered:
+        if self.parent and self.parent.next:
             log("self.parent is followed by another node, last_indentation is indentation of self.parent")
             last_indentation = self.parent.indentation
         else:
