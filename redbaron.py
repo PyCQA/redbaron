@@ -111,7 +111,7 @@ class Path(object):
 
     def to_baron_path(self):
         return self.path
- 
+
     def __str__(self):
         return 'Path(%s @ %s)' % (self.node.__class__.__name__ + ('(' + self.node.identifier + ')' if self.node.identifier else ''), str(self.path))
 
