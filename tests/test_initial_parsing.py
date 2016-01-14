@@ -351,6 +351,47 @@ def test_node_if_ifelseblock_previous_generator():
     assert list(red.if_.previous_generator())[0] is red.find("endl")
 
 
+def test_node_elif_ifelseblock_next():
+    red = RedBaron("if a:\n    pass\nelif a:\n    pass")
+    assert red.elif_.next is None
+    red = RedBaron("if a:\n    pass\nelif a:\n    pass\nelse:\n    pass")
+    assert red.elif_.next is red.else_
+    red = RedBaron("if a:\n    pass\nelif a:\n    pass\nchocolat")
+    assert red.elif_.next is red.find("name", "chocolat")
+
+
+def test_node_elif_elifelseblock_previous():
+    # not a very interesting test
+    red = RedBaron("if a:\n    pass\nelif a:\n    pass")
+    assert red.elif_.previous is red.if_
+    red = RedBaron("chocolat\nif a:\n    pass\nelif a:\n    pass")
+    assert red.elif_.previous is red.if_
+
+
+def test_node_elif_elifelseblock_next_generator():
+    red = RedBaron("if a:\n    pass\nelif a:\n    pass")
+    assert len(list(red.elif_.next_generator())) == 0
+    red = RedBaron("if a:\n    pass\nelif a:\n    pass\nelse:\n    pass")
+    assert list(red.elif_.next_generator())[0] is red.else_
+    red = RedBaron("if a:\n    pass\nelif a:\n    pass\nchocolat")
+    assert list(red.elif_.next_generator())[0] is red.find("name", "chocolat")
+
+    red = RedBaron("if a:\n    pass\nelif a:\n    pass\nelse:\n    pass\nchocolat")
+    assert list(red.elif_.next_generator()) == [red.else_, red.find("name", "chocolat")]
+
+
+def test_node_elif_elifelseblock_previous_generator():
+    red = RedBaron("if a:\n    pass\nelif a:\n    pass")
+    assert len(list(red.elif_.previous_generator())) == 1
+    red = RedBaron("chocolat\nif a:\n    pass\nelif a:\n    pass\n")
+    assert len(list(red.elif_.previous_generator())) == 3
+    red = RedBaron("chocolat\nif a:\n    pass\nelif a:\n    pass\n")
+    assert list(red.elif_.previous_generator())[0] is red.if_
+
+    red = RedBaron("chocolat\nif a:\n    pass\nelif a:\n    pass\n")
+    assert list(red.elif_.previous_generator()) == [red.find("name", "chocolat"), red.find("endl"), red.if_][::-1]
+
+
 def test_map():
     red = RedBaron("[1, 2, 3]")
     assert red('int').map(lambda x: x.value) == NodeList(["1", "2", "3"])
