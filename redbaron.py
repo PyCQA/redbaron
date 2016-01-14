@@ -1804,6 +1804,9 @@ class LineProxyList(ProxyList):
             previous = expected_list[-1]
 
         log("End of loop")
+
+        log("-- result before end list procedure: %s", map(lambda x: x.dumps(), expected_list))
+
         if self.parent and self.parent.next_rendered:
             log("self.parent is followed by another node, last_indentation is indentation of self.parent")
             last_indentation = self.parent.indentation
@@ -1825,6 +1828,7 @@ class LineProxyList(ProxyList):
                 log("Last node is NOT CodeBlockNode, ensure that I still have the same last_indentation")
                 expected_list[-1].indent = last_indentation
 
+        log("-- final result: %s", map(lambda x: x.dumps(), expected_list))
         log("End")
         return expected_list
 
