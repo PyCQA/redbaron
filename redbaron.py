@@ -1136,6 +1136,42 @@ class CodeBlockNode(Node):
             setattr(self, "decorators", DecoratorsLineProxyList(self.decorators, on_attribute="decorators"))
 
 
+class IfElseBlockSiblingNode(CodeBlockNode):
+    @property
+    def next(self):
+        next_ = super(IfElseBlockSiblingNode, self).next
+
+        if next_ is None and self.parent:
+            next_ = self.parent.next
+
+        return next_
+
+    @property
+    def previous(self):
+        previous_ = super(IfElseBlockSiblingNode, self).previous
+
+        if previous_ is None and self.parent:
+            previous_ = self.parent.previous
+
+        return previous_
+
+    def next_generator(self):
+        for i in super(IfElseBlockSiblingNode, self).next_generator():
+            yield i
+
+        if self.parent:
+            for i in self.parent.next_generator():
+                yield i
+
+    def previous_generator(self):
+        for i in super(IfElseBlockSiblingNode, self).previous_generator():
+            yield i
+
+        if self.parent:
+            for i in self.parent.previous_generator():
+                yield i
+
+
 class ElseAttributeNode(CodeBlockNode):
     def _get_last_member_to_clean(self):
         return self
@@ -2595,41 +2631,7 @@ class HexaNode(Node, LiteralyEvaluable):
     pass
 
 
-class IfNode(CodeBlockNode):
-    @property
-    def next(self):
-        next_ = super(IfNode, self).next
-
-        if next_ is None and self.parent:
-            next_ = self.parent.next
-
-        return next_
-
-    @property
-    def previous(self):
-        previous_ = super(IfNode, self).previous
-
-        if previous_ is None and self.parent:
-            previous_ = self.parent.previous
-
-        return previous_
-
-    def next_generator(self):
-        for i in super(IfNode, self).next_generator():
-            yield i
-
-        if self.parent:
-            for i in self.parent.next_generator():
-                yield i
-
-    def previous_generator(self):
-        for i in super(IfNode, self).previous_generator():
-            yield i
-
-        if self.parent:
-            for i in self.parent.previous_generator():
-                yield i
-
+class IfNode(IfElseBlockSiblingNode):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "test":
             return Node.from_fst(baron.parse("if %s: pass" % string)[0]["value"][0]["test"], parent=parent, on_attribute=on_attribute)
