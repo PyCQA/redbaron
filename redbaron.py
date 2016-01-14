@@ -1598,7 +1598,7 @@ class DotProxyList(ProxyList):
         self.middle_separator = DotNode({"type": "dot", "first_formatting": [], "second_formatting": []})
 
     def _build_inner_list(self, node_list):
-        # XXX couldn't this actually be make more generic and only in parent?
+        # XXX to merge with parent, behavior is the same only formatting nodes changes
         result = []
 
         for i in node_list:
