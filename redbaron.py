@@ -371,13 +371,13 @@ class NodeList(UserList, GenericNodesUtils):
             for num, item in enumerate(self):
                 yield u"<tr>"
                 yield u"<td>"
-                yield str(num)
+                yield u"%d" % num
                 yield u"</td>"
                 yield u"<td>"
                 yield item._repr_html_() if hasattr(item, "_repr_html_") else str(item)
                 yield u"</td>"
                 yield u"</tr>"
-            yield "</table>"
+            yield u"</table>"
         return u''.join(__repr_html(self))
 
 
@@ -956,7 +956,7 @@ class Node(GenericNodesUtils):
 
     def _repr_html_(self):
         return highlight(self.dumps(), PythonLexer(encode="Utf-8"),
-                         HtmlFormatter(noclasses=True, encoding="UTf-8"))
+                         HtmlFormatter(noclasses=True))
 
     def copy(self):
         # XXX not very optimised but at least very simple
@@ -1424,13 +1424,13 @@ class ProxyList(object):
             for num, item in enumerate(self):
                 yield u"<tr>"
                 yield u"<td>"
-                yield str(num)
+                yield u"%d" % num
                 yield u"</td>"
                 yield u"<td>"
                 yield item[0]._repr_html_()
                 yield u"</td>"
                 yield u"</tr>"
-            yield "</table>"
+            yield u"</table>"
         return u''.join(__repr_html(self))
 
     def __str__(self):
@@ -2164,7 +2164,7 @@ class EndlNode(Node):
 
     def _repr_html_(self):
         return highlight(self.__repr__(), PythonLexer(encode="Utf-8"),
-                         HtmlFormatter(noclasses=True, encoding="UTf-8"))
+                         HtmlFormatter(noclasses=True))
 
 
 class ExceptNode(CodeBlockNode):
