@@ -88,7 +88,7 @@ selected source code, so you'll have a direct idea of what you are working on:
 
 .. ipython:: python
 
-    red = RedBaron("stuff = 1 + 2\nprint(stuff)")
+    red = RedBaron("stuff = 1 + 2\nprint 'Beautiful result:', stuff ")
     red
 
 You might notice the :file:`0` and the :file:`1` on the left: those are the
@@ -393,20 +393,20 @@ Misc things
 A short list of useful features of RedBaron:
 
 * :file:`.map`, a method of RedBaron lists that takes a callable (like a lambda or a function), apply it to every one of its members and returns a RedBaron list containing the result of the call
-* :file:`.apply` same than :file:`.map` except it returns a RedBaron list of the nodes on which the callable has been applied (i.e. the members before the call instead of the members after the call)
+* :file:`.apply` same than :file:`.map` except it returns a RedBaron list of the nodes on which the callable has been applied (i.e. the members before the call instead of the members after the call) (for simplicity we uses the :file:`int` buildin function here, you might want to look at :file:`to_python` in the futur for a more generic convertion operation)
 
 .. ipython:: python
 
     red = RedBaron("[1, 2, 3]")
-    red("int").map(lambda x: x.value + 42)
-    red("int").apply(lambda x: x.value + 42)
+    red("int").map(lambda x: int(x.value) + 42)
+    red("int").apply(lambda x: int(x.value) + 42)
 
 * :file:`.filter`, another method of RedBaron list, it takes a callable and return a RedBaron list containing the nodes for which the callable has returned True (or something that is tested has True in python)
 
 .. ipython:: python
 
     red = RedBaron("[1, 2, 3]")
-    red("int").filter(lambda x: x.value % 2 == 1)  # odd numbers
+    red("int").filter(lambda x: int(x.value) % 2 == 1)  # odd numbers
 
 * :file:`.next` gives the node just after the current one if the node is in a list
 * :file:`.previous` does the inverse
