@@ -3,6 +3,7 @@ install:
   - pip install git+https://github.com/Psycojoker/baron.git
   - pip install pytest
   - python setup.py install
+  - pip install -r requirements-docs.txt
 python:
   - "2.6"
   - "2.7"
@@ -10,5 +11,9 @@ python:
   - "3.4"
 script:
   - py.test tests
+  - cd docs
+  - result=$(make html)
+  - echo $result
+  - if [ "$(echo $result | grep 'Exception in')"]; then exit 1; fi
 notifications:
   irc: "chat.freenode.net#baron"
