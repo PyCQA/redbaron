@@ -15,7 +15,7 @@ result=$(make html 2>&1)
 
 echo $result
 
-if [ "$(echo $result | grep 'Exception in')"]
+if [ "$(echo $result | grep 'Exception in')" ]
 then
   exit 1
 fi
