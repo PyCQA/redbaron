@@ -11,9 +11,6 @@ python:
   - "3.4"
 script:
   - py.test tests
-  - cd docs
-  - result=$(make html)
-  - echo $result
-  - if [ "$(echo $result | grep 'Exception in')"]; then exit 1; fi
+  - bash ./test_doc.sh
 notifications:
   irc: "chat.freenode.net#baron"
