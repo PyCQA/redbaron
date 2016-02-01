@@ -1419,19 +1419,20 @@ class ProxyList(object):
     def _repr_html_(self):
         def __repr_html(self):
             # string addition is slow (and makes copies)
-            yield u"<table>"
-            yield u"<tr><th>Index</th><th>node</th></tr>"
+            yield b"<table>"
+            yield b"<tr><th>Index</th><th>node</th></tr>"
             for num, item in enumerate(self):
-                yield u"<tr>"
-                yield u"<td>"
-                yield str(num)
-                yield u"</td>"
-                yield u"<td>"
+                yield b"<tr>"
+                yield b"<td>"
+                yield str(num).encode("Utf-8")
+                yield b"</td>"
+                yield b"<td>"
                 yield item._repr_html_()
-                yield u"</td>"
-                yield u"</tr>"
-            yield "</table>"
-        return u''.join(__repr_html(self))
+                yield b"</td>"
+                yield b"</tr>"
+            yield b"</table>"
+        print(list(__repr_html(self)))
+        return b''.join(__repr_html(self))
 
     def __str__(self):
         to_return = ""
