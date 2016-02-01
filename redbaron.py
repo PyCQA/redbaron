@@ -366,19 +366,19 @@ class NodeList(UserList, GenericNodesUtils):
     def _bytes_repr_html_(self):
         def __repr_html(self):
             # string addition is slow (and makes copies)
-            yield u"<table>"
-            yield u"<tr><th>Index</th><th>node</th></tr>"
+            yield b"<table>"
+            yield b"<tr><th>Index</th><th>node</th></tr>"
             for num, item in enumerate(self):
-                yield u"<tr>"
-                yield u"<td>"
-                yield str(num)
-                yield u"</td>"
-                yield u"<td>"
-                yield item._repr_html_() if hasattr(item, "_repr_html_") else str(item)
-                yield u"</td>"
-                yield u"</tr>"
-            yield "</table>"
-        return u''.join(__repr_html(self))
+                yield b"<tr>"
+                yield b"<td>"
+                yield str(num).encode("Utf-8")
+                yield b"</td>"
+                yield b"<td>"
+                yield item._bytes_repr_html_() if hasattr(item, "_repr_html_") else str(item)
+                yield b"</td>"
+                yield b"</tr>"
+            yield b"</table>"
+        return b''.join(__repr_html(self))
 
     def _repr_html_(self):
         return self._bytes_repr_html_().decode("Utf-8")
