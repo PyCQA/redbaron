@@ -363,7 +363,7 @@ class NodeList(UserList, GenericNodesUtils):
         return to_return
         return "%s" % [x.__repr__() for x in self.data]
 
-    def _repr_html_(self):
+    def _bytes_repr_html_(self):
         def __repr_html(self):
             # string addition is slow (and makes copies)
             yield u"<table>"
@@ -380,6 +380,8 @@ class NodeList(UserList, GenericNodesUtils):
             yield "</table>"
         return u''.join(__repr_html(self))
 
+    def _repr_html_(self):
+        return self._bytes_repr_html_().decode("Utf-8")
 
     def help(self, deep=2, with_formatting=False):
         for num, i in enumerate(self.data):
@@ -954,9 +956,12 @@ class Node(GenericNodesUtils):
         else:
             return self.dumps()
 
-    def _repr_html_(self):
+    def _bytes_repr_html_(self):
         return highlight(self.dumps(), PythonLexer(encode="Utf-8"),
                          HtmlFormatter(noclasses=True, encoding="UTf-8"))
+
+    def _repr_html_(self):
+        return self._bytes_repr_html_().decode("Utf-8")
 
     def copy(self):
         # XXX not very optimised but at least very simple
@@ -1416,7 +1421,7 @@ class ProxyList(object):
                 id(self.parent)
             )
 
-    def _repr_html_(self):
+    def _bytes_repr_html_(self):
         def __repr_html(self):
             # string addition is slow (and makes copies)
             yield b"<table>"
@@ -1427,12 +1432,14 @@ class ProxyList(object):
                 yield str(num).encode("Utf-8")
                 yield b"</td>"
                 yield b"<td>"
-                yield item._repr_html_()
+                yield item._bytes_repr_html_()
                 yield b"</td>"
                 yield b"</tr>"
             yield b"</table>"
-        print(list(__repr_html(self)))
         return b''.join(__repr_html(self))
+
+    def _repr_html_(self):
+        return self._bytes_repr_html_().decode("Utf-8")
 
     def __str__(self):
         to_return = ""
@@ -2163,7 +2170,7 @@ class EndlNode(Node):
     def __repr__(self):
         return repr(baron.dumps([self.fst()]))
 
-    def _repr_html_(self):
+    def _bytes_repr_html_(self):
         return highlight(self.__repr__(), PythonLexer(encode="Utf-8"),
                          HtmlFormatter(noclasses=True, encoding="UTf-8"))
 
