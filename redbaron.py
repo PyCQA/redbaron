@@ -2941,33 +2941,6 @@ class RedBaron(GenericNodesUtils, LineProxyList):
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
         return GenericNodesUtils._convert_input_to_node_object_list(self, value, self, "root")
 
-    def _generate_expected_list(self):
-        return super(RedBaron, self)._generate_expected_list()
-
-        # XXX clean
-        def generate_separator():
-            separator = self.middle_separator.copy()
-            separator.parent = self.node_list
-            separator.on_attribute = self.on_attribute
-            separator.indent = indentation
-            return separator
-
-        indentation = ""
-        expected_list = []
-
-        for position, i in enumerate(self.data):
-            # we face a blank line, remove previous separator since a blank line is not
-            # previoused by a separator
-            if i.type == "endl" and position != 0:
-                expected_list.pop()
-
-            expected_list.append(i)
-
-            if not (i.type == "endl" and position == 0) and (i.type not in ('def', 'class')):
-                expected_list.append(generate_separator())
-
-        return expected_list
-
 # to avoid to have to declare EVERY node class, dynamically create the missings
 # ones using nodes_rendering_order as a reference
 for node_type in nodes_rendering_order:
