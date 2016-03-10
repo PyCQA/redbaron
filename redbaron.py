@@ -2913,6 +2913,7 @@ class WithNode(CodeBlockNode):
 class RedBaron(GenericNodesUtils, LineProxyList):
     def __init__(self, source_code):
         self.first_blank_lines = []  # XXX might need changes
+
         if isinstance(source_code, string_instance):
             self.node_list = NodeList.from_fst(baron.parse(source_code), parent=self, on_attribute="root")
             self.middle_separator = DotNode({"type": "endl", "formatting": [], "value": "\n", "indent": ""})
@@ -2926,6 +2927,8 @@ class RedBaron(GenericNodesUtils, LineProxyList):
                     self.data.append([previous, []])
                 elif previous is None and i.type == "endl":
                     self.data.append([i, []])
+                elif self.data:
+                    self.data[-1][1].append(i)
 
                 previous = i
             self.node_list.parent = None
