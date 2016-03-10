@@ -307,12 +307,17 @@ class NodeList(UserList, GenericNodesUtils):
     def from_fst(klass, node_list, parent=None, on_attribute=None):
         return klass(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), node_list), parent=parent, on_attribute=on_attribute)
 
-
     def find(self, identifier, *args, **kwargs):
+        log("Starting NodeList.find on %s for %s, %s, %s" % (self.dumps(), identifier, args, kwargs))
+        log(">> will rotate on self.data which is %s" % self.data)
         for i in self.data:
             candidate = i.find(identifier, *args, **kwargs)
+            log(">> tested '%s'" % i.dumps())
             if candidate is not None:
+                log(">> tested value is not None -> return it")
                 return candidate
+
+        log(">> found nothing, return None")
 
     def __getattr__(self, key):
         return self.find(key)
@@ -634,6 +639,7 @@ class Node(GenericNodesUtils):
 
 
     def find(self, identifier, *args, **kwargs):
+        log("Starting %s.find with %s, %s, %s" % (self.__class__, identifier, args, kwargs))
         if "recursive" in kwargs:
             recursive = kwargs["recursive"]
             kwargs = kwargs.copy()
