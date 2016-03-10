@@ -660,14 +660,14 @@ class Node(GenericNodesUtils):
                     continue
 
                 found = i.find(identifier, *args, **kwargs)
-                if found:
+                if found is not None:
                     return found
 
             elif kind == "list":
                 attr = getattr(self, key).node_list if isinstance(getattr(self, key), ProxyList) else getattr(self, key)
                 for i in attr:
                     found = i.find(identifier, *args, **kwargs)
-                    if found:
+                    if found is not None:
                         return found
 
             else:
