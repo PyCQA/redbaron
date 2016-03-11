@@ -326,116 +326,119 @@ def test_node_previous_intuitive():
     assert red[0].value[1].previous_intuitive == red[0].node_list[1]
 
 
-def test_node_if_ifelseblock_next():
+def test_node_if_ifelseblock_next_intuitive():
     red = RedBaron("if a:\n    pass")
-    assert red.if_.next is None
+    assert red.if_.next_intuitive is None
     red = RedBaron("if a:\n    pass\nelse:\n    pass")
-    assert red.if_.next is red.else_
+    assert red.if_.next_intuitive is red.else_
     red = RedBaron("if a:\n    pass\nchocolat")
-    assert red.if_.next is red.find("name", "chocolat")
+    assert red.if_.next_intuitive is red.find("name", "chocolat")
 
 
-def test_node_if_ifelseblock_previous():
+def test_node_if_ifelseblock_previous_intuitive():
     red = RedBaron("if a:\n    pass")
-    assert red.if_.previous is None
+    assert red.if_.previous_intuitive is None
     red = RedBaron("chocolat\nif a:\n    pass")
-    assert red.if_.previous is red.find("endl")
+    assert red.if_.previous_intuitive is red.find("endl")
+    red = RedBaron("pouet\nif a:\n    pass\nelif a:\n    pass\nelse:\n    pass")
+    assert red.else_.previous_intuitive is red.elif_
+    assert red.if_.previous is None
 
 
-def test_node_if_ifelseblock_next_generator():
+def test_node_if_ifelseblock_next_intuitive_generator():
     red = RedBaron("if a:\n    pass")
-    assert len(list(red.if_.next_generator())) == 0
+    assert len(list(red.if_.next_intuitive_generator())) == 0
     red = RedBaron("if a:\n    pass\nelse:\n    pass")
-    assert list(red.if_.next_generator())[0] is red.else_
+    assert list(red.if_.next_intuitive_generator())[0] is red.else_
     red = RedBaron("if a:\n    pass\nchocolat")
-    assert list(red.if_.next_generator())[0] is red.find("name", "chocolat")
+    assert list(red.if_.next_intuitive_generator())[0] is red.find("name", "chocolat")
 
     red = RedBaron("if a:\n    pass\nelse:\n    pass\nchocolat")
-    assert list(red.if_.next_generator()) == [red.else_, red.find("name", "chocolat")]
+    assert list(red.if_.next_intuitive_generator()) == [red.else_, red.find("name", "chocolat")]
 
 
-def test_node_if_ifelseblock_previous_generator():
+def test_node_if_ifelseblock_previous_intuitive_generator():
     red = RedBaron("if a:\n    pass")
-    assert len(list(red.if_.previous_generator())) == 0
+    assert len(list(red.if_.previous_intuitive_generator())) == 0
     red = RedBaron("chocolat\nif a:\n    pass\n")
-    assert list(red.if_.previous_generator())[0] is red.find("endl")
+    assert list(red.if_.previous_intuitive_generator())[0] is red.find("endl")
 
 
-def test_node_elif_ifelseblock_next():
+def test_node_elif_ifelseblock_next_intuitive():
     red = RedBaron("if a:\n    pass\nelif a:\n    pass")
-    assert red.elif_.next is None
+    assert red.elif_.next_intuitive is None
     red = RedBaron("if a:\n    pass\nelif a:\n    pass\nelse:\n    pass")
-    assert red.elif_.next is red.else_
+    assert red.elif_.next_intuitive is red.else_
     red = RedBaron("if a:\n    pass\nelif a:\n    pass\nchocolat")
-    assert red.elif_.next is red.find("name", "chocolat")
+    assert red.elif_.next_intuitive is red.find("name", "chocolat")
 
 
-def test_node_elif_elifelseblock_previous():
+def test_node_elif_elifelseblock_previous_intuitive():
     # not a very interesting test
     red = RedBaron("if a:\n    pass\nelif a:\n    pass")
-    assert red.elif_.previous is red.if_
+    assert red.elif_.previous_intuitive is red.if_
     red = RedBaron("chocolat\nif a:\n    pass\nelif a:\n    pass")
-    assert red.elif_.previous is red.if_
+    assert red.elif_.previous_intuitive is red.if_
 
 
-def test_node_elif_elifelseblock_next_generator():
+def test_node_elif_elifelseblock_next_intuitive_generator():
     red = RedBaron("if a:\n    pass\nelif a:\n    pass")
-    assert len(list(red.elif_.next_generator())) == 0
+    assert len(list(red.elif_.next_intuitive_generator())) == 0
     red = RedBaron("if a:\n    pass\nelif a:\n    pass\nelse:\n    pass")
-    assert list(red.elif_.next_generator())[0] is red.else_
+    assert list(red.elif_.next_intuitive_generator())[0] is red.else_
     red = RedBaron("if a:\n    pass\nelif a:\n    pass\nchocolat")
-    assert list(red.elif_.next_generator())[0] is red.find("name", "chocolat")
+    assert list(red.elif_.next_intuitive_generator())[0] is red.find("name", "chocolat")
 
     red = RedBaron("if a:\n    pass\nelif a:\n    pass\nelse:\n    pass\nchocolat")
-    assert list(red.elif_.next_generator()) == [red.else_, red.find("name", "chocolat")]
+    assert list(red.elif_.next_intuitive_generator()) == [red.else_, red.find("name", "chocolat")]
 
 
-def test_node_elif_elifelseblock_previous_generator():
+def test_node_elif_elifelseblock_previous_intuitive_generator():
     red = RedBaron("if a:\n    pass\nelif a:\n    pass")
-    assert len(list(red.elif_.previous_generator())) == 1
+    assert len(list(red.elif_.previous_intuitive_generator())) == 1
     red = RedBaron("chocolat\nif a:\n    pass\nelif a:\n    pass\n")
-    assert len(list(red.elif_.previous_generator())) == 3
+    assert len(list(red.elif_.previous_intuitive_generator())) == 3
     red = RedBaron("chocolat\nif a:\n    pass\nelif a:\n    pass\n")
-    assert list(red.elif_.previous_generator())[0] is red.if_
+    assert list(red.elif_.previous_intuitive_generator())[0] is red.if_
 
     red = RedBaron("chocolat\nif a:\n    pass\nelif a:\n    pass\n")
-    assert list(red.elif_.previous_generator()) == [red.find("name", "chocolat"), red.find("endl"), red.if_][::-1]
+    assert list(red.elif_.previous_intuitive_generator()) == [red.find("name", "chocolat"), red.find("endl"), red.if_][::-1]
 
 
-def test_node_else_ifelseblock_next():
+def test_node_else_ifelseblock_next_intuitive():
     red = RedBaron("if a:\n    pass\nelse:\n    pass")
-    assert red.else_.next is None
+    assert red.else_.next_intuitive is None
     red = RedBaron("if a:\n    pass\nelse:\n    pass\nchocolat")
-    assert red.else_.next is red.find("name", "chocolat")
+    assert red.else_.next_intuitive is red.find("name", "chocolat")
 
 
-def test_node_else_elseelseblock_previous():
+def test_node_else_elseelseblock_previous_intuitive():
     red = RedBaron("if a:\n    pass\nelse:\n    pass")
-    assert red.else_.previous is red.if_
+    assert red.else_.previous_intuitive is red.if_
     red = RedBaron("chocolat\nif a:\n    pass\nelse:\n    pass")
-    assert red.else_.previous is red.if_
+    assert red.else_.previous_intuitive is red.if_
 
 
-def test_node_else_elseelseblock_next_generator():
+def test_node_else_elseelseblock_next_intuitive_generator():
     red = RedBaron("if a:\n    pass\nelse:\n    pass")
-    assert len(list(red.else_.next_generator())) == 0
+    assert len(list(red.else_.next_intuitive_generator())) == 0
     red = RedBaron("if a:\n    pass\nelse:\n    pass\nchocolat")
-    assert list(red.else_.next_generator())[0] is red.find("name", "chocolat")
+    assert list(red.else_.next_intuitive_generator())[0] is red.find("name", "chocolat")
 
     red = RedBaron("if a:\n    pass\nelse:\n    pass\nchocolat")
-    assert list(red.else_.next_generator()) == [red.find("name", "chocolat")]
+    assert list(red.else_.next_intuitive_generator()) == [red.find("name", "chocolat")]
 
 
-def test_node_else_elseelseblock_previous_generator():
+def test_node_else_elseelseblock_previous_intuitive_generator():
     red = RedBaron("if a:\n    pass\nelse:\n    pass")
-    assert len(list(red.else_.previous_generator())) == 1
+    assert len(list(red.else_.previous_intuitive_generator())) == 1
     red = RedBaron("chocolat\nif a:\n    pass\nelse:\n    pass\n")
-    assert len(list(red.else_.previous_generator())) == 3
+    assert len(list(red.else_.previous_intuitive_generator())) == 3
     red = RedBaron("chocolat\nif a:\n    pass\nelse:\n    pass\n")
-    assert list(red.else_.previous_generator())[0] is red.if_
+    assert list(red.else_.previous_intuitive_generator())[0] is red.if_
 
     red = RedBaron("chocolat\nif a:\n    pass\nelse:\n    pass\n")
-    assert list(red.else_.previous_generator()) == [red.find("name", "chocolat"), red.find("endl"), red.if_][::-1]
+    assert list(red.else_.previous_intuitive_generator()) == [red.find("name", "chocolat"), red.find("endl"), red.if_][::-1]
 
 
 def test_map():

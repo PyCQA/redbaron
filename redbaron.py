@@ -1155,7 +1155,7 @@ class CodeBlockNode(Node):
 
 class IfElseBlockSiblingNode(CodeBlockNode):
     @property
-    def next(self):
+    def next_intuitive(self):
         next_ = super(IfElseBlockSiblingNode, self).next
 
         if next_ is None and self.parent:
@@ -1164,7 +1164,7 @@ class IfElseBlockSiblingNode(CodeBlockNode):
         return next_
 
     @property
-    def previous(self):
+    def previous_intuitive(self):
         previous_ = super(IfElseBlockSiblingNode, self).previous
 
         if previous_ is None and self.parent:
@@ -1172,7 +1172,7 @@ class IfElseBlockSiblingNode(CodeBlockNode):
 
         return previous_
 
-    def next_generator(self):
+    def next_intuitive_generator(self):
         for i in super(IfElseBlockSiblingNode, self).next_generator():
             yield i
 
@@ -1180,7 +1180,7 @@ class IfElseBlockSiblingNode(CodeBlockNode):
             for i in self.parent.next_generator():
                 yield i
 
-    def previous_generator(self):
+    def previous_intuitive_generator(self):
         for i in super(IfElseBlockSiblingNode, self).previous_generator():
             yield i
 
@@ -1750,7 +1750,7 @@ class LineProxyList(ProxyList):
 
         log("-- result before end list procedure: %s", map(lambda x: x.dumps(), expected_list))
 
-        if self.parent and self.parent.next:
+        if self.parent and self.parent.next_intuitive:
             log("self.parent is followed by another node, last_indentation is indentation of self.parent")
             last_indentation = self.parent.indentation
         else:
