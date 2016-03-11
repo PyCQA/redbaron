@@ -316,6 +316,16 @@ def test_node_previous_generator():
         == list(reversed(red[0].value.node_list[:2]))
 
 
+def test_node_next_intuitive():
+    red = RedBaron("[1, 2, 3]")
+    assert red[0].value[0].next_intuitive == red[0].node_list[1]
+
+
+def test_node_previous_intuitive():
+    red = RedBaron("[1, 2, 3]")
+    assert red[0].value[1].previous_intuitive == red[0].node_list[1]
+
+
 def test_node_if_ifelseblock_next():
     red = RedBaron("if a:\n    pass")
     assert red.if_.next is None

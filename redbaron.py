@@ -516,6 +516,10 @@ class Node(GenericNodesUtils):
         return next_node[0] if next_node else None
 
     @property
+    def next_intuitive(self):
+        return self.next
+
+    @property
     def next_rendered(self):
         previous = None
         target = self.parent
@@ -556,6 +560,10 @@ class Node(GenericNodesUtils):
 
         next_node = list(itertools.dropwhile(lambda x: x is not self, reversed(in_list)))[1:]
         return next_node[0] if next_node else None
+
+    @property
+    def previous_intuitive(self):
+        return self.previous
 
     @property
     def previous_rendered(self):
