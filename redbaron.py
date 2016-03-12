@@ -2177,7 +2177,17 @@ class ElifNode(IfElseBlockSiblingNode):
 
 
 class ElseNode(IfElseBlockSiblingNode):
-    pass
+    @property
+    def next_intuitive(self):
+        if self.parent.type == "ifelseblock":
+            return super(ElseNode, self).next_intuitive
+
+        elif self.parent.type == "try":
+            if self.parent.finally_:
+                return self.parent.finally_
+
+            else:
+                return self.parent.next
 
 
 class EndlNode(Node):
