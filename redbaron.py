@@ -2306,6 +2306,16 @@ class FinallyNode(CodeBlockNode):
     def next_intuitive(self):
         return self.parent.next
 
+    @property
+    def previous_intuitive(self):
+        if self.parent.else_:
+            return self.parent.else_
+
+        if self.parent.excepts:
+            return self.parent.excepts[-1]
+
+        return self.parent
+
     def __setattr__(self, key, value):
         super(FinallyNode, self).__setattr__(key, value)
 
