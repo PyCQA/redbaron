@@ -466,6 +466,11 @@ def test_node_exceptnode_next_intuitive_except():
     assert red.except_.next_intuitive is None
 
 
+def test_node_exceptnode_next_intuitive_except_after():
+    red = RedBaron("try: pass\nexcept: pass\nafter")
+    assert red.except_.next_intuitive is red[1]
+
+
 def test_node_exceptnode_next_intuitive_except_except():
     red = RedBaron("try: pass\nexcept: pass\nexcept: pass")
     assert red.except_.next_intuitive is red("except")[1]

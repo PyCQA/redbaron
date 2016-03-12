@@ -2203,6 +2203,9 @@ class ExceptNode(CodeBlockNode):
         if self.parent.finally_:
             return self.parent.finally_
 
+        if self.parent.next:
+            return self.parent.next
+
     @property
     def previous_intuitive(self):
         previous_ = self.previous
