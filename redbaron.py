@@ -2203,6 +2203,15 @@ class ExceptNode(CodeBlockNode):
         if self.parent.finally_:
             return self.parent.finally_
 
+    @property
+    def previous_intuitive(self):
+        previous_ = self.previous
+
+        if previous_:
+            return previous_
+
+        return self.parent
+
     def __setattr__(self, key, value):
         if key == "delimiter":
             if value == ",":
