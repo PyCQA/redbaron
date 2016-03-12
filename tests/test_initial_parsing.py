@@ -461,6 +461,36 @@ def test_node_trynode_next_intuitive_finally():
     assert red.try_.next_intuitive is red.finally_
 
 
+def test_node_exceptnode_next_intuitive_except():
+    red = RedBaron("try: pass\nexcept: pass")
+    assert red.except_.next_intuitive is None
+
+
+def test_node_exceptnode_next_intuitive_except_except():
+    red = RedBaron("try: pass\nexcept: pass\nexcept: pass")
+    assert red.except_.next_intuitive is red("except")[1]
+
+
+def test_node_exceptnode_next_intuitive_else():
+    red = RedBaron("try: pass\nexcept: pass\nelse: pass")
+    assert red.except_.next_intuitive is red.else_
+
+
+def test_node_exceptnode_next_intuitive_except_else():
+    red = RedBaron("try: pass\nexcept: pass\nexcept: pass\nelse: pass")
+    assert red.except_.next_intuitive is red("except")[1]
+
+
+def test_node_exceptnode_next_intuitive_finally():
+    red = RedBaron("try: pass\nexcept: pass\nfinally: pass")
+    assert red.except_.next_intuitive is red.finally_
+
+
+def test_node_exceptnode_next_intuitive_else_finally():
+    red = RedBaron("try: pass\nexcept: pass\nelse: pass\nfinally: pass")
+    assert red.except_.next_intuitive is red.else_
+
+
 def test_map():
     red = RedBaron("[1, 2, 3]")
     assert red('int').map(lambda x: x.value) == NodeList(["1", "2", "3"])

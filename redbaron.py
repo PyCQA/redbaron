@@ -2190,6 +2190,19 @@ class EndlNode(Node):
 
 
 class ExceptNode(CodeBlockNode):
+    @property
+    def next_intuitive(self):
+        next_ = self.next
+
+        if next_:
+            return next_
+
+        if self.parent.else_:
+            return self.parent.else_
+
+        if self.parent.finally_:
+            return self.parent.finally_
+
     def __setattr__(self, key, value):
         if key == "delimiter":
             if value == ",":
