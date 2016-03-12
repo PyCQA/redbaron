@@ -2302,6 +2302,10 @@ class ExecNode(Node):
 
 
 class FinallyNode(CodeBlockNode):
+    @property
+    def next_intuitive(self):
+        return self.parent.next
+
     def __setattr__(self, key, value):
         super(FinallyNode, self).__setattr__(key, value)
 
