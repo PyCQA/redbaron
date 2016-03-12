@@ -2301,7 +2301,6 @@ class ExecNode(Node):
             raise Exception("Unhandled case")
 
 
-
 class FinallyNode(CodeBlockNode):
     def __setattr__(self, key, value):
         super(FinallyNode, self).__setattr__(key, value)
