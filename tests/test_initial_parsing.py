@@ -376,6 +376,11 @@ def test_node_else_elseelseblock_previous_intuitive():
     assert red.else_.previous_intuitive is red.if_
 
 
+def test_node_if_ifelseblock_outside_next_intuitive():
+    red = RedBaron("outside\nif a:\n    pass")
+    assert red.endl_.next_intuitive is red.if_
+
+
 def test_node_trynode_next_intuitive_except():
     red = RedBaron("try: pass\nexcept: pass")
     assert red.try_.next_intuitive is red.except_

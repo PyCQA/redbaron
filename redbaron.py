@@ -517,7 +517,12 @@ class Node(GenericNodesUtils):
 
     @property
     def next_intuitive(self):
-        return self.next
+        next_ = self.next
+
+        if next_ and next_.type == "ifelseblock":
+            return next_.if_
+
+        return next_
 
     @property
     def next_rendered(self):
