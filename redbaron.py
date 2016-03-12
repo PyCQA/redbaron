@@ -2173,7 +2173,7 @@ class ElseNode(IfElseBlockSiblingNode):
             else:
                 return self.parent.next
 
-        elif self.parent.type in "for":
+        elif self.parent.type in ("for", "while"):
             return self.parent.next
 
     @property
@@ -2184,7 +2184,7 @@ class ElseNode(IfElseBlockSiblingNode):
         elif self.parent.type == "try":
             return self.parent.excepts[-1]
 
-        elif self.parent.type == "for":
+        elif self.parent.type in ("for", "while"):
             return self.parent
 
 
