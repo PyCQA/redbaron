@@ -2748,6 +2748,16 @@ class TernaryOperatorNode(Node):
 
 
 class TryNode(ElseAttributeNode):
+    @property
+    def next_intuitive(self):
+        if self.excepts:
+            return self.excepts[0]
+
+        if self.finally_:
+            return self.finally_
+
+        raise Exception("incoherent state of TryNode, try should be followed either by except or finally")
+
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute != "excepts":
             return super(TryNode, self)._string_to_node_list(string, parent=parent, on_attribute=on_attribute)
