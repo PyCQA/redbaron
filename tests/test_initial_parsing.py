@@ -521,6 +521,11 @@ def test_node_try_elsenode_next_intuitive_finally():
     assert red.else_.next_intuitive is red.finally_
 
 
+def test_node_try_elsenode_previous_intuitive():
+    red = RedBaron("try: pass\nexcept: pass\nelse: pass")
+    assert red.else_.previous_intuitive is red.except_
+
+
 def test_map():
     red = RedBaron("[1, 2, 3]")
     assert red('int').map(lambda x: x.value) == NodeList(["1", "2", "3"])
