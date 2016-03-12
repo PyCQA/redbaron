@@ -1172,22 +1172,6 @@ class IfElseBlockSiblingNode(CodeBlockNode):
 
         return previous_
 
-    def next_intuitive_generator(self):
-        for i in super(IfElseBlockSiblingNode, self).next_generator():
-            yield i
-
-        if self.parent:
-            for i in self.parent.next_generator():
-                yield i
-
-    def previous_intuitive_generator(self):
-        for i in super(IfElseBlockSiblingNode, self).previous_generator():
-            yield i
-
-        if self.parent:
-            for i in self.parent.previous_generator():
-                yield i
-
 
 class ElseAttributeNode(CodeBlockNode):
     def _get_last_member_to_clean(self):
