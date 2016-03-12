@@ -516,6 +516,41 @@ def test_node_finally_previous_intuitive_except_else():
     assert red.finally_.previous_intuitive is red.else_
 
 
+def test_node_trynode_outside_next_intuitive():
+    red = RedBaron("outside\ntry:\n    pass\nexcept: pass")
+    assert red.endl_.next_intuitive is red.try_
+
+
+def test_node_trynode_outside_previous_intuitive_except():
+    red = RedBaron("try:\n    pass\nexcept: pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red.except_
+
+
+def test_node_trynode_outside_previous_intuitive_except_except():
+    red = RedBaron("try:\n    pass\nexcept: pass\nexcept: pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red("except")[1]
+
+
+def test_node_trynode_outside_previous_intuitive_except_except_else():
+    red = RedBaron("try:\n    pass\nexcept: pass\nexcept: pass\nelse: pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red.else_
+
+
+def test_node_trynode_outside_previous_intuitive_except_except_else_finally():
+    red = RedBaron("try:\n    pass\nexcept: pass\nexcept: pass\nelse: pass\nfinally: pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red.finally_
+
+
+def test_node_trynode_outside_previous_intuitive_except_except_finally():
+    red = RedBaron("try:\n    pass\nexcept: pass\nexcept: pass\nfinally: pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red.finally_
+
+
+def test_node_trynode_outside_previous_intuitive_finally():
+    red = RedBaron("try:\n    pass\nfinally: pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red.finally_
+
+
 def test_node_for_next_intuitive():
     red = RedBaron("for a in b: pass")
     assert red.for_.next_intuitive is None

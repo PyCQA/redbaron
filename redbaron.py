@@ -573,6 +573,16 @@ class Node(GenericNodesUtils):
         if previous_ and previous_.type == "ifelseblock":
             return previous_.value[-1]
 
+        elif previous_ and previous_.type == "try":
+            if previous_.finally_:
+                return previous_.finally_
+
+            if previous_.else_:
+                return previous_.else_
+
+            if previous_.excepts:
+                return previous_.excepts[-1]
+
         return previous_
 
     @property
