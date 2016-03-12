@@ -381,6 +381,26 @@ def test_node_if_ifelseblock_outside_next_intuitive():
     assert red.endl_.next_intuitive is red.if_
 
 
+def test_node_if_ifelseblock_outside_previous_intuitive():
+    red = RedBaron("if a:\n    pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red.if_
+
+
+def test_node_if_ifelseblock_outside_previous_intuitive_elif():
+    red = RedBaron("if a:\n    pass\nelif a: pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red.elif_
+
+
+def test_node_if_ifelseblock_outside_previous_intuitive_elif_elif():
+    red = RedBaron("if a:\n    pass\nelif a: pass\nelif a: pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red("elif")[1]
+
+
+def test_node_if_ifelseblock_outside_previous_intuitive_else():
+    red = RedBaron("if a:\n    pass\nelse: pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red.else_
+
+
 def test_node_trynode_next_intuitive_except():
     red = RedBaron("try: pass\nexcept: pass")
     assert red.try_.next_intuitive is red.except_

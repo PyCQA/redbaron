@@ -568,7 +568,12 @@ class Node(GenericNodesUtils):
 
     @property
     def previous_intuitive(self):
-        return self.previous
+        previous_ = self.previous
+
+        if previous_ and previous_.type == "ifelseblock":
+            return previous_.value[-1]
+
+        return previous_
 
     @property
     def previous_rendered(self):
