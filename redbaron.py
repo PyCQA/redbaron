@@ -2173,6 +2173,9 @@ class ElseNode(IfElseBlockSiblingNode):
             else:
                 return self.parent.next
 
+        elif self.parent.type in "for":
+            return self.parent.next
+
     @property
     def previous_intuitive(self):
         if self.parent.type == "ifelseblock":
@@ -2180,6 +2183,9 @@ class ElseNode(IfElseBlockSiblingNode):
 
         elif self.parent.type == "try":
             return self.parent.excepts[-1]
+
+        elif self.parent.type == "for":
+            return self.parent
 
 
 class EndlNode(Node):

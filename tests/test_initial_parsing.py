@@ -511,6 +511,21 @@ def test_node_for_previous_intuitive_after():
     assert red.for_.previous_intuitive is red.endl_
 
 
+def test_node_for_else_next_intuitive():
+    red = RedBaron("for a in b: pass\nelse: pass")
+    assert red.else_.next_intuitive is None
+
+
+def test_node_for_else_next_intuitive_after():
+    red = RedBaron("for a in b: pass\nelse: pass\nafter")
+    assert red.else_.next_intuitive is red[1]
+
+
+def test_node_for_else_previous_intuitive_after():
+    red = RedBaron("before\nfor a in b: pass\nelse: pass\nafter")
+    assert red.else_.previous_intuitive is red.for_
+
+
 def test_node_while_next_intuitive():
     red = RedBaron("while a: pass")
     assert red.while_.next_intuitive is None
