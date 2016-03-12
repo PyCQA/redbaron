@@ -491,6 +491,26 @@ def test_node_finally_previous_intuitive_except_else():
     assert red.finally_.previous_intuitive is red.else_
 
 
+def test_node_for_next_intuitive():
+    red = RedBaron("for a in b: pass")
+    assert red.for_.next_intuitive is None
+
+
+def test_node_for_next_intuitive_after():
+    red = RedBaron("for a in b: pass\nafter")
+    assert red.for_.next_intuitive is red[1]
+
+
+def test_node_for_next_intuitive_else_after():
+    red = RedBaron("for a in b: pass\nelse: pass\nafter")
+    assert red.for_.next_intuitive is red.else_
+
+
+def test_node_for_previous_intuitive_after():
+    red = RedBaron("before\nfor a in b: pass\nafter")
+    assert red.for_.previous_intuitive is red.endl_
+
+
 def test_map():
     red = RedBaron("[1, 2, 3]")
     assert red('int').map(lambda x: x.value) == NodeList(["1", "2", "3"])

@@ -2308,6 +2308,13 @@ class FinallyNode(CodeBlockNode):
 
 
 class ForNode(ElseAttributeNode):
+    @property
+    def next_intuitive(self):
+        if self.else_:
+            return self.else_
+
+        return self.next
+
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "target":
             return Node.from_fst(baron.parse("for i in %s: pass" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
