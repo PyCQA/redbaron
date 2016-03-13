@@ -503,10 +503,7 @@ class Node(GenericNodesUtils):
     @classmethod
     def from_fst(klass, node, parent=None, on_attribute=None):
         class_name = baron_type_to_redbaron_classname(node["type"])
-        if class_name in globals():
-            return globals()[class_name](node, parent=parent, on_attribute=on_attribute)
-        else:
-            return type(class_name, (Node,), {})(node, parent=parent, on_attribute=on_attribute)
+        return globals()[class_name](node, parent=parent, on_attribute=on_attribute)
 
 
     @property
@@ -1962,6 +1959,10 @@ class BooleanOperatorNode(Node):
             raise Exception("Unhandled case")
 
 
+class BreakNode(Node):
+    pass
+
+
 class CallNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
@@ -2017,6 +2018,10 @@ class CommaNode(Node):
     pass
 
 
+class CommentNode(Node):
+    pass
+
+
 class ComparisonNode(Node):
     def __setattr__(self, key, value):
         if key == "value" and isinstance(value, string_instance):
@@ -2036,6 +2041,14 @@ class ComparisonNode(Node):
 
         else:
             raise Exception("Unhandled case")
+
+
+class ComparisonOperatorNode(Node):
+    pass
+
+
+class ComplexNode(Node):
+    pass
 
 
 class ComprehensionIfNode(Node):
@@ -2064,6 +2077,10 @@ class ComprehensionLoopNode(Node):
 
         else:
             raise Exception("Unhandled case")
+
+
+class ContinueNode(Node):
+    pass
 
 
 class DecoratorNode(Node):
@@ -2178,6 +2195,9 @@ class DottedAsNameNode(Node):
             raise Exception("Unhandled case")
 
 
+class DottedNameNode(Node):
+    pass
+
 
 class ElifNode(IfElseBlockSiblingNode):
     def _string_to_node(self, string, parent, on_attribute):
@@ -2186,6 +2206,10 @@ class ElifNode(IfElseBlockSiblingNode):
 
         else:
             raise Exception("Unhandled case")
+
+
+class EllipsisNode(Node):
+    pass
 
 
 class ElseNode(IfElseBlockSiblingNode):
@@ -2365,6 +2389,10 @@ class FloatNode(Node, LiteralyEvaluable):
 
 
 class FloatExponantNode(Node, LiteralyEvaluable):
+    pass
+
+
+class FloatExponantComplexNode(Node):
     pass
 
 
@@ -2579,6 +2607,10 @@ class LambdaNode(Node):
             setattr(self, "arguments", CommaProxyList(self.arguments, on_attribute="arguments"))
 
 
+class LeftParenthesisNode(Node):
+    pass
+
+
 class ListArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
@@ -2643,6 +2675,10 @@ class NameAsNameNode(Node):
 
 
 class OctaNode(Node, LiteralyEvaluable):
+    pass
+
+
+class PassNode(Node):
     pass
 
 
@@ -2723,6 +2759,10 @@ class RawStringNode(Node, LiteralyEvaluable):
     pass
 
 
+class RightParenthesisNode(Node):
+    pass
+
+
 class ReprNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("`%s`" % string)[0]["value"]
@@ -2744,6 +2784,10 @@ class ReturnNode(Node):
 
         else:
             raise Exception("Unhandled case")
+
+
+class SemicolonNode(Node):
+    pass
 
 
 class SetNode(Node):
@@ -2797,6 +2841,10 @@ class SliceNode(Node):
 class SpaceNode(Node):
     def __repr__(self):
         return repr(baron.dumps([self.fst()]))
+
+
+class StarNode(Node):
+    pass
 
 
 class StringNode(Node, LiteralyEvaluable):
@@ -3055,13 +3103,6 @@ class RedBaron(GenericNodesUtils, LineProxyList):
 
     def _convert_input_to_node_object_list(self, value, parent, on_attribute):
         return GenericNodesUtils._convert_input_to_node_object_list(self, value, self, "root")
-
-# to avoid to have to declare EVERY node class, dynamically create the missings
-# ones using nodes_rendering_order as a reference
-for node_type in nodes_rendering_order:
-    class_name = baron_type_to_redbaron_classname(node_type)
-    if class_name not in globals():
-        globals()[class_name] = type(class_name, (Node,), {})
 
 
 ipython_behavior = True

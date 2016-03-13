@@ -6,9 +6,18 @@
 
 import baron
 import re
+import redbaron
+
+from baron.render import nodes_rendering_order
 from redbaron import (RedBaron, NameNode, EndlNode, IntNode, AssignmentNode,
                       PassNode, NodeList, CommaNode, DotNode, CallNode,
-                      CommaProxyList)
+                      CommaProxyList, baron_type_to_redbaron_classname)
+
+
+def test_all_class_are_declared():
+    for node_type in nodes_rendering_order:
+        class_name = baron_type_to_redbaron_classname(node_type)
+        assert hasattr(redbaron, class_name)
 
 
 def test_empty():
