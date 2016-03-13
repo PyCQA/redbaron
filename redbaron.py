@@ -27,6 +27,10 @@ else:
     from StringIO import StringIO
 
 
+def baron_type_to_redbaron_classname(baron_type):
+    return "".join(map(lambda x: x.capitalize(), baron_type.split("_"))) + "Node"
+
+
 def log(string, *args):
     if DEBUG:
         sys.stdout.write("%s\n" % (string % args))
@@ -498,7 +502,7 @@ class Node(GenericNodesUtils):
 
     @classmethod
     def from_fst(klass, node, parent=None, on_attribute=None):
-        class_name = "".join(map(lambda x: x.capitalize(), node["type"].split("_"))) + "Node"
+        class_name = baron_type_to_redbaron_classname(node["type"])
         if class_name in globals():
             return globals()[class_name](node, parent=parent, on_attribute=on_attribute)
         else:
@@ -3055,7 +3059,7 @@ class RedBaron(GenericNodesUtils, LineProxyList):
 # to avoid to have to declare EVERY node class, dynamically create the missings
 # ones using nodes_rendering_order as a reference
 for node_type in nodes_rendering_order:
-    class_name = node_type.capitalize() + "Node"
+    class_name = baron_type_to_redbaron_classname(node_type)
     if class_name not in globals():
         globals()[class_name] = type(class_name, (Node,), {})
 
