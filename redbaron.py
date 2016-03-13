@@ -815,7 +815,7 @@ class Node(GenericNodesUtils):
         return None
 
     def _node_match_query(self, node, identifier, *args, **kwargs):
-        if not self._attribute_match_query(node._generate_identifiers(), identifier.lower() if isinstance(identifier, string_instance) and not identifier.startswith("re:") else identifier):
+        if not self._attribute_match_query(node.generate_identifiers(), identifier.lower() if isinstance(identifier, string_instance) and not identifier.startswith("re:") else identifier):
             return False
 
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys
@@ -879,7 +879,7 @@ class Node(GenericNodesUtils):
         return Path(self)
 
     @classmethod
-    def _generate_identifiers(klass):
+    def generate_identifiers(klass):
         return sorted(set(map(lambda x: x.lower(), [
             redbaron_classname_to_baron_type(klass.__name__),
             klass.__name__,
@@ -918,6 +918,7 @@ class Node(GenericNodesUtils):
             'insert_before',
             'insert_after',
             'to_python',
+            'generate_identifiers',
         ])
         return [x for x in dir(self) if not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -955,7 +956,7 @@ class Node(GenericNodesUtils):
         if not deep:
             to_join[-1] += " ..."
         else:
-            to_join.append("# identifiers: %s" % ", ".join(self._generate_identifiers()))
+            to_join.append("# identifiers: %s" % ", ".join(self.generate_identifiers()))
             if self._get_helpers():
                 to_join.append("# helpers: %s" % ", ".join(self._get_helpers()))
             if self._default_test_value != "value":
