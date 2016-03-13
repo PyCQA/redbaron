@@ -4,6 +4,7 @@
 """ Tests initial parsing through the RedBaron() base function """
 
 
+import pytest
 import baron
 import re
 import redbaron
@@ -274,8 +275,8 @@ def test_node_next():
 
 def test_node_next_recursive():
     red = RedBaron("def a():\n    b = 1\ndef c():\n    d = 1")
-    assert red.next is None
-    assert red.next_recursive is None
+    assert red[1].next is None
+    assert red[1].next_recursive is None
     first, second = red.find_all('def')
     assert first.next is second
     inner = first.value.node_list
@@ -301,8 +302,8 @@ def test_node_previous():
 
 def test_node_previous_recursive():
     red = RedBaron("def a():\n    b = 1\ndef c():\n    d = 1")
-    assert red.previous is None
-    assert red.previous_recursive is None
+    assert red[0].previous is None
+    assert red[0].previous_recursive is None
     first, second = red.find_all('def')
     assert second.previous is first
     inner = second.value.node_list
@@ -677,7 +678,7 @@ def test_map():
 
 def test_apply():
     red = RedBaron("a()\nb()")
-    assert red('call').apply(lambda x: x.stuff) == red('call')
+    assert red('call').apply(lambda x: str(x)) == red('call')
 
 
 def test_filter():
@@ -780,7 +781,8 @@ def test_find_empty():
     assert red.find("stuff") is None
     assert red.find("something_else") is None
     assert red.find("something_else", useless="pouet") is None
-    assert red.something_else is None
+    with pytest.raises(AttributeError):
+        red.will_raises
 
 
 def test_find():

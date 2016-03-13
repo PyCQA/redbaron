@@ -329,6 +329,9 @@ class NodeList(UserList, GenericNodesUtils):
         log(">> found nothing, return None")
 
     def __getattr__(self, key):
+        if key not in ALL_IDENTIFIERS:
+            raise AttributeError("%s instance has no attribute '%s' and '%s' is not a valid identifier of another node" % (self.__class__.__name__, key, key))
+
         return self.find(key)
 
     def __setitem__(self, key, value):
@@ -717,6 +720,9 @@ class Node(GenericNodesUtils):
 
         if key != "value" and hasattr(self, "value") and isinstance(self.value, ProxyList) and hasattr(self.value, key):
             return getattr(self.value, key)
+
+        if key not in ALL_IDENTIFIERS:
+            raise AttributeError("%s instance has no attribute '%s' and '%s' is not a valid identifier of another node" % (self.__class__.__name__, key, key))
 
         return self.find(key)
 
@@ -3121,6 +3127,12 @@ def runned_from_ipython():
         return True
     except NameError:
         return False
+
+
+ALL_IDENTIFIERS = set()
+
+for name, node_class in filter(lambda x: x[0].endswith("Node"), globals().items()):
+    map(ALL_IDENTIFIERS.add, filter(None, node_class.generate_identifiers()))
 
 
 class HelpLexer(RegexLexer):
