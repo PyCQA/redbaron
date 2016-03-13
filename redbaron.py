@@ -31,6 +31,11 @@ def baron_type_to_redbaron_classname(baron_type):
     return "".join(map(lambda x: x.capitalize(), baron_type.split("_"))) + "Node"
 
 
+def redbaron_classname_to_baron_type(name):
+    name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name.replace("Node", ""))
+    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
+
+
 def log(string, *args):
     if DEBUG:
         sys.stdout.write("%s\n" % (string % args))
@@ -873,13 +878,14 @@ class Node(GenericNodesUtils):
     def path(self):
         return Path(self)
 
-    def _generate_identifiers(self):
+    @classmethod
+    def _generate_identifiers(klass):
         return sorted(set(map(lambda x: x.lower(), [
-            self.type,
-            self.__class__.__name__,
-            self.__class__.__name__.replace("Node", ""),
-            self.type + "_"
-        ] + self._other_identifiers)))
+            redbaron_classname_to_baron_type(klass.__name__),
+            klass.__name__,
+            klass.__name__.replace("Node", ""),
+            redbaron_classname_to_baron_type(klass.__name__) + "_"
+        ] + klass._other_identifiers)))
 
     def _get_helpers(self):
         not_helpers = set([
