@@ -641,6 +641,26 @@ def test_node_while_else_previous_intuitive_after():
     assert red.else_.previous_intuitive is red.while_
 
 
+def test_node_whilenode_outside_next_intuitive():
+    red = RedBaron("outside\nwhile a:\n    pass\n")
+    assert red.endl_.next_intuitive is red.while_
+
+
+def test_node_whilenode_outside_next_intuitive_else():
+    red = RedBaron("outside\nwhile a:\n    pass\nelse: pass")
+    assert red.endl_.next_intuitive is red.while_
+
+
+def test_node_whilenode_outside_previous_intuitive():
+    red = RedBaron("while a:\n    pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red.while_
+
+
+def test_node_whilenode_outside_previous_intuitive_else():
+    red = RedBaron("while a:\n    pass\nelse: pass\nafter")
+    assert red.find("name", "after").previous_intuitive is red.else_
+
+
 def test_map():
     red = RedBaron("[1, 2, 3]")
     assert red('int').map(lambda x: x.value) == NodeList(["1", "2", "3"])

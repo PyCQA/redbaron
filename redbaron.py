@@ -583,7 +583,7 @@ class Node(GenericNodesUtils):
             if previous_.excepts:
                 return previous_.excepts[-1]
 
-        elif previous_ and previous_.type == "for":
+        elif previous_ and previous_.type in ("for", "while"):
             if previous_.else_:
                 return previous_.else_
 
