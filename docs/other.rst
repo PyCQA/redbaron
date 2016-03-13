@@ -122,6 +122,98 @@ the first adjacent node that exist in the parent hierarchy.
     In [42]: print([x for x assign.target.next_generator()])
     In [42]: print([x for x assign.target.previous_generator()])
 
+.next_intuitive/.previous_intuitive
+-----------------------------------
+
+Due to its tree nature, navigating in the FST might not behave as the user
+expect it. For example: doing a :file:`.next` on a :file:`TryNode` will not
+return the first :file:`ExceptNode` (or :file:`FinallyNode`) but will return
+the node after the try-excepts-else-finally node because it is a full not in
+itself in the FST.
+
+See for yourself:
+
+.. ipython:: python
+
+    red = RedBaron("try:\n    pass\nexcept:\n    pass\nafter")
+    red.try_
+    red.try_.next
+    red.help()
+
+To solve this issue :file:`.next_intuitive` and :file:`.previous_intuitive`
+have been introduce:
+
+.. ipython:: python
+
+    red
+    red.try_.next_intuitive
+    red.try_.next_intuitive.next_intuitive
+
+This also applies to :file:`IfNode`, :file:`ElifNode`, :file:`ElseNode`,
+:file:`ForNode` and :file:`WhileNode` (both of the last one can have a else
+statement). This also works coming from nodes outsides of those previous nodes.
+
+For :file:`IfNode`, :file:`ElifNode` and :file:`ElseNode` **inside** an
+:file:`IfelseblockNode`:
+
+.. ipython:: python
+
+    red = RedBaron("before\nif a:\n    pass\nelif b:\n    pass\nelse:\n    pass\nafter")
+    red
+    red[1].help()
+    red[1]
+    red.if_.next
+    red.if_.next_intuitive
+    red.if_.next_intuitive.next_intuitive
+    red.if_.next_intuitive.next_intuitive.next_intuitive
+    red.if_.next_intuitive.next_intuitive.next_intuitive.next_intuitive
+
+.. warning::
+
+    There is a subtility: :file:`IfelseblockNode` is **unaffected** by this
+    behavior: you have to use :file:`next_intuitive` or
+    :file:`previous_intuitive` on :file:`IfNode`, :file:`ElifNode` and
+    :file:`ElseNode` **inside** IfelseblockNode.
+
+    But, if you do a :file:`next_intuitive` or :file:`previous_intuitive` or a
+    node arround :file:`IfelseblockNode` it will jump to the first or last node
+    **inside** the :file:`IfelseblockNode`.
+
+    See this example
+
+.. ipython:: python
+
+    red = RedBaron("before\nif a:\n    pass\nelif b:\n    pass\nelse:\n    pass\nafter")
+    red[1].ifelseblock.next_intuitive  # similar to .next
+    red[1].ifelseblock.next.previous  # this is the IfelseblockNode
+    red[1].ifelseblock.next.previous_intuitive  # this is the ElseNode
+    red[1].ifelseblock.previous.next  # this is the IfelseblockNode
+    red[1].ifelseblock.previous.next_intuitive  # this is the IfNode
+
+For :file:`ForNode`:
+
+.. ipython:: python
+
+    red = RedBaron("for a in b:\n    pass\nelse:\n    pass\nafter")
+    red
+    red[0].help()
+    red.for_
+    red.for_.next
+    red.for_.next_intuitive
+    red.for_.next_intuitive.next_intuitive
+
+For :file:`WhileNode`:
+
+.. ipython:: python
+
+    red = RedBaron("while a:\n    pass\nelse:\n    pass\nafter")
+    red
+    red[0].help()
+    red.while_
+    red.while_.next
+    red.while_.next_intuitive
+    red.while_.next_intuitive.next_intuitive
+
 .root
 -----
 
