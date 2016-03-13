@@ -583,6 +583,10 @@ class Node(GenericNodesUtils):
             if previous_.excepts:
                 return previous_.excepts[-1]
 
+        elif previous_ and previous_.type == "for":
+            if previous_.else_:
+                return previous_.else_
+
         return previous_
 
     @property
