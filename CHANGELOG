@@ -19,6 +19,7 @@ Changelog
 - new helper methods: .next_recursive and .previous_recursive https://redbaron.readthedocs.org/en/latest/other.html
 - fix: doc is tested in CI now, it shouldn't break anymore
 - more rendering test for python3, it shouldn't break anymore
+- new node.next_intuitive and node.previous_intuitive methods for situations where .next/previous doesn't behave the way the user expect it http://redbaron.readthedocs.org/en/latest/other.html#next-intuitive-previous-intuitive
 
 0.5.1 (2015-03-11)
 ------------------
