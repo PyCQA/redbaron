@@ -2391,7 +2391,7 @@ class FloatExponantNode(Node, LiteralyEvaluable):
     pass
 
 
-class FloatExponantComplexNode(Node):
+class FloatExponantComplexNode(Node, LiteralyEvaluable):
     pass
 
 
