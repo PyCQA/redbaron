@@ -120,7 +120,7 @@ class Path(object):
         return self.path
 
     def __str__(self):
-        return 'Path(%s @ %s)' % (self.node.__class__.__name__ + ('(' + self.node.identifier + ')' if self.node.identifier else ''), str(self.path))
+        return 'Path(%s @ %s)' % (self.node.__class__.__name__ + ('(' + self.node.type + ')' if isinstance(self.node, Node) else ''), str(self.path))
 
     def __repr__(self):
         return '<' + self.__str__() + ' object at ' + str(id(self)) + '>'

@@ -5,7 +5,7 @@
 
 import pytest
 # pylint: disable=redefined-outer-name
-from redbaron import RedBaron
+from redbaron import RedBaron, Path
 
 
 fst = RedBaron("""\
@@ -60,3 +60,7 @@ def test_find_by_position(position_fixture):
     for position in positions:
         assert node == fst.find_by_position(position)
 
+
+def test_path_str():
+    red = RedBaron("name")
+    assert str(Path(red[0]))
