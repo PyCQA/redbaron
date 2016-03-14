@@ -98,9 +98,7 @@ class Path(object):
 
         for key in path:
             if isinstance(key, string_instance):
-                if not hasattr(node, key):
-                    return None
-                child = getattr(node, key)
+                child = getattr(node, key, None)
             else:
                 if isinstance(node, ProxyList):
                     node = node.node_list
@@ -159,7 +157,7 @@ class Path(object):
             return pos
 
         if isinstance(node, NodeList):
-            return next((key for (_, key, _) in parent._render() if getattr(parent, key) is node or getattr(getattr(parent, key), "node_list", None) is node), None)
+            return next((key for (_, key, _) in parent._render() if getattr(parent, key, None) is node or getattr(getattr(parent, key, None), "node_list", None) is node), None)
 
         to_return = next((key for (_, key, _) in parent._render() if key == node.on_attribute), None)
         return to_return
