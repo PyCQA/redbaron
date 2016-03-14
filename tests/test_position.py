@@ -4,9 +4,11 @@
 """ Tests the position feature """
 
 import pytest
+import redbaron
 # pylint: disable=redefined-outer-name
 from redbaron import RedBaron, Path
 
+redbaron.DEBUG = True
 
 fst = RedBaron("""\
 @deco
