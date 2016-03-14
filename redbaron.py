@@ -240,8 +240,16 @@ class GenericNodesUtils(object):
         return baron.path.path_to_bounding_box(self.root.fst(), path)
 
     def find_by_position(self, position):
+        log("Start find by position for %s and position %s" % (self.__class__.__name__, position))
         path = Path.from_baron_path(self, baron.path.position_to_path(self.fst(), position))
-        return path.node if path else None
+        if path:
+            log(">> found '%s' return node '%s'" % (path, path.node.__class__.__name__))
+            log("End")
+            return path.node
+        else:
+            log(">> nothing found, return None")
+            log("End")
+            return None
 
     def _string_to_node_list(self, string, parent, on_attribute):
         return NodeList.from_fst(baron.parse(string), parent=parent, on_attribute=on_attribute)
