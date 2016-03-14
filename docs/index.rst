@@ -41,7 +41,13 @@ Installation
 
 ::
 
-    pip install redbaron
+    pip install redbaron[pygments]
+
+Or if you don't want to have syntax highlight in your shell or don't need it:
+
+::
+
+    pip install redbaron[pygments]
 
 Basic usage
 -----------

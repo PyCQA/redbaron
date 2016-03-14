@@ -29,6 +29,10 @@ is not battle tested yet and is still a bit rough.** Feedback is very welcome.
 Installation
 ============
 
+    pip install redbaron[pygments]
+
+Or if you don't want to have syntax highlight in your shell or don't need it:
+
     pip install redbaron
 
 Running tests
