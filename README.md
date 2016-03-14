@@ -22,7 +22,11 @@ simple and intuitive and that once you've get the basics principles, you are
 good without reading the doc for 80% of your operations.
 
 **For now, RedBaron can be considered in alpha, the core is quite stable but it
-is not battle tested yet and is still a bit rough.** Feedback is very welcome.
+is not battle tested yet and is still a bit rough.** Feedback and contribution
+are very welcome.
+
+The API on the other side is guaranteed to be retro-compatible and won't break
+until 2.0 (if breaking is needed at this point).
 
 **Disclamer**: RedBaron (and baron) is **working** with python3 but it NOT fully parsing it yet.
 
