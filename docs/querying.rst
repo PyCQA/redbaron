@@ -63,6 +63,10 @@ You might have noticed that some identifiers end with a :file:`_`, those are
 for the case where the identifier might be a Python reserved keyword like
 :file:`if`, or :file:`while` for example.
 
+Be aware that if you do a :file:`red.something_that_can_be_a_node_identifier`
+and this is also not an attribute of a node, this will raise an
+:file:`AttributeError`.
+
 .find_all()
 -----------
 

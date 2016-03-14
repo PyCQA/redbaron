@@ -235,6 +235,10 @@ in BeautifulSoup):
     red.find_all("int", value=2)
     red("int", value=2)
 
+But be aware that if you do a
+:file:`red.something_that_can_be_a_node_identifier` and this is also not an
+attribute of a node, this will raise an :file:`AttributeError`.
+
 Modification
 ------------
 
