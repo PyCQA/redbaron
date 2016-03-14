@@ -3137,8 +3137,8 @@ def runned_from_ipython():
 
 ALL_IDENTIFIERS = set()
 
-for name, node_class in filter(lambda x: x[0].endswith("Node"), globals().items()):
-    map(ALL_IDENTIFIERS.add, filter(None, node_class.generate_identifiers()))
+for name, node_class in list(filter(lambda x: x[0].endswith("Node"), globals().items())):
+    list(map(ALL_IDENTIFIERS.add, filter(None, node_class.generate_identifiers())))
 
 
 class HelpLexer(RegexLexer):
