@@ -18,7 +18,7 @@ setup(name='redbaron',
       long_description=read_md("README.md") + "\n\n" + open("CHANGELOG", "r").read(),
       author_email='cortex@worlddomination.be',
       url='https://github.com/Psycojoker/redbaron',
-      install_requires=['baron>=0.6.1'],
+      install_requires=['baron>=0.6.2'],
       extras_require={
           "notebook": ["pygments"],
       },
