@@ -449,32 +449,32 @@ class Node(GenericNodesUtils):
     _other_identifiers = []
     _default_test_value = "value"
 
-    def __init__(self, node, parent=None, on_attribute=None):
+    def __init__(self, fst, parent=None, on_attribute=None):
         self.init = True
         self.parent = parent
         self.on_attribute = on_attribute
         self._str_keys = ["type"]
         self._list_keys = []
         self._dict_keys = []
-        self.type = node["type"]
+        self.type = fst["type"]
         for kind, key, _ in filter(lambda x: x[0] != "constant", self._render()):
             if kind == "key":
-                if node[key]:
-                    setattr(self, key, Node.from_fst(node[key], parent=self, on_attribute=key))
+                if fst[key]:
+                    setattr(self, key, Node.from_fst(fst[key], parent=self, on_attribute=key))
                 else:
                     setattr(self, key, None)
                 self._dict_keys.append(key)
 
             elif kind in ("bool", "string"):
-                setattr(self, key, node[key])
+                setattr(self, key, fst[key])
                 self._str_keys.append(key)
 
             elif kind in ("list", "formatting"):
-                setattr(self, key, NodeList.from_fst(node[key], parent=self, on_attribute=key))
+                setattr(self, key, NodeList.from_fst(fst[key], parent=self, on_attribute=key))
                 self._list_keys.append(key)
 
             else:
-                raise Exception(str((node["type"], kind, key)))
+                raise Exception(str((fst["type"], kind, key)))
 
         self.init = False
 
