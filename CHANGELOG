@@ -4,9 +4,12 @@ Changelog
 0.6 (unreleased)
 ----------------
 
-This release is guaranteed to have a retro-compatible API from now on until
-maybe 2.0 (as in "maybe 2.0 won't break retro-compatibility, not the other way
-arround").
+This release is guaranteed to have a retro-compatible public documented API
+from now on until maybe 2.0 (as in "maybe 2.0 won't break retro-compatibility,
+not the other way arround").
+There might be the only exception that if you directly call specific nodes
+constructors with FST that this API change, but this is not documented and
+simply horribly unpracticable, so I'm expecting no one to do that.
 
 From now on the focus will be on moving to a stable 1.0 meaning: bugs fixes and
 API additions for missing needed features and no more big modifications, this

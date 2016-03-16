@@ -25,8 +25,12 @@ good without reading the doc for 80% of your operations.
 is not battle tested yet and is still a bit rough.** Feedback and contribution
 are very welcome.
 
-The API on the other side is guaranteed to be retro-compatible and won't break
-until 2.0 (if breaking is needed at this point).
+The public documented API on the other side is guaranteed to be
+retro-compatible and won't break until 2.0 (if breaking is needed at this
+point).
+There might be the only exception that if you directly call specific nodes
+constructors with FST that this API change, but this is not documented and
+simply horribly unpracticable, so I'm expecting no one to do that.
 
 **Disclamer**: RedBaron (and baron) is **working** with python3 but it NOT fully parsing it yet.
 
