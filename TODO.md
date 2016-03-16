@@ -3,7 +3,6 @@
 ### Important
 
 - .help() seems really slow on big piece of code (for example RedBaron("baron/grammator.py").read())("dict")[0].help() is suuuuuuuuuuuuuuuuper slow)
-- raise AttributeError on node.attribute if attribute not in available nodes names
 - .at() return the first item starting at line X
 - .rename() (name -> value, def/class -> name)
 - .replace() expect a whole valid python program. This could be fixed by look at "on_attribute" and resetting itself like that.
@@ -24,17 +23,6 @@ that none works as expected, for eg, this one fails:
 in addition of passing empty string, allow to pass None value on setattr
 this needs to be done in "_convert_input_to_node_object" and it's possible
 now since we have string type in nodes_rendering_order
-
-### More intuitive .next/.previous attribute behavior
-
-while_node.next should check for the while_node.else attribute
-same for every other construction with an else: for/except/etc...
-the else attribute should check for parent for next
-if/elif same
-how ifelseblock should behave?
-trynode should also have a special behavior
-document all of this!
-same for .previous!
 
 ### Find/Find\_All (comparison)
 
