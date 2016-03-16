@@ -1,1 +1,15 @@
-from .redbaron import *
+from __future__ import absolute_import
+
+from redbaron.redbaron import *
+from redbaron.utils import *
+from redbaron.private_config import *
+from redbaron.path import *
+from redbaron.base_nodes import *
+from redbaron.nodes import *
+
+from redbaron import nodes
+
+ALL_IDENTIFIERS = set()
+
+for name in list(filter(lambda x: x.endswith("Node"), dir(nodes))):
+    list(map(ALL_IDENTIFIERS.add, filter(None, getattr(nodes, name).generate_identifiers())))
