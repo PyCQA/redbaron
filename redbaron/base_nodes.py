@@ -9,10 +9,6 @@ import itertools
 
 from fnmatch import fnmatch
 
-from pygments import highlight
-from pygments.lexers import PythonLexer
-from pygments.formatters import Terminal256Formatter, HtmlFormatter
-
 import baron
 import baron.path
 from baron.utils import python_version, string_instance
@@ -21,8 +17,12 @@ from baron.render import nodes_rendering_order
 import redbaron
 
 from redbaron.utils import redbaron_classname_to_baron_type, baron_type_to_redbaron_classname, log, in_a_shell, indent, truncate, HelpLexer
-from redbaron.private_config import runned_from_ipython
+from redbaron.private_config import runned_from_ipython, HAS_PYGMENTS
 
+if HAS_PYGMENTS:
+    from pygments import highlight
+    from pygments.lexers import PythonLexer
+    from pygments.formatters import Terminal256Formatter, HtmlFormatter
 
 if python_version == 3:
     from collections import UserList
@@ -920,7 +920,10 @@ class Node(GenericNodesUtils):
 
     def help(self, deep=2, with_formatting=False):
         if runned_from_ipython():
-            sys.stdout.write(highlight(self.__help__(deep=deep, with_formatting=with_formatting) + "\n", HelpLexer(), Terminal256Formatter(style='monokai')))
+            if HAS_PYGMENTS:
+                sys.stdout.write(highlight(self.__help__(deep=deep, with_formatting=with_formatting) + "\n", HelpLexer(), Terminal256Formatter(style='monokai')))
+            else:
+                sys.stdout.write(self.__help__(deep=deep, with_formatting=with_formatting) + "\n")
         else:
             sys.stdout.write(self.__help__(deep=deep, with_formatting=with_formatting) + "\n")
 
@@ -972,9 +975,12 @@ class Node(GenericNodesUtils):
 
     def __str__(self):
         if runned_from_ipython():
-            return highlight(self.dumps(), PythonLexer(encoding="Utf-8"),
-                             Terminal256Formatter(style='monokai',
-                                                  encoding="Utf-8"))
+            if HAS_PYGMENTS:
+                return highlight(self.dumps(), PythonLexer(encoding="Utf-8"),
+                                 Terminal256Formatter(style='monokai',
+                                                      encoding="Utf-8"))
+            else:
+                return self.dumps()
         else:
             return self.dumps()
 

@@ -2,14 +2,16 @@ from __future__ import absolute_import
 
 import re
 
-from pygments import highlight
-from pygments.lexers import PythonLexer
-from pygments.formatters import HtmlFormatter
-
 import baron
 from baron.utils import string_instance
 
 from redbaron.base_nodes import Node, NodeList, LiteralyEvaluable, CodeBlockNode, DotProxyList, CommaProxyList, LineProxyList, IfElseBlockSiblingNode, ElseAttributeNode
+from redbaron.private_config import HAS_PYGMENTS
+
+if HAS_PYGMENTS:
+    from pygments import highlight
+    from pygments.lexers import PythonLexer
+    from pygments.formatters import HtmlFormatter
 
 
 class ArgumentGeneratorComprehensionNode(Node):
