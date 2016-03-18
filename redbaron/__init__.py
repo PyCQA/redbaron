@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from redbaron.redbaron import *
 from redbaron.utils import *
 from redbaron.private_config import *
-from redbaron.path import *
 from redbaron.base_nodes import *
 from redbaron.nodes import *
 
