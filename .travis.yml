@@ -11,5 +11,8 @@ python:
 script:
   - py.test tests
   - bash ./test_doc.sh
+  - pip install pygments
+  - py.test tests
+  - bash ./test_doc.sh
 notifications:
   irc: "chat.freenode.net#baron"
