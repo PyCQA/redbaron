@@ -26,7 +26,7 @@ is not battle tested yet and is still a bit rough.** Feedback and contribution
 are very welcome.
 
 The public documented API on the other side is guaranteed to be
-retro-compatible and won't break until 2.0 (if breaking is needed at this
+retro-compatible and won't break until 2.0 (if breaking is needed at that
 point).
 There might be the only exception that if you directly call specific nodes
 constructors with FST that this API change, but this is not documented and
