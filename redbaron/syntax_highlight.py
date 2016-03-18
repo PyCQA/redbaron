@@ -48,3 +48,6 @@ else:
 
     def python_highlight(string):
         return string
+
+    def python_html_highlight(string):
+        return string
