@@ -6,11 +6,7 @@ import sys
 
 from baron.utils import python_version
 
-from redbaron.private_config import DEBUG, HAS_PYGMENTS
-
-if HAS_PYGMENTS:
-    from pygments.token import Comment, Text, String, Keyword, Name, Operator
-    from pygments.lexer import RegexLexer, bygroups
+from redbaron.private_config import DEBUG
 
 if python_version == 3:
     from io import StringIO
@@ -64,24 +60,3 @@ def truncate(text, n):
     truncated[-3:-1] = ['.', '.', '.']
     del truncated[n-4 : -4]
     return "".join(truncated)
-
-
-if HAS_PYGMENTS:
-    class HelpLexer(RegexLexer):
-        name = 'Lexer for RedBaron .help() method output'
-
-        tokens = {
-            'root': [
-                (r"#.*$", Comment),
-                (r"('([^\\']|\\.)*'|\"([^\\\"]|\\.)*\")", String),
-                (r"(None|False|True)", String),
-                (r'(\*)( \w+Node)', bygroups(Operator, Keyword)),
-                (r'\w+Node', Name.Function),
-                (r'(\*|=|->|\(|\)|\.\.\.)', Operator),
-                (r'\w+', Text),
-                (r'\s+', Text),
-            ]
-        }
-else:
-    class HelpLexer(object):
-        pass

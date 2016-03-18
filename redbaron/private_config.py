@@ -1,12 +1,6 @@
 ipython_behavior = True
 force_ipython_behavior = False
 DEBUG = False
-HAS_PYGMENTS = True
-
-try:
-    import pygments
-except ImportError:
-    HAS_PYGMENTS = False
 
 def runned_from_ipython():
     # for testing

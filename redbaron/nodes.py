@@ -6,12 +6,7 @@ import baron
 from baron.utils import string_instance
 
 from redbaron.base_nodes import Node, NodeList, LiteralyEvaluable, CodeBlockNode, DotProxyList, CommaProxyList, LineProxyList, IfElseBlockSiblingNode, ElseAttributeNode
-from redbaron.private_config import HAS_PYGMENTS
-
-if HAS_PYGMENTS:
-    from pygments import highlight
-    from pygments.lexers import PythonLexer
-    from pygments.formatters import HtmlFormatter
+from redbaron.syntax_highlight import python_html_highlight
 
 
 class ArgumentGeneratorComprehensionNode(Node):
@@ -434,8 +429,7 @@ class EndlNode(Node):
         return repr(baron.dumps([self.fst()]))
 
     def _bytes_repr_html_(self):
-        return highlight(self.__repr__(), PythonLexer(encode="Utf-8"),
-                         HtmlFormatter(noclasses=True, encoding="UTf-8"))
+        return python_html_highlight(self.__repr__())
 
 
 class ExceptNode(CodeBlockNode):
