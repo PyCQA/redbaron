@@ -44,10 +44,10 @@ if HAS_PYGMENTS:
 
 else:
     def help_highlight(string):
-        return string
+        return string.encode("Utf-8")
 
     def python_highlight(string):
-        return string
+        return string.encode("Utf-8")
 
     def python_html_highlight(string):
-        return string
+        return string.encode("Utf-8")
