@@ -10,6 +10,7 @@ fi
 pip install -r requirements-docs.txt
 
 cd docs
+rm -rf _build
 
 result=$(make html 2>&1)
 
