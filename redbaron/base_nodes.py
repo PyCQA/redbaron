@@ -969,7 +969,7 @@ class Node(GenericNodesUtils):
 
     def __str__(self):
         if runned_from_ipython():
-            return python_highlight(self.dumps())
+            return python_highlight(self.dumps()).decode("Utf-8")
         else:
             return self.dumps()
 
@@ -1444,10 +1444,9 @@ class ProxyList(object):
         to_return = ""
         for number, value in enumerate(self.data):
             value = value[0]
-            to_return += ("%-3s " % number) + "\n    ".join(value.__repr__().split("\n"))
+            to_return += (("%-3s " % number) + "\n    ".join(value.__repr__().split("\n")))
             to_return += "\n"
         return to_return
-        return "%s" % [x.__repr__() for x in self.data]
 
     def __getattr__(self, key):
         return getattr(self.node_list, key)

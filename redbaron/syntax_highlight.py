@@ -47,7 +47,7 @@ else:
         return string
 
     def python_highlight(string):
-        return string.encode("Utf-8")
+        return string
 
     def python_html_highlight(string):
-        return string.encode("Utf-8")
+        return string
