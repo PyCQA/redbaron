@@ -1,21 +1,32 @@
 from redbaron import RedBaron, private_config
 
-private_config.force_ipython_behavior = True
-private_config.DEBUG = True
+
+class Test():
+    def setup_method(self, method):
+        private_config.force_ipython_behavior = True
+        private_config.DEBUG = True
+
+    def teardown_method(self, method):
+        private_config.force_ipython_behavior = False
+        private_config.DEBUG = False
+
+    def test_repr(self):
+        RedBaron("a = 1").__str__()
+        RedBaron("a = 1")[0].__str__()
+        RedBaron("a = 1").__repr__()
+        RedBaron("a = 1")[0].__repr__()
+
+    def test_help(self):
+        RedBaron("a = 1").help()
+        RedBaron("a = 1")[0].help()
+
+    def test_endl_html(self):
+        RedBaron("a\n").node_list[-1]._repr_html_()
 
 
-def test_repr():
-    assert private_config.runned_from_ipython()
-    RedBaron("a = 1").__str__()
-    RedBaron("a = 1")[0].__str__()
-    RedBaron("a = 1").__repr__()
-    RedBaron("a = 1")[0].__repr__()
+class TestClassical(Test):
+    def setup_method(self, method):
+        pass
 
-
-def test_help():
-    RedBaron("a = 1").help()
-    RedBaron("a = 1")[0].help()
-
-
-def test_endl_html():
-    RedBaron("a\n").node_list[-1]._repr_html_()
+    def teardown_method(self, method):
+        pass
