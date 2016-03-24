@@ -6,7 +6,8 @@ import sys
 
 from baron.utils import python_version
 
-from redbaron.private_config import DEBUG
+import redbaron
+
 
 if python_version == 3:
     from io import StringIO
@@ -25,13 +26,13 @@ def redbaron_classname_to_baron_type(name):
 
 
 def log(string, *args):
-    if DEBUG:
+    if redbaron.DEBUG:
         sys.stdout.write("%s\n" % (string % args))
 
 
 def in_a_shell():
     # the isinstance here is for building sphinx doc
-    if DEBUG or isinstance(sys.stdout, StringIO):
+    if redbaron.DEBUG or isinstance(sys.stdout, StringIO):
         return True
     try:
         if hasattr(sys.stdout, 'fileno') and os.isatty(sys.stdout.fileno()):

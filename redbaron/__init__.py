@@ -8,6 +8,7 @@ from redbaron.nodes import *
 
 from redbaron import nodes
 
+DEBUG = False
 ALL_IDENTIFIERS = set()
 
 for name in list(filter(lambda x: x.endswith("Node"), dir(nodes))):

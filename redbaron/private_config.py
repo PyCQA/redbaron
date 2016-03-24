@@ -1,6 +1,5 @@
 ipython_behavior = True
 force_ipython_behavior = False
-DEBUG = False
 
 def runned_from_ipython():
     # for testing
