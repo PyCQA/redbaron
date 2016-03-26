@@ -1325,7 +1325,9 @@ class ProxyList(object):
 
     def _synchronise(self):
         self.node_list.data = self._generate_expected_list()[:]
+        log("Before synchronise, self.data = '%s' + '%s'" % (self.first_blank_lines, self.data))
         self.data = self._build_inner_list(self.node_list.data)
+        log("After synchronise, self.data = '%s' + '%s'" % (self.first_blank_lines, self.data))
 
     def __len__(self):
         return len(self.data)
@@ -1612,6 +1614,7 @@ class LineProxyList(ProxyList):
 
     def _generate_expected_list(self):
         log("Start _generate_expected_list for LineProxyList")
+        log(">>> current list '%s'" % self.data)
         indentation = self._get_separator_indentation()
 
         log("Detect indentation has %s", indentation.__repr__())
@@ -1639,6 +1642,8 @@ class LineProxyList(ProxyList):
                 node.indent = indentation
 
         expected_list = self.first_blank_lines[:]
+        if expected_list:
+            log(">> adding first blank lines to expected_list: '%s'" % expected_list)
         previous = expected_list[-1] if expected_list else None
 
         might_need_separator = False
@@ -1716,6 +1721,10 @@ class LineProxyList(ProxyList):
                     has_added_separator = True
                     expected_list.append(generate_separator())
                     log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
+                elif i[0].type == "endl":
+                    log(">> Current is endl, don't do anything")
+                elif is_last:
+                    log(">> Current is last, don't do anything")
 
             previous = expected_list[-1]
 
