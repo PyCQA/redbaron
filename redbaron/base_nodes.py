@@ -1602,7 +1602,9 @@ class LineProxyList(ProxyList):
         for i in node_list:
             if i.type != "endl":
                 result.append([i, []])
-            elif (previous and previous.type == "endl") or self.first_blank_lines:
+            elif previous and previous.type == "endl":
+                result.append([i, []])
+            elif still_at_beginning and self.first_blank_lines:
                 result.append([i, []])
             else:
                 if result:
