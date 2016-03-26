@@ -199,15 +199,10 @@ class GenericNodesUtils(object):
         return baron.path.path_to_bounding_box(self.root.fst(), path)
 
     def find_by_position(self, position):
-        log("Start find by position for %s and position %s" % (self.__class__.__name__, position))
         path = Path.from_baron_path(self, baron.path.position_to_path(self.fst(), position))
         if path:
-            log(">> found '%s' return node '%s'" % (path, path.node.__class__.__name__))
-            log("End")
             return path.node
         else:
-            log(">> nothing found, return None")
-            log("End")
             return None
 
     def _string_to_node_list(self, string, parent, on_attribute):
@@ -284,16 +279,10 @@ class NodeList(UserList, GenericNodesUtils):
         return klass(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), node_list), parent=parent, on_attribute=on_attribute)
 
     def find(self, identifier, *args, **kwargs):
-        log("Starting NodeList.find on %s for %s, %s, %s" % (self.dumps(), identifier, args, kwargs))
-        log(">> will rotate on self.data which is %s" % self.data)
         for i in self.data:
             candidate = i.find(identifier, *args, **kwargs)
-            log(">> tested '%s'" % i.dumps())
             if candidate is not None:
-                log(">> tested value is not None -> return it")
                 return candidate
-
-        log(">> found nothing, return None")
 
     def __getattr__(self, key):
         if key not in redbaron.ALL_IDENTIFIERS:
@@ -647,7 +636,6 @@ class Node(GenericNodesUtils):
 
 
     def find(self, identifier, *args, **kwargs):
-        log("Starting %s.find with %s, %s, %s" % (self.__class__, identifier, args, kwargs))
         if "recursive" in kwargs:
             recursive = kwargs["recursive"]
             kwargs = kwargs.copy()
