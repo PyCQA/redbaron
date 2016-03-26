@@ -1325,6 +1325,7 @@ class ProxyList(object):
 
     def _synchronise(self):
         self.node_list.data = self._generate_expected_list()[:]
+        self.data = self._build_inner_list(self.node_list.data)
 
     def __len__(self):
         return len(self.data)
