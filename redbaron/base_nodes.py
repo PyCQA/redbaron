@@ -1592,20 +1592,28 @@ class LineProxyList(ProxyList):
 
     def _build_inner_list(self, node_list):
         result = []
+        self.first_blank_lines = []
 
         previous = None
+        still_at_beginning = False
         for i in node_list:
             if i.type != "endl":
                 result.append([i, []])
-            elif previous and previous.type == "endl":
+            elif (previous and previous.type == "endl") or self.first_blank_lines:
                 result.append([i, []])
             else:
                 if result:
                     result[-1][1].append(i)
                 else:
                     self.first_blank_lines.append(i)
+                    still_at_beginning = True
 
-            previous = i
+            if still_at_beginning:
+                previous = None
+            else:
+                previous = i
+
+            still_at_beginning = False
 
         return result
 
