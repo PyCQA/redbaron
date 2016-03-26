@@ -1602,13 +1602,17 @@ class LineProxyList(ProxyList):
         for i in node_list:
             if i.type != "endl":
                 result.append([i, []])
+                still_at_beginning = False
             elif previous and previous.type == "endl":
                 result.append([i, []])
+                still_at_beginning = False
             elif still_at_beginning and self.first_blank_lines:
                 result.append([i, []])
+                still_at_beginning = False
             else:
                 if result:
                     result[-1][1].append(i)
+                    still_at_beginning = False
                 else:
                     self.first_blank_lines.append(i)
                     still_at_beginning = True
@@ -1617,8 +1621,6 @@ class LineProxyList(ProxyList):
                 previous = None
             else:
                 previous = i
-
-            still_at_beginning = False
 
         return result
 
