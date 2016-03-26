@@ -1325,9 +1325,7 @@ class ProxyList(object):
 
     def _synchronise(self):
         self.node_list.data = self._generate_expected_list()[:]
-        log("Before synchronise, self.data = '%s' + '%s'" % (self.first_blank_lines, self.data))
         self.data = self._build_inner_list(self.node_list.data)
-        log("After synchronise, self.data = '%s' + '%s'" % (self.first_blank_lines, self.data))
 
     def __len__(self):
         return len(self.data)
@@ -1589,6 +1587,11 @@ class LineProxyList(ProxyList):
         super(LineProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.middle_separator = redbaron.nodes.DotNode({"type": "endl", "formatting": [], "value": "\n", "indent": "    "})
 
+
+    def _synchronise(self):
+        log("Before synchronise, self.data = '%s' + '%s'" % (self.first_blank_lines, self.data))
+        super(LineProxyList, self)._synchronise()
+        log("After synchronise, self.data = '%s' + '%s'" % (self.first_blank_lines, self.data))
 
     def _build_inner_list(self, node_list):
         result = []
