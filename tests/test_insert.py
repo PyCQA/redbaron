@@ -345,7 +345,24 @@ def a(self, a):
 """)
 
     red.def_.if_.insert(0, "a = 1")
+    assert_with_indent(red, """\
+def a(self, a):
+    if a == 42:
+        a = 1
+        return True
+    return False
+""")
+
     red.def_.if_.insert(0, "")
+    assert_with_indent(red, """\
+def a(self, a):
+    if a == 42:
+
+        a = 1
+        return True
+    return False
+""")
+
     red.def_.if_.insert(0, "b = 2")
 
     assert_with_indent(red, """\
