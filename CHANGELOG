@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6.1 (2016-03-28)
+----------------
+
+- fix setup.py, package weren't pushed on pypi since splitting of redbaron.py
+  into multiple files.
+
 0.6 (2016-03-28)
 ----------------
 

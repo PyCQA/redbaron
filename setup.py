@@ -12,7 +12,7 @@ except ImportError:
 
 
 setup(name='redbaron',
-      version='0.6',
+      version='0.6.1',
       description='Abstraction on top of baron, a FST for python to make writing refactoring code a realistic task',
       author='Laurent Peuch',
       long_description=read_md("README.md") + "\n\n" + open("CHANGELOG", "r").read(),
@@ -23,7 +23,7 @@ setup(name='redbaron',
           "notebook": ["pygments"],
       },
       license= 'lgplv3+',
-      py_modules=["redbaron"],
+      packages=["redbaron"],
       keywords='baron fst ast refactoring',
       classifiers=['Development Status :: 3 - Alpha',
                    'Intended Audience :: Developers',
