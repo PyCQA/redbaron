@@ -1,12 +1,14 @@
-ipython_behavior = True
-force_ipython_behavior = False
+from __future__ import absolute_import
+
+import redbaron
+
 
 def runned_from_ipython():
     # for testing
-    if force_ipython_behavior:
+    if redbaron.force_ipython_behavior:
         return True
 
-    if not ipython_behavior:
+    if not redbaron.ipython_behavior:
         return False
     try:
         __IPYTHON__
