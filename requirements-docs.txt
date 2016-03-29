@@ -1,5 +1,6 @@
 git+https://github.com/Psycojoker/baron.git
 git+https://github.com/Psycojoker/redbaron.git
+pygments
 ipython
 matplotlib
 sphinx
