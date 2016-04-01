@@ -49,6 +49,16 @@ Running tests
     pip install pytest
     py.test tests
 
+Community
+=========
+
+You can reach us on [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron) or [irc.freenode.net##python-code-quality](https://webchat.freenode.net/?channels=%23%23python-code-quality).
+
+Code of Conduct
+===============
+
+As a member of [PyCQA](https://github.com/PyCQA), RedBaron follows its (Code of Conduct)[http://meta.pycqa.org/en/latest/code-of-conduct.html].
+
 Links
 =====
 
