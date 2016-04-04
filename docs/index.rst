@@ -13,7 +13,7 @@ advanced texts modification tools that you find in advanced text editors and
 IDE.
 
 RedBaron guaranteed you that **it will only modify your code where you ask him
-to**. To achieve this, it is based on `Baron <https://github.com/Psycojoker/baron>`_
+to**. To achieve this, it is based on `Baron <https://github.com/PyCQA/baron>`_
 a lossless `AST <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`_ for
 Python  that guarantees the operation :file:`fst_to_code(code_to_fst(source_code)) == source_code`.
 
@@ -34,7 +34,7 @@ Funny side effect: this make it possible to "break" this documentation.
 Code
 ----
 
-https://github.com/Psycojoker/redbaron
+https://github.com/PyCQA/redbaron
 
 Installation
 ------------

@@ -344,7 +344,7 @@ a list/dict/tuple containing values that aren't listed here will raise a
 Every node has a :file:`path()` method that will return a :file:`Path` object
 to it. Every path object has a :file:`.node` attribute that point to the node
 and a :file:`.to_baron_path` that returns a `Baron Path namedtuple
-<https://baron.readthedocs.org/en/latest/#locate-a-node>`_.
+<https://baron.pycqa.org/en/latest/#locate-a-node>`_.
 
 .. ipython:: python
 

@@ -1,7 +1,7 @@
 Introduction
 ============
 
-[![Build Status](https://travis-ci.org/Psycojoker/redbaron.svg?branch=master)](https://travis-ci.org/Psycojoker/redbaron) [![Latest Version](https://pypip.in/version/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Supported Python versions](https://pypip.in/py_versions/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Development Status](https://pypip.in/status/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Wheel Status](https://pypip.in/wheel/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Download format](https://pypip.in/format/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![License](https://pypip.in/license/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/)
+[![Build Status](https://travis-ci.org/PyCQA/redbaron.svg?branch=master)](https://travis-ci.org/PyCQA/redbaron) [![Latest Version](https://pypip.in/version/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Supported Python versions](https://pypip.in/py_versions/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Development Status](https://pypip.in/status/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Wheel Status](https://pypip.in/wheel/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Download format](https://pypip.in/format/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![License](https://pypip.in/license/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/)
 
 RedBaron is a python library and tool powerful enough to be used into IPython
 solely that intent to make the process of **writing code that modify source
@@ -12,7 +12,7 @@ advanced texts modification tools that you find in advanced text editors and
 IDE.
 
 RedBaron guaranteed you that **it will only modify your code where you ask him
-to**. To achieve this, it is based on [Baron](https://github.com/Psycojoker/baron)
+to**. To achieve this, it is based on [Baron](https://github.com/PyCQA/baron)
 a lossless [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) for
 Python that guarantees the operation <code>ast_to_code(code_to_ast(source_code)) == source_code</code>.
 (Baron's AST is called a FST, a Full Syntax Tree).
@@ -64,7 +64,7 @@ Links
 
 **RedBaron is fully documented, be sure to check the turorial and documentation**.
 
-* [Tutorial](https://redbaron.readthedocs.org/en/latest/tuto.html)
-* [Documentation](https://redbaron.readthedocs.org)
-* [Baron](https://github.com/Psycojoker/baron)
+* [Tutorial](https://redbaron.pycqa.org/en/latest/tuto.html)
+* [Documentation](https://redbaron.pycqa.org)
+* [Baron](https://github.com/PyCQA/baron)
 * IRC chat: [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron)

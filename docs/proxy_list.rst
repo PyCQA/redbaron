@@ -91,7 +91,7 @@ Here is a session demonstrating every method of a proxy list:
 Please refer to `python list documentation
 <https://docs.python.org/2/tutorial/datastructures.html>`_ if you want to
 know the exact behavior or those methods (or `send a patch
-<https://github.com/Psycojoker/redbaron>`_ to improve this documentation).
+<https://github.com/PyCQA/redbaron>`_ to improve this documentation).
 
 append
 ~~~~~~
