@@ -1492,7 +1492,7 @@ class CommaProxyList(ProxyList):
                     # XXX will break comments
                     if self.style == "indented":
                         if not expected_list[-1].second_formatting.endl:
-                            raise Exception("Unhandled case")
+                            raise Exception("It appears that you have indentation in your CommaList, for now RedBaron doesn't know how to handle this situation (which requires a lot of work), sorry about that. You can find more information here https://github.com/PyCQA/redbaron/issues/100")
                         elif expected_list[-1].second_formatting.endl.indent != self.parent.indentation + " "*4:
                             expected_list[-1].second_formatting.endl.indent = self.parent.indentation + " "*4
             else:
@@ -1506,7 +1506,7 @@ class CommaProxyList(ProxyList):
 
         if expected_list and self.has_trailing and self.style == "indented":
             if not expected_list[-1].second_formatting.endl:
-                raise Exception("Unhandled case")
+                raise Exception("It appears that you have indentation in your CommaList, for now RedBaron doesn't know how to handle this situation (which requires a lot of work), sorry about that. You can find more information here https://github.com/PyCQA/redbaron/issues/100")
             elif expected_list[-1].second_formatting.endl.indent != self.parent.indentation:
                 expected_list[-1].second_formatting.endl.indent = self.parent.indentation
 
