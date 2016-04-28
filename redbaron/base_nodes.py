@@ -1457,6 +1457,7 @@ class CommaProxyList(ProxyList):
         return redbaron.nodes.CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
 
     def _generate_expected_list(self):
+        self.style = "indented" if any(self.node_list('comma', recursive=False).map(lambda x: x('endl'))) else "flat"
         def generate_separator():
             separator = self._get_middle_separator()
             separator.parent = self.node_list
