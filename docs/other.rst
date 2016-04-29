@@ -141,7 +141,7 @@ See for yourself:
     red.help()
 
 To solve this issue :file:`.next_intuitive` and :file:`.previous_intuitive`
-have been introduce:
+have been introduced:
 
 .. ipython:: python
 
