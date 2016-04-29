@@ -309,7 +309,7 @@ SetAttr
 -------
 
 ClassNode is a CodeBlockNode which means its value attribute accepts a wide
-range of values, see :ref:`CodeBlockNode` for more informations. Most other
+range of values, see :ref:`CodeBlockNode` for more information. Most other
 attributes work as expected:
 
 .. ipython:: python
@@ -581,7 +581,7 @@ SetAttr
 -------
 
 ElifNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations. Other attributes
+of values, see :ref:`CodeBlockNode` for more information. Other attributes
 work as expected:
 
 .. ipython:: python
@@ -608,7 +608,7 @@ SetAttr
 -------
 
 ElifNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations.
+of values, see :ref:`CodeBlockNode` for more information.
 
 EndlNode
 ========
@@ -640,7 +640,7 @@ SetAttr
 -------
 
 ExceptNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations. Other attributes
+of values, see :ref:`CodeBlockNode` for more information. Other attributes
 work as expected:
 
 .. ipython:: python
@@ -694,7 +694,7 @@ SetAttr
 -------
 
 FinallyNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations.
+of values, see :ref:`CodeBlockNode` for more information.
 
 ForNode
 =======
@@ -709,7 +709,7 @@ SetAttr
 -------
 
 ForNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations. The else attributes
+of values, see :ref:`CodeBlockNode` for more information. The else attributes
 accept a great ranges of inputs, since :file:`else` is a reserved python
 keyword, you need to access it using the :file:`else_` attribute. Other
 attributes work as expected:
@@ -778,7 +778,7 @@ SetAttr
 -------
 
 FuncdefNode is a CodeBlockNode which means its value attribute accepts a wide
-range of values, see :ref:`CodeBlockNode` for more informations. Most other
+range of values, see :ref:`CodeBlockNode` for more information. Most other
 attributes works as expected:
 
 .. ipython:: python
@@ -880,7 +880,7 @@ SetAttr
 -------
 
 IfNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations. Other attributes
+of values, see :ref:`CodeBlockNode` for more information. Other attributes
 work as expected:
 
 .. ipython:: python
@@ -1295,7 +1295,7 @@ SetAttr
 -------
 
 TryNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations. For the :file:`else`
+of values, see :ref:`CodeBlockNode` for more information. For the :file:`else`
 and the :file:`finally` and the :file:`excepts` attributes, TryNode is very
 flexible on the range of inputs it can get, like for a CodeBlockNode value's
 attribute.
@@ -1414,7 +1414,7 @@ SetAttr
 -------
 
 WhileNode is a CodeBlockNode which means its value attribute accepts a wide
-range of values, see :ref:`CodeBlockNode` for more informations. The else
+range of values, see :ref:`CodeBlockNode` for more information. The else
 attributes accept a great ranges of inputs, since :file:`else` is a reserved
 python keyword, you need to access it using the :file:`else_` attribute. Other
 attributes work as expected:
@@ -1468,7 +1468,7 @@ SetAttr
 -------
 
 WithNode is a CodeBlockNode which means its value attribute accepts a wide range
-of values, see :ref:`CodeBlockNode` for more informations. Other attributes
+of values, see :ref:`CodeBlockNode` for more information. Other attributes
 work as expected:
 
 .. ipython:: python
