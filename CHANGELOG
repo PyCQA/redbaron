@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.2 (unreleased)
+----------------
+
+- fix some old call to log() weren't lazy, that could cause a crash in some situations by an infinite recursive call and also reduce performances
+
 0.6.1 (2016-03-28)
 ----------------
 
