@@ -65,6 +65,6 @@ Links
 **RedBaron is fully documented, be sure to check the turorial and documentation**.
 
 * [Tutorial](https://redbaron.pycqa.org/en/latest/tuto.html)
-* [Documentation](https://redbaron.pycqa.org)
+* [Documentation](http://redbaron.readthedocs.io/en/latest/)
 * [Baron](https://github.com/PyCQA/baron)
 * IRC chat: [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron)
