@@ -16,8 +16,8 @@ from baron.render import nodes_rendering_order
 
 import redbaron
 
-from redbaron.utils import redbaron_classname_to_baron_type, \
-    baron_type_to_redbaron_classname, log, in_a_shell, indent, truncate
+from redbaron.utils import redbaron_classname_to_baron_type, baron_type_to_redbaron_classname, log, in_a_shell, indent, \
+    truncate
 from redbaron.private_config import runned_from_ipython
 from redbaron.syntax_highlight import help_highlight, python_highlight, python_html_highlight
 
@@ -123,8 +123,8 @@ class Path(object):
 
         if isinstance(node, NodeList):
             return next((key for (_, key, _) in parent._render() if
-                         getattr(parent, key, None) is node or
-                         getattr(getattr(parent, key, None), "node_list", None) is node), None)
+                         getattr(parent, key, None) is node or getattr(getattr(parent, key, None), "node_list",
+                                                                       None) is node), None)
 
         to_return = next((key for (_, key, _) in parent._render() if key == node.on_attribute), None)
         return to_return
@@ -253,7 +253,7 @@ class GenericNodesUtils(object):
         if not (isinstance(node, Node) and node.type == "endl"):
             yield node
         for kind, key, display in node._render():
-            if isinstance(display, basestring) and not getattr(node, display):
+            if isinstance(display, string_instance) and not getattr(node, display):
                 continue
             if kind == "constant":
                 yield node
@@ -285,8 +285,8 @@ class NodeList(UserList, GenericNodesUtils):
 
     @classmethod
     def from_fst(klass, node_list, parent=None, on_attribute=None):
-        return klass(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute),
-                         node_list), parent=parent, on_attribute=on_attribute)
+        return klass(map(lambda x: Node.from_fst(x, parent=parent, on_attribute=on_attribute), node_list),
+                     parent=parent, on_attribute=on_attribute)
 
     def find(self, identifier, *args, **kwargs):
         for i in self.data:
@@ -303,8 +303,7 @@ class NodeList(UserList, GenericNodesUtils):
         return self.find(key)
 
     def __setitem__(self, key, value):
-        self.data[key] = self._convert_input_to_node_object(value, parent=self.parent,
-                                                            on_attribute=self.on_attribute)
+        self.data[key] = self._convert_input_to_node_object(value, parent=self.parent, on_attribute=self.on_attribute)
 
     def find_all(self, identifier, *args, **kwargs):
         to_return = NodeList([])
@@ -360,8 +359,7 @@ class NodeList(UserList, GenericNodesUtils):
                 yield str(num).encode("Utf-8")
                 yield b"</td>"
                 yield b"<td>"
-                yield item._bytes_repr_html_() if hasattr(item, "_repr_html_") else \
-                    str(item).encode("Utf-8")
+                yield item._bytes_repr_html_() if hasattr(item, "_repr_html_") else str(item).encode("Utf-8")
                 yield b"</td>"
                 yield b"</tr>"
             yield b"</table>"
@@ -409,8 +407,7 @@ class NodeList(UserList, GenericNodesUtils):
 
     def filtered(self):
         return tuple([x for x in self.data if
-                      not isinstance(x, (redbaron.nodes.EndlNode, redbaron.nodes.CommaNode,
-                                         redbaron.nodes.DotNode))])
+                      not isinstance(x, (redbaron.nodes.EndlNode, redbaron.nodes.CommaNode, redbaron.nodes.DotNode))])
 
     def _generate_nodes_in_rendering_order(self):
         previous = None
@@ -432,8 +429,7 @@ class NodeList(UserList, GenericNodesUtils):
         done = set()
         for i in self.data:
             for node in i._generate_nodes_in_rendering_order():
-                if node.type != "endl" and previous is not None and \
-                                previous.type == "endl" and previous not in done:
+                if node.type != "endl" and previous is not None and previous.type == "endl" and previous not in done:
                     previous.indent += number_of_spaces * " "
                     done.add(previous)
                 previous = node
@@ -443,8 +439,7 @@ class NodeList(UserList, GenericNodesUtils):
         done = set()
         for i in self.data:
             for node in i._generate_nodes_in_rendering_order():
-                if node.type != "endl" and previous is not None and \
-                                previous.type == "endl" and previous not in done:
+                if node.type != "endl" and previous is not None and previous.type == "endl" and previous not in done:
                     previous.indent = previous.indent[number_of_spaces:]
                     done.add(previous)
                 previous = node
@@ -677,9 +672,7 @@ class Node(GenericNodesUtils):
                     return found
 
             elif kind == "list":
-                attr = getattr(self, key).node_list if isinstance(getattr(self, key),
-                                                                  ProxyList) \
-                                                    else getattr(self, key)
+                attr = getattr(self, key).node_list if isinstance(getattr(self, key), ProxyList) else getattr(self, key)
                 for i in attr:
                     found = i.find(identifier, *args, **kwargs)
                     if found is not None:
@@ -692,8 +685,7 @@ class Node(GenericNodesUtils):
         if key.endswith("_") and key[:-1] in self._dict_keys + self._list_keys + self._str_keys:
             return getattr(self, key[:-1])
 
-        if key != "value" and hasattr(self, "value") and isinstance(self.value, ProxyList) \
-                and hasattr(self.value, key):
+        if key != "value" and hasattr(self, "value") and isinstance(self.value, ProxyList) and hasattr(self.value, key):
             return getattr(self.value, key)
 
         if key not in redbaron.ALL_IDENTIFIERS:
@@ -765,8 +757,7 @@ class Node(GenericNodesUtils):
             return to_return
 
         for kind, key, _ in filter(
-                lambda x: x[0] in ("list", "formatting") or
-                        (x[0] == "key" and isinstance(getattr(self, x[1]), Node)),
+                lambda x: x[0] in ("list", "formatting") or (x[0] == "key" and isinstance(getattr(self, x[1]), Node)),
                 self._render()):
             if kind == "key":
                 i = getattr(self, key)
@@ -801,7 +792,9 @@ class Node(GenericNodesUtils):
         return None
 
     def _node_match_query(self, node, identifier, *args, **kwargs):
-        if not self._attribute_match_query(node.generate_identifiers(), identifier.lower() if isinstance(identifier, string_instance) and not identifier.startswith("re:") else identifier):
+        if not self._attribute_match_query(node.generate_identifiers(), identifier.lower() if isinstance(identifier,
+                                                                                                         string_instance) and not identifier.startswith(
+            "re:") else identifier):
             return False
 
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys
@@ -1026,8 +1019,7 @@ class Node(GenericNodesUtils):
         return nodes_rendering_order[self.type]
 
     def replace(self, new_node):
-        new_node = self._convert_input_to_node_object(new_node, parent=None,
-                                                      on_attribute=None, generic=True)
+        new_node = self._convert_input_to_node_object(new_node, parent=None, on_attribute=None, generic=True)
         self.__class__ = new_node.__class__  # YOLO
         self.__init__(new_node.fst(), parent=self.parent, on_attribute=self.on_attribute)
 
@@ -1100,8 +1092,7 @@ class Node(GenericNodesUtils):
         self.get_indentation_node().indent += number_of_spaces * " "
 
     def decrease_indentation(self, number_of_spaces):
-        self.get_indentation_node().indent = \
-            self.get_indentation_node().indent[:-len(number_of_spaces * " ")]
+        self.get_indentation_node().indent = self.get_indentation_node().indent[:-len(number_of_spaces * " ")]
 
     def insert_before(self, value, offset=0):
         self.parent.insert(self.index_on_parent - offset, value)
@@ -1146,8 +1137,7 @@ class CodeBlockNode(Node):
         endl_base_node = Node.from_fst({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'},
                                        on_attribute=on_attribute, parent=parent)
 
-        if (self.on_attribute == "root" and self.next) or \
-                (not self.next and self.parent and self.parent.next):
+        if (self.on_attribute == "root" and self.next) or (not self.next and self.parent and self.parent.next):
             # I need to finish with 3 endl nodes
             if not all(map(lambda x: x.type == "endl", result[-1:])):
                 result.append(endl_base_node.copy())
@@ -1177,8 +1167,7 @@ class CodeBlockNode(Node):
             setattr(self, "value", LineProxyList(self.value, on_attribute="value"))
 
         elif key == "decorators" and not isinstance(self.decorators, LineProxyList):
-            setattr(self, "decorators", DecoratorsLineProxyList(self.decorators,
-                                                                on_attribute="decorators"))
+            setattr(self, "decorators", DecoratorsLineProxyList(self.decorators, on_attribute="decorators"))
 
 
 class IfElseBlockSiblingNode(CodeBlockNode):
@@ -1396,9 +1385,8 @@ class ProxyList(object):
         self.insert(len(self), value)
 
     def extend(self, values):
-        self.data.extend(map(lambda x: [x, None],
-                             self._convert_input_to_node_object_list(values, parent=self.node_list,
-                                                                            on_attribute=self.on_attribute)))
+        self.data.extend(map(lambda x: [x, None], self._convert_input_to_node_object_list(values, parent=self.node_list,
+                                                                                          on_attribute=self.on_attribute)))
         self._synchronise()
 
     def pop(self, index=None):
@@ -1445,9 +1433,8 @@ class ProxyList(object):
         self._synchronise()
 
     def __setslice__(self, i, j, value):
-        self.data[i:j] = map(lambda x: [x, None],
-                             self._convert_input_to_node_object_list(value, parent=self.node_list,
-                                                                        on_attribute=self.on_attribute))
+        self.data[i:j] = map(lambda x: [x, None], self._convert_input_to_node_object_list(value, parent=self.node_list,
+                                                                                          on_attribute=self.on_attribute))
         self._synchronise()
 
     def __delslice__(self, i, j):
