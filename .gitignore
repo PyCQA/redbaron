@@ -86,3 +86,6 @@ tramp
 
 # AUCTeX auto folder
 /auto/
+
+# PyCharm files
+.idea/*
