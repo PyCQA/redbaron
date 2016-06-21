@@ -61,9 +61,9 @@ class NodeVisitor(Node):
         for data, value in self.find_all(node):
             if isinstance(value, list):
                 for item in value:
-                    if isinstance(item, Node):
+                    if isinstance(item, (Node, NodeList)):
                         self.visit(item)
-            elif isinstance(value, Node):
+            elif isinstance(value, (Node, NodeList)):
                 self.visit(value)
 
 
@@ -74,4 +74,24 @@ class NodeTransformer(NodeVisitor):
     """
 
     def generic_visit(self, node):
-        pass
+        for field, old_value in self.find_all(node):
+            old_value = getattr(node, field, None)
+            if isinstance(old_value, list):
+                new_values = []
+                for value in old_value:
+                    if isinstance(value, (Node, NodeList)):
+                        value = self.visit(value)
+                        if value is None:
+                            continue
+                        elif not isinstance(value, (Node, NodeList)):
+                            new_values.extend(value)
+                            continue
+                    new_values.append(value)
+                old_value[:] = new_values
+            elif isinstance(old_value, (Node, NodeList)):
+                new_node = self.visit(old_value)
+                if new_node is None:
+                    delattr(node, field)
+                else:
+                    setattr(node, field, new_node)
+        return node
