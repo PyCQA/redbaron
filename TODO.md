@@ -25,6 +25,10 @@ in addition of passing empty string, allow to pass None value on setattr
 this needs to be done in "_convert_input_to_node_object" and it's possible
 now since we have string type in nodes_rendering_order
 
+- implement tree visitor and transformer like in standard ast: https://docs.python.org/3/library/ast.html#ast.NodeTransformer
+- improve/create new insert method with inserting to specific position like find_by_position
+- implement control-flow graph, data-flow-graph and call-graph
+
 ### Find/Find\_All (comparison)
 
 Magic stuff like:
