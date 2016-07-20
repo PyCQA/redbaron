@@ -346,7 +346,6 @@ class NodeList(UserList, GenericNodesUtils):
             to_return += ("%-3s " % number) + "\n    ".join(value.__repr__().split("\n"))
             to_return += "\n"
         return to_return
-        return "%s" % [x.__repr__() for x in self.data]
 
     def _bytes_repr_html_(self):
         def __repr_html(self):
