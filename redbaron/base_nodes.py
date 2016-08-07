@@ -212,6 +212,16 @@ class GenericNodesUtils(object):
         else:
             return None
 
+    def at(self, line_no):
+        if line_no > self.absolute_bounding_box.bottom_right.line or \
+                        line_no < self.absolute_bounding_box.top_left.line:
+            raise IndexError()
+        path = Path.from_baron_path(self, baron.path.position_to_path(self.fst(), (line_no, 1)))
+        node = path.node if path else None
+        if node is not None and hasattr(node, 'type') and node.type == 'endl':
+            return node.next
+        return node
+
     def _string_to_node_list(self, string, parent, on_attribute):
         return NodeList.from_fst(baron.parse(string), parent=parent, on_attribute=on_attribute)
 
@@ -885,6 +895,7 @@ class Node(GenericNodesUtils):
             'has_render_key',
             'get_absolute_bounding_box_of_attribute',
             'find_by_position',
+            'at',
             'parse_code_block',
             'parse_decorators',
             'from_fst',

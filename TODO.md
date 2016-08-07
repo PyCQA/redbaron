@@ -2,7 +2,6 @@
 
 ### Important
 
-- raise an exception on .find/.find_all if the identifier given doesn't exists
 - .help() seems really slow on big piece of code (for example RedBaron("baron/grammator.py").read())("dict")[0].help() is suuuuuuuuuuuuuuuuper slow)
 - .at() return the first item starting at line X
 - .rename() (name -> value, def/class -> name)
