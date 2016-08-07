@@ -385,14 +385,12 @@ class NodeList(UserList, GenericNodesUtils):
         # trick to return an empty generator
         # I wonder if I should not raise instead :/
         return
-        yield
 
     def previous_generator(self):
         # similary, NodeList will never have next items
         # trick to return an empty generator
         # I wonder if I should not raise instead :/
         return
-        yield
 
     def apply(self, function):
         [function(x) for x in self.data]
