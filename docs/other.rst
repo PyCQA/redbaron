@@ -476,6 +476,17 @@ You can find which node is located at a given line and column:
     red.find_by_position((1, 5))
     red.find_by_position((1, 6)) # '(' is not a redbaron node
 
+.at()
+-------------------
+
+Returns first node at specific line
+
+.. ipython:: python
+
+    red = RedBaron("def a():\n return 42")
+    red.at(1) # Gives DefNode
+    red.at(2) # Gives ReturnNode
+
 .. _Node.from_fst:
 
 Node.from_fst()
