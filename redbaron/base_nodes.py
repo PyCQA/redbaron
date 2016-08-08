@@ -207,22 +207,15 @@ class GenericNodesUtils(object):
 
     def find_by_position(self, position):
         path = Path.from_baron_path(self, baron.path.position_to_path(self.fst(), position))
-        if path:
-            return path.node
-        else:
-            return None
+        return path.node if path else None
 
     def at(self, line_no):
         if not self.absolute_bounding_box.top_left.line <= \
                 line_no <= self.absolute_bounding_box.bottom_right.line:
             raise IndexError("Line number {0} is outside of the file".format(line_no))
-        path = Path.from_baron_path(self, baron.path.position_to_path(self.fst(), (line_no, 1)))
-        node = path.node if path else None
+        node = self.find_by_position((line_no, 1))
         if node is not None and hasattr(node, 'type') and node.type == 'endl':
-            if node.next:
-                return list(self._iter_in_rendering_order(node.next))[1]
-            elif node.next_recursive:
-                return list(self._iter_in_rendering_order(node.next_recursive))[1]
+            return list(self._iter_in_rendering_order(node.next_recursive))[1]
         return node
 
     def _string_to_node_list(self, string, parent, on_attribute):
