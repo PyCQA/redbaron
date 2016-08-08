@@ -213,15 +213,16 @@ class GenericNodesUtils(object):
             return None
 
     def at(self, line_no):
-        if line_no > self.absolute_bounding_box.bottom_right.line or \
-                        line_no < self.absolute_bounding_box.top_left.line:
+        if not self.absolute_bounding_box.top_left.line <= \
+                line_no <= self.absolute_bounding_box.bottom_right.line:
             raise IndexError("Line number {0} is outside of the file".format(line_no))
         path = Path.from_baron_path(self, baron.path.position_to_path(self.fst(), (line_no, 1)))
         node = path.node if path else None
         if node is not None and hasattr(node, 'type') and node.type == 'endl':
-            # I am not sure that it is the best solution from design point,
-            # but it is the first idea which is come to mind
-            return node.next_recursive
+            if node.next:
+                return list(self._iter_in_rendering_order(node.next))[1]
+            elif node.next_recursive:
+                return list(self._iter_in_rendering_order(node.next_recursive))[1]
         return node
 
     def _string_to_node_list(self, string, parent, on_attribute):
