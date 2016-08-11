@@ -949,6 +949,22 @@ def test_replace():
     assert red.dumps() == "caramba"
 
 
+def test_rename():
+    red = RedBaron('def foo(a):\n a = 5\n b = a')
+    red[0].rename('bar')
+    a = red.find_all('NameNode')[1]
+    a.rename('b')
+    red.find('DefArgumentNode').find('NameNode').rename('b')
+    red.find('NameNode', value='b').rename('q')
+    red.find_all('NameNode')[2].rename('q')
+    red.find_all('NameNode')[3].rename('b')
+    assert red.find('DefNode').name == 'bar'
+    assert red.find_all('NameNode')[0].value == 'q'
+    assert red.find_all('NameNode')[1].value == 'b'
+    assert red.find_all('NameNode')[2].value == 'q'
+    assert red.find_all('NameNode')[3].value == 'b'
+
+
 def test_insert_before():
     red = RedBaron("a = 1\nprint(pouet)\n")
     red.print_.insert_before("chocolat")

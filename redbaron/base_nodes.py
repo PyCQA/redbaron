@@ -879,6 +879,7 @@ class Node(GenericNodesUtils):
             'path',
             'find_by_path',
             'replace',
+            'rename',
             'edit',
             'increase_indentation',
             'decrease_indentation',
@@ -1019,6 +1020,14 @@ class Node(GenericNodesUtils):
         new_node = self._convert_input_to_node_object(new_node, parent=None, on_attribute=None, generic=True)
         self.__class__ = new_node.__class__  # YOLO
         self.__init__(new_node.fst(), parent=self.parent, on_attribute=self.on_attribute)
+
+    def rename(self, new_value):
+        if self.type in ('def', 'class'):
+            setattr(self, 'name', new_value)
+        elif self.type == 'name':
+            setattr(self, 'value', new_value)
+        else:
+            raise TypeError('Rename method does not support {0} type'.format(self.type))
 
     def edit(self, editor=None):
         if editor is None:
