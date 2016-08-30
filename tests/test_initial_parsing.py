@@ -920,6 +920,13 @@ def test_default_test_value_find_all():
     red = RedBaron("badger\nmushroom\nsnake")
     assert red("name", "snake") == red("name", value="snake")
 
+def test_find_comment_node():
+    red = RedBaron("def f():\n    #a\n    pass\n#b")
+    assert red.find('comment').value == '#a'
+
+def test_find_all_comment_nodes():
+    red = RedBaron("def f():\n    #a\n    pass\n#b")
+    assert [x.value for x in red.find_all('comment')] == ['#a', '#b']
 
 def test_default_test_value_find_def():
     red = RedBaron("def a(): pass\ndef b(): pass")
