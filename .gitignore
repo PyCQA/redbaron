@@ -88,4 +88,4 @@ tramp
 /auto/
 
 # PyCharm files
-.idea/*.*
+.idea/

@@ -118,7 +118,14 @@ class Path(object):
             parent = parent.node_list
 
         if isinstance(parent, NodeList):
-            pos = parent.index(node.node_list if isinstance(node, ProxyList) else node)
+            if isinstance(node, ProxyList):
+                item = node.node_list
+            else:
+                item = node
+                # TODO(alekum) Error occurs here, because the tree is not synchronized internally.
+                # And the node which is inserted is not contained in the node_list of the target tree.
+                # But it's contained in data section. =/
+            pos = parent.index(item)
             return pos
 
         if isinstance(node, NodeList):
@@ -973,7 +980,7 @@ class Node(GenericNodesUtils):
 
         return "<%s path=%s, \"%s\" %s, on %s %s>" % (
             self.__class__.__name__,
-            self.path().to_baron_path(),
+            self.path().to_baron_path(), #TODO(alekum) this call is being recursive
             truncate(self.dumps().replace("\n", "\\n"), 20),
             id(self),
             self.parent.__class__.__name__,
@@ -1640,9 +1647,9 @@ class LineProxyList(ProxyList):
             {"type": "endl", "formatting": [], "value": "\n", "indent": "    "})
 
     def _synchronise(self):
-        log("Before synchronise, self.data = '%s' + '%s'", self.first_blank_lines, self.data)
+        log("Before synchronise, self.data = '%s' + '%s'", self.first_blank_lines, self.node_list)
         super(LineProxyList, self)._synchronise()
-        log("After synchronise, self.data = '%s' + '%s'", self.first_blank_lines, self.data)
+        log("After synchronise, self.data = '%s' + '%s'", self.first_blank_lines, self.node_list)
 
     def _build_inner_list(self, node_list):
         result = []
