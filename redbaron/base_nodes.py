@@ -122,9 +122,6 @@ class Path(object):
                 item = node.node_list
             else:
                 item = node
-                # TODO(alekum) Error occurs here, because the tree is not synchronized internally.
-                # And the node which is inserted is not contained in the node_list of the target tree.
-                # But it's contained in data section. =/
             pos = parent.index(item)
             return pos
 
@@ -980,7 +977,7 @@ class Node(GenericNodesUtils):
 
         return "<%s path=%s, \"%s\" %s, on %s %s>" % (
             self.__class__.__name__,
-            self.path().to_baron_path(), #TODO(alekum) this call is being recursive
+            self.path().to_baron_path(),
             truncate(self.dumps().replace("\n", "\\n"), 20),
             id(self),
             self.parent.__class__.__name__,
