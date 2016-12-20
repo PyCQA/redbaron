@@ -632,7 +632,10 @@ class Node(GenericNodesUtils):
         if self.on_attribute is "root":
             in_list = self.parent
         elif self.on_attribute is not None:
-            in_list = getattr(self.parent, self.on_attribute)
+            if isinstance(self.parent, NodeList):
+                in_list = getattr(self.parent.parent, self.on_attribute)
+            else:
+                in_list = getattr(self.parent, self.on_attribute)
         else:
             return None
 
