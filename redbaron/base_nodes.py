@@ -636,7 +636,10 @@ class Node(GenericNodesUtils):
         if self.on_attribute is "root":
             in_list = self.parent
         elif self.on_attribute is not None:
-            in_list = getattr(self.parent, self.on_attribute)
+            if isinstance(self.parent, NodeList):
+                in_list = getattr(self.parent.parent, self.on_attribute)
+            else:
+                in_list = getattr(self.parent, self.on_attribute)
         else:
             return None
 
@@ -869,35 +872,35 @@ class Node(GenericNodesUtils):
     def _get_helpers(self):
         not_helpers = set([
             'copy',
-            'dumps',
-            'find',
-            'findAll',
-            'find_all',
-            'fst',
-            'help',
-            'next_generator',
-            'previous_generator',
-            'get_indentation_node',
-            'indentation_node_is_direct',
-            'parent_find',
-            'path',
-            'find_by_path',
-            'replace',
-            'edit',
-            'increase_indentation',
             'decrease_indentation',
-            'has_render_key',
-            'get_absolute_bounding_box_of_attribute',
+            'dumps',
+            'edit',
+            'find',
+            'find_all',
+            'findAll',
+            'find_by_path',
             'find_by_position',
-            'parse_code_block',
-            'parse_decorators',
             'from_fst',
+            'fst',
+            'generate_identifiers',
+            'get_absolute_bounding_box_of_attribute',
+            'get_indentation_node',
+            'has_render_key',
+            'help',
+            'increase_indentation',
+            'indentation_node_is_direct',
             'index_on_parent',
             'index_on_parent_raw',
-            'insert_before',
             'insert_after',
+            'insert_before',
+            'next_generator',
+            'parent_find',
+            'parse_code_block',
+            'parse_decorators',
+            'path',
+            'previous_generator',
+            'replace',
             'to_python',
-            'generate_identifiers',
         ])
         return [x for x in dir(self) if
                 not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
