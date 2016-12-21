@@ -89,3 +89,4 @@ tramp
 
 # PyCharm files
 .idea/*.*
+.idea/
