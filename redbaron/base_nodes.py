@@ -118,7 +118,11 @@ class Path(object):
             parent = parent.node_list
 
         if isinstance(parent, NodeList):
-            pos = parent.index(node.node_list if isinstance(node, ProxyList) else node)
+            if isinstance(node, ProxyList):
+                item = node.node_list
+            else:
+                item = node
+            pos = parent.index(item)
             return pos
 
         if isinstance(node, NodeList):
@@ -1643,9 +1647,9 @@ class LineProxyList(ProxyList):
             {"type": "endl", "formatting": [], "value": "\n", "indent": "    "})
 
     def _synchronise(self):
-        log("Before synchronise, self.data = '%s' + '%s'", self.first_blank_lines, self.data)
+        log("Before synchronise, self.data = '%s' + '%s'", self.first_blank_lines, self.node_list)
         super(LineProxyList, self)._synchronise()
-        log("After synchronise, self.data = '%s' + '%s'", self.first_blank_lines, self.data)
+        log("After synchronise, self.data = '%s' + '%s'", self.first_blank_lines, self.node_list)
 
     def _build_inner_list(self, node_list):
         result = []
