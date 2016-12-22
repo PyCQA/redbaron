@@ -8,8 +8,8 @@ import pytest
 import redbaron
 from redbaron import RedBaron
 
-redbaron.DEBUG = True
-
+# (alekum): switch off debug mode, to reproduce a bug with __repr__ implicit recursion
+redbaron.DEBUG = False
 
 def assert_with_indent(left, right):
     # Replace is not strictly necessary but shows indents
