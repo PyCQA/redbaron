@@ -211,10 +211,27 @@ class GenericNodesUtils(object):
 
     def find_by_position(self, position):
         path = Path.from_baron_path(self, baron.path.position_to_path(self.fst(), position))
-        if path:
-            return path.node
-        else:
-            return None
+        return path.node if path else None
+
+    def at(self, line_no):
+        if not 0 <= line_no <= self.absolute_bounding_box.bottom_right.line:
+            raise IndexError("Line number {0} is outside of the file".format(line_no))
+        node = self.find_by_position((line_no, 1))
+        if node.absolute_bounding_box.top_left.line == line_no:
+            if hasattr(node.parent, 'absolute_bounding_box') and \
+                            node.parent.absolute_bounding_box.top_left.line == line_no and \
+                    node.parent.parent is not None:
+                return node.parent
+            return node
+        elif node is not None and hasattr(node, 'next_rendered'):
+            return list(self._iter_in_rendering_order(node.next_rendered))[0]
+        elif node.parent is None:
+            node = node.data[0][0]
+            while True:
+                if node.absolute_bounding_box.top_left.line == line_no:
+                    return node
+                node = node.next_rendered
+        return node
 
     def _string_to_node_list(self, string, parent, on_attribute):
         return NodeList.from_fst(baron.parse(string), parent=parent, on_attribute=on_attribute)
@@ -880,6 +897,7 @@ class Node(GenericNodesUtils):
             'findAll',
             'find_by_path',
             'find_by_position',
+            'at',
             'from_fst',
             'fst',
             'generate_identifiers',
