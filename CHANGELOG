@@ -5,6 +5,7 @@ Changelog
 -----------------
 
 - fix help() after append
+- fix _synchronise() for base_nodes to avoid recursion in __repr__ function if code run not in the shell
 - add at method
 
 0.6.2 (2016-10-03)
