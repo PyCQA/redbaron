@@ -995,18 +995,32 @@ def test_replace():
 
 
 def test_rename():
-    red = RedBaron('def foo(a):\n a = 5\n b = a')
-    red[0].rename('bar')
-    red.find('NameNode', value='b').rename('q')
-    a = red.find_all('NameNode')[1]
+    red_def = RedBaron('def foo(a):\n a = 5\n b = a')
+    red_def[0].rename('bar')
+    a = red_def.find_all('NameNode')[1]
     a.rename('b')
-    red.find('DefArgumentNode').find('NameNode').rename('b')
-    red.find_all('NameNode')[3].rename('b')
-    assert red.find('DefNode').name == 'bar'
-    assert red.find_all('NameNode')[2].value == 'q'
-    assert red.find_all('NameNode')[0].value == 'b'
-    assert red.find_all('NameNode')[1].value == 'b'
-    assert red.find_all('NameNode')[3].value == 'b'
+    red_def.find('DefArgumentNode').find('NameNode').rename('b')
+    red_def.find('NameNode', value='b').rename('q')
+    red_def.find_all('NameNode')[2].rename('q')
+    red_def.find_all('NameNode')[3].rename('b')
+
+    red_class = RedBaron('class Baz(q):\n h = 10\n m = 42')
+    red_class[0].rename('baz')
+    h = red_class.find_all('NameNode')[1]
+    h.rename('v')
+    red_class.find_all('NameNode')[0].rename('z')
+    red_class.find('NameNode', value='m').rename('p')
+
+    assert red_def.find('DefNode').name == 'bar'
+    assert red_def.find_all('NameNode')[0].value == 'q'
+    assert red_def.find_all('NameNode')[1].value == 'b'
+    assert red_def.find_all('NameNode')[2].value == 'q'
+    assert red_def.find_all('NameNode')[3].value == 'b'
+
+    assert red_class.find('ClassNode').name == 'baz'
+    assert red_class.find_all('NameNode')[0].value == 'z'
+    assert red_class.find_all('NameNode')[1].value == 'v'
+    assert red_class.find_all('NameNode')[2].value == 'p'
 
 
 def test_insert_before():

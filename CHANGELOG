@@ -7,13 +7,13 @@ Changelog
 - fix help() after append
 - fix _synchronise() for base_nodes to avoid recursion in __repr__ function if code run not in the shell
 - add at method
+- add rename method
 
 0.6.2 (2016-10-03)
 ----------------
 
 - fix some old call to log() weren't lazy, that could cause a crash in some situations by an infinite recursive call and also reduce performances
 - fix in _iter_in_rendering_order method to avoid bug in edge cases (issue #107)
-- add rename method for NameNode and def/class
 
 0.6.1 (2016-03-28)
 ----------------
