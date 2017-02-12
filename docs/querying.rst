@@ -128,7 +128,7 @@ compiled regex:
     red.find(re.compile("^n"))
     red.find_all(re.compile("^n"))
 
-Having to compile regex is boring, so you can use this shorthand syntaxe
+Having to compile regex is boring, so you can use this shorthand syntax
 instead (prefixing a string with "re:"):
 
 .. ipython:: python
@@ -179,7 +179,7 @@ the member of the list/tuple:
 \*args and default value
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can also pass as namy callable as args (without giving it a key) as you
+You can also pass as many callable as args (without giving it a key) as you
 want, those callables will receive the node itself as first argument (and must
 return a value that will be tested as a boolable):
 

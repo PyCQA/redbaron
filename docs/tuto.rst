@@ -297,7 +297,7 @@ represents a whole valid python program (so for example: :file:`.replace("*args,
 
 This is generally very useful when working on queries. For example (a real life
 example), here is the code to replace every :file:`print stuff` (prints
-statement of **one** argument, an example with multiple arguments is left as an exercice to the
+statement of **one** argument, an example with multiple arguments is left as an exercise to the
 reader) with :file:`logger.debug(stuff)`:
 
 ::
@@ -397,7 +397,7 @@ Misc things
 A short list of useful features of RedBaron:
 
 * :file:`.map`, a method of RedBaron lists that takes a callable (like a lambda or a function), apply it to every one of its members and returns a RedBaron list containing the result of the call
-* :file:`.apply` same than :file:`.map` except it returns a RedBaron list of the nodes on which the callable has been applied (i.e. the members before the call instead of the members after the call) (for simplicity we uses the :file:`int` buildin function here, you might want to look at :file:`to_python` in the futur for a more generic convertion operation)
+* :file:`.apply` same than :file:`.map` except it returns a RedBaron list of the nodes on which the callable has been applied (i.e. the members before the call instead of the members after the call) (for simplicity we uses the :file:`int` builtin function here, you might want to look at :file:`to_python` in the future for a more generic conversion operation)
 
 .. ipython:: python
 

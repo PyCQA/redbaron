@@ -150,7 +150,7 @@ have been introduced:
     red.try_.next_intuitive.next_intuitive
 
 This also applies to :file:`IfNode`, :file:`ElifNode`, :file:`ElseNode`,
-:file:`ForNode` and :file:`WhileNode` (both of the last one can have a else
+:file:`ForNode` and :file:`WhileNode` (both of the last one can have an else
 statement). This also works coming from nodes outsides of those previous nodes.
 
 For :file:`IfNode`, :file:`ElifNode` and :file:`ElseNode` **inside** an
@@ -170,13 +170,13 @@ For :file:`IfNode`, :file:`ElifNode` and :file:`ElseNode` **inside** an
 
 .. warning::
 
-    There is a subtility: :file:`IfelseblockNode` is **unaffected** by this
+    There is a subtlety: :file:`IfelseblockNode` is **unaffected** by this
     behavior: you have to use :file:`next_intuitive` or
     :file:`previous_intuitive` on :file:`IfNode`, :file:`ElifNode` and
     :file:`ElseNode` **inside** IfelseblockNode.
 
     But, if you do a :file:`next_intuitive` or :file:`previous_intuitive` or a
-    node arround :file:`IfelseblockNode` it will jump to the first or last node
+    node around :file:`IfelseblockNode` it will jump to the first or last node
     **inside** the :file:`IfelseblockNode`.
 
     See this example
@@ -275,7 +275,7 @@ node, space node or endl node).
     red[0].value.filtered()
 
 Note: the fact that it's a tuple that is returned will probably evolve in the
-futur into a node list proxy or something like that, I just don't have the time
+future into a node list proxy or something like that, I just don't have the time
 to do something better right now.
 
 .indentation
@@ -367,7 +367,7 @@ RedBaron provides a Path class that represent a path to a node.
 .map .filter .apply
 -------------------
 
-RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :file:`.apply` quite similar to python buildins (except for apply). The main difference is that they return a node list instance instead of a python buildin list.
+RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :file:`.apply` quite similar to python builtins (except for apply). The main difference is that they return a node list instance instead of a python buildin list.
 
 * :file:`.map` takes a callable (like a lambda or a function) that receive a
   node as first argument, this callable is applied on every node of the node
@@ -425,7 +425,7 @@ editor. The result is parsed and replace the code of the current node.
     # red.return_.edit()
 
 By default, the editor is taken from the variable :file:`EDITOR` in the
-environements variables. If this variable is not present, nano is used. You can
+environment variables. If this variable is not present, nano is used. You can
 use a different editor this way: :file:`node.edit(editor="vim")`.
 
 .absolute_bounding_box
@@ -456,7 +456,7 @@ argument since the left parenthesis is not a redbaron Node.
 
 Every node has the :file:`bounding_box` property which holds the
 top-left and bottom-right position of the node. Compared to the
-:file:`absolute_bounding_box` property, it assumes the the node is the
+:file:`absolute_bounding_box` property, it assumes the node is the
 root node so the top-left position is always :file:`(1, 1)`.
 
 .. ipython:: python
@@ -492,7 +492,7 @@ Returns first node at specific line
 Node.from_fst()
 ---------------
 
-:file:`Node.from_fst()` is an helper class method that takes a FST node and return a
+:file:`Node.from_fst()` is a helper class method that takes an FST node and return a
 RedBaron node instance. Except if you need to go down at a low level or that
 RedBaron doesn't provide the helper you need, you shouldn't use it.
 
@@ -516,8 +516,8 @@ parameters.
 NodeList.from_fst()
 -------------------
 
-Similarly to :file:`Node.from_fst()`, :file:`NodeList.from_fst()` is an helper
-class method that takes a FST node **list** and return a RedBaron node **list**
+Similarly to :file:`Node.from_fst()`, :file:`NodeList.from_fst()` is a helper
+class method that takes an FST node **list** and return a RedBaron node **list**
 instance. Similarly, you probably don't need to go so low level.
 
 

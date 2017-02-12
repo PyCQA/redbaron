@@ -5,10 +5,10 @@ Introduction
 ------------
 
 RedBaron is a python library and tool powerful enough to be used into IPython
-solely that intent to make the process of **writting code that modify source
+solely that intent to make the process of **writing code that modify source
 code** as easy and as simple as possible. That include writing custom
 refactoring, generic refactoring, tools, IDE or directly modifying you source
-code into IPython with an higher and more powerful abstraction than the
+code into IPython with a higher and more powerful abstraction than the
 advanced texts modification tools that you find in advanced text editors and
 IDE.
 
@@ -75,7 +75,7 @@ Though to be used in IPython directly:
 .. ipython:: python
 
     red  # direct feedback like BeautifulSoup, "0" here is the index of the node in our source code
-    red.help()  # helper function that discribe nodes content so you don't have to read the doc
+    red.help()  # helper function that describe nodes content so you don't have to read the doc
 
 
 Easy nodes modifications, you already know how to code in python, so pass

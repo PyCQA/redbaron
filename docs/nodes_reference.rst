@@ -205,7 +205,7 @@ The node represents a binary number value.
 BinaryOperatorNode
 ==================
 
-The node represents a binary operator (an operator (e.g: :file:`+` :file:`-` :file:`/`..) applied to 2 values) with its operands. For e.g.: :file:`1 + 1`.
+The node represents a binary operator (an operator (e.g.: :file:`+` :file:`-` :file:`/`..) applied to 2 values) with its operands. For e.g.: :file:`1 + 1`.
 
 .. ipython:: python
 
@@ -229,7 +229,7 @@ SetAttr
 BooleanOperatorNode
 ===================
 
-The node represents a boolean operator (an operator (e.g: :file:`and` :file:`or`) applied to 2 values) with its operands. For e.g.: :file:`x and y`.
+The node represents a boolean operator (an operator (e.g.: :file:`and` :file:`or`) applied to 2 values) with its operands. For e.g.: :file:`x and y`.
 
 .. ipython:: python
 
@@ -658,7 +658,7 @@ work as expected:
 ExecNode
 ========
 
-A node representing a exec statement.
+A node representing an exec statement.
 
 .. ipython:: python
 

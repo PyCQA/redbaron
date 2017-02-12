@@ -1,7 +1,7 @@
 Why is this important?
 ======================
 
-The usage of a FST might not be obvious at first sight so let's consider a
+The usage of an FST might not be obvious at first sight so let's consider a
 series of problems to illustrate it. Let's say that you want to write a program that will:
 
 * rename a variable in a source file... without clashing with things that are not a variable (example: stuff inside a string)
@@ -14,7 +14,7 @@ series of problems to illustrate it. Let's say that you want to write a program 
 * implement the class browser of smalltalk for python (the whole one where you can edit the code of the methods, not just showing code)
 
 It is very likely that you will end up with the awkward feeling of writing
-clumpsy weak code that is very likely to break because you didn't thought about
+clumsy weak code that is very likely to break because you didn't thought about
 all the annoying special cases and the formatting keeps bothering you. You may
 end up playing with `ast.py <http://docs.python.org/2/library/ast.html>`_ until
 you realize that it removes too much information to be suitable for those
@@ -36,7 +36,7 @@ complex task).
 Other usages
 ------------
 
-Having a FST (or at least a good abstraction build on it) also makes it easier
+Having an FST (or at least a good abstraction build on it) also makes it easier
 to do code generation and code analysis while those two operations are already
 quite feasible (using `ast.py <http://docs.python.org/2/library/ast.html>`_ and 
 a templating engine for example).
