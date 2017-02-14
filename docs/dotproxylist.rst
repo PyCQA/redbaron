@@ -17,7 +17,7 @@ DotProxyList usage examples
     red = RedBaron("a.b(c).d[e]")
 
 Please refer to `python list documentation
-<https://docs.python.org/2/tutorial/datastructures.html>`_ a if you want to
+<https://docs.python.org/2/tutorial/datastructures.html>`_ if you want to
 know the exact behavior or those methods (or `send a patch
 <https://github.com/PyCQA/redbaron>`_ to improve this documentation).
 

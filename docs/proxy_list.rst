@@ -32,7 +32,7 @@ a list, you need to take care of a lot of details:
 * also, what to do if the list is declared in an indented way (with :file:`"\\n    "` after every comma for example)?
 * etc...
 
-And that's only for acomma separated list of things: you also have the
+And that's only for a comma separated list of things: you also have the
 same formatting details to care about for dot separated lists
 (e.g. :file:`a.b.c().d[plop]`) and endl separated lists (a python code block,
 or you whole source file).
@@ -69,7 +69,7 @@ There are, for now, 4 kind of proxy lists:
 * :file:`DecoratorLineProxyList` which handles lists of decorators (they are nearly the
   same as :file:`LineProxyList`)
 
-**Be aware that the proxy list are setted on the attribute that is a list, not
+**Be aware that the proxy list are set on the attribute that is a list, not
 on the node holding the list. See the 'value' attribute access in the
 examples below.**
 
@@ -80,7 +80,7 @@ As said, proxy lists have the exact same API than python lists (at the exception
 that they don't implement the :file:`sort` and :file:`reverse` methods).
 Every method accepts as input the same inputs that you can use to modify a node
 in RedBaron. This means that you can pass a string containing source code,
-a FST or a RedBaron node.
+an FST or a RedBaron node.
 
 Here is a session demonstrating every method of a proxy list:
 

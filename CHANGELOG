@@ -35,7 +35,7 @@ will be for other releases, the workload is already big enough.
 
 - BIG improvement on the proxy list merging algorithm, it is not perfect yet (comments aren't handled yet) but it's really a big move forward
 - possible retrocompatibility breaking change: from now on the node.find("name") to node.name shortcut ONLY works with possible nodes identifiers. For example node.i_dont_exist_as_an_identifier will raise AttributeError
-- new helper method .to_python that wrap ast.literal_eval on compatibile nodes https://redbaron.readthedocs.io/en/latest/other.html#to-python
+- new helper method .to_python that wrap ast.literal_eval on compatible nodes https://redbaron.readthedocs.io/en/latest/other.html#to-python
 - breaking: IntNode no longer return an int on .value but a .string instead, use .to_python to have an evaluated version
 - fix node.decrease_indentation (that was simply not working)
 - fix code_block_node.value was broken on node with no parent
@@ -49,7 +49,7 @@ will be for other releases, the workload is already big enough.
 - new helper methods: .next_recursive and .previous_recursive https://redbaron.readthedocs.io/en/latest/other.html
 - fix: doc is tested in CI now, it shouldn't break anymore
 - more rendering test for python3, it shouldn't break anymore
-- pygments is now an optional dependancy, "pip install redbaron" won't install it, "pip install redbaron[pygments"] will
+- pygments is now an optional dependency, "pip install redbaron" won't install it, "pip install redbaron[pygments"] will
 - new node.next_intuitive and node.previous_intuitive methods for situations where .next/previous doesn't behave the way the user expect it https://redbaron.readthedocs.io/en/latest/other.html#next-intuitive-previous-intuitive
 
 0.5.1 (2015-03-11)
@@ -69,7 +69,7 @@ will be for other releases, the workload is already big enough.
   behavior should be way more stable and never crash.
 - new helpers .names, .modules, .full_path_modules for from_import node https://redbaron.readthedocs.io/en/latest/other.html#index-on-parent-raw
 - add a node.index_on_parent_raw and make node.index_on_parent works has it
-  should be intuitivly according to the proxy list api https://redbaron.readthedocs.io/en/latest/other.html#index-on-parent-raw
+  should be intuitively according to the proxy list api https://redbaron.readthedocs.io/en/latest/other.html#index-on-parent-raw
 - new helper methods: .insert_before and .insert_after https://redbaron.readthedocs.io/en/latest/other.html#insert-before-insert-after
 - fix: some white space bugs in the merging algorithm of line proxy
 - fix: on_attribute and parent were correctly set on newly added elements to

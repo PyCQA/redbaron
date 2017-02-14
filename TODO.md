@@ -55,7 +55,7 @@ It should be easy to wrap statement, expressions or various structure in other
 statements, like a statement with a block or an associative parenthesis or
 those kind of things.
 
-### Magic convertion on setattr
+### Magic conversion on setattr
 
 Comment: I'm not that much sure that I'll do those one, .replace already quite handle this job.
 
