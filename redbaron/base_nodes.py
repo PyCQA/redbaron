@@ -137,7 +137,7 @@ class Path(object):
 class LiteralyEvaluable(object):
     def to_python(self):
         try:
-            return ast.literal_eval(self.dumps())
+            return ast.literal_eval(self.dumps().strip())
         except ValueError as e:
             message = 'to_python method only works on numbers, strings, list, tuple, dict, boolean and None. (using ast.literal_eval). The piece of code that you are trying to convert contains an illegale value, for example, a variable.'
             e.message = message
