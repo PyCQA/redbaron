@@ -149,6 +149,11 @@ def test_to_python_name_node_None():
     assert red[0].to_python() == None
 
 
+def test_to_python_with_spacing():
+    red = RedBaron("{ 'pouet': d}")
+    assert red.find("string").to_python() == 'pouet'
+
+
 def test_to_python_name_node_otherwise_raise():
     red = RedBaron("foo")
     try:
