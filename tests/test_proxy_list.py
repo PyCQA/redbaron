@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding:Utf-8 -*-
 
 """ Tests the rendering feature """
 
@@ -847,7 +846,8 @@ def test_regression_help_proxy_list():
     red = RedBaron("(1, 2)")
     red[0].value.node_list.help()
 
-
+# Many of these tests have test code using 3 spaces for indenting to make sure
+# we're not relying on a hard-coded assumption of 4 spaces somewhere.
 def test_comma_proxy_list_indented_len_not_empty():
     red = RedBaron("[\n    1,\n    2,\n    3,\n]")
     comma_proxy_list = red[0].value
@@ -877,25 +877,25 @@ def test_comma_proxy_list_indented_detect_style():
 
 
 def test_comma_proxy_list_indented_insert_2_at_top():
-    red = RedBaron("[\n    1,\n]")
+    red = RedBaron("[\n   1,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.insert(0, "2")
-    assert red.dumps() == "[\n    2,\n    1,\n]"
+    assert red.dumps() == "[\n   2,\n   1,\n]"
 
 
 def test_comma_proxy_list_indented_insert_2():
-    red = RedBaron("[\n    1,\n]")
+    red = RedBaron("[\n   1,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.insert(1, "2")
     assert comma_proxy_list.style == "indented"
-    assert red.dumps() == "[\n    1,\n    2,\n]"
+    assert red.dumps() == "[\n   1,\n   2,\n]"
 
 
 def test_comma_proxy_list_indented_insert_2_middle():
-    red = RedBaron("[\n    1,\n    3,\n]")
+    red = RedBaron("[\n   1,\n   3,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.insert(1, "2")
-    assert red.dumps() == "[\n    1,\n    2,\n    3,\n]"
+    assert red.dumps() == "[\n   1,\n   2,\n   3,\n]"
 
 
 # XXX need to rethink this behavior
@@ -908,77 +908,77 @@ def test_comma_proxy_list_indented_insert_2_middle():
 
 
 def test_comma_proxy_list_indented_append_2():
-    red = RedBaron("[\n    1,\n]")
+    red = RedBaron("[\n   1,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.append("2")
-    assert red.dumps() == "[\n    1,\n    2,\n]"
+    assert red.dumps() == "[\n   1,\n   2,\n]"
 
 
 def test_comma_proxy_list_indented_pop():
-    red = RedBaron("[\n    1,\n]")
+    red = RedBaron("[\n   1,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.pop(0)
     assert red.dumps() == "[]"
 
 
 def test_comma_proxy_list_indented_pop_2_at_top():
-    red = RedBaron("[\n    2,\n    1,\n]")
+    red = RedBaron("[\n   2,\n   1,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.pop(0)
-    assert red.dumps() == "[\n    1,\n]"
+    assert red.dumps() == "[\n   1,\n]"
 
 
 def test_comma_proxy_list_indented_pop_2():
-    red = RedBaron("[\n    1,\n    2,\n]")
+    red = RedBaron("[\n   1,\n   2,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.pop(1)
-    assert red.dumps() == "[\n    1,\n]"
+    assert red.dumps() == "[\n   1,\n]"
 
 
 def test_comma_proxy_list_indented_pop_2_middle():
-    red = RedBaron("[\n    1,\n    2,\n    3,\n]")
+    red = RedBaron("[\n   1,\n   2,\n   3,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.pop(1)
-    assert red.dumps() == "[\n    1,\n    3,\n]"
+    assert red.dumps() == "[\n   1,\n   3,\n]"
 
 
 def test_comma_proxy_list_indented_pop_no_index():
-    red = RedBaron("[\n    1,\n    2,\n    3,\n]")
+    red = RedBaron("[\n   1,\n   2,\n   3,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.pop()
-    assert red.dumps() == "[\n    1,\n    2,\n]"
+    assert red.dumps() == "[\n   1,\n   2,\n]"
 
 
 def test_comma_proxy_list_indented_del():
-    red = RedBaron("[\n    1,\n]")
+    red = RedBaron("[\n   1,\n]")
     comma_proxy_list = red[0].value
     del comma_proxy_list[0]
     assert red.dumps() == "[]"
 
 
 def test_comma_proxy_list_indented_del_2_at_top():
-    red = RedBaron("[\n    2,\n    1,\n]")
+    red = RedBaron("[\n   2,\n   1,\n]")
     comma_proxy_list = red[0].value
     del comma_proxy_list[0]
-    assert red.dumps() == "[\n    1,\n]"
+    assert red.dumps() == "[\n   1,\n]"
 
 
 def test_comma_proxy_list_indented_remove():
-    red = RedBaron("[\n    1,\n]")
+    red = RedBaron("[\n   1,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.remove(comma_proxy_list[0])
     assert red.dumps() == "[]"
 
 
 def test_comma_proxy_list_indented_remove_2_at_top():
-    red = RedBaron("[\n    2,\n    1,\n]")
+    red = RedBaron("[\n   2,\n   1,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list.remove(comma_proxy_list[0])
-    assert red.dumps() == "[\n    1,\n]"
+    assert red.dumps() == "[\n   1,\n]"
 
 
 def test_comma_proxy_list_indented_set_item():
-    red = RedBaron("[\n    1,\n]")
+    red = RedBaron("[\n   1,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list[0] = "42"
     assert comma_proxy_list[0].type == "int"
@@ -986,27 +986,27 @@ def test_comma_proxy_list_indented_set_item():
     comma_proxy_list[0] = "plop"
     assert comma_proxy_list[0].type == "name"
     assert comma_proxy_list[0].value == "plop"
-    assert red.dumps() == "[\n    plop,\n]"
+    assert red.dumps() == "[\n   plop,\n]"
 
 
 def test_comma_proxy_list_indented_set_slice():
-    red = RedBaron("[\n    1,\n    2,\n    3,\n]")
+    red = RedBaron("[\n   1,\n   2,\n   3,\n]")
     comma_proxy_list = red[0].value
     comma_proxy_list[1:2] = ["42", "31", "23"]
-    assert red.dumps() == "[\n    1,\n    42,\n    31,\n    23,\n    3,\n]"
+    assert red.dumps() == "[\n   1,\n   42,\n   31,\n   23,\n   3,\n]"
 
 
 def test_comma_proxy_list_indented_delslice():
-    red = RedBaron("[\n    1,\n    2,\n    3,\n    4,\n    5,\n    6,\n]")
+    red = RedBaron("[\n   1,\n   2,\n   3,\n   4,\n   5,\n   6,\n]")
     comma_proxy_list = red[0].value
     del comma_proxy_list[1:4]
-    assert red.dumps() == "[\n    1,\n    5,\n    6,\n]"
+    assert red.dumps() == "[\n   1,\n   5,\n   6,\n]"
 
 
 comma_proxy_list_indented_code_to_test = """
 with stuff:
     a = [
-        1,
+      1,
     ]
 """
 
@@ -1014,8 +1014,8 @@ with stuff:
 comma_proxy_list_indented_code_to_test_expected_result = """
 with stuff:
     a = [
-        1,
-        2,
+      1,
+      2,
     ]
 """
 
@@ -1023,6 +1023,22 @@ def test_comma_proxy_list_indented_in_indentation_case():
     red = RedBaron(comma_proxy_list_indented_code_to_test)
     red.list_.append("2")
     assert red.dumps() == comma_proxy_list_indented_code_to_test_expected_result
+
+
+def test_comma_proxy_list_indented_comma_before_end():
+    red = RedBaron("{\n   'foo': 'bar',\n   'baz': 'quux',\n   # foo\n}")
+    red[0].value.append("'quuz': 'quuz'")
+
+    # Probably "# foo" should actually stay just before the closing }, since
+    # it's more likely that a comment like that refers to the dict as a whole,
+    # and not the baz element.
+    assert red.dumps() == "{\n   'foo': 'bar',\n   'baz': 'quux',\n   # foo\n   'quuz': 'quuz',\n}"
+
+
+def test_comma_proxy_list_indented_comma_at_start():
+    red = RedBaron("{\n   # foo is my favorite\n   'foo': 'bar',\n   'baz': 'quux',\n}")
+    red[0].value.append("'quuz': 'quuz'")
+    assert red.dumps() == "{\n   # foo is my favorite\n   'foo': 'bar',\n   'baz': 'quux',\n   'quuz': 'quuz',\n}"
 
 
 def test_decorator_line_proxy_with_blank_line_list_len_empty():
