@@ -318,6 +318,23 @@ def a(self, a):
 """)
 
 
+def test_insert_line_in_def_with_trailing_if():
+    red = RedBaron("""\
+def a(self, a):
+    if a == 42:
+        return True
+""")
+
+    red.def_.insert(0, "a = 1")
+
+    assert_with_indent(red, """\
+def a(self, a):
+    a = 1
+    if a == 42:
+        return True
+""")
+
+
 def test_insert_nested_line_in_def_with_if():
     red = RedBaron("""\
 def a(self, a):

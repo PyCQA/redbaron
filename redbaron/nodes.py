@@ -708,7 +708,7 @@ class IfNode(IfElseBlockSiblingNode):
             raise Exception("Unhandled case")
 
 
-class IfelseblockNode(Node):
+class IfelseblockNode(CodeBlockNode):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute != "value":
             return super(IfelseblockNode, self)._string_to_node_list(string, parent=parent, on_attribute=on_attribute)

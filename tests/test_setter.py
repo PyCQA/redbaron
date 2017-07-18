@@ -225,72 +225,130 @@ def d():
 
 def test_set_attr_def_advanced_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
-    red.find("def", name="c").value = "return 42"
-    assert len(red.find("def", name="c")("endl")) == 4
-    assert red.find("def", name="c").value.node_list[-1].indent == ""
+    c = red.find("def", name="c")
+    c.value = "return 42"
+    assert c.dumps() == """\
+def c():
+    return 42
+"""
+    assert len(c("endl")) == 2
+    assert c.value.node_list[-1].indent == ""
 
 
 def test_set_attr_def_advanced_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
-    red.find("def", name="c").value = "return 42\n"
-    assert len(red.find("def", name="c")("endl")) == 4
-    assert red.find("def", name="c").value.node_list[-1].indent == ""
+    c = red.find("def", name="c")
+    c.value = "return 42\n"
+    assert c.dumps() == """\
+def c():
+    return 42
+"""
+    assert len(c("endl")) == 2
+    assert c.value.node_list[-1].indent == ""
 
 
 def test_set_attr_def_advanced_dont_break_next_block_indent_two_endl():
     red = RedBaron(code_for_block_setattr)
+    c = red.find("def", name="c")
+    assert len(c("endl")) == 6
     red.find("def", name="c").value = "return 42\n\n"
-    assert len(red.find("def", name="c")("endl")) == 4
+    assert c.dumps() == """\
+def c():
+    return 42
+
+"""
+    assert len(red.find("def", name="c")("endl")) == 3
     assert red.find("def", name="c").value.node_list[-1].indent == ""
 
 
 def test_set_attr_def_advanced_in_class_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
-    red.find("def", name="a").value = "return 42"
-    assert len(red.find("def", name="a")("endl")) == 3
-    assert red.find("def", name="a").value.node_list[-1].indent == "    "
+    a = red.find("def", name="a")
+    assert a.dumps() == """\
+def a():
+        pass
+
+    """
+    a.value = "return 42"
+    assert a.dumps() == """\
+def a():
+        return 42
+    """
+    assert len(a("endl")) == 2
+    assert a.value.node_list[-1].indent == "    "
 
 
 def test_set_attr_def_advanced_in_class_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
-    red.find("def", name="a").value = "return 42\n"
-    assert len(red.find("def", name="a")("endl")) == 3
-    assert red.find("def", name="a").value.node_list[-1].indent == "    "
+    a = red.find("def", name="a")
+    a.value = "return 42\n"
+    assert a.dumps() == """\
+def a():
+        return 42
+    """
+    assert len(a("endl")) == 2
+    assert a.value.node_list[-1].indent == "    "
 
 
 def test_set_attr_def_advanced_in_class_at_the_end_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
-    red.find("def", name="b").value = "return 42"
-    assert len(red.find("def", name="b")("endl")) == 4
-    assert red.find("def", name="b").value.node_list[-1].indent == ""
+    b = red.find("def", name="b")
+    b.value = "return 42"
+    assert b.dumps() == """\
+def b():
+        return 42
+"""
+    assert len(b("endl")) == 2
+    assert b.value.node_list[-1].indent == ""
 
 
 def test_set_attr_def_advanced_in_class_at_the_end_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
-    red.find("def", name="b").value = "return 42\n"
-    assert len(red.find("def", name="b")("endl")) == 4
-    assert red.find("def", name="b").value.node_list[-1].indent == ""
+    b = red.find("def", name="b")
+    b.value = "return 42\n"
+    assert b.dumps() == """\
+def b():
+        return 42
+"""
+    assert len(b("endl")) == 2
+    assert b.value.node_list[-1].indent == ""
 
 
 def test_set_attr_def_advanced_in_class_at_the_end_dont_break_next_block_indent_two_endl():
     red = RedBaron(code_for_block_setattr)
-    red.find("def", name="b").value = "return 42\n\n"
-    assert len(red.find("def", name="b")("endl")) == 4
-    assert red.find("def", name="b").value.node_list[-1].indent == ""
+    b = red.find("def", name="b")
+    b.value = "return 42\n\n"
+    assert b.dumps() == """\
+def b():
+        return 42
+
+"""
+    assert len(b("endl")) == 3
+    assert b.value.node_list[-1].indent == ""
 
 
 def test_set_attr_def_advanced_inline_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
-    red.find("def", name="zomg").value = "return 42"
-    assert len(red.find("def", name="zomg")("endl")) == 3
-    assert red.find("def", name="zomg").value.node_list[-1].indent == "    "
+    zomg = red.find("def", name="zomg")
+    zomg.value = "return 42"
+    assert zomg.dumps() == """\
+def zomg():
+        return 42
+    """
+    assert len(zomg("endl")) == 2
+    assert zomg.value.node_list[-1].indent == "    "
 
 
 def test_set_attr_def_advanced_inline_dont_break_next_block_indent_one_endl():
     red = RedBaron(code_for_block_setattr)
-    red.find("def", name="zomg").value = "return 42\n"
-    assert len(red.find("def", name="zomg")("endl")) == 3
-    assert red.find("def", name="zomg").value.node_list[-1].indent == "    "
+    zomg = red.find("def", name="zomg")
+    zomg.value = "return 42\n"
+    assert zomg.dumps() == """\
+def zomg():
+        return 42
+    """
+    assert len(zomg("endl")) == 2
+    assert zomg.value.node_list[-1].indent == "    "
 
 
 def test_set_decorator_def():
