@@ -505,7 +505,7 @@ class Node(GenericNodesUtils):
 
     @property
     def next(self):
-        in_list = self._get_list_attribute_is_member_off()
+        in_list = self._get_list_attribute_is_member_of()
 
         if in_list is None:
             return None
@@ -545,7 +545,7 @@ class Node(GenericNodesUtils):
         return target.next
 
     def next_generator(self):
-        in_list = self._get_list_attribute_is_member_off()
+        in_list = self._get_list_attribute_is_member_of()
 
         if in_list is None:
             return None
@@ -556,7 +556,7 @@ class Node(GenericNodesUtils):
 
     @property
     def previous(self):
-        in_list = self._get_list_attribute_is_member_off()
+        in_list = self._get_list_attribute_is_member_of()
 
         if in_list is None:
             return None
@@ -609,7 +609,7 @@ class Node(GenericNodesUtils):
         return target.previous
 
     def previous_generator(self):
-        in_list = self._get_list_attribute_is_member_off()
+        in_list = self._get_list_attribute_is_member_of()
 
         if in_list is None:
             return None
@@ -642,7 +642,7 @@ class Node(GenericNodesUtils):
 
         return False
 
-    def _get_list_attribute_is_member_off(self):
+    def _get_list_attribute_is_member_of(self):
         """
         Return the list attribute of the parent from which this node is a
         member.
