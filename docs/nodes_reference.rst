@@ -1012,7 +1012,7 @@ Works as expected:
 ListArgumentNode
 ================
 
-A node representing a "start argument" in a function call **or** definition.
+A node representing a "star argument" in a function call **or** definition.
 
 .. ipython:: python
 
@@ -1432,10 +1432,19 @@ attributes work as expected:
     red[0].else_ = "    else:\n        badly_indented_and_trailing\n\n\n\n"
     red
 
+WithContext
+===========
+
+A node representing a with statement.
+
+.. ipython:: python
+
+    RedBaron("with a: pass")[0].help(deep=True)
+
 WithContextItemNode
 ===================
 
-A node representing a while loop.
+A node representing one of the context manager items in a with statement.
 
 .. ipython:: python
 
