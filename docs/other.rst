@@ -314,8 +314,8 @@ expect the number of spaces to add or to remove as first argument.
 
 .. WARNING::
 
-   Since RedBaron calls `ast.literal_eval <https://docs.python.org/2/library/ast.html#ast.literal_eval>`
-   it can only parse the python code parsed by the python version you are using.
+   Since RedBaron calls ast.literal_eval it can only parse the python code
+   parsed by the python version you are using.
 
    For example if you are using a python version inferior to 3.6, `to_python`
    will crash on `100_000` because it is only supported since python 3.6
