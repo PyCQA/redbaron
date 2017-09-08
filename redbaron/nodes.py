@@ -5,7 +5,7 @@ import re
 import baron
 from baron.utils import string_instance
 
-from redbaron.base_nodes import Node, NodeList, LiteralyEvaluable, CodeBlockNode, DotProxyList, CommaProxyList, LineProxyList, IfElseBlockSiblingNode, ElseAttributeNode
+from redbaron.base_nodes import Node, NodeList, LiterallyEvaluable, CodeBlockNode, DotProxyList, CommaProxyList, LineProxyList, IfElseBlockSiblingNode, ElseAttributeNode
 from redbaron.syntax_highlight import python_html_highlight
 
 
@@ -91,7 +91,7 @@ class AtomtrailersNode(Node):
             setattr(self, "value", DotProxyList(self.value))
 
 
-class BinaryNode(Node, LiteralyEvaluable):
+class BinaryNode(Node, LiterallyEvaluable):
     def __setattr__(self, key, value):
         if key == "value" and isinstance(value, string_instance):
             assert baron.parse(value)[0]["type"] == "binary"
@@ -117,11 +117,11 @@ class BinaryOperatorNode(Node):
             raise Exception("Unhandled case")
 
 
-class BinaryStringNode(Node, LiteralyEvaluable):
+class BinaryStringNode(Node, LiterallyEvaluable):
     pass
 
 
-class BinaryRawStringNode(Node, LiteralyEvaluable):
+class BinaryRawStringNode(Node, LiterallyEvaluable):
     pass
 
 
@@ -322,7 +322,7 @@ class DictitemNode(Node):
             raise Exception("Unhandled case")
 
 
-class DictNode(Node, LiteralyEvaluable):
+class DictNode(Node, LiterallyEvaluable):
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("{%s}" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
@@ -567,15 +567,15 @@ class ForNode(ElseAttributeNode):
             return super(ForNode, self)._string_to_node(string, parent, on_attribute)
 
 
-class FloatNode(Node, LiteralyEvaluable):
+class FloatNode(Node, LiterallyEvaluable):
     pass
 
 
-class FloatExponantNode(Node, LiteralyEvaluable):
+class FloatExponantNode(Node, LiterallyEvaluable):
     pass
 
 
-class FloatExponantComplexNode(Node, LiteralyEvaluable):
+class FloatExponantComplexNode(Node, LiterallyEvaluable):
     pass
 
 
@@ -695,7 +695,7 @@ class GlobalNode(Node):
             setattr(self, "value", CommaProxyList(self.value, on_attribute="value"))
 
 
-class HexaNode(Node, LiteralyEvaluable):
+class HexaNode(Node, LiterallyEvaluable):
     pass
 
 
@@ -757,7 +757,7 @@ class ImportNode(Node):
             setattr(self, "value", CommaProxyList(self.value, on_attribute="value"))
 
 
-class IntNode(Node, LiteralyEvaluable):
+class IntNode(Node, LiterallyEvaluable):
     def fst(self):
         return {
             "type": "int",
@@ -820,7 +820,7 @@ class ListComprehensionNode(Node):
             raise Exception("Unhandled case")
 
 
-class ListNode(Node, LiteralyEvaluable):
+class ListNode(Node, LiterallyEvaluable):
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("[%s]" % string)[0]["value"]
         return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
@@ -832,11 +832,11 @@ class ListNode(Node, LiteralyEvaluable):
             setattr(self, "value", CommaProxyList(self.value))
 
 
-class LongNode(Node, LiteralyEvaluable):
+class LongNode(Node, LiterallyEvaluable):
     pass
 
 
-class NameNode(Node, LiteralyEvaluable):
+class NameNode(Node, LiterallyEvaluable):
     pass
 
 
@@ -857,7 +857,7 @@ class NameAsNameNode(Node):
         return super(NameAsNameNode, self).__setattr__(key, value)
 
 
-class OctaNode(Node, LiteralyEvaluable):
+class OctaNode(Node, LiterallyEvaluable):
     pass
 
 
@@ -938,7 +938,7 @@ class RaiseNode(Node):
             raise Exception("Unhandled case")
 
 
-class RawStringNode(Node, LiteralyEvaluable):
+class RawStringNode(Node, LiterallyEvaluable):
     pass
 
 
@@ -1030,11 +1030,11 @@ class StarNode(Node):
     pass
 
 
-class StringNode(Node, LiteralyEvaluable):
+class StringNode(Node, LiterallyEvaluable):
     pass
 
 
-class StringChainNode(Node, LiteralyEvaluable):
+class StringChainNode(Node, LiterallyEvaluable):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "value":
             fst = baron.parse("a = %s" % string)[0]["value"]["value"]
@@ -1127,7 +1127,7 @@ class TryNode(ElseAttributeNode):
         return super(TryNode, self).__getattr__(name)
 
 
-class TupleNode(Node, LiteralyEvaluable):
+class TupleNode(Node, LiterallyEvaluable):
     def _string_to_node_list(self, string, parent, on_attribute):
         fst = baron.parse("(%s)" % string)[0]["value"]
 
@@ -1145,11 +1145,11 @@ class TupleNode(Node, LiteralyEvaluable):
             setattr(self, "value", CommaProxyList(self.value))
 
 
-class UnicodeStringNode(Node, LiteralyEvaluable):
+class UnicodeStringNode(Node, LiterallyEvaluable):
     pass
 
 
-class UnicodeRawStringNode(Node, LiteralyEvaluable):
+class UnicodeRawStringNode(Node, LiterallyEvaluable):
     pass
 
 
