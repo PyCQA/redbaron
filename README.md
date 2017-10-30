@@ -1,7 +1,7 @@
 Introduction
 ============
 
-[![Build Status](https://travis-ci.org/PyCQA/redbaron.svg?branch=master)](https://travis-ci.org/PyCQA/redbaron) [![Latest Version](https://pypip.in/version/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Supported Python versions](https://pypip.in/py_versions/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Development Status](https://pypip.in/status/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Wheel Status](https://pypip.in/wheel/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![Download format](https://pypip.in/format/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/) [![License](https://pypip.in/license/redbaron/badge.svg)](https://pypi.python.org/pypi/redbaron/)
+[![Build Status](https://travis-ci.org/PyCQA/redbaron.svg?branch=master)](https://travis-ci.org/PyCQA/redbaron) [![Latest Version](https://img.shields.io/pypi/v/redbaron.svg)](https://pypi.python.org/pypi/redbaron/) [![Supported Python versions](https://img.shields.io/pypi/pyversions/redbaron.svg)](https://pypi.python.org/pypi/redbaron/) [![Development Status](https://img.shields.io/pypi/status/redbaron.svg)](https://pypi.python.org/pypi/redbaron/) [![Wheel Status](https://img.shields.io/pypi/wheel/redbaron.svg)](https://pypi.python.org/pypi/redbaron/) [![Download format](https://img.shields.io/pypi/format/redbaron.svg)](https://pypi.python.org/pypi/redbaron/) [![License](https://img.shields.io/pypi/l/redbaron.svg)](https://pypi.python.org/pypi/redbaron/)
 
 RedBaron is a python library and tool powerful enough to be used into IPython
 solely that intent to make the process of **writing code that modify source
