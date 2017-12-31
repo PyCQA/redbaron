@@ -128,7 +128,7 @@ the first adjacent node that exist in the parent hierarchy.
 Due to its tree nature, navigating in the FST might not behave as the user
 expect it. For example: doing a :file:`.next` on a :file:`TryNode` will not
 return the first :file:`ExceptNode` (or :file:`FinallyNode`) but will return
-the node after the try-excepts-else-finally node because it is a full not in
+the node after the try-excepts-else-finally node because it is a full node in
 itself in the FST.
 
 See for yourself:
