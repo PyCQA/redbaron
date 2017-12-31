@@ -233,8 +233,8 @@ node in which this node is located:
 
 Every node have the :file:`.index_on_parent` attribute (property) that returns the index
 at which this node is store in its parent node list. If the node isn't stored
-in a node list, it returns :file:`None`. In the node is stored in a proxy list
-(:doc:`proxy_list`), it's the index in the proxy list that is return, to get
+in a node list, it returns :file:`None`. If the node is stored in a proxy list
+(:doc:`proxy_list`), it's the index in the proxy list that is returned. to get
 the unproxified index use :ref:`index_on_parent_raw`.
 
 .. ipython:: python
@@ -251,7 +251,7 @@ the unproxified index use :ref:`index_on_parent_raw`.
 .index_on_parent_raw
 --------------------
 
-Same than :ref:`index_on_parent` except that it always return the unproxified
+Same as :ref:`index_on_parent` except that it always return the unproxified
 whether the node is stored in a proxy list or not.
 
 .. ipython:: python
