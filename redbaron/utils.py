@@ -19,7 +19,8 @@ else:
 def baron_type_to_redbaron_classname(baron_type):
     return "".join(map(lambda x: x.capitalize(), baron_type.split("_"))) + "Node"
 
-
+from functools import lru_cache
+@lru_cache(maxsize=None)
 def redbaron_classname_to_baron_type(name):
     name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name.replace("Node", ""))
     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
