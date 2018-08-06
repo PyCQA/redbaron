@@ -27,6 +27,18 @@ else:
     from UserList import UserList
 
 
+def display_property_atttributeerror_exceptions(function):
+    def wrapper(*args, **kwargs):
+        try:
+            return function(*args, **kwargs)
+        except AttributeError:
+            import traceback
+            traceback.print_exc()
+            raise
+
+    return wrapper
+
+
 class Path(object):
     """Holds the path to a FST node
 
@@ -201,10 +213,12 @@ class GenericNodesUtils(object):
         raise NotImplementedError
 
     @property
+    @display_property_atttributeerror_exceptions
     def bounding_box(self):
         return baron.path.node_to_bounding_box(self.fst())
 
     @property
+    @display_property_atttributeerror_exceptions
     def absolute_bounding_box(self):
         path = self.path().to_baron_path()
         return baron.path.path_to_bounding_box(self.root.fst(), path)
@@ -269,6 +283,7 @@ class GenericNodesUtils(object):
         return result
 
     @property
+    @display_property_atttributeerror_exceptions
     def root(self):
         current = self
         while not isinstance(current, redbaron.RedBaron):
@@ -484,6 +499,7 @@ class Node(GenericNodesUtils):
         self._list_keys = []
         self._dict_keys = []
         self.type = fst["type"]
+
         for kind, key, _ in filter(lambda x: x[0] != "constant", self._render()):
             if kind == "key":
                 if fst[key]:
@@ -511,6 +527,7 @@ class Node(GenericNodesUtils):
         return getattr(redbaron.nodes, class_name)(node, parent=parent, on_attribute=on_attribute)
 
     @property
+    @display_property_atttributeerror_exceptions
     def next(self):
         in_list = self._get_list_attribute_is_member_off()
 
@@ -521,6 +538,7 @@ class Node(GenericNodesUtils):
         return next_node[0] if next_node else None
 
     @property
+    @display_property_atttributeerror_exceptions
     def next_intuitive(self):
         next_ = self.next
 
@@ -530,6 +548,7 @@ class Node(GenericNodesUtils):
         return next_
 
     @property
+    @display_property_atttributeerror_exceptions
     def next_rendered(self):
         previous = None
         target = self.parent
@@ -543,6 +562,7 @@ class Node(GenericNodesUtils):
             target = target.parent
 
     @property
+    @display_property_atttributeerror_exceptions
     def next_recursive(self):
         target = self
         while not target.next:
@@ -562,6 +582,7 @@ class Node(GenericNodesUtils):
         return generator
 
     @property
+    @display_property_atttributeerror_exceptions
     def previous(self):
         in_list = self._get_list_attribute_is_member_off()
 
@@ -572,6 +593,7 @@ class Node(GenericNodesUtils):
         return next_node[0] if next_node else None
 
     @property
+    @display_property_atttributeerror_exceptions
     def previous_intuitive(self):
         previous_ = self.previous
 
@@ -595,6 +617,7 @@ class Node(GenericNodesUtils):
         return previous_
 
     @property
+    @display_property_atttributeerror_exceptions
     def previous_rendered(self):
         previous = None
         target = self.parent
@@ -607,6 +630,7 @@ class Node(GenericNodesUtils):
             target = target.parent
 
     @property
+    @display_property_atttributeerror_exceptions
     def previous_recursive(self):
         target = self
         while not target.previous:
@@ -639,6 +663,7 @@ class Node(GenericNodesUtils):
         return self.previous_rendered.get_indentation_node()
 
     @property
+    @display_property_atttributeerror_exceptions
     def indentation(self):
         endl_node = self.get_indentation_node()
         return endl_node.indent if endl_node is not None else ""
@@ -1047,6 +1072,7 @@ class Node(GenericNodesUtils):
             self.replace(result)
 
     @property
+    @display_property_atttributeerror_exceptions
     def index_on_parent(self):
         if not self.parent:
             return None
@@ -1057,6 +1083,7 @@ class Node(GenericNodesUtils):
         return getattr(self.parent, self.on_attribute).index(self)
 
     @property
+    @display_property_atttributeerror_exceptions
     def index_on_parent_raw(self):
         if not self.parent:
             return None
@@ -1173,6 +1200,7 @@ class CodeBlockNode(Node):
 
 class IfElseBlockSiblingNode(CodeBlockNode):
     @property
+    @display_property_atttributeerror_exceptions
     def next_intuitive(self):
         next_ = super(IfElseBlockSiblingNode, self).next
 
@@ -1182,6 +1210,7 @@ class IfElseBlockSiblingNode(CodeBlockNode):
         return next_
 
     @property
+    @display_property_atttributeerror_exceptions
     def previous_intuitive(self):
         previous_ = super(IfElseBlockSiblingNode, self).previous
 
