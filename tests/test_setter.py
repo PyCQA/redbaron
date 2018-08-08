@@ -293,6 +293,40 @@ def test_set_attr_def_advanced_inline_dont_break_next_block_indent_one_endl():
     assert red.find("def", name="zomg").value.node_list[-1].indent == "    "
 
 
+def test_set_attr_def_async_dont_break_initial_formatting():
+    red = RedBaron("async    def a(): pass")
+    assert red.dumps() == "async    def a(): pass\n"
+
+
+def test_set_attr_def_set_async():
+    red = RedBaron("def a(): pass")
+    red[0].async = True
+    assert red.dumps() == "async def a(): pass\n"
+
+
+def test_set_attr_def_unset_async():
+    red = RedBaron("async def a(): pass")
+    red[0].async = False
+    assert red.dumps() == "def a(): pass\n"
+
+
+def test_set_attr_def_async_dont_break_initial_formatting_indent():
+    red = RedBaron("class A:\n    async    def a(): pass")
+    assert red.dumps() == "class A:\n    async    def a(): pass\n"
+
+
+def test_set_attr_def_set_async_indent():
+    red = RedBaron("class A:\n    def a(): pass")
+    red.def_.async = True
+    assert red.dumps() == "class A:\n    async def a(): pass\n"
+
+
+def test_set_attr_def_unset_async_indent():
+    red = RedBaron("class A:\n    async def a(): pass")
+    red.def_.async = False
+    assert red.dumps() == "class A:\n    def a(): pass\n"
+
+
 def test_set_decorator_def():
     red = RedBaron("def a(): pass")
     red[0].decorators = "@decorator"

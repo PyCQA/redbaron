@@ -462,6 +462,32 @@ def a(self, a):
 
 """)
 
+def test_append_newline_and_async_def_in_class_with_space():
+    red = RedBaron("""\
+async def a(self, a):
+    return False
+""")
+
+    red.def_.append("")
+    red.def_.append("class b:\n    def c(self):\n        return True")
+    red.def_.append("")
+    red.def_.append("class b:\n    async def c(self):\n        return True")
+    red.def_.append("")
+
+    assert_with_indent(red, """\
+async def a(self, a):
+    return False
+
+    class b:
+        def c(self):
+            return True
+
+    class b:
+        async def c(self):
+            return True
+
+""")
+
 def test_append_newline_and_def_in_class_without_space():
     red = RedBaron("""\
 def a(self, a):

@@ -655,6 +655,9 @@ class DefNode(CodeBlockNode):
         if key == "arguments" and not isinstance(self.arguments, CommaProxyList):
             setattr(self, "arguments", CommaProxyList(self.arguments, on_attribute="arguments"))
 
+        if key == "async" and self.async and hasattr(self, "async_formatting") and not self.async_formatting:
+            self.async_formatting = " "
+
 
 class GeneratorComprehensionNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
