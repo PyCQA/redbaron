@@ -1002,6 +1002,14 @@ def test_getitem_setattr_value():
         red[0].value[1].value = "def a(): pass\n"
 
 
+def test_nonlocal_setattr_value():
+    red = RedBaron("nonlocal a")
+    red[0].value = "a, b, c"
+    assert red.dumps() == "nonlocal a, b, c"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
 def test_global_setattr_value():
     red = RedBaron("global a")
     red[0].value = "a, b, c"

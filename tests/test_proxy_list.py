@@ -274,6 +274,12 @@ def test_comma_proxy_list_global_value():
     assert red.dumps() == "global a, b"
 
 
+def test_comma_proxy_list_nonlocal_value():
+    red = RedBaron("nonlocal a")
+    red[0].value.append("b")
+    assert red.dumps() == "nonlocal a, b"
+
+
 def test_comma_proxy_list_import_value():
     red = RedBaron("import a")
     red[0].value.append("b.c.d as e")
