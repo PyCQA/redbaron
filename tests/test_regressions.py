@@ -18,3 +18,8 @@ def test_on_copied_blocknode_set_body():
     red = RedBaron("def foobar(): pass")
     z = red.def_.copy()
     z.value = "pouet"
+
+
+def test_find_empty_call():
+    red = RedBaron("a()")
+    assert red.find("call") is red[0][1]

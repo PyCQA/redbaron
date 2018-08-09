@@ -1018,6 +1018,3 @@ def test_insert_after_offset():
     assert red.dumps() == "a = 1\nprint(pouet)\nchocolat\n"
 
 
-def test_regression_find_empty_call():
-    red = RedBaron("a()")
-    assert red.find("call") is red[0][1]
