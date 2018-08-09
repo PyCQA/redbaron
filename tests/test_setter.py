@@ -1321,6 +1321,14 @@ def test_yield_atom_setattr_value_was_none():
     assert red.dumps() == "(yield a)"
 
 
+def test_yield_from_setattr_value():
+    red = RedBaron("yield from a")
+    red[0].value = "hop"
+    assert red.dumps() == "yield from hop"
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass\n"
+
+
 def test_list_comprehension_set_attr_result():
     red = RedBaron("[a for b in c]")
     red[0].result = "hop"

@@ -1205,6 +1205,15 @@ class YieldNode(Node):
             raise Exception("Unhandled case")
 
 
+class YieldFromNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "value":
+            return Node.from_fst(baron.parse("yield from %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class YieldAtomNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
