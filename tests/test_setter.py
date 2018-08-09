@@ -500,6 +500,18 @@ def test_assign_node_setattr_operator():
         red[0].operator = "raise"
 
 
+def test_await_setattr_value():
+    red = RedBaron("await a")
+    red[0].value = "b"
+    assert red[0].dumps() == "await b"
+
+
+def test_await_setattr_value_expr():
+    red = RedBaron("await a")
+    with pytest.raises(Exception):
+        red[0].value = "def a(): pass"
+
+
 def test_for_setattr_value():
     red = RedBaron("for i in a: pass")
     red[0].value = "continue"
