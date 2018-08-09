@@ -778,6 +778,10 @@ class IntNode(Node, LiteralyEvaluable):
         }
 
 
+class KwargsOnlyMarkerNode(Node):
+    pass
+
+
 class LambdaNode(Node):
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "arguments":

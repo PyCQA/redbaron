@@ -1018,3 +1018,5 @@ def test_insert_after_offset():
     assert red.dumps() == "a = 1\nprint(pouet)\nchocolat\n"
 
 
+def test_kwargs_only_marker_node():
+    RedBaron("def a(*): pass")
