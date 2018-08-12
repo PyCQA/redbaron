@@ -778,6 +778,14 @@ class IntNode(Node, LiteralyEvaluable):
         }
 
 
+class InterpolatedStringNode(Node, LiteralyEvaluable):
+    pass
+
+
+class InterpolatedRawStringNode(Node, LiteralyEvaluable):
+    pass
+
+
 class KwargsOnlyMarkerNode(Node):
     pass
 
