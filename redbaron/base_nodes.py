@@ -807,6 +807,12 @@ class Node(GenericNodesUtils):
             current = current.parent
         return None
 
+    def _get_pattern_field(self):
+        try:
+            return re.Pattern
+        except AttributeError:
+            return re._pattern_type
+
     def _node_match_query(self, node, identifier, *args, **kwargs):
         if not self._attribute_match_query(node.generate_identifiers(), identifier.lower() if isinstance(identifier,
                                                                                                          string_instance) and not identifier.startswith(
@@ -815,7 +821,7 @@ class Node(GenericNodesUtils):
 
         all_my_keys = node._str_keys + node._list_keys + node._dict_keys
 
-        if args and isinstance(args[0], (string_instance, re._pattern_type, list, tuple)):
+        if args and isinstance(args[0], (string_instance, self._get_pattern_field(), list, tuple)):
             if not self._attribute_match_query([getattr(node, node._default_test_value)], args[0]):
                 return False
             args = args[1:]
@@ -852,7 +858,7 @@ class Node(GenericNodesUtils):
                 if fnmatch(attribute, query[2:]):
                     return True
 
-            elif isinstance(query, re._pattern_type):
+            elif isinstance(query, self._get_pattern_field()):
                 if query.match(attribute):
                     return True
 
