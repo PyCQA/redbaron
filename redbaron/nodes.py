@@ -779,11 +779,11 @@ class IntNode(Node, LiteralyEvaluable):
 
 
 class InterpolatedStringNode(Node, LiteralyEvaluable):
-    pass
+    _other_identifiers = ["fstring"]
 
 
 class InterpolatedRawStringNode(Node, LiteralyEvaluable):
-    pass
+    _other_identifiers = ["raw_fstring"]
 
 
 class KwargsOnlyMarkerNode(Node):
