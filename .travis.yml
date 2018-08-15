@@ -2,6 +2,7 @@ language: python
 install:
   - pip install git+https://github.com/Psycojoker/baron.git
   - pip install pytest
+  - find . -name '*.pyc' -delete
   - python setup.py install
 python:
   - "2.6"
