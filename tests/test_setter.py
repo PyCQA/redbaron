@@ -300,13 +300,13 @@ def test_set_attr_def_async_dont_break_initial_formatting():
 
 def test_set_attr_def_set_async():
     red = RedBaron("def a(): pass")
-    red[0].async = True
+    red[0].async_ = True
     assert red.dumps() == "async def a(): pass\n"
 
 
 def test_set_attr_def_unset_async():
     red = RedBaron("async def a(): pass")
-    red[0].async = False
+    red[0].async_ = False
     assert red.dumps() == "def a(): pass\n"
 
 
@@ -317,13 +317,13 @@ def test_set_attr_def_async_dont_break_initial_formatting_indent():
 
 def test_set_attr_def_set_async_indent():
     red = RedBaron("class A:\n    def a(): pass")
-    red.def_.async = True
+    red.def_.async_ = True
     assert red.dumps() == "class A:\n    async def a(): pass\n"
 
 
 def test_set_attr_def_unset_async_indent():
     red = RedBaron("class A:\n    async def a(): pass")
-    red.def_.async = False
+    red.def_.async_ = False
     assert red.dumps() == "class A:\n    def a(): pass\n"
 
 

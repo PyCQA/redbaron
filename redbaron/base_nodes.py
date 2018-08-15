@@ -1032,6 +1032,10 @@ class Node(GenericNodesUtils):
         if name == "init" or self.init:
             return super(Node, self).__setattr__(name, value)
 
+        # we don't want to mess with "__class__" for example but convert "async_" to "async"
+        if name.endswith("_") and not name.endswith("__"):
+            name = name[:-1]
+
         # FIXME I'm pretty sure that Bool should also be put in the isinstance for cases like with_parenthesis/as
         if name in self._str_keys and not isinstance(value, (string_instance, int)):
             value = str(value)
