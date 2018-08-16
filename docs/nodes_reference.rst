@@ -801,6 +801,22 @@ Decorators might be a bit less intuitive:
     red[0].decorators = "    @pouet"  # SetAttr will take care of reindenting everything as expected
     red
 
+Async is a boolean attribute that determine if a function is async:
+
+.. ipython:: python
+
+    red =  RedBaron("def stuff():\n    body\n")
+    red[0].async_
+    red[0].async_ = True
+    red
+    red[0].async_ = False
+    red
+
+.. WARNING::
+   As of python 3.7 `async` and `await` are now reserved keywords so don't uses
+   `red.async`, it works as expected but won't make your code forward
+   compatible.
+
 GeneratorComprehensionNode
 ==========================
 
