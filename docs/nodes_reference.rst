@@ -27,7 +27,7 @@ CodeBlockNode
 =============
 
 CodeBlockNode is a type of node that has a body composed of indented code
-like the FuncdefNode or the IfNode. Great care has been taken on the SetAttr of
+like the DefNode or the IfNode. Great care has been taken on the SetAttr of
 their value so you don't have to take care about reindenting and other
 formatting details.
 
@@ -431,6 +431,60 @@ SetAttr
     red
 
 
+DefNode
+=======
+
+A node representing a function definition.
+
+.. ipython:: python
+
+    RedBaron("def stuff():\n    pass\n")[0].help(deep=True)
+
+SetAttr
+-------
+
+DefNode is a CodeBlockNode which means its value attribute accepts a wide
+range of values, see :ref:`CodeBlockNode` for more information. Most other
+attributes works as expected:
+
+.. ipython:: python
+
+    red = RedBaron("def stuff():\n    body\n")
+    red[0]
+    red[0].name = "awesome_function"
+    red[0].arguments = "a, b=None, *c, **d"
+    red
+
+Decorators might be a bit less intuitive:
+
+.. ipython:: python
+
+    red =  RedBaron("def stuff():\n    body\n")
+    red[0].decorators = "@foo(*plop)"
+    red
+    red[0].decorators = "@foo\n@bar.baz()"
+    red
+    red[0].decorators = "    @pouet"  # SetAttr will take care of reindenting everything as expected
+    red
+
+Async is a boolean attribute that determine if a function is async:
+
+.. ipython:: python
+
+    red =  RedBaron("def stuff():\n    body\n")
+    red[0].async_
+    red[0].async_ = True
+    red
+    red[0].async_ = False
+    red
+
+.. WARNING::
+   As of python 3.7 `async` and `await` are now reserved keywords so don't uses
+   `red.async`, it works as expected but won't make your code forward
+   compatible.
+
+
+
 DefArgumentNode
 ===============
 
@@ -762,60 +816,6 @@ To reduce the complexity, 2 helpers method are provided:
     red[0].modules()  # modules imported
     red[0].full_path_names()  # names added to the context with full path
     red[0].full_path_modules()  # modules imported with full path
-
-
-
-FuncdefNode
-===========
-
-A node representing a function definition.
-
-.. ipython:: python
-
-    RedBaron("def stuff():\n    pass\n")[0].help(deep=True)
-
-SetAttr
--------
-
-FuncdefNode is a CodeBlockNode which means its value attribute accepts a wide
-range of values, see :ref:`CodeBlockNode` for more information. Most other
-attributes works as expected:
-
-.. ipython:: python
-
-    red = RedBaron("def stuff():\n    body\n")
-    red[0]
-    red[0].name = "awesome_function"
-    red[0].arguments = "a, b=None, *c, **d"
-    red
-
-Decorators might be a bit less intuitive:
-
-.. ipython:: python
-
-    red =  RedBaron("def stuff():\n    body\n")
-    red[0].decorators = "@foo(*plop)"
-    red
-    red[0].decorators = "@foo\n@bar.baz()"
-    red
-    red[0].decorators = "    @pouet"  # SetAttr will take care of reindenting everything as expected
-    red
-
-Async is a boolean attribute that determine if a function is async:
-
-.. ipython:: python
-
-    red =  RedBaron("def stuff():\n    body\n")
-    red[0].async_
-    red[0].async_ = True
-    red
-    red[0].async_ = False
-    red
-
-.. WARNING::
-   As of python 3.7 `async` and `await` are now reserved keywords so don't uses
-   `red.async`, it works as expected but won't make your code forward
-   compatible.
 
 GeneratorComprehensionNode
 ==========================
