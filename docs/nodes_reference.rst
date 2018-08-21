@@ -664,6 +664,15 @@ SetAttr
 ElifNode is a CodeBlockNode which means its value attribute accepts a wide range
 of values, see :ref:`CodeBlockNode` for more information.
 
+EllipsisNode
+============
+
+A node representing "...".
+
+.. ipython:: python
+
+    RedBaron("def a(): ...").ellipsis.help(deep=True)
+
 EndlNode
 ========
 
