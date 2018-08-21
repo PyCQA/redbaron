@@ -467,6 +467,9 @@ Decorators might be a bit less intuitive:
     red[0].decorators = "    @pouet"  # SetAttr will take care of reindenting everything as expected
     red
 
+
+*New in 0.6.4*.
+
 Async is a boolean attribute that determine if a function is async:
 
 .. ipython:: python
