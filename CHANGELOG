@@ -6,6 +6,16 @@ Changelog
 
 - fix to_python() when strings are indented by stripping whitespace before evaluating by duncf https://github.com/PyCQA/redbaron/pull/140
 
+Python 3 support (based on work in Baron):
+- support ellipsis
+- support matrix operator
+- support f-strings
+- support numeric literals
+- support nonlocal statement
+- support keyword only markers
+- support yield from statement
+- support async/await statements
+
 0.6.3 (2017-01-02)
 -----------------
 
