@@ -1011,6 +1011,17 @@ A python integer.
     RedBaron("42")[0].help()
 
 
+KwargsOnlyMarkerNode
+====================
+
+A node representing the "*" in arguments declaration to force keywords only
+arguments after itself.
+
+.. ipython:: python
+
+    RedBaron("def a(*): pass")[0].arguments[0].help(deep=True)
+
+
 LambdaNode
 ==========
 
