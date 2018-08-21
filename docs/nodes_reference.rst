@@ -468,7 +468,7 @@ Decorators might be a bit less intuitive:
     red
 
 
-*New in 0.6.4*.
+*New in 0.7*.
 
 Async is a boolean attribute that determine if a function is async:
 
