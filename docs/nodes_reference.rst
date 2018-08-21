@@ -1014,6 +1014,8 @@ A python integer.
 KwargsOnlyMarkerNode
 ====================
 
+*New in 0.7*.
+
 A node representing the "*" in arguments declaration to force keywords only
 arguments after itself.
 
@@ -1124,6 +1126,8 @@ SetAttr
 
 NonlocalNode
 ============
+
+*New in 0.7*.
 
 A node representing a nonlocal statement.
 
@@ -1463,6 +1467,8 @@ SetAttr
 
 YieldFromNode
 =============
+
+*New in 0.7*.
 
 A node representing a "yield from" statement.
 
