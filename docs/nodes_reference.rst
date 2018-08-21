@@ -1461,6 +1461,26 @@ SetAttr
     red[0].value = ""
     red
 
+YieldFromNode
+=============
+
+A node representing a "yield from" statement.
+
+.. ipython:: python
+
+    RedBaron("yield from 42")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("yield from 42")
+    red
+    red[0].value = "stuff"
+    red
+
+
 WhileNode
 =========
 
