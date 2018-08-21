@@ -1111,6 +1111,27 @@ SetAttr
     red
 
 
+NonlocalNode
+============
+
+A node representing a nonlocal statement.
+
+.. ipython:: python
+
+    RedBaron("nonlocal a")[0].help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("nonlocal a")
+    red
+    red[0].value = "stuff, plop"
+    red
+
+.. _IfNode:
+
 PrintNode
 =========
 
