@@ -1,8 +1,8 @@
 Changelog
 =========
 
-0.6.4 (unreleased)
-------------------
+0.7 (2018-08-21)
+----------------
 
 - fix to_python() when strings are indented by stripping whitespace before evaluating by duncf https://github.com/PyCQA/redbaron/pull/140
 
