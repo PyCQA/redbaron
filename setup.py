@@ -18,7 +18,7 @@ setup(name='redbaron',
       long_description=read_md("README.md") + "\n\n" + open("CHANGELOG", "r").read(),
       author_email='cortex@worlddomination.be',
       url='https://github.com/PyCQA/redbaron',
-      install_requires=['baron>=0.6.2'],
+      install_requires=['baron>=0.7'],
       extras_require={
           "notebook": ["pygments"],
       },
