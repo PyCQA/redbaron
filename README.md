@@ -34,6 +34,15 @@ simply horribly unpracticable, so I'm expecting no one to do that.
 
 **Disclaimer**: RedBaron (and baron) is **working** with python3 but it is NOT fully parsing it yet.
 
+Roadmap
+=======
+
+Current roadmap is as boring as needed:
+
+* [full python 3.7 compatibility](https://baron.readthedocs.io/en/latest/grammar.html)
+* bug fixs
+* new small features (walker pattern, maybe code generation) and performance improvement.
+
 Installation
 ============
 
