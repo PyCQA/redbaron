@@ -864,6 +864,10 @@ class NameNode(Node, LiteralyEvaluable):
     pass
 
 
+class TypedNameNode(Node):
+    pass
+
+
 class NameAsNameNode(Node):
     def __setattr__(self, key, value):
         if key == "target":
