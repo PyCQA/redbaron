@@ -40,7 +40,7 @@ Roadmap
 Current roadmap is as boring as needed:
 
 * [full python 3.7 compatibility](https://baron.readthedocs.io/en/latest/grammar.html)
-* bug fixs
+* bug fixes
 * new small features (walker pattern, maybe code generation) and performance improvement.
 
 Installation
