@@ -1418,6 +1418,17 @@ class ProxyList(object):
         self.data.insert(index, [value, None])
         self._synchronise()
 
+    # sdh4 11/14/17 add insert_multiple
+    def insert_multiple(self,index,values):
+        """ Insert multiple values from an iterable into the ProxyList 
+        at the specified index, without resynchronizing after each one. """
+        for value in values:
+            value = self._convert_input_to_node_object(value, parent=self.node_list, on_attribute=self.on_attribute)
+            self.data.insert(index, [value, None])
+            index+=1
+            pass
+        self._synchronise()
+    
     def append(self, value):
         self.insert(len(self), value)
 
