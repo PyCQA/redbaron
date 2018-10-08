@@ -11,6 +11,7 @@ from redbaron import RedBaron
 # (alekum): switch off debug mode, to reproduce a bug with __repr__ implicit recursion
 redbaron.DEBUG = False
 
+
 def assert_with_indent(left, right):
     # Replace is not strictly necessary but shows indents
     assert left.dumps().replace(' ', '.') == right.replace(' ', '.')
@@ -336,6 +337,7 @@ def a(self, a):
     return False
 """)
 
+
 def test_insert_newline_in_def_with_if():
     red = RedBaron("""\
 def a(self, a):
@@ -375,6 +377,7 @@ def a(self, a):
     return False
 """)
 
+
 def test_append_newline_line_in_def_with_if():
     red = RedBaron("""\
 def a(self, a):
@@ -396,6 +399,7 @@ def a(self, a):
 
     return False
 """)
+
 
 def test_extend_newline_and_def_in_def():
     red = RedBaron("""\
@@ -419,6 +423,7 @@ def a(self, a):
 
 """)
 
+
 def test_append_newline_and_def_in_nested_class():
     red = RedBaron("""\
 class A:
@@ -426,7 +431,7 @@ class A:
         pass
 """)
 
-    #red.class_.class_.append("def b():\n    return True")
+    # red.class_.class_.append("def b():\n    return True")
     red.class_.class_.append("a = 1")
 
     assert_with_indent(red, """\
@@ -435,6 +440,7 @@ class A:
         pass
         a = 1
 """)
+
 
 def test_append_newline_and_def_in_class_with_space():
     red = RedBaron("""\
@@ -462,6 +468,7 @@ def a(self, a):
 
 """)
 
+
 def test_append_newline_and_async_def_in_class_with_space():
     red = RedBaron("""\
 async def a(self, a):
@@ -487,6 +494,7 @@ async def a(self, a):
             return True
 
 """)
+
 
 def test_append_newline_and_def_in_class_without_space():
     red = RedBaron("""\

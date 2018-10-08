@@ -223,6 +223,7 @@ def d():
     pass
 """
 
+
 def test_set_attr_def_advanced_dont_break_next_block_indent():
     red = RedBaron(code_for_block_setattr)
     red.find("def", name="c").value = "return 42"
@@ -1860,4 +1861,3 @@ def test_ifelseblock_setattr_indented_followed():
     red = RedBaron("def a():\n    if a:\n        pass\n\n\n    pouet\n")
     red[0].value.node_list[1].value = "if 1 + 1:\n    qsd\n"
     assert red.dumps() == "def a():\n    if 1 + 1:\n        qsd\n\n    pouet\n"
-

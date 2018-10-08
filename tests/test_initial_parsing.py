@@ -179,7 +179,7 @@ def test_generate_helpers():
     red = RedBaron("def a(): pass")
     assert set(red[0].generate_identifiers()) == set([
         "funcdef", "funcdef_", "defnode", "def", "def_"
-        ])
+    ])
 
 
 def test_assign_node_list():
@@ -248,10 +248,10 @@ def test_parent():
     red = RedBaron("[1, 2, 3]")
     assert red.parent is None
     assert red[0].parent is red
-    assert [x.parent for x in red[0].value.node_list] == [red[0]]*5
-    assert [x.on_attribute for x in red[0].value.node_list] == ["value"]*5
-    assert [x.parent for x in red[0].value] == [red[0]]*3
-    assert [x.on_attribute for x in red[0].value] == ["value"]*3
+    assert [x.parent for x in red[0].value.node_list] == [red[0]] * 5
+    assert [x.on_attribute for x in red[0].value.node_list] == ["value"] * 5
+    assert [x.parent for x in red[0].value] == [red[0]] * 3
+    assert [x.on_attribute for x in red[0].value] == ["value"] * 3
 
 
 def test_parent_copy():
@@ -273,10 +273,10 @@ def test_parent_assign():
     assert red[0].target.on_attribute == "target"
 
     red = RedBaron("[1, 2, 3]")
-    assert [x.parent for x in red[0].value] == [red[0]]*3
-    assert [x.on_attribute for x in red[0].value] == ["value"]*3
-    assert [x.parent for x in red[0].value.node_list] == [red[0]]*5
-    assert [x.on_attribute for x in red[0].value.node_list] == ["value"]*5
+    assert [x.parent for x in red[0].value] == [red[0]] * 3
+    assert [x.on_attribute for x in red[0].value] == ["value"] * 3
+    assert [x.parent for x in red[0].value.node_list] == [red[0]] * 5
+    assert [x.on_attribute for x in red[0].value.node_list] == ["value"] * 5
     red[0].value = "pouet"
     assert [x.parent for x in red[0].value] == [red[0]]
     assert [x.on_attribute for x in red[0].value] == ["value"]
@@ -790,6 +790,7 @@ def plop():
             d = e
 """
 
+
 def test_parent_find_empty():
     red = RedBaron("a")
     assert red[0].parent_find('a') is None
@@ -958,13 +959,16 @@ def test_default_test_value_find_all():
     red = RedBaron("badger\nmushroom\nsnake")
     assert red("name", "snake") == red("name", value="snake")
 
+
 def test_find_comment_node():
     red = RedBaron("def f():\n    #a\n    pass\n#b")
     assert red.find('comment').value == '#a'
 
+
 def test_find_all_comment_nodes():
     red = RedBaron("def f():\n    #a\n    pass\n#b")
     assert [x.value for x in red.find_all('comment')] == ['#a', '#b']
+
 
 def test_default_test_value_find_def():
     red = RedBaron("def a(): pass\ndef b(): pass")
