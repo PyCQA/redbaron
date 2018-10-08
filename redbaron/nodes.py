@@ -565,6 +565,12 @@ class ForNode(ElseAttributeNode):
 
         return self.next
 
+    def __setattr__(self, key, value):
+        super(ForNode, self).__setattr__(key, value)
+
+        if key in ("async", "async_") and getattr(self, "async") and hasattr(self, "async_formatting") and not self.async_formatting:
+            self.async_formatting = " "
+
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "target":
             return Node.from_fst(baron.parse("for i in %s: pass" % string)[0]["target"], parent=parent, on_attribute=on_attribute)

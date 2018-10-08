@@ -537,6 +537,40 @@ def test_for_setattr_iterator():
         red[0].iterator = "raise"
 
 
+def test_set_attr_for_async_dont_break_initial_formatting():
+    red = RedBaron("async    for a in b: pass")
+    assert red.dumps() == "async    for a in b: pass\n"
+
+
+def test_set_attr_for_set_async():
+    red = RedBaron("for a in b: pass")
+    red[0].async_ = True
+    assert red.dumps() == "async for a in b: pass\n"
+
+
+def test_set_attr_for_unset_async():
+    red = RedBaron("async for a in b: pass")
+    red[0].async_ = False
+    assert red.dumps() == "for a in b: pass\n"
+
+
+def test_set_attr_for_async_dont_break_initial_formatting_indent():
+    red = RedBaron("class A:\n    async    for a in b: pass")
+    assert red.dumps() == "class A:\n    async    for a in b: pass\n"
+
+
+def test_set_attr_for_set_async_indent():
+    red = RedBaron("class A:\n    for a in b: pass")
+    red.for_.async_ = True
+    assert red.dumps() == "class A:\n    async for a in b: pass\n"
+
+
+def test_set_attr_for_unset_async_indent():
+    red = RedBaron("class A:\n    async for a in b: pass")
+    red.for_.async_ = False
+    assert red.dumps() == "class A:\n    for a in b: pass\n"
+
+
 def test_while_setattr_value():
     red = RedBaron("while a: pass")
     red[0].value = "continue"
