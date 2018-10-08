@@ -616,6 +616,40 @@ def test_with_setattr_context():
     assert red[0].dumps() == "with a as b, b as c: pass\n"
 
 
+def test_set_attr_with_async_dont_break_initial_withmatting():
+    red = RedBaron("async    with a as b: pass")
+    assert red.dumps() == "async    with a as b: pass\n"
+
+
+def test_set_attr_with_set_async():
+    red = RedBaron("with a as b: pass")
+    red[0].async_ = True
+    assert red.dumps() == "async with a as b: pass\n"
+
+
+def test_set_attr_with_unset_async():
+    red = RedBaron("async with a as b: pass")
+    red[0].async_ = False
+    assert red.dumps() == "with a as b: pass\n"
+
+
+def test_set_attr_with_async_dont_break_initial_withmatting_indent():
+    red = RedBaron("class A:\n    async    with a as b: pass")
+    assert red.dumps() == "class A:\n    async    with a as b: pass\n"
+
+
+def test_set_attr_with_set_async_indent():
+    red = RedBaron("class A:\n    with a as b: pass")
+    red.with_.async_ = True
+    assert red.dumps() == "class A:\n    async with a as b: pass\n"
+
+
+def test_set_attr_with_unset_async_indent():
+    red = RedBaron("class A:\n    async with a as b: pass")
+    red.with_.async_ = False
+    assert red.dumps() == "class A:\n    with a as b: pass\n"
+
+
 def test_with_context_item_value():
     red = RedBaron("with a: pass")
     red[0].contexts[0].value = "plop"

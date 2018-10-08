@@ -1310,3 +1310,6 @@ class WithNode(CodeBlockNode):
 
         if key == "contexts" and not isinstance(self.contexts, CommaProxyList):
             setattr(self, "contexts", CommaProxyList(self.contexts, on_attribute="contexts"))
+
+        if key in ("async", "async_") and getattr(self, "async") and hasattr(self, "async_formatting") and not self.async_formatting:
+            self.async_formatting = " "
