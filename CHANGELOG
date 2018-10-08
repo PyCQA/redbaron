@@ -5,6 +5,7 @@ Changelog
 ----------------
 
 - add support to typed function arguments https://github.com/PyCQA/redbaron/pull/168 Scott Belden and additional work by bram
+- add support to set async attributes to with/for nodes, was missing in previous release
 
 0.7 (2018-08-21)
 ----------------
