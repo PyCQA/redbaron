@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.8 (unreleased)
+----------------
+
+- add support to typed function arguments https://github.com/PyCQA/redbaron/pull/168 Scott Belden and additional work by bram
+
 0.7 (2018-08-21)
 ----------------
 
