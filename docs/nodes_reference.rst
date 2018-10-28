@@ -795,6 +795,26 @@ attributes work as expected:
     red[0].else_ = "    else:\n        badly_indented_and_trailing\n\n\n\n"
     red
 
+*New in 0.8*.
+
+Async is a boolean attribute that determine if a function is async:
+
+.. ipython:: python
+
+    red =  RedBaron("for a in b: pass")
+    red[0].async_
+    red[0].async_ = True
+    red
+    red[0].async_ = False
+    red
+
+.. WARNING::
+   As of python 3.7 `async` and `await` are now reserved keywords so don't uses
+   `red.async`, it works as expected but won't make your code forward
+   compatible.
+
+
+
 FromImportNode
 ==============
 
@@ -1572,3 +1592,21 @@ work as expected:
     red
     red[0].contexts = "b as plop, stuff()"
     red
+
+*New in 0.8*.
+
+Async is a boolean attribute that determine if a function is async:
+
+.. ipython:: python
+
+    red =  RedBaron("with a as b: pass")
+    red[0].async_
+    red[0].async_ = True
+    red
+    red[0].async_ = False
+    red
+
+.. WARNING::
+   As of python 3.7 `async` and `await` are now reserved keywords so don't uses
+   `red.async`, it works as expected but won't make your code forward
+   compatible.
