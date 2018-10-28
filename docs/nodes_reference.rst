@@ -1411,6 +1411,28 @@ need to append a :file:`_` to those attributes name to access/modify them:
     red
     # You **CAN'T** do this red[0].excepts = "foobar"
 
+TypedNameNode
+=============
+
+A node representing a typed argument in a function definition.
+
+.. ipython:: python
+
+    RedBaron("def a(b: c): ...")[0].arguments[0].help(deep=True)
+    RedBaron("def a(b: c): ...")[0].arguments[0].target.help(deep=True)
+
+SetAttr
+-------
+
+.. ipython:: python
+
+    red = RedBaron("def a(b: c): ...")[0].arguments[0].target
+    red
+    red[0].value = "stuff"
+    red
+    red[0].annotation = "List[Int]"
+    red
+
 TupleNode
 =========
 
