@@ -63,6 +63,29 @@ Community
 
 You can reach us on [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron) or [irc.freenode.net##python-code-quality](https://webchat.freenode.net/?channels=%23%23python-code-quality).
 
+Financial support
+=================
+
+Baron and RedBaron are a very advanced piece of engineering that requires a lot
+of time of concentration to work on. Until the end of 2018, the development
+has been a full volunteer work mostly done by [Bram](https://github.com/psycojoker),
+but now, to reach the next level and bring those projects to the stability and
+quality you expect, we need your support.
+
+You can join our contributors and sponsors on our transparent
+[OpenCollective](https://opencollective.com/redbaron), every contribution will
+count and will be mainly used to work on the projects stability and quality but
+also on continuing, on the side, the R&D side of those projects.
+
+Our supporters
+--------------
+
+<img src="https://opencollective.com/redbaron/tiers/i-like-this,-keep-going!/badge.svg?label=I like this, keep going!&color=brightgreen" /> <img src="https://opencollective.com/redbaron/tiers/it-looks-cool!/badge.svg?label=It looks cool!&color=brightgreen" /> <img src="https://opencollective.com/redbaron/tiers/oh-god,-that-saved-me-so-much-time!/badge.svg?label=Oh god, that saved me so much time!&color=brightgreen" />
+
+<object type="image/svg+xml" data="https://opencollective.com/redbaron/tiers/i-like-this,-keep-going!.svg?avatarHeight=36&width=600"></object>
+
+Become our first sponsor! <object type="image/svg+xml" data="https://opencollective.com/redbaron/tiers/long-term-sponsor.svg?avatarHeight=36&width=600"></object>
+
 Code of Conduct
 ===============
 
