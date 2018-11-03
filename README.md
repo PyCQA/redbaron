@@ -2,6 +2,8 @@ Introduction
 ============
 
 [![Build Status](https://travis-ci.org/PyCQA/redbaron.svg?branch=master)](https://travis-ci.org/PyCQA/redbaron) [![Latest Version](https://img.shields.io/pypi/v/redbaron.svg)](https://pypi.python.org/pypi/redbaron/) [![Supported Python versions](https://img.shields.io/pypi/pyversions/redbaron.svg)](https://pypi.python.org/pypi/redbaron/) [![Development Status](https://img.shields.io/pypi/status/redbaron.svg)](https://pypi.python.org/pypi/redbaron/) [![Wheel Status](https://img.shields.io/pypi/wheel/redbaron.svg)](https://pypi.python.org/pypi/redbaron/) [![Download format](https://img.shields.io/pypi/format/redbaron.svg)](https://pypi.python.org/pypi/redbaron/) [![License](https://img.shields.io/pypi/l/redbaron.svg)](https://pypi.python.org/pypi/redbaron/)
+[![Backers on Open Collective](https://opencollective.com/redbaron/backers/badge.svg)](#backers) 
+[![Sponsors on Open Collective](https://opencollective.com/redbaron/sponsors/badge.svg)](#sponsors) 
 
 RedBaron is a python library and tool powerful enough to be used into IPython
 solely that intent to make the process of **writing code that modify source
@@ -100,3 +102,33 @@ Links
 * [Documentation](https://redbaron.readthedocs.io/en/latest/)
 * [Baron](https://github.com/PyCQA/baron)
 * IRC chat: [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron)
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/PyCQA/redbaron/contributors"><img src="https://opencollective.com/redbaron/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/redbaron#backer)]
+
+<a href="https://opencollective.com/redbaron#backers" target="_blank"><img src="https://opencollective.com/redbaron/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/redbaron#sponsor)]
+
+<a href="https://opencollective.com/redbaron/sponsor/0/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/redbaron/sponsor/1/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/redbaron/sponsor/2/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/redbaron/sponsor/3/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/redbaron/sponsor/4/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/redbaron/sponsor/5/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/redbaron/sponsor/6/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/redbaron/sponsor/7/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/redbaron/sponsor/8/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/redbaron/sponsor/9/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/9/avatar.svg"></a>
+
+
