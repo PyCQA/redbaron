@@ -102,6 +102,11 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/redbaron/sponsor/8/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/redbaron/sponsor/9/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/9/avatar.svg"></a>
 
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/PyCQA/redbaron/contributors"><img src="https://opencollective.com/redbaron/contributors.svg?width=890&button=false" /></a>
+
 Code of Conduct
 ===============
 
@@ -116,9 +121,3 @@ Links
 * [Documentation](https://redbaron.readthedocs.io/en/latest/)
 * [Baron](https://github.com/PyCQA/baron)
 * IRC chat: [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron)
-
-## Contributors
-
-This project exists thanks to all the people who contribute. 
-<a href="https://github.com/PyCQA/redbaron/contributors"><img src="https://opencollective.com/redbaron/contributors.svg?width=890&button=false" /></a>
-
