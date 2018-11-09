@@ -79,35 +79,6 @@ You can join our contributors and sponsors on our transparent
 count and will be mainly used to work on the projects stability and quality but
 also on continuing, on the side, the R&D side of those projects.
 
-Our supporters
---------------
-
-<img src="https://opencollective.com/redbaron/tiers/i-like-this,-keep-going!/badge.svg?label=I like this, keep going!&color=brightgreen" /> <img src="https://opencollective.com/redbaron/tiers/it-looks-cool!/badge.svg?label=It looks cool!&color=brightgreen" /> <img src="https://opencollective.com/redbaron/tiers/oh-god,-that-saved-me-so-much-time!/badge.svg?label=Oh god, that saved me so much time!&color=brightgreen" />
-
-<object type="image/svg+xml" data="https://opencollective.com/redbaron/tiers/i-like-this,-keep-going!.svg?avatarHeight=36&width=600"></object>
-
-Become our first sponsor! <object type="image/svg+xml" data="https://opencollective.com/redbaron/tiers/long-term-sponsor.svg?avatarHeight=36&width=600"></object>
-
-Code of Conduct
-===============
-
-As a member of [PyCQA](https://github.com/PyCQA), RedBaron follows its [Code of Conduct](http://meta.pycqa.org/en/latest/code-of-conduct.html).
-
-Links
-=====
-
-**RedBaron is fully documented, be sure to check the tutorial and documentation**.
-
-* [Tutorial](https://redbaron.readthedocs.io/en/latest/tuto.html)
-* [Documentation](https://redbaron.readthedocs.io/en/latest/)
-* [Baron](https://github.com/PyCQA/baron)
-* IRC chat: [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron)
-
-## Contributors
-
-This project exists thanks to all the people who contribute. 
-<a href="https://github.com/PyCQA/redbaron/contributors"><img src="https://opencollective.com/redbaron/contributors.svg?width=890&button=false" /></a>
-
 
 ## Backers
 
@@ -131,4 +102,23 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/redbaron/sponsor/8/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/redbaron/sponsor/9/website" target="_blank"><img src="https://opencollective.com/redbaron/sponsor/9/avatar.svg"></a>
 
+Code of Conduct
+===============
+
+As a member of [PyCQA](https://github.com/PyCQA), RedBaron follows its [Code of Conduct](http://meta.pycqa.org/en/latest/code-of-conduct.html).
+
+Links
+=====
+
+**RedBaron is fully documented, be sure to check the tutorial and documentation**.
+
+* [Tutorial](https://redbaron.readthedocs.io/en/latest/tuto.html)
+* [Documentation](https://redbaron.readthedocs.io/en/latest/)
+* [Baron](https://github.com/PyCQA/baron)
+* IRC chat: [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron)
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/PyCQA/redbaron/contributors"><img src="https://opencollective.com/redbaron/contributors.svg?width=890&button=false" /></a>
 
