@@ -1,1 +1,4 @@
-include README.md CHANGELOG
+include README.md CHANGELOG TODO.md
+include requirements.txt requirements-docs.txt test_doc.sh
+graft tests
+graft docs
