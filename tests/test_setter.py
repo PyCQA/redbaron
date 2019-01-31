@@ -328,6 +328,18 @@ def test_set_attr_def_unset_async_indent():
     assert red.dumps() == "class A:\n    def a(): pass\n"
 
 
+def test_set_attr_def_set_return_annotation():
+    red = RedBaron("def a(): pass")
+    red[0].return_annotation = "Int"
+    assert red.dumps() == "def a() -> Int: pass\n"
+
+
+def test_set_attr_def_unset_return_annotation():
+    red = RedBaron("def a() -> Int: pass")
+    red[0].return_annotation = ""
+    assert red.dumps() == "def a(): pass\n"
+
+
 def test_set_decorator_def():
     red = RedBaron("def a(): pass")
     red[0].decorators = "@decorator"
