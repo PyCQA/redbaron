@@ -543,6 +543,12 @@ def test_standalone_annotation():
     assert red.dumps() == "a : Str"
 
 
+def test_star_var():
+    red = RedBaron("a, *b = c")
+    red[0].target[1].value = "(x, y)"
+    assert red.dumps() == "a, *(x, y) = c"
+
+
 def test_await_setattr_value():
     red = RedBaron("await a")
     red[0].value = "b"
