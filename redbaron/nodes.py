@@ -974,6 +974,7 @@ class RaiseNode(Node):
 
             if string:
                 self.third_formatting = [{"type": "space", "value": " "}]
+                self.comma_or_from = ","
                 return Node.from_fst(baron.parse("raise a, %s" % string)[0]["instance"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "traceback":
@@ -1074,6 +1075,14 @@ class SliceNode(Node):
 class SpaceNode(Node):
     def __repr__(self):
         return repr(baron.dumps([self.fst()]))
+
+
+class StandaloneAnnotationNode(Node):
+    pass
+
+
+class StarExpressionNode(Node):
+    pass
 
 
 class StarNode(Node):
