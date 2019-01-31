@@ -334,6 +334,12 @@ def test_set_attr_def_set_return_annotation():
     assert red.dumps() == "def a() -> Int: pass\n"
 
 
+def test_set_attr_def_set_return_annotation_keep_formatting():
+    red = RedBaron("def a() ->    Int: pass")
+    red[0].return_annotation = "pouet"
+    assert red.dumps() == "def a() ->    pouet: pass\n"
+
+
 def test_set_attr_def_unset_return_annotation():
     red = RedBaron("def a() -> Int: pass")
     red[0].return_annotation = ""
