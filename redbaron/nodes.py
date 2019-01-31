@@ -689,8 +689,8 @@ class DefNode(CodeBlockNode):
         if key == "arguments" and not isinstance(self.arguments, CommaProxyList):
             setattr(self, "arguments", CommaProxyList(self.arguments, on_attribute="arguments"))
 
-        if key in ("async", "async_") and getattr(self, "async") and hasattr(self, "async_formatting") and not self.async_formatting:
-            self.async_formatting = " "
+        elif key in ("async", "async_") and getattr(self, "async") and hasattr(self, "async_formatting") and not self.async_formatting:
+            self.async_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="return_annotation_first_formatting", parent=self)]
 
 
 class GeneratorComprehensionNode(Node):
