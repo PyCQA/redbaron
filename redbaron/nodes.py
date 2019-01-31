@@ -67,6 +67,22 @@ class AssignmentNode(Node):
             raise Exception("Unhandled case")
 
 
+class AnnassignNode(Node):
+    def _string_to_node(self, string, parent, on_attribute):
+        if on_attribute == "target":
+            return Node.from_fst(baron.parse("%s: int = a" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "value":
+            self.has_value = True
+            return Node.from_fst(baron.parse("a: int = %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "annotation":
+            return Node.from_fst(baron.parse("a: %s = a" % string)[0]["annotation"], parent=parent, on_attribute=on_attribute)
+
+        else:
+            raise Exception("Unhandled case")
+
+
 class AssociativeParenthesisNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
