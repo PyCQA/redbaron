@@ -63,21 +63,20 @@ class AssignmentNode(Node):
         elif on_attribute == "value":
             return Node.from_fst(baron.parse("a = %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
 
-        else:
-            raise Exception("Unhandled case")
-
-
-class AnnassignNode(Node):
-    def _string_to_node(self, string, parent, on_attribute):
-        if on_attribute == "target":
-            return Node.from_fst(baron.parse("%s: int = a" % string)[0]["target"], parent=parent, on_attribute=on_attribute)
-
-        elif on_attribute == "value":
-            self.has_value = True
-            return Node.from_fst(baron.parse("a: int = %s" % string)[0]["value"], parent=parent, on_attribute=on_attribute)
-
         elif on_attribute == "annotation":
-            return Node.from_fst(baron.parse("a: %s = a" % string)[0]["annotation"], parent=parent, on_attribute=on_attribute)
+            if not string.strip():
+                self.annotation_first_formatting = []
+                self.annotation_second_formatting = []
+                return ""
+
+            else:
+                if not self.annotation_first_formatting:
+                    self.annotation_first_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="return_annotation_first_formatting", parent=self)]
+
+                if not self.annotation_second_formatting:
+                    self.annotation_second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="return_annotation_first_formatting", parent=self)]
+
+                return Node.from_fst(baron.parse("a: %s = a" % string)[0]["annotation"], parent=parent, on_attribute=on_attribute)
 
         else:
             raise Exception("Unhandled case")

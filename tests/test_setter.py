@@ -519,6 +519,30 @@ def test_assign_node_setattr_operator():
         red[0].operator = "raise"
 
 
+def test_assign_node_setattr_annotation():
+    red = RedBaron("a = b")
+    red[0].annotation = "Int"
+    assert red.dumps() == "a : Int = b"
+
+
+def test_assign_node_setattr_annotation_existing():
+    red = RedBaron("a : Str = b")
+    red[0].annotation = "Int"
+    assert red.dumps() == "a : Int = b"
+
+
+def test_assign_node_setattr_remove():
+    red = RedBaron("a : Int = b")
+    red[0].annotation = ""
+    assert red.dumps() == "a = b"
+
+
+def test_standalone_annotation():
+    red = RedBaron("a : Int")
+    red[0].annotation = "Str"
+    assert red.dumps() == "a : Str"
+
+
 def test_await_setattr_value():
     red = RedBaron("await a")
     red[0].value = "b"
