@@ -1304,6 +1304,40 @@ def test_raise_setattr_traceback_raise():
         red[0].traceback = "c"
 
 
+def test_raise_from_setattr_instance():
+    red = RedBaron("raise a from b")
+    red[0].instance = "hop"
+    assert red.dumps() == "raise a from hop"
+
+
+def test_raise_from_setattr_instance_remove():
+    red = RedBaron("raise a from b")
+    red[0].instance = ""
+    assert red.dumps() == "raise a"
+
+
+def test_raise_from_setattr_set_instance():
+    red = RedBaron("raise a")
+    red[0].instance = "b"
+    assert red.dumps() == "raise a, b"
+    red[0].comma_or_from = "from"
+    assert red.dumps() == "raise a from b"
+    red[0].comma_or_from = ","
+    assert red.dumps() == "raise a, b"
+
+
+def test_raise_from_setattr_set_comma():
+    red = RedBaron("raise a from b")
+    red[0].comma_or_from = ","
+    assert red.dumps() == "raise a, b"
+
+
+def test_raise_from_setattr_set_from():
+    red = RedBaron("raise a, b")
+    red[0].comma_or_from = "from"
+    assert red.dumps() == "raise a from b"
+
+
 def test_return_setattr_value():
     red = RedBaron("return a")
     red[0].value = "hop"

@@ -1008,7 +1008,8 @@ class RaiseNode(Node):
 
             if string:
                 self.third_formatting = [{"type": "space", "value": " "}]
-                self.comma_or_from = ","
+                if not self.comma_or_from:
+                    self.comma_or_from = ","
                 return Node.from_fst(baron.parse("raise a, %s" % string)[0]["instance"], parent=parent, on_attribute=on_attribute)
 
         elif on_attribute == "traceback":
@@ -1021,6 +1022,24 @@ class RaiseNode(Node):
 
         else:
             raise Exception("Unhandled case")
+
+    def __setattr__(self, key, value):
+        current = getattr(self, "comma_or_from", None)
+
+        super(RaiseNode, self).__setattr__(key, value)
+
+        if key == "comma_or_from":
+            if value == current:
+                return
+
+            if value == "from":
+                self.second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="second_formatting", parent=self)]
+                self.third_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="third_formatting", parent=self)]
+
+            elif value == ",":
+                self.second_formatting = []
+                self.third_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="third_formatting", parent=self)]
+
 
 
 class RawStringNode(Node, LiteralyEvaluable):
