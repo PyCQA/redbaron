@@ -357,6 +357,15 @@ class DefArgumentNode(Node):
         elif on_attribute == "target":
             return Node.from_fst(baron.parse("def a(%s=b): pass" % string)[0]["arguments"][0]["target"], parent=parent, on_attribute=on_attribute) if string else ""
 
+        elif on_attribute == "annotation":
+            if not self.annotation_first_formatting:
+                self.annotation_first_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="annotation_first_formatting", parent=self)]
+
+            if not self.annotation_second_formatting:
+                self.annotation_second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="annotation_second_formatting", parent=self)]
+
+            return Node.from_fst(baron.parse("def a(a:%s=b): pass" % string)[0]["arguments"][0]["annotation"], parent=parent, on_attribute=on_attribute) if string else ""
+
         else:
             raise Exception("Unhandled case")
 
@@ -374,6 +383,15 @@ class DictArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
             return Node.from_fst(baron.parse("a(**%s)" % string)[0]["value"][1]["value"][0]["value"], parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "annotation":
+            if not self.annotation_first_formatting:
+                self.annotation_first_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="annotation_first_formatting", parent=self)]
+
+            if not self.annotation_second_formatting:
+                self.annotation_second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="annotation_second_formatting", parent=self)]
+
+            return Node.from_fst(baron.parse("def a(a:%s=b): pass" % string)[0]["arguments"][0]["annotation"], parent=parent, on_attribute=on_attribute) if string else ""
 
         else:
             raise Exception("Unhandled case")
@@ -862,6 +880,15 @@ class ListArgumentNode(Node):
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":
             return Node.from_fst(baron.parse("lambda *%s: x" % string)[0]["arguments"][0]["value"], parent=parent, on_attribute=on_attribute)
+
+        elif on_attribute == "annotation":
+            if not self.annotation_first_formatting:
+                self.annotation_first_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="annotation_first_formatting", parent=self)]
+
+            if not self.annotation_second_formatting:
+                self.annotation_second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="annotation_second_formatting", parent=self)]
+
+            return Node.from_fst(baron.parse("def a(a:%s=b): pass" % string)[0]["arguments"][0]["annotation"], parent=parent, on_attribute=on_attribute) if string else ""
 
         else:
             raise Exception("Unhandled case")

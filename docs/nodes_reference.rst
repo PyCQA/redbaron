@@ -521,6 +521,18 @@ SetAttr
     red[0].arguments[0].value = "1 + 1"
     red
 
+*New in 0.9*
+
+Annotations:
+
+.. ipython:: python
+
+    red = RedBaron("def a(b): pass")
+    red
+    red[0].arguments[0].annotation = "Int"
+    red
+    red[0].arguments[0].annotation
+    red
 
 DelNode
 =======
@@ -563,6 +575,19 @@ SetAttr
     red = RedBaron("a(**b)")
     red
     red[0].value[1].value[0].value = "plop"
+    red
+
+*New in 0.9*
+
+Annotations:
+
+.. ipython:: python
+
+    red = RedBaron("def a(**b): pass")
+    red
+    red[0].arguments[0].annotation = "Int"
+    red
+    red[0].arguments[0].annotation
     red
 
 
@@ -1103,6 +1128,19 @@ Works as expected:
     red[0].arguments[0].value = "plop"
     red
 
+*New in 0.9*
+
+Annotations:
+
+.. ipython:: python
+
+    red = RedBaron("def a(*b): pass")
+    red
+    red[0].arguments[0].annotation = "Int"
+    red
+    red[0].arguments[0].annotation
+    red
+
 
 ListComprehensionNode
 =====================
@@ -1453,28 +1491,6 @@ need to append a :file:`_` to those attributes name to access/modify them:
     red[0].excepts = "except X:\n    pass\nexcept Y:\n    pass"
     red
     # You **CAN'T** do this red[0].excepts = "foobar"
-
-TypedNameNode
-=============
-
-A node representing a typed argument in a function definition.
-
-.. ipython:: python
-
-    RedBaron("def a(b: c): ...")[0].arguments[0].help(deep=True)
-    RedBaron("def a(b: c): ...")[0].arguments[0].target.help(deep=True)
-
-SetAttr
--------
-
-.. ipython:: python
-
-    red = RedBaron("def a(b: c): ...")[0].arguments[0].target
-    red
-    red[0].value = "stuff"
-    red
-    red[0].annotation = "List[Int]"
-    red
 
 TupleNode
 =========

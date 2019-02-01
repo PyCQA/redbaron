@@ -1009,6 +1009,48 @@ def test_def_argument_setattr_value():
         red[0].arguments[0].value = "def a(): pass\n"
 
 
+def test_def_argument_setattr_annotation():
+    red = RedBaron("def a(b): pass")
+    red[0].arguments[0].annotation = "Int"
+    assert red.dumps() == "def a(b : Int): pass\n"
+
+
+def test_def_argument_setattr_annotation_value():
+    red = RedBaron("def a(b : Int): pass")
+    red[0].arguments[0].value = "plop"
+    assert red.dumps() == "def a(b : Int=plop): pass\n"
+
+
+def test_def_argument_setattr_remove_annotation():
+    red = RedBaron("def a(b : Int): pass")
+    red[0].arguments[0].annotation = ""
+    assert red.dumps() == "def a(b): pass\n"
+
+
+def test_list_argument_setattr_annotation():
+    red = RedBaron("def a(*b): pass")
+    red[0].arguments[0].annotation = "Int"
+    assert red.dumps() == "def a(*b : Int): pass\n"
+
+
+def test_list_argument_setattr_remove_annotation():
+    red = RedBaron("def a(*b : Int): pass")
+    red[0].arguments[0].annotation = ""
+    assert red.dumps() == "def a(*b): pass\n"
+
+
+def test_dict_argument_setattr_annotation():
+    red = RedBaron("def a(**b): pass")
+    red[0].arguments[0].annotation = "Int"
+    assert red.dumps() == "def a(**b : Int): pass\n"
+
+
+def test_dict_argument_setattr_remove_annotation():
+    red = RedBaron("def a(**b : Int): pass")
+    red[0].arguments[0].annotation = ""
+    assert red.dumps() == "def a(**b): pass\n"
+
+
 def test_del_setattr_value():
     red = RedBaron("del a")
     red[0].value = "a, b, c"
