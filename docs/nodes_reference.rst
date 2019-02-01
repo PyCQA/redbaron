@@ -1330,6 +1330,19 @@ it except if you play with the way the file is rendered.
     RedBaron("1 + 1").help()
 
 
+StarExpressionNode
+==================
+
+*New in 0.9*
+
+A node representing the result of a deconstruction in an assignment.
+
+.. ipython:: python
+
+   red = RedBaron("a, *b = c")
+   red
+   red[0].target[1].help()
+
 StringChainNode
 ===============
 
