@@ -678,7 +678,9 @@ class FromImportNode(Node):
         For example:
             RedBaron("from qsd import a, c, e as f").names() == ['a', 'c', 'f']
         """
-        return [x.target if x.target else x.value for x in self.targets]
+        return [x.target if getattr(x, "target", None) else x.value
+                for x in self.targets
+                if not isinstance(x, (LeftParenthesisNode, RightParenthesisNode))]
 
     def modules(self):
         """Return the list of the targets imported
@@ -694,7 +696,9 @@ class FromImportNode(Node):
         For example (notice 'e' instead of 'f'):
             RedBaron("from qsd import a, c, e as f").names() == ['qsd.a', 'qsd.c', 'qsd.f']
         """
-        return [self.value.dumps() + "." + (x.target if x.target else x.value) for x in self.targets]
+        return [self.value.dumps() + "." + (x.target if x.target else x.value)
+                for x in self.targets
+                if not isinstance(x, (LeftParenthesisNode, RightParenthesisNode))]
 
     def full_path_modules(self):
         """Return the list of the targets imported with the full module path
@@ -702,7 +706,9 @@ class FromImportNode(Node):
         For example (notice 'e' instead of 'f'):
             RedBaron("from qsd import a, c, e as f").names() == ['qsd.a', 'qsd.c', 'qsd.e']
         """
-        return [self.value.dumps() + "." + x.value for x in self.targets]
+        return [self.value.dumps() + "." + x.value
+                for x in self.targets
+                if not isinstance(x, (LeftParenthesisNode, RightParenthesisNode))]
 
     def _string_to_node_list(self, string, parent, on_attribute):
         if on_attribute == "targets":
