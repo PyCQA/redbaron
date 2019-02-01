@@ -486,6 +486,18 @@ Async is a boolean attribute that determine if a function is async:
    `red.async`, it works as expected but won't make your code forward
    compatible.
 
+*New in 0.9*
+
+Return annotation management:
+
+.. ipython:: python
+
+    red =  RedBaron("def stuff():\n    return 42\n")
+    red
+    red[0].return_annotation = "Int"
+    red
+    red[0].return_annotation = ""
+    red
 
 
 DefArgumentNode
