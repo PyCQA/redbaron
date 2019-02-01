@@ -10,7 +10,7 @@
     from redbaron import RedBaron
 
 LineProxyList usage examples
-===========================
+============================
 
 .. ipython:: python
 
