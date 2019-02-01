@@ -1,6 +1,16 @@
 Changelog
 =========
 
+0.9 (2019-02-01)
+----------------
+
+- full python 3.7 syntax support
+
+- BREAKING CHANGE: annotations are now member of {Def,List,Dict}Argument to flatten the data structure, TypedNameNode doesn't exist anymore
+- add support for return annotation by bram
+- add support for variable annotation https://github.com/PyCQA/redbaron/pull/177 by scottbelden and additional work by bram
+- add support for raise from by bram
+
 0.8 (2018-10-29)
 ----------------
 
