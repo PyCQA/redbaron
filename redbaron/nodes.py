@@ -322,7 +322,7 @@ class DefNode(CodeBlockNode):
                     self.return_annotation_first_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="return_annotation_first_formatting", parent=self)]
 
                 if not self.return_annotation_second_formatting:
-                    self.return_annotation_second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="return_annotation_first_formatting", parent=self)]
+                    self.return_annotation_second_formatting = [Node.from_fst({"type": "space", "value": " "}, on_attribute="return_annotation_second_formatting", parent=self)]
 
                 return Node.from_fst(fst, parent=parent, on_attribute=on_attribute)
 
