@@ -34,14 +34,16 @@ There might be the only exception that if you directly call specific nodes
 constructors with FST that this API change, but this is not documented and
 simply horribly unpracticable, so I'm expecting no one to do that.
 
-**Disclaimer**: RedBaron (and baron) is **working** with python3 but it is NOT fully parsing it yet.
+Support
+=======
+
+RedBaron is support python python 2 and up to python 3.7 grammar.
 
 Roadmap
 =======
 
 Current roadmap is as boring as needed:
 
-* [full python 3.7 compatibility](https://baron.readthedocs.io/en/latest/grammar.html)
 * bug fixes
 * new small features (walker pattern, maybe code generation) and performance improvement.
 
