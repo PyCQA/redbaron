@@ -1229,6 +1229,24 @@ SetAttr
     red
 
 
+*New in 0.9*
+
+How to deal with the "raise from" notation: (by default a comma is inserted to
+avoid breaking backward compatibility)
+
+.. ipython:: python
+
+    red = RedBaron("raise stuff")
+    red
+    red[0].instance = "foo"
+    red
+    red[0].comma_or_from = "from"
+    red
+    red[0].comma_or_from = ","
+    red
+    red[0].instance = ""
+    red
+
 ReprNode
 ========
 
