@@ -8,13 +8,17 @@ import pytest
 from redbaron import RedBaron
 
 
-@pytest.fixture
 def red():
     return RedBaron("""\
 @deco
 def a(c, d):
     b = c + d
 """)
+
+
+@pytest.fixture(name="red")
+def red_fixture():
+    return red()
 
 
 fst = red()
