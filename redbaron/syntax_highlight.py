@@ -7,7 +7,7 @@ except ImportError:
 
 
 if HAS_PYGMENTS:
-    from pygments.token import Comment, Text, String, Keyword, Name, Operator
+    from pygments.token import Comment, Text, String, Keyword, Name, Operator, Generic
     from pygments.lexer import RegexLexer, bygroups
     from pygments import highlight
     from pygments.lexers import PythonLexer
@@ -19,6 +19,7 @@ if HAS_PYGMENTS:
 
         tokens = {
             'root': [
+                (r'\x1b(.*?)\[(\d+)m', Generic),  # avoid escaping twice, see issue#180
                 (r"#.*$", Comment),
                 (r"('([^\\']|\\.)*'|\"([^\\\"]|\\.)*\")", String),
                 (r"(None|False|True)", String),
