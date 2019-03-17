@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.9.2 (2019-03-17)
+------------------
+
+- fix a situation in .help() where some code where colorized twice by Hanaasagi https://github.com/PyCQA/redbaron/pull/182
+
 0.9.1 (2019-02-01)
 ------------------
 
