@@ -48,7 +48,12 @@ def test_highlight(capsys, monkeypatch):
 
     RedBaron("a = []").help()
     captured = capsys.readouterr()
-    assert captured.out == """\
+
+    if tuple(map(int, pytest.__version__.split('.'))) <= (3, 3):
+        out = captured[0]
+    else:
+        out = captured.out
+    assert out == """\
 0 -----------------------------------------------------
 \x1b[38;5;148mAssignmentNode\x1b[39m\x1b[38;5;197m(\x1b[39m\x1b[38;5;197m)\x1b[39m
 \x1b[38;5;15m  \x1b[39m\x1b[38;5;242m# identifiers: assign, assignment, assignment_, assignmentnode\x1b[39m
