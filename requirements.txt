@@ -1,3 +1,4 @@
 baron
-pytest
+pytest<4
+more-itertools<8
 pygments
