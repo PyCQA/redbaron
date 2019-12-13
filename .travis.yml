@@ -1,7 +1,6 @@
 language: python
 install:
-  - pip install git+https://github.com/Psycojoker/baron.git
-  - pip install pytest
+  - pip install -r requirements.txt
   - find . -name '*.pyc' -delete
   - python setup.py install
 python:
