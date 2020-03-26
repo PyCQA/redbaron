@@ -12,12 +12,12 @@ except ImportError:
 
 
 setup(name='redbaron',
-      version='0.9.2',
+      version='0.9.3',
       description='Abstraction on top of baron, a FST for python to make writing refactoring code a realistic task',
       author='Laurent Peuch',
       long_description=read_md("README.md") + "\n\n" + open("CHANGELOG", "r").read(),
       author_email='cortex@worlddomination.be',
-      url='https://github.com/PyCQA/redbaron',
+      url='https://github.com/kayak/redbaron',
       install_requires=['baron>=0.7'],
       extras_require={
           "notebook": ["pygments"],

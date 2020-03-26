@@ -1,6 +1,6 @@
 language: python
 install:
-  - pip install git+https://github.com/Psycojoker/baron.git
+  - pip install git+https://github.com/PyCQA/baron
   - pip install pytest
   - find . -name '*.pyc' -delete
   - python setup.py install
@@ -10,12 +10,11 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-  - "3.7-dev"
+  - "3.7"
+  - "3.8"
 script:
   - py.test tests
   - bash ./test_doc.sh
   - pip install pygments
   - py.test tests
   - bash ./test_doc.sh
-notifications:
-  irc: "chat.freenode.net#baron"
