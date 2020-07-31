@@ -375,7 +375,7 @@ RedBaron provides a Path class that represent a path to a node.
 .map .filter .apply
 -------------------
 
-RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :file:`.apply` quite similar to python builtins (except for apply). The main difference is that they return a node list instance instead of a python buildin list.
+RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :file:`.apply` quite similar to python builtins (except for apply). The main difference is that they return a node list instance instead of a python built-in list.
 
 * :file:`.map` takes a callable (like a lambda or a function) that receive a
   node as first argument, this callable is applied on every node of the node
