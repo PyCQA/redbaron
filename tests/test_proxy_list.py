@@ -1159,6 +1159,12 @@ def test_line_proxy_correctly_indent_code_block():
     assert red.dumps() == "while True:\n    pass\n    if a:\n        pass\n\n"
 
 
+def test_line_proxy_correctly_indent_try():
+    red = RedBaron("def test():\n    try:\n        pass\n    except:\n        pass\n    finally:\n    pass")
+    red.append("c")
+    assert red.dumps() == "def test():\n    try:\n        pass\n    except:\n        pass\n    finally:\n    pass\nc\n"
+
+
 def test_root_as_line_proxy_list_len():
     red = RedBaron("a\nb\nc\n")
     assert len(red) == 3
