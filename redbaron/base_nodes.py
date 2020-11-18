@@ -1537,10 +1537,24 @@ class CommaProxyList(ProxyList):
         # I don't like that
         self.has_trailing = self.node_list and self.node_list[-1].type == "comma"
 
+    def _get_separator_indentation(self):
+        return self.node_list.filtered()[
+            0].indentation if self.node_list.filtered() else self.parent.indentation + "    "
+
+    def _get_trailing_indentation(self):
+        if self.node_list and self.node_list[-1].type == "comma":
+          endls = self.node_list[-1].second_formatting.find_all('endl')
+          if endls:
+            return endls[-1].indent
+
+        # This should never happen, unless someone manually sets
+        # self.style = 'indented'
+        return self.parent.indentation
+
     def _get_middle_separator(self):
         if self.style == "indented":
             return redbaron.nodes.CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [
-                {"type": "endl", "indent": self.parent.indentation + "    ", "formatting": [], "value": "\n"}]})
+                {"type": "endl", "indent": self._get_separator_indentation(), "formatting": [], "value": "\n"}]})
 
         return redbaron.nodes.CommaNode(
             {"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
@@ -1551,6 +1565,15 @@ class CommaProxyList(ProxyList):
             separator.parent = self.node_list
             separator.on_attribute = self.on_attribute
             return separator
+
+        if self.style == "indented":
+          # The basic idea here is that we are trying to use the existing
+          # indentation as we add and remove elements. We want to indent new
+          # elements the same way as the first element. We want the trailing
+          # comma to keep a constant trailing indentation even as we append
+          # elements.
+          separator_indentation = self._get_separator_indentation()
+          trailing_indentation = self._get_trailing_indentation()
 
         # XXX will break comments
         if not self.data:
@@ -1583,8 +1606,8 @@ class CommaProxyList(ProxyList):
                         if not expected_list[-1].second_formatting.endl:
                             raise Exception(
                                 "It appears that you have indentation in your CommaList, for now RedBaron doesn't know how to handle this situation (which requires a lot of work), sorry about that. You can find more information here https://github.com/PyCQA/redbaron/issues/100")
-                        elif expected_list[-1].second_formatting.endl.indent != self.parent.indentation + " " * 4:
-                            expected_list[-1].second_formatting.endl.indent = self.parent.indentation + " " * 4
+                        found_endl = expected_list[-1].second_formatting.find_all('endl')[-1]
+                        found_endl.indent = separator_indentation
             else:
                 # here we generate the new expected formatting
                 # None is used as a sentry value for newly inserted values in the proxy list
@@ -1598,8 +1621,9 @@ class CommaProxyList(ProxyList):
             if not expected_list[-1].second_formatting.endl:
                 raise Exception(
                     "It appears that you have indentation in your CommaList, for now RedBaron doesn't know how to handle this situation (which requires a lot of work), sorry about that. You can find more information here https://github.com/PyCQA/redbaron/issues/100")
-            elif expected_list[-1].second_formatting.endl.indent != self.parent.indentation:
-                expected_list[-1].second_formatting.endl.indent = self.parent.indentation
+
+            found_endl = expected_list[-1].second_formatting.find_all('endl')[-1]
+            found_endl.indent = trailing_indentation
 
         return expected_list
 
