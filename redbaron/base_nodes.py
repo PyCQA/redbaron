@@ -1830,7 +1830,7 @@ class LineProxyList(ProxyList):
                 # here we encounter a middle value that should have formatting
                 # to separate between the intems but has not so we add it
                 # this happen because a new value has been added after this one
-                if not is_last and not i[1] and not isinstance(i[0], CodeBlockNode):
+                if not is_last and not i[1] and not isinstance(i[0], CodeBlockNode) and len(i) > 2:
                     log(
                         "If current isn't a CodeBlockNode and doesn't have a separator and isn't the last, mark it has might needing a separator")
                     might_need_separator = True
