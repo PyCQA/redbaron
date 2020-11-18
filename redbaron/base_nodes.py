@@ -1759,9 +1759,12 @@ class LineProxyList(ProxyList):
 
         def get_real_last(node):
             try:
-                return node.node_list[-1]
+                return node._get_last_member_to_clean()
             except:
-                return node[-1]
+                try:
+                    return node.node_list[-1]
+                except:
+                    return node[-1]
 
         def modify_last_indentation(node, indentation):
             try:
