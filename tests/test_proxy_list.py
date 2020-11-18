@@ -1244,6 +1244,12 @@ def test_root_as_line_proxy_list_extend():
     assert red.dumps() == "\n\na\nb\nc\nzob\n"
 
 
+def test_line_proxy_inline_comment():
+    red = RedBaron("a # b\n")
+    red.append("c")
+    assert red.dumps() == "a # b\nc\n"
+
+
 def test_regression_first_method_of_a_class_decorators_append():
     red = RedBaron("class A:\n    def foo():\n        pass")
     red.def_.decorators.append("@staticmethod")
