@@ -304,6 +304,7 @@ A node representing a class definition.
 .. ipython:: python
 
     RedBaron("class SomeAwesomeName(A, B, C): pass")[0].help(deep=True)
+    RedBaron("class SomeAwesomeName(A, B, metaclass=C): pass")[0].help(deep=True)
 
 SetAttr
 -------
