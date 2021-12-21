@@ -1789,7 +1789,7 @@ class LineProxyList(ProxyList):
             expected_list.append(i[0])
             log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
 
-            if previous and previous.type == "endl" and i[0].type != "endl" and previous.indentation != indentation:
+            if previous and previous.type == "endl" and i[0].type != "endl" and previous.indent != indentation:
                 log("Previous is endl and current isn't endl and identation isn't correct, fix it")
                 previous.indent = indentation
 
