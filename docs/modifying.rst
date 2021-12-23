@@ -32,7 +32,7 @@ use the RedBaron nodes constructors, like this:
     In [58]: red
 
 As you can see, this is totally impracticable. So, to solve this problem,
-RedBaron adopt a simple logic: you already know how to code in python, so, just
+RedBaron adopts some simple logic: you already know how to code in python, so, just
 send python code in form of a string, RedBaron will takes care or parsing and
 injecting it into its tree. This give an extremely simple and intuitive API:
 
@@ -46,7 +46,7 @@ injecting it into its tree. This give an extremely simple and intuitive API:
 
     In [58]: red
 
-The details on how you can modify **every** nodes can be found here: :doc:`nodes_reference`.
+The details on how you can modify **every** node can be found here: :doc:`nodes_reference`.
 
 Code block modifications
 ------------------------
