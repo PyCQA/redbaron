@@ -1155,10 +1155,12 @@ class CodeBlockNode(Node):
 
         # putting this in the string template will fail, need at least some indent
         if indentation == 0:
-            clean_string = "    " + "\n    ".join(clean_string.split("\n"))
-            clean_string = clean_string.rstrip()
+            if clean_string == '':
+                clean_string = '    '
+            else:
+                clean_string = "\n".join(["    " + x if x else '' for x in clean_string.split("\n")])
 
-        fst = baron.parse("def a():\n%s\n" % clean_string)[0]["value"]
+        fst = baron.parse("def a():\n%s" % clean_string)[0]["value"]
 
         result = NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
 
@@ -1169,28 +1171,7 @@ class CodeBlockNode(Node):
         elif indentation < target_indentation:
             result.increase_indentation(target_indentation - indentation)
 
-        endl_base_node = Node.from_fst({'formatting': [], 'indent': '', 'type': 'endl', 'value': '\n'},
-                                       on_attribute=on_attribute, parent=parent)
-
-        if (self.on_attribute == "root" and self.next) or (not self.next and self.parent and self.parent.next):
-            # I need to finish with 3 endl nodes
-            if not all(map(lambda x: x.type == "endl", result[-1:])):
-                result.append(endl_base_node.copy())
-            elif not all(map(lambda x: x.type == "endl", result[-2:])):
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-            elif not all(map(lambda x: x.type == "endl", result[-3:])):
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-        elif self.next:
-            # I need to finish with 2 endl nodes
-            if not all(map(lambda x: x.type == "endl", result[-2:])):
-                result.append(endl_base_node.copy())
-            elif not all(map(lambda x: x.type == "endl", result[-3:])):
-                result.append(endl_base_node.copy())
-                result.append(endl_base_node.copy())
-
+        if self.next:
             result[-1].indent = self.indentation
 
         return result
@@ -1764,8 +1745,7 @@ class LineProxyList(ProxyList):
             log("[%s] %s", position, i)
 
             if might_need_separator and i[0].type != "endl" and (
-                        not previous or previous.type != "endl") and not isinstance(previous, (
-                    CodeBlockNode, redbaron.nodes.IfelseblockNode)):
+                        not previous or previous.type != "endl") and not isinstance(previous, CodeBlockNode):
                 log(">> Previous line has content and current needs to be indented, append separator to indent it")
                 expected_list.append(generate_separator())
                 log("-- current result: %s", ["".join(map(lambda x: x.dumps(), expected_list))])
