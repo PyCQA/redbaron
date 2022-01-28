@@ -322,7 +322,7 @@ expect the number of spaces to add or to remove as first argument.
 
 This method safely evaluate the current selected nodes. It wraps
 `ast.literal_eval
-<https://docs.python.org/2/library/ast.html#ast.literal_eval>`_, therefor, and
+<https://docs.python.org/2/library/ast.html#ast.literal_eval>`_, therefore, and
 for security reasons, it only works on a subset of python: numbers, strings,
 lists, dicts, tuples, boolean and :file:`None`. Of course, using this method on
 a list/dict/tuple containing values that aren't listed here will raise a
@@ -375,7 +375,7 @@ RedBaron provides a Path class that represent a path to a node.
 .map .filter .apply
 -------------------
 
-RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :file:`.apply` quite similar to python builtins (except for apply). The main difference is that they return a node list instance instead of a python buildin list.
+RedBaron nodes list have 3 helper methods :file:`.map`, :file:`.filter` and :file:`.apply` quite similar to python builtins (except for apply). The main difference is that they return a node list instance instead of a python built-in list.
 
 * :file:`.map` takes a callable (like a lambda or a function) that receive a
   node as first argument, this callable is applied on every node of the node
