@@ -4,32 +4,32 @@ Welcome to RedBaron's documentation!
 Introduction
 ------------
 
-RedBaron is a python library and tool powerful enough to be used into IPython
-solely that intent to make the process of **writing code that modify source
-code** as easy and as simple as possible. That include writing custom
+RedBaron is a python library and tool powerful enough to be used in IPython
+solely with the intent to make the process of **writing code that modifies source
+code** as easy and simple as possible. That includes writing custom
 refactoring, generic refactoring, tools, IDE or directly modifying you source
 code into IPython with a higher and more powerful abstraction than the
 advanced texts modification tools that you find in advanced text editors and
 IDE.
 
-RedBaron guaranteed you that **it will only modify your code where you ask him
+RedBaron gaurantees that **it will only modify your code where you ask it
 to**. To achieve this, it is based on `Baron <https://github.com/PyCQA/baron>`_
 a lossless `AST <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`_ for
 Python  that guarantees the operation :file:`fst_to_code(code_to_fst(source_code)) == source_code`.
 
-RedBaron API and feel is heavily inspired by BeautifulSoup. It tries to be
-simple and intuitive and that once you've get the basics principles, you are
+RedBaron's API and feel is heavily inspired by BeautifulSoup. It tries to be
+simple and intuitive and once you've got the basic principles, you'll be
 good without reading the doc for 80% of your operations.
 
 A note about the examples
 -------------------------
 
 This documentation is full of example for nearly everything. But in fact, those
-aren't really "example": those are real life code that are executed at the
-compilation time of this documentation, this guaranteed the example you see to
-work exactly the same way for you.
+aren't really "example": they are real life code that is executed at the
+compilation time of this documentation, this guarantees that the examples you 
+see will work in exactly the same way for you.
 
-Funny side effect: this make it possible to "break" this documentation.
+Funny side effect: this makes it possible to "break" this documentation.
 
 Code
 ----
@@ -43,7 +43,7 @@ Installation
 
     pip install redbaron[pygments]
 
-Or if you don't want to have syntax highlight in your shell or don't need it:
+Or if you don't want to have syntax highlighting in your shell or don't need it:
 
 ::
 
