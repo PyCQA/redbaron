@@ -573,6 +573,18 @@ def test_line_proxy_list_insert_2_at_middle():
     assert red.dumps() == "while a:\n    pass\n    c\n    pass\n"
 
 
+def test_line_proxy_list_insert_comment():
+    red = RedBaron("while a:\n    pass\n")
+    red[0].value.insert(0, "#c")
+    assert red.dumps() == "while a:\n    #c\n    pass\n"
+
+
+def test_line_proxy_list_insert_comment_as_baron():
+    red = RedBaron("while a:\n    pass\n")
+    red[0].value.insert(0, RedBaron("#c"))
+    assert red.dumps() == "while a:\n    #c\n    pass\n"
+
+
 def test_line_proxy_list_append():
     red = RedBaron("while a:\n    pass\n")
     red[0].value.append("c")
