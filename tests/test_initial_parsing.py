@@ -998,6 +998,30 @@ def test_replace():
     assert red.dumps() == "caramba"
 
 
+def test_replace():
+    red = RedBaron("1 + 2\n\n\n2 + 3")
+    red[0].replace("caramba")
+    assert isinstance(red[0], NameNode)
+    assert red.dumps() == "caramba\n\n\n2 + 3"
+
+
+def test_replace_on_def():
+    red = RedBaron("def a():pass\n\n\n2 + 3")
+    red[0].replace("caramba")
+    assert isinstance(red[0], NameNode)
+    # We loose one newline because the first \n in the example belongs
+    # to the def node we're replacing. This is intended but not really
+    # intuitive.
+    assert red.dumps() == "caramba\n\n2 + 3"
+
+
+def test_replace_on_def2():
+    red = RedBaron("def a():\n    pass\n\n\n2 + 3")
+    red[0].replace("caramba")
+    assert isinstance(red[0], NameNode)
+    assert red.dumps() == "caramba\n\n2 + 3"
+
+
 def test_insert_before():
     red = RedBaron("a = 1\nprint(pouet)\n")
     red.print_.insert_before("chocolat")
