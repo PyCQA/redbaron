@@ -925,6 +925,7 @@ class Node(GenericNodesUtils):
             'previous_generator',
             'previous_generator',
             'replace',
+            'rename',
             'to_python',
         ])
         return [x for x in dir(self) if
@@ -1055,6 +1056,14 @@ class Node(GenericNodesUtils):
         new_node = self._convert_input_to_node_object(new_node, parent=None, on_attribute=None, generic=True)
         self.__class__ = new_node.__class__  # YOLO
         self.__init__(new_node.fst(), parent=self.parent, on_attribute=self.on_attribute)
+
+    def rename(self, new_value):
+        if self.type in ('def', 'class'):
+            self.name = new_value
+        elif self.type == 'name':
+            self.value = new_value
+        else:
+            raise TypeError('Rename method does not support {0} type'.format(self.type))
 
     def edit(self, editor=None):
         if editor is None:

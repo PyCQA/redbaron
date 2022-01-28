@@ -3,7 +3,6 @@
 ### Important
 
 - .help() seems really slow on big piece of code (for example RedBaron("baron/grammator.py").read())("dict")[0].help() is suuuuuuuuuuuuuuuuper slow)
-- .rename() (name -> value, def/class -> name)
 - .replace() expect a whole valid python program. This could be fixed by look at "on_attribute" and resetting itself like that.
 
 - generate default constructors for nodes using nodes_rendering_order
