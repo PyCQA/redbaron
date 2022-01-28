@@ -1,3 +1,5 @@
+import pytest
+
 from redbaron import RedBaron
 
 
@@ -23,3 +25,26 @@ def test_on_copied_blocknode_set_body():
 def test_find_empty_call():
     red = RedBaron("a()")
     assert red.find("call") is red[0][1]
+
+
+@pytest.mark.parametrize(
+    'original_src, transformed_src',
+    (
+        (
+            "\nimport i1\nimport i2\n",
+            "\nimport i1\nimport i2\nimport i1\n",
+        ),
+        (
+            "\nimport i1\nimport i2\n\nif True:\n    main()\n",
+            "\nimport i1\nimport i2\nimport i1\n\nif True:\n    main()\n",
+        ),
+    )
+)
+def test_does_not_dumps_extra_trailing_lf_after_root_insert_if_nested(
+        original_src,
+        transformed_src,
+):
+    red = RedBaron(original_src)
+    imp1, imp2 = red.find_all('import')
+    imp2.insert_after(imp1)
+    assert red.dumps() == transformed_src
