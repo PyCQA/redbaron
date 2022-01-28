@@ -1533,24 +1533,64 @@ class CommaProxyList(ProxyList):
         super(CommaProxyList, self).__init__(node_list, on_attribute=on_attribute)
         self.style = "indented" if any(self.node_list('comma', recursive=False).map(lambda x: x('endl'))) else "flat"
 
-        # XXX will likely break if the user modify the formatting of the list,
-        # I don't like that
-        self.has_trailing = self.node_list and self.node_list[-1].type == "comma"
+    def _infer_middle_indentation(self):
+        """Determines how far to indent nodes for an indented list."""
+        # Find a non-trailing comma node, and use the existing indentation. This
+        # only works if we have a list with more than 2 elements.
+        for node in self.node_list[:-1]:
+            if node.type != "comma":
+              continue
+            endls = node.find_all("endl")
+            if endls:
+                return endls[-1].indent
+        # Otherwise, take the first element's indent level. This can be
+        # expensive.
+        if self.node_list:
+            return self.node_list[0].indentation
+        # Empty list, so just assume 4 spaces from parent's indent.
+        return self.parent.indentation + "    "
 
-    def _get_middle_separator(self):
-        if self.style == "indented":
-            return redbaron.nodes.CommaNode({"type": "comma", "first_formatting": [], "second_formatting": [
-                {"type": "endl", "indent": self.parent.indentation + "    ", "formatting": [], "value": "\n"}]})
+    def _get_middle_separator(self, indent=None):
+        """Builds a new middle separator (comma).
 
-        return redbaron.nodes.CommaNode(
-            {"type": "comma", "first_formatting": [], "second_formatting": [{"type": "space", "value": " "}]})
+        If indentation is provided, the comma is followed by a newline with the
+        given indentation. Otherwise, it's a single space.
+        """
+        if indent is not None:
+            return redbaron.nodes.CommaNode(
+                {"type": "comma", "first_formatting": [],
+                 "second_formatting": [{
+                     "type": "endl",
+                     "indent": indent,
+                     "formatting": [], "value": "\n"}]})
+        else:
+            return redbaron.nodes.CommaNode(
+                {"type": "comma", "first_formatting": [],
+                 "second_formatting": [{"type": "space", "value": " "}]})
+
+    def _split_formatting(self, node_list):
+        """Splits a list of formatting nodes on the first endl.
+
+        This is useful for determining which formatting nodes logically belong
+        with the following element.
+        """
+        endl_found = -1
+        for i, fnode in enumerate(node_list):
+            if fnode.type == "endl":
+                endl_found = i
+                break
+
+        # Anything *after* the first endl is associated with the end of the
+        # list.
+        if endl_found >= 0:
+            return (node_list[:i+1], node_list[i+1:])
+        return node_list, []
 
     def _generate_expected_list(self):
-        def generate_separator():
-            separator = self._get_middle_separator()
-            separator.parent = self.node_list
-            separator.on_attribute = self.on_attribute
-            return separator
+        """Converts self.data into a list of nodes."""
+
+        middle_indentation = (self._infer_middle_indentation()
+                              if self.style == "indented" else None)
 
         # XXX will break comments
         if not self.data:
@@ -1558,48 +1598,79 @@ class CommaProxyList(ProxyList):
             self.parent.second_formatting = []
             return []
 
+        trailing_indent = None
+        end_of_list_formatting = None
+        has_trailing_comma = False
+
+        # The basic idea here is that every element of the list is stored in
+        # self.data, along with the CommaNode that follows it (if
+        # applicable). We have to turn this into a flat list of nodes, and fix
+        # the formatting of the CommaNodes so that the list looks reasonable.
+        #
+        # One of the elements of self.data may have a CommaNode that was
+        # previously the last element of the list. This will have different
+        # formatting than a CommaNode elsewhere in the list.
+        #
+        # To make things simpler, we start by converting this trailing CommaNode
+        # into a standard middle-separator (if it exists), by pulling it from
+        # self.node_list.
+        if self.node_list and self.node_list[-1].type == "comma":
+            old_trailing_comma = self.node_list[-1]
+            # Keep comments associated with the end of list for later.
+            keep, end_of_list_formatting = self._split_formatting(
+                old_trailing_comma.second_formatting)
+            if keep[-1].type == "endl":
+                # Change the indent level.
+                trailing_indent = keep[-1].indent
+                if middle_indentation:
+                    keep[-1].indent = middle_indentation
+            old_trailing_comma.second_formatting = keep
+            has_trailing_comma = True
+        elif self.node_list:
+            # We may still need to know the trailing indent, in case we add a
+            # trailing comma later.
+            endls = self.node_list[-1].find_all("endl")
+            if endls:
+                trailing_indent = endls[-1].indent
+
         expected_list = []
 
-        for position, i in enumerate(self.data):
-            is_last = position == len(self.data) - 1
-            expected_list.append(i[0])
-            # XXX this will need refactoring...
-            if i[1] is not None:
-                # here we encounter a middle value that should have formatting
-                # to separate between the intems but has not so we add it
-                # this happen because a new value has been added after this one
-                if not is_last and not i[1]:
-                    expected_list.append(generate_separator())
-
-                # comma list doesn't have trailing but has a comma at its end, remove it
-                elif is_last and not self.has_trailing and i[1] and i[1][0].type == "comma":
-                    # XXX this will likely break comments if presents at the end of the list
-                    pass
-                else:
-                    expected_list += i[1]
-
-                    # XXX will break comments
-                    if self.style == "indented":
-                        if not expected_list[-1].second_formatting.endl:
-                            raise Exception(
-                                "It appears that you have indentation in your CommaList, for now RedBaron doesn't know how to handle this situation (which requires a lot of work), sorry about that. You can find more information here https://github.com/PyCQA/redbaron/issues/100")
-                        elif expected_list[-1].second_formatting.endl.indent != self.parent.indentation + " " * 4:
-                            expected_list[-1].second_formatting.endl.indent = self.parent.indentation + " " * 4
+        # Now, iterate through self.data and add things to our node list. Every
+        # element either has an associated middle-separator, or no associated
+        # formatting.
+        for position, (elem, formatting) in enumerate(self.data):
+            if formatting:
+                expected_list.append(elem)
+                expected_list.extend(formatting)
             else:
-                # here we generate the new expected formatting
-                # None is used as a sentry value for newly inserted values in the proxy list
-                if not is_last:
-                    expected_list.append(generate_separator())
-                elif self.has_trailing:
-                    expected_list.append(generate_separator())
-                    expected_list[-1].second_formatting[0].indent = ""
+                if middle_indentation is not None:
+                    # Fix indentation, if applicable.
+                    endls = elem.find_all("endl")
+                    if endls:
+                        endls[-1].indent = middle_indentation
 
-        if expected_list and self.has_trailing and self.style == "indented":
-            if not expected_list[-1].second_formatting.endl:
-                raise Exception(
-                    "It appears that you have indentation in your CommaList, for now RedBaron doesn't know how to handle this situation (which requires a lot of work), sorry about that. You can find more information here https://github.com/PyCQA/redbaron/issues/100")
-            elif expected_list[-1].second_formatting.endl.indent != self.parent.indentation:
-                expected_list[-1].second_formatting.endl.indent = self.parent.indentation
+                separator = self._get_middle_separator(middle_indentation)
+                separator.parent = self.node_list
+                separator.on_attribute = self.on_attribute
+                expected_list.append(elem)
+                expected_list.append(separator)
+
+        # Ok, now adjust the last element of the list, which contains a middle
+        # separator. We want to change it to be a trailing separator.
+        if expected_list and expected_list[-1].type == "comma":
+            trailing_comma = expected_list[-1]
+            if not has_trailing_comma and not trailing_comma.find("comment"):
+                # We don't want a trailing comma.
+                del expected_list[-1]
+                trailing_comma = None
+
+            if trailing_comma:
+                endls = trailing_comma.find_all("endl")
+                if endls and trailing_indent is not None:
+                    endls[-1].indent = trailing_indent
+                if end_of_list_formatting:
+                    trailing_comma.second_formatting.extend(
+                        end_of_list_formatting)
 
         return expected_list
 
