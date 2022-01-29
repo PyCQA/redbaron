@@ -177,9 +177,9 @@ def test_assign_on_object_value_fst():
 
 def test_generate_helpers():
     red = RedBaron("def a(): pass")
-    assert set(red[0].generate_identifiers()) == set([
+    assert set(red[0].generate_identifiers()) == {
         "funcdef", "funcdef_", "defnode", "def", "def_"
-    ])
+    }
 
 
 def test_assign_node_list():
