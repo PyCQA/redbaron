@@ -96,7 +96,7 @@ class Path(object):
         return self.path
 
     def __str__(self):
-        return 'Path(%s @ %s)' % (
+        return 'Path({} @ {})'.format(
             self.node.__class__.__name__ + ('(' + self.node.type + ')' if isinstance(self.node, Node) else ''),
             str(self.path))
 
@@ -232,7 +232,7 @@ class GenericNodesUtils(object):
 
     def at(self, line_no):
         if not 0 <= line_no <= self.absolute_bounding_box.bottom_right.line:
-            raise IndexError("Line number {0} is outside of the file".format(line_no))
+            raise IndexError("Line number {} is outside of the file".format(line_no))
 
         node = self.find_by_position((line_no, 1))
 
@@ -343,7 +343,7 @@ class NodeList(UserList, GenericNodesUtils):
     def __getattr__(self, key):
         if key not in redbaron.ALL_IDENTIFIERS:
             raise AttributeError(
-                "%s instance has no attribute '%s' and '%s' is not a valid identifier of another node" % (
+                "{} instance has no attribute '{}' and '{}' is not a valid identifier of another node".format(
                     self.__class__.__name__, key, key))
 
         return self.find(key)
@@ -379,7 +379,7 @@ class NodeList(UserList, GenericNodesUtils):
         if in_a_shell():
             return self.__str__()
 
-        return "<%s %s, \"%s\" %s, on %s %s>" % (
+        return "<{} {}, \"{}\" {}, on {} {}>".format(
             self.__class__.__name__,
             self.path().to_baron_path(),
             truncate(self.dumps().replace("\n", "\\n"), 20),
@@ -451,8 +451,8 @@ class NodeList(UserList, GenericNodesUtils):
         return NodeList([x for x in self.data if function(x)])
 
     def filtered(self):
-        return tuple([x for x in self.data if
-                      not isinstance(x, (redbaron.nodes.EndlNode, redbaron.nodes.CommaNode, redbaron.nodes.DotNode))])
+        return tuple(x for x in self.data if
+                      not isinstance(x, (redbaron.nodes.EndlNode, redbaron.nodes.CommaNode, redbaron.nodes.DotNode)))
 
     def _generate_nodes_in_rendering_order(self):
         previous = None
@@ -687,7 +687,7 @@ class Node(GenericNodesUtils):
         if self.parent is None:
             return None
 
-        if self.on_attribute is "root":
+        if self.on_attribute == "root":
             in_list = self.parent
         elif self.on_attribute is not None:
             if isinstance(self.parent, NodeList):
@@ -714,7 +714,7 @@ class Node(GenericNodesUtils):
 
         if key not in redbaron.ALL_IDENTIFIERS:
             raise AttributeError(
-                "%s instance has no attribute '%s' and '%s' is not a valid identifier of another node" % (
+                "{} instance has no attribute '{}' and '{}' is not a valid identifier of another node".format(
                     self.__class__.__name__, key, key))
 
         return self.find(key)
@@ -885,7 +885,7 @@ class Node(GenericNodesUtils):
         ] + klass._other_identifiers)))
 
     def _get_helpers(self):
-        not_helpers = set([
+        not_helpers = {
             'at',
             'copy',
             'decrease_indentation',
@@ -926,7 +926,7 @@ class Node(GenericNodesUtils):
             'previous_generator',
             'replace',
             'to_python',
-        ])
+        }
         return [x for x in dir(self) if
                 not x.startswith("_") and x not in not_helpers and inspect.ismethod(getattr(self, x))]
 
@@ -969,30 +969,30 @@ class Node(GenericNodesUtils):
                 to_join.append("# helpers: %s" % ", ".join(self._get_helpers()))
             if self._default_test_value != "value":
                 to_join.append("# default test value: %s" % self._default_test_value)
-            to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if
+            to_join += ["{}={}".format(key, repr(getattr(self, key))) for key in self._str_keys if
                         key != "type" and "formatting" not in key]
-            to_join += ["%s ->\n    %s" % (key, indent(
+            to_join += ["{} ->\n    {}".format(key, indent(
                 getattr(self, key).__help__(deep=new_deep, with_formatting=with_formatting),
                 "    ").lstrip() if getattr(self, key) else getattr(self, key)) for key in self._dict_keys if
                         "formatting" not in key]
             # need to do this otherwise I end up with stacked quoted list
             # example: value=[\'DottedAsNameNode(target=\\\'None\\\', as=\\\'False\\\', value=DottedNameNode(value=["NameNode(value=\\\'pouet\\\')"])]
             for key in filter(lambda x: "formatting" not in x, self._list_keys):
-                to_join.append(("%s ->" % key))
+                to_join.append("%s ->" % key)
                 for i in getattr(self, key):
                     to_join.append(
                         "  * " + indent(i.__help__(deep=new_deep, with_formatting=with_formatting), "      ").lstrip())
 
         if deep and with_formatting:
-            to_join += ["%s=%s" % (key, repr(getattr(self, key))) for key in self._str_keys if
+            to_join += ["{}={}".format(key, repr(getattr(self, key))) for key in self._str_keys if
                         key != "type" and "formatting" in key]
-            to_join += ["%s=%s" % (key, getattr(self, key).__help__(deep=new_deep,
+            to_join += ["{}={}".format(key, getattr(self, key).__help__(deep=new_deep,
                                                                     with_formatting=with_formatting) if getattr(self,
                                                                                                                 key) else getattr(
                 self, key)) for key in self._dict_keys if "formatting" in key]
 
             for key in filter(lambda x: "formatting" in x, self._list_keys):
-                to_join.append(("%s ->" % key))
+                to_join.append("%s ->" % key)
                 for i in getattr(self, key):
                     to_join.append(
                         "  * " + indent(i.__help__(deep=new_deep, with_formatting=with_formatting), "      ").lstrip())
@@ -1003,7 +1003,7 @@ class Node(GenericNodesUtils):
         if in_a_shell():
             return self.__str__()
 
-        return "<%s path=%s, \"%s\" %s, on %s %s>" % (
+        return "<{} path={}, \"{}\" {}, on {} {}>".format(
             self.__class__.__name__,
             self.path().to_baron_path(),
             truncate(self.dumps().replace("\n", "\\n"), 20),
@@ -1070,7 +1070,7 @@ class Node(GenericNodesUtils):
         with open(temp_file_path, "w") as temp_file:
             temp_file.write(self_in_string)
 
-        os.system("%s %s" % (editor, temp_file_path))
+        os.system("{} {}".format(editor, temp_file_path))
 
         with open(temp_file_path, "r") as temp_file:
             result = temp_file.read()
@@ -1253,7 +1253,7 @@ class ElseAttributeNode(CodeBlockNode):
                                             parent=last_member, on_attribute="value"))
             return ""
 
-        if re.match("^\s*%s" % indented_type, string):
+        if re.match(r"^\s*%s" % indented_type, string):
 
             # we've got indented text, let's deindent it
             if string.startswith((" ", "	")):
@@ -1486,7 +1486,7 @@ class ProxyList(object):
         if in_a_shell():
             return self.__str__()
 
-        return "<%s %s, \"%s\" %s, on %s %s>" % (
+        return "<{} {}, \"{}\" {}, on {} {}>".format(
             self.__class__.__name__,
             self.path().to_baron_path(),
             truncate(self.dumps().replace("\n", "\\n"), 20),
