@@ -5,15 +5,14 @@ Introduction
 [![Backers on Open Collective](https://opencollective.com/redbaron/backers/badge.svg)](#backers) 
 [![Sponsors on Open Collective](https://opencollective.com/redbaron/sponsors/badge.svg)](#sponsors) 
 
-RedBaron is a python library and tool powerful enough to be used into IPython
-solely that intent to make the process of **writing code that modify source
-code** as easy and as simple as possible. That include writing custom
+"RedBaron is a Python library and tool powerful enough to be used in IPython. 
+It aims to make the process of writing code that modifies source code as easy and simple as possible." That includes writing custom
 refactoring, generic refactoring, tools, IDE or directly modifying you source
 code into IPython with a higher and more powerful abstraction than the
 advanced texts modification tools that you find in advanced text editors and
 IDE.
 
-RedBaron guaranteed you that **it will only modify your code where you ask him
+RedBaron guarantees you that **it will only modify your code where you ask him
 to**. To achieve this, it is based on [Baron](https://github.com/PyCQA/baron)
 a lossless [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) for
 Python that guarantees the operation <code>ast_to_code(code_to_ast(source_code)) == source_code</code>.
