@@ -1741,9 +1741,15 @@ class LineProxyList(ProxyList):
 
         def modify_last_indentation(node, indentation):
             try:
-                current_last = get_real_last(node)
-                while current_last.type in ('def', 'class', 'ifelseblock'):
-                    current_last = get_real_last(current_last)
+                current_last = node
+                while isinstance(current_last, (CodeBlockNode, redbaron.nodes.IfelseblockNode)):
+                    # The newline after a compound statement belongs to its final
+                    # clause, not necessarily to its main body.
+                    if isinstance(current_last, redbaron.nodes.TryNode):
+                        current_last = current_last._get_last_member_to_clean()
+                    elif isinstance(current_last, ElseAttributeNode) and current_last.else_:
+                        current_last = current_last.else_
+                    current_last = get_real_last(current_last.value)
                 current_last.indent = indentation
             except (AttributeError, IndexError, TypeError):
                 node.indent = indentation
@@ -1795,7 +1801,7 @@ class LineProxyList(ProxyList):
 
             if i[0].type != "endl" and previous and isinstance(previous, CodeBlockNode):
                 log("Previous is CodeBlockNode and current isn't endl, ensure previous has the current identation")
-                modify_last_indentation(get_real_last(previous.value), indentation)
+                modify_last_indentation(previous, indentation)
 
             # XXX this will need refactoring...
             if i[1] is not None:
@@ -1858,7 +1864,7 @@ class LineProxyList(ProxyList):
             if isinstance(expected_list[-1], CodeBlockNode):
                 # In this case, the last \n is owned by the node
                 log("Last node is a CodeBlockNode, ensure that I still have the same last_indentation")
-                modify_last_indentation(get_real_last(expected_list[-1].value), last_indentation)
+                modify_last_indentation(expected_list[-1], last_indentation)
             else:
                 log("Last node is NOT CodeBlockNode, ensure that I still have the same last_indentation")
                 expected_list[-1].indent = last_indentation
