@@ -696,7 +696,9 @@ class FromImportNode(Node):
         For example (notice 'e' instead of 'f'):
             RedBaron("from qsd import a, c, e as f").names() == ['qsd.a', 'qsd.c', 'qsd.f']
         """
-        return [self.value.dumps() + "." + (x.target if x.target else x.value)
+        module = self.value.dumps()
+        prefix = module if module.endswith(".") else module + "."
+        return [prefix + (x.target if x.target else x.value)
                 for x in self.targets
                 if not isinstance(x, (LeftParenthesisNode, RightParenthesisNode))]
 
@@ -706,7 +708,9 @@ class FromImportNode(Node):
         For example (notice 'e' instead of 'f'):
             RedBaron("from qsd import a, c, e as f").names() == ['qsd.a', 'qsd.c', 'qsd.e']
         """
-        return [self.value.dumps() + "." + x.value
+        module = self.value.dumps()
+        prefix = module if module.endswith(".") else module + "."
+        return [prefix + x.value
                 for x in self.targets
                 if not isinstance(x, (LeftParenthesisNode, RightParenthesisNode))]
 

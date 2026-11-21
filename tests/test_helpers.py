@@ -1,4 +1,5 @@
 import sys
+import pytest
 from redbaron import RedBaron
 
 
@@ -45,6 +46,20 @@ def test_from_import_full_path_modules():
 def test_from_import_full_path_modules_parenthesis():
     red = RedBaron("from qsd import (a, c, e as f)")
     assert red[0].full_path_modules() == ['qsd.a', 'qsd.c', 'qsd.e']
+
+
+@pytest.mark.parametrize("module, prefix", [
+    (".", "."), ("..", ".."), ("...", "..."),
+    (".package", ".package."), ("..package.submodule", "..package.submodule."),
+])
+@pytest.mark.parametrize("parenthesized", [False, True])
+def test_from_import_relative_full_paths(module, prefix, parenthesized):
+    targets = "foo, bar as renamed"
+    if parenthesized:
+        targets = "(" + targets + ")"
+    red = RedBaron("from %s import %s" % (module, targets))
+    assert red[0].full_path_modules() == [prefix + "foo", prefix + "bar"]
+    assert red[0].full_path_names() == [prefix + "foo", prefix + "renamed"]
 
 
 def test_to_python_int_node():
