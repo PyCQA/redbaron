@@ -862,7 +862,7 @@ class LambdaNode(Node):
             return NodeList.from_fst(fst, parent=parent, on_attribute=on_attribute)
 
         else:
-            return super(DefNode, self)._string_to_node_list(string, parent, on_attribute)
+            return super(LambdaNode, self)._string_to_node_list(string, parent, on_attribute)
 
     def _string_to_node(self, string, parent, on_attribute):
         if on_attribute == "value":

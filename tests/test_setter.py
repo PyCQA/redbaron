@@ -1199,6 +1199,21 @@ def test_lambda_setattr_arguments_none():
     assert red.dumps() == "lambda: plop"
 
 
+@pytest.mark.parametrize("attribute, value, expected", [
+    ("first_formatting", "  ", "lambda  x: True"),
+    ("second_formatting", " ", "lambda x : True"),
+    ("second_formatting", "", "lambda x: True"),
+    ("third_formatting", "", "lambda x:True"),
+])
+def test_lambda_setattr_formatting(attribute, value, expected):
+    red = RedBaron("lambda x: True")
+    setattr(red[0], attribute, value)
+    assert red.dumps() == expected
+    for formatting in getattr(red[0], attribute):
+        assert formatting.parent is red[0]
+        assert formatting.on_attribute == attribute
+
+
 def test_list_argument_setattr_value():
     red = RedBaron("lambda *b: plop")
     red[0].arguments[0].value = "hop"
