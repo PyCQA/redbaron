@@ -34,8 +34,9 @@ a list, you need to take care of a lot of details:
 
 And that's only for a comma separated list of things: you also have the
 same formatting details to care about for dot separated lists
-(e.g. :file:`a.b.c().d[plop]`) and endl separated lists (a python code block,
-or you whole source file).
+(e.g. :file:`a.b.c().d[plop]`) and newline-separated lists (a Python code
+block, or your whole source file). RedBaron represents each newline with an
+``endl`` node.
 
 You don't want to have to deal with this.
 
