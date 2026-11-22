@@ -1408,6 +1408,12 @@ class ProxyList(object):
 
     def _synchronise(self):
         self.node_list.data = self._generate_expected_list()[:]
+        is_root = isinstance(self, redbaron.RedBaron)
+        parent = self if is_root else self.parent
+        on_attribute = "root" if is_root else self.on_attribute
+        for node in self.node_list:
+            node.parent = parent
+            node.on_attribute = on_attribute
         self.data = self._build_inner_list(self.node_list.data)
 
     def __len__(self):
