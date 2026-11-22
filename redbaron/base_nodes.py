@@ -1155,7 +1155,10 @@ class CodeBlockNode(Node):
 
         # putting this in the string template will fail, need at least some indent
         if indentation == 0:
-            clean_string = "    " + "\n    ".join(clean_string.split("\n"))
+            clean_string = "\n".join(
+                "    " + line if line.strip() else line
+                for line in clean_string.split("\n")
+            )
             clean_string = clean_string.rstrip()
 
         fst = baron.parse("def a():\n%s\n" % clean_string)[0]["value"]
